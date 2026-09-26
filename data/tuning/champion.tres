@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ChampionTuning" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/data/champion_tuning.gd" id="1_ct"]
+
+[resource]
+script = ExtResource("1_ct")
+hp_mul = 4.0
+speed_mul = 1.1
+radius_mul = 1.5
+spawn_telegraph = 0.8
+gold_drops_min = 3
+gold_drops_max = 5
+heal_candles = 1
+death_hitstop_ms = 40

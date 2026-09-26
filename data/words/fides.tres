@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="WordData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/data/word_data.gd" id="1_wd"]
+
+[resource]
+script = ExtResource("1_wd")
+id = &"fides"
+latin = "FIDES"
+translation_key = &"word_fides"
+power_budget = 2.4
+group = &"apocrypha"
+requires_unlock = true
+combo_eligible = true
+charges = 1
+vfx_prefix = &"VFX_FIDES"

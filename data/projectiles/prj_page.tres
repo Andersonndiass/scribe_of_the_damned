@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="EnemyProjectileData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/data/enemy_projectile_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"prj_page"
+speed = 90.0
+radius = 3.0
+damage = 1
+lifetime = 4.0
+size = Vector2i(6, 6)

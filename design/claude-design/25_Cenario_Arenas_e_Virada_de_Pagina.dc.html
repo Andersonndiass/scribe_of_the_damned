@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/colors.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/typography.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/motion.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/layers.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/patterns.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/styles.css">
+<script src="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/_ds_bundle.js"></script>
+<script src="pixel-canvas.js"></script>
+<script src="scribe-arenas.js"></script>
+<style>
+body{margin:0;background:var(--sd-ink);image-rendering:pixelated}
+a{color:var(--sd-blood)}
+a:hover{color:var(--sd-blood-dark)}
+</style>
+</helmet>
+
+<div style="width:1400px;padding:32px;box-sizing:border-box;display:flex;flex-direction:column;gap:24px;background-color:var(--sd-parchment);background-image:radial-gradient(var(--sd-parchment-old) 0 0.5px,transparent 0.6px);background-size:7px 7px">
+
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;border-bottom:1px solid var(--sd-ink);padding-bottom:12px">
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <div style="font-family:var(--font-pixel);font-size:14px;letter-spacing:.1em;color:var(--sd-blood)">ENTREGAVEL 25 — CENARIO</div>
+      <div style="font-family:var(--font-display);font-size:48px;line-height:1.2;color:var(--sd-ink);margin-top:6px">Arenas dos 5 capítulos e virada de página</div>
+    </div>
+    <div style="font-family:var(--font-pixel);font-size:14px;line-height:1.6;color:var(--sd-ink);text-align:right">
+      <div>ENV_PAGE_* · 640×360</div>
+      <div>MARGEM DE 24PX = PAREDE DE COLISAO</div>
+      <div>AREA JOGAVEL X24–615 · Y24–335</div>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div style="font-family:var(--font-display);font-size:32px;line-height:1.2;color:var(--sd-ink);border-bottom:1px solid var(--sd-ink);padding-bottom:6px">7.1 Camadas — Capítulo 1 separadas</div>
+    <div style="display:flex;gap:16px;flex-wrap:wrap">
+      <sc-for list="{{ layers }}" as="l" hint-placeholder-count="3">
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div style="font-family:var(--font-pixel);font-size:14px;color:var(--sd-ink)">{{ l.title }}</div>
+          <div style="width:320px;height:180px;outline:1px solid var(--sd-ink);background:var(--sd-ink-soft);overflow:hidden">
+            <x-import component-from-global-scope="pixel-canvas" rows-id="{{ l.id }}" scale="{{ zHalf }}" hint-size="320px,180px"></x-import>
+          </div>
+          <div style="font-family:var(--font-pixel);font-size:12px;line-height:1.5;color:var(--sd-ink);max-width:320px">{{ l.desc }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div style="font-family:var(--font-display);font-size:32px;line-height:1.2;color:var(--sd-ink);border-bottom:1px solid var(--sd-ink);padding-bottom:6px">7.4 Arenas por capítulo · 640×360 em 1×</div>
+    <sc-for list="{{ arenas }}" as="a" hint-placeholder-count="5">
+      <div style="display:flex;gap:24px;align-items:flex-start;padding:16px;border:1px solid var(--sd-ink);background:var(--sd-parchment)">
+        <div style="width:300px;flex:none;display:flex;flex-direction:column;gap:8px">
+          <div style="font-family:var(--font-display);font-size:24px;line-height:1.3;color:var(--sd-ink)">{{ a.title }}</div>
+          <div style="font-family:var(--font-pixel);font-size:14px;color:var(--sd-ink-soft)">{{ a.file }}</div>
+          <div style="font-family:var(--font-pixel);font-size:12px;line-height:1.6;color:var(--sd-ink)">{{ a.desc }}</div>
+          <div style="margin-top:4px;font-family:var(--font-pixel);font-size:12px;color:var(--sd-ink-soft)">SILHUETA 1:4</div>
+          <div style="width:160px;height:90px;outline:1px solid var(--sd-ink);overflow:hidden;background:var(--sd-parchment)">
+            <x-import component-from-global-scope="pixel-canvas" rows-id="{{ a.silId }}" scale="{{ zQuarter }}" hint-size="160px,90px"></x-import>
+          </div>
+        </div>
+        <div style="width:640px;height:360px;flex:none;outline:1px solid var(--sd-ink);overflow:hidden">
+          <x-import component-from-global-scope="pixel-canvas" rows-id="{{ a.id }}" scale="{{ zOne }}" hint-size="640px,360px"></x-import>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div style="font-family:var(--font-display);font-size:32px;line-height:1.2;color:var(--sd-ink);border-bottom:1px solid var(--sd-ink);padding-bottom:6px">7.2 Degradação por onda — Cap. 1, os 4 estágios em 320×180</div>
+    <div style="display:flex;gap:16px;flex-wrap:wrap">
+      <sc-for list="{{ stages }}" as="s" hint-placeholder-count="4">
+        <div style="display:flex;flex-direction:column;gap:6px;width:320px">
+          <div style="font-family:var(--font-pixel);font-size:14px;color:var(--sd-blood)">{{ s.title }}</div>
+          <div style="width:320px;height:180px;outline:1px solid var(--sd-ink);overflow:hidden">
+            <x-import component-from-global-scope="pixel-canvas" rows-id="{{ s.id }}" scale="{{ zHalf }}" hint-size="320px,180px"></x-import>
+          </div>
+          <div style="font-family:var(--font-pixel);font-size:12px;line-height:1.5;color:var(--sd-ink)">{{ s.desc }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div style="font-family:var(--font-display);font-size:32px;line-height:1.2;color:var(--sd-ink);border-bottom:1px solid var(--sd-ink);padding-bottom:6px">7.3 env_page_turn · 12 frames @60ms</div>
+    <div style="display:flex;gap:24px;align-items:flex-start">
+      <div style="width:300px;flex:none;display:flex;flex-direction:column;gap:8px">
+        <div style="font-family:var(--font-pixel);font-size:14px;color:var(--sd-ink)">{{ turnMeta }}</div>
+        <div style="font-family:var(--font-pixel);font-size:14px;color:var(--sd-ink-soft)">ENV_PAGE_TURN.PNG</div>
+        <div style="font-family:var(--font-pixel);font-size:12px;line-height:1.6;color:var(--sd-ink)">{{ turnDesc }}</div>
+      </div>
+      <div style="display:flex;gap:12px;flex:1;flex-wrap:wrap">
+        <sc-for list="{{ turnFrames }}" as="f" hint-placeholder-count="12">
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <div style="width:320px;height:180px;outline:1px solid var(--sd-ink);overflow:hidden">
+              <x-import component-from-global-scope="pixel-canvas" rows-id="{{ f.id }}" scale="{{ zHalf }}" hint-size="320px,180px"></x-import>
+            </div>
+            <div style="font-family:var(--font-pixel);font-size:12px;color:var(--sd-ink)">{{ f.label }}</div>
+            <sc-if value="{{ f.ev }}" hint-placeholder-val="{{ true }}">
+              <div style="border-top:2px solid var(--sd-gold);padding-top:6px;font-family:var(--font-pixel);font-size:12px;line-height:1.4;color:var(--sd-ink)">{{ f.ev }}</div>
+            </sc-if>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div style="font-family:var(--font-display);font-size:32px;line-height:1.2;color:var(--sd-ink);border-bottom:1px solid var(--sd-ink);padding-bottom:6px">Cratera do Cap. 5 · 64×64 · 4 frames @80ms</div>
+    <div style="display:flex;gap:24px;align-items:flex-start;padding:16px;border:1px solid var(--sd-ink);background:var(--sd-parchment)">
+      <div style="width:300px;flex:none;font-family:var(--font-pixel);font-size:12px;line-height:1.6;color:var(--sd-ink)">{{ craterDesc }}</div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <sc-for list="{{ craterFrames }}" as="f" hint-placeholder-count="4">
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="width:256px;height:256px;background-color:var(--sd-parchment);background-image:repeating-linear-gradient(to right,var(--sd-parchment-old) 0 1px,transparent 1px 4px),repeating-linear-gradient(to bottom,var(--sd-parchment-old) 0 1px,transparent 1px 4px);outline:1px solid var(--sd-ink)">
+              <x-import component-from-global-scope="ScribeOfTheDamnedDesignSystem_4b5ef4.PixelArt" rows="{{ f.rows }}" palette="{{ pal }}" scale="{{ zFour }}" hint-size="256px,256px"></x-import>
+            </div>
+            <div style="font-family:var(--font-pixel);font-size:12px;color:var(--sd-ink)">{{ f.label }}</div>
+            <sc-if value="{{ f.ev }}" hint-placeholder-val="{{ true }}">
+              <div style="border-top:2px solid var(--sd-gold);padding-top:6px;font-family:var(--font-pixel);font-size:12px;line-height:1.4;color:var(--sd-ink)">{{ f.ev }}</div>
+            </sc-if>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div style="font-family:var(--font-display);font-size:32px;line-height:1.2;color:var(--sd-ink);border-bottom:1px solid var(--sd-ink);padding-bottom:6px">Obstáculos e ornamentos · 8×</div>
+    <div style="display:flex;gap:16px;flex-wrap:wrap">
+      <sc-for list="{{ props }}" as="p" hint-placeholder-count="15">
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div style="display:flex;align-items:center;background-color:var(--sd-parchment);background-image:repeating-linear-gradient(to right,var(--sd-parchment-old) 0 1px,transparent 1px 8px),repeating-linear-gradient(to bottom,var(--sd-parchment-old) 0 1px,transparent 1px 8px);outline:1px solid var(--sd-ink)">
+            <x-import component-from-global-scope="ScribeOfTheDamnedDesignSystem_4b5ef4.PixelArt" rows="{{ p.rows }}" palette="{{ pal }}" scale="{{ zEight }}" hint-size="128px,128px"></x-import>
+          </div>
+          <div style="font-family:var(--font-pixel);font-size:12px;color:var(--sd-ink)">{{ p.label }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:24px;align-items:stretch">
+    <div style="flex:1;display:flex;flex-direction:column;gap:8px;padding:16px;border:1px solid var(--sd-ink)">
+      <div style="font-family:var(--font-display);font-size:24px;color:var(--sd-ink)">Erros evitados</div>
+      <div style="font-family:var(--font-pixel);font-size:14px;line-height:1.7;color:var(--sd-ink)">
+        <sc-for list="{{ avoided }}" as="p" hint-placeholder-count="3">
+          <div>{{ p }}</div>
+        </sc-for>
+      </div>
+    </div>
+    <div style="width:520px;flex:none;display:flex;flex-direction:column;gap:8px;padding:16px;border:1px solid var(--sd-ink)">
+      <div style="font-family:var(--font-display);font-size:24px;color:var(--sd-ink)">Checagem final</div>
+      <div style="display:flex;flex-direction:column;gap:6px;font-family:var(--font-pixel);font-size:14px;line-height:1.5;color:var(--sd-ink)">
+        <sc-for list="{{ checks }}" as="c" hint-placeholder-count="6">
+          <div style="display:flex;gap:8px"><span style="color:var(--sd-gold)">†</span><span>{{ c }}</span></div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1400}}">
+class Component extends DCLogic {
+  componentDidMount() {
+    if (!window.ScribeArenas) {
+      this._t = setInterval(() => {
+        if (window.ScribeArenas) { clearInterval(this._t); this.forceUpdate(); }
+      }, 80);
+    }
+  }
+  componentWillUnmount() { if (this._t) clearInterval(this._t); }
+
+  renderVals() {
+    const B = window.ScribeArenas;
+    const base = {
+      pal: {}, zOne: 1, zHalf: 0.5, zQuarter: 0.25, zFour: 4, zEight: 8,
+      arenas: [], layers: [], stages: [], turnFrames: [], craterFrames: [], props: [],
+      turnMeta: "12F · 60MS · 640×360 · LOOP NAO",
+      turnDesc: "",
+      craterDesc: "",
+      avoided: [
+        "A ARENA E UM PAPEL DESENHADO, NAO UM CENARIO 3D: TUDO E ILUSTRACAO SOBRE PERGAMINHO",
+        "O TEXTO-FANTASMA NUNCA COMPETE COM OS INIMIGOS — ALPHA MAXIMO DE 0.12, FEITO EM DITHERING",
+        "TODO OBSTACULO TEM SOMBRA E BORDA CLARA PARA A LEITURA DE COLISAO"
+      ],
+      checks: [
+        "5 ARENAS 640×360 EXATAS, COM AS CAMADAS DO CAP. 1 SEPARADAS",
+        "OS 4 ESTAGIOS DE DEGRADACAO LADO A LADO EM 320×180",
+        "VIRADA DE PAGINA: 12 FRAMES @60MS · CRATERA DO CAP. 5: 4 FRAMES @80MS",
+        "OBSTACULOS: 4 VARIACOES DE FURO 16×16, BANCO 32×8, VITRAL 20×40 E ALTAR 60×16",
+        "SO CORES DA PALETA TRAVADA · BLOOD SO NA VINHETA DE QUEIMA E NOS VITRAIS",
+        "MARGEM DE 24PX MARCADA COMO PAREDE DE COLISAO EM TODAS AS ARENAS"
+      ]
+    };
+    if (!B) return base;
+    const d = B.build();
+    const reg = (id, rows) => {
+      window.ScribeCanvasData = window.ScribeCanvasData || {};
+      window.ScribeCanvasData[id] = { rows, palette: B.PAL };
+      return id;
+    };
+    d.layers.forEach(l => reg(l.id, l.rows));
+    d.stages.forEach(s => reg(s.id, s.rows));
+    d.turn.frames.forEach(f => reg(f.id, f.rows));
+    d.arenas.forEach(a => { reg(a.id, a.rows); reg(a.id + "_sil", B.sil(a.rows)); });
+
+    return Object.assign(base, {
+      pal: B.PAL,
+      layers: d.layers,
+      stages: d.stages,
+      arenas: d.arenas.map(a => ({
+        id: a.id, silId: a.id + "_sil", title: a.title, desc: a.desc,
+        file: ("env_" + a.id + "_arena.png").toUpperCase().replace(/_/g, "_\u200B")
+      })),
+      turnDesc: d.turn.desc,
+      turnFrames: d.turn.frames.map(f => ({
+        id: f.id,
+        label: ("page_turn · F" + f.n + " · 60ms · 640×360").toUpperCase().replace(/_/g, "_\u200B"),
+        ev: (d.turn.ev[f.n] || "").toUpperCase().replace(/_/g, "_\u200B")
+      })),
+      craterDesc: d.crater.desc,
+      craterFrames: d.crater.frames.map(f => ({
+        rows: f.rows,
+        label: ("cratera · F" + f.n + " · 80ms · 64×64").toUpperCase(),
+        ev: (d.crater.ev[f.n] || "").toUpperCase().replace(/_/g, "_\u200B")
+      })),
+      props: d.props.map(p => ({
+        rows: p.rows,
+        label: (p.name + " · " + p.w + "×" + p.h).toUpperCase().replace(/_/g, "_\u200B")
+      }))
+    });
+  }
+}
+
+</script>
+</body>
+</html>

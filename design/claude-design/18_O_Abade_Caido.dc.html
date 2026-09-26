@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/colors.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/typography.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/motion.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/layers.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/patterns.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/styles.css">
+<script src="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/_ds_bundle.js"></script>
+<script src="scribe-abbot.js"></script>
+<style>
+body{margin:0;background:var(--sd-ink);image-rendering:pixelated}
+@keyframes sprite-strip{from{transform:translateX(0)}to{transform:translateX(-100%)}}
+a{color:var(--sd-blood)}
+a:hover{color:var(--sd-blood-dark)}
+</style>
+</helmet>
+
+<div style="width:1680px;padding:32px;box-sizing:border-box;display:flex;flex-direction:column;gap:24px;background-color:var(--sd-parchment);background-image:radial-gradient(var(--sd-parchment-old) 0 0.5px,transparent 0.6px);background-size:7px 7px">
+
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;border-bottom:1px solid var(--sd-ink);padding-bottom:12px">
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <div style="font-family:var(--font-pixel);font-size:14px;letter-spacing:.1em;color:var(--sd-blood)">{{ tag }}</div>
+      <div style="font-family:var(--font-display);font-size:48px;line-height:1.2;color:var(--sd-ink);margin-top:6px">{{ title }}</div>
+    </div>
+    <div style="font-family:var(--font-pixel);font-size:14px;line-height:1.6;color:var(--sd-ink);text-align:right">
+      <div>{{ fileBase }} · {{ dims }}</div>
+      <div>PIVOT {{ pivot }} · {{ floatNote }}</div>
+      <div>{{ total }} FRAMES · {{ animCount }} ANIMACOES</div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:24px;align-items:flex-start">
+    <div style="display:flex;flex-direction:column;gap:8px;padding:12px;border:1px solid var(--sd-ink)">
+      <div style="font-family:var(--font-pixel);font-size:14px;color:var(--sd-ink-soft)">GRADE + PIVOT · 5×</div>
+      <div style="position:relative;width:{{ gw }}px;height:{{ gh }}px;background-color:var(--sd-parchment);background-image:repeating-linear-gradient(to right,var(--sd-parchment-old) 0 1px,transparent 1px 5px),repeating-linear-gradient(to bottom,var(--sd-parchment-old) 0 1px,transparent 1px 5px);outline:1px solid var(--sd-ink)">
+        <x-import component-from-global-scope="ScribeOfTheDamnedDesignSystem_4b5ef4.PixelArt" rows="{{ base }}" palette="{{ pal }}" scale="{{ s5 }}" hint-size="384px,384px"></x-import>
+        <i style="position:absolute;left:{{ pivotL }}px;top:{{ pivotT }}px;width:36px;height:2px;background:var(--sd-gold)"></i>
+        <i style="position:absolute;left:{{ pivotX }}px;top:{{ pivotY }}px;width:2px;height:36px;background:var(--sd-gold)"></i>
+      </div>
+      <div style="font-family:var(--font-pixel);font-size:12px;line-height:1.5;color:var(--sd-ink);max-width:{{ gw }}px">{{ anatomy }}</div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:8px;padding:12px;border:1px solid var(--sd-ink)">
+      <div style="font-family:var(--font-pixel);font-size:14px;color:var(--sd-ink-soft)">1× SOBRE PARCHMENT · SILHUETA 2×</div>
+      <div style="display:flex;gap:16px;align-items:flex-end;padding:12px;background:var(--sd-parchment);outline:1px solid var(--sd-ink-soft)">
+        <sc-for list="{{ readable }}" as="r" hint-placeholder-count="3">
+          <x-import component-from-global-scope="ScribeOfTheDamnedDesignSystem_4b5ef4.PixelArt" rows="{{ r.rows }}" palette="{{ pal }}" scale="{{ s1 }}" hint-size="80px,64px"></x-import>
+        </sc-for>
+      </div>
+      <div style="display:flex;gap:16px;align-items:flex-end;padding:12px;background:var(--sd-parchment);outline:1px solid var(--sd-ink-soft)">
+        <sc-for list="{{ sils }}" as="r" hint-placeholder-count="3">
+          <x-import component-from-global-scope="ScribeOfTheDamnedDesignSystem_4b5ef4.PixelArt" rows="{{ r.rows }}" palette="{{ pal }}" scale="{{ s2 }}" hint-size="160px,128px"></x-import>
+        </sc-for>
+      </div>
+      <div style="font-family:var(--font-pixel);font-size:12px;line-height:1.5;color:var(--sd-ink);max-width:420px">{{ silNote }}</div>
+    </div>
+
+    <div style="flex:1;display:flex;flex-direction:column;gap:6px;padding:12px;border:1px solid var(--sd-ink)">
+      <div style="font-family:var(--font-pixel);font-size:14px;color:var(--sd-ink-soft)">MAPA DE COR POR REGIAO</div>
+      <div style="display:flex;flex-direction:column;gap:4px;font-family:var(--font-pixel);font-size:14px;color:var(--sd-ink)">
+        <sc-for list="{{ colorMap }}" as="c" hint-placeholder-count="5">
+          <div style="display:flex;gap:8px;align-items:center"><i style="width:14px;height:14px;flex:none;background:{{ c.color }};outline:1px solid var(--sd-ink)"></i>{{ c.label }}</div>
+        </sc-for>
+      </div>
+      <div style="font-family:var(--font-pixel);font-size:12px;line-height:1.6;color:var(--sd-ink);margin-top:8px">{{ rules }}</div>
+    </div>
+  </div>
+
+  <sc-for list="{{ anims }}" as="a" hint-placeholder-count="12">
+    <div style="display:flex;gap:24px;align-items:flex-start;padding:16px;border:1px solid var(--sd-ink);background:var(--sd-parchment)">
+      <div style="width:248px;flex:none;display:flex;flex-direction:column;gap:6px">
+        <div style="font-family:var(--font-display);font-size:24px;line-height:1.3;color:var(--sd-ink)">{{ a.name }}</div>
+        <div style="font-family:var(--font-pixel);font-size:14px;line-height:1.5;color:var(--sd-ink)">{{ a.meta }}</div>
+        <div style="font-family:var(--font-pixel);font-size:14px;line-height:1.5;color:var(--sd-ink-soft)">{{ a.file }}</div>
+        <div style="width:{{ a.previewW }}px;height:{{ a.previewH }}px;overflow:hidden;background:var(--sd-parchment);outline:1px solid var(--sd-ink-soft);margin-top:4px">
+          <div style="display:flex;height:{{ a.previewH }}px;width:{{ a.stripW }}px;animation-name:sprite-strip;animation-timing-function:{{ a.steps }};animation-iteration-count:infinite;animation-duration:{{ a.dur }}ms">
+            <sc-for list="{{ a.frames }}" as="f" hint-placeholder-count="6">
+              <x-import component-from-global-scope="ScribeOfTheDamnedDesignSystem_4b5ef4.PixelArt" rows="{{ f.rows }}" palette="{{ pal }}" scale="{{ s3 }}" hint-size="288px,288px"></x-import>
+            </sc-for>
+          </div>
+        </div>
+        <div style="font-family:var(--font-pixel);font-size:14px;color:var(--sd-ink-soft)">PREVIEW 3× · LOOP</div>
+        <div style="font-family:var(--font-pixel);font-size:12px;line-height:1.5;color:var(--sd-ink);margin-top:4px">{{ a.desc }}</div>
+      </div>
+      <div style="display:flex;gap:12px;flex:1;flex-wrap:wrap">
+        <sc-for list="{{ a.frames }}" as="f" hint-placeholder-count="6">
+          <div style="width:{{ a.cellW }}px;flex:none;display:flex;flex-direction:column;gap:8px">
+            <div style="width:{{ a.cellW }}px;height:{{ a.cellH }}px;display:flex;align-items:center;background-color:var(--sd-parchment);background-image:repeating-linear-gradient(to right,var(--sd-parchment-old) 0 1px,transparent 1px 6px),repeating-linear-gradient(to bottom,var(--sd-parchment-old) 0 1px,transparent 1px 6px);outline:1px solid var(--sd-ink)">
+              <x-import component-from-global-scope="ScribeOfTheDamnedDesignSystem_4b5ef4.PixelArt" rows="{{ f.rows }}" palette="{{ pal }}" scale="{{ s6 }}" hint-size="576px,576px"></x-import>
+            </div>
+            <div style="font-family:var(--font-pixel);font-size:12px;line-height:1.4;color:var(--sd-ink)">{{ f.label }}</div>
+            <sc-if value="{{ f.ev }}" hint-placeholder-val="{{ true }}">
+              <div style="border-top:2px solid var(--sd-gold);padding-top:6px;font-family:var(--font-pixel);font-size:12px;line-height:1.4;color:var(--sd-ink)">{{ f.ev }}</div>
+            </sc-if>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </sc-for>
+
+  <div style="font-family:var(--font-display);font-size:32px;line-height:1.2;color:var(--sd-ink);border-bottom:1px solid var(--sd-ink);padding-bottom:6px">Livro Negro — sprite separado 24×20</div>
+
+  <sc-for list="{{ bookAnims }}" as="a" hint-placeholder-count="5">
+    <div style="display:flex;gap:24px;align-items:flex-start;padding:16px;border:1px solid var(--sd-ink);background:var(--sd-parchment)">
+      <div style="width:248px;flex:none;display:flex;flex-direction:column;gap:6px">
+        <div style="font-family:var(--font-display);font-size:24px;line-height:1.3;color:var(--sd-ink)">{{ a.name }}</div>
+        <div style="font-family:var(--font-pixel);font-size:14px;line-height:1.5;color:var(--sd-ink)">{{ a.meta }}</div>
+        <div style="font-family:var(--font-pixel);font-size:14px;line-height:1.5;color:var(--sd-ink-soft)">{{ a.file }}</div>
+        <div style="width:{{ a.previewW }}px;height:{{ a.previewH }}px;overflow:hidden;background:var(--sd-parchment);outline:1px solid var(--sd-ink-soft);margin-top:4px">
+          <div style="display:flex;height:{{ a.previewH }}px;width:{{ a.stripW }}px;animation-name:sprite-strip;animation-timing-function:{{ a.steps }};animation-iteration-count:infinite;animation-duration:{{ a.dur }}ms">
+            <sc-for list="{{ a.frames }}" as="f" hint-placeholder-count="4">
+              <x-import component-from-global-scope="ScribeOfTheDamnedDesignSystem_4b5ef4.PixelArt" rows="{{ f.rows }}" palette="{{ pal }}" scale="{{ s4 }}" hint-size="96px,80px"></x-import>
+            </sc-for>
+          </div>
+        </div>
+        <div style="font-family:var(--font-pixel);font-size:14px;color:var(--sd-ink-soft)">PREVIEW 4× · LOOP</div>
+        <div style="font-family:var(--font-pixel);font-size:12px;line-height:1.5;color:var(--sd-ink);margin-top:4px">{{ a.desc }}</div>
+      </div>
+      <div style="display:flex;gap:12px;flex:1;flex-wrap:wrap">
+        <sc-for list="{{ a.frames }}" as="f" hint-placeholder-count="4">
+          <div style="width:192px;flex:none;display:flex;flex-direction:column;gap:8px">
+            <div style="width:192px;height:160px;background-color:var(--sd-parchment);background-image:repeating-linear-gradient(to right,var(--sd-parchment-old) 0 1px,transparent 1px 8px),repeating-linear-gradient(to bottom,var(--sd-parchment-old) 0 1px,transparent 1px 8px);outline:1px solid var(--sd-ink)">
+              <x-import component-from-global-scope="ScribeOfTheDamnedDesignSystem_4b5ef4.PixelArt" rows="{{ f.rows }}" palette="{{ pal }}" scale="{{ s8 }}" hint-size="192px,160px"></x-import>
+            </div>
+            <div style="font-family:var(--font-pixel);font-size:12px;line-height:1.4;color:var(--sd-ink)">{{ f.label }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </sc-for>
+
+  <div style="display:flex;gap:24px;align-items:flex-start;padding:16px;border:1px solid var(--sd-ink);background:var(--sd-parchment)">
+    <div style="width:248px;flex:none;display:flex;flex-direction:column;gap:6px">
+      <div style="font-family:var(--font-display);font-size:24px;line-height:1.3;color:var(--sd-ink)">Telegrafias e zonas</div>
+      <div style="font-family:var(--font-pixel);font-size:12px;line-height:1.5;color:var(--sd-ink)">{{ teleDesc }}</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="outline:1px solid var(--sd-ink);background:var(--sd-parchment)">
+        <x-import component-from-global-scope="ScribeOfTheDamnedDesignSystem_4b5ef4.PixelArt" rows="{{ tele }}" palette="{{ pal }}" scale="{{ s6 }}" hint-size="960px,540px"></x-import>
+      </div>
+      <div style="font-family:var(--font-pixel);font-size:12px;color:var(--sd-ink-soft)">{{ teleLabel }}</div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:24px;align-items:stretch">
+    <div style="flex:1;display:flex;flex-direction:column;gap:8px;padding:16px;border:1px solid var(--sd-ink)">
+      <div style="font-family:var(--font-display);font-size:24px;color:var(--sd-ink)">Fases</div>
+      <div style="font-family:var(--font-pixel);font-size:14px;line-height:1.7;color:var(--sd-ink)">
+        <sc-for list="{{ phases }}" as="p" hint-placeholder-count="3">
+          <div>{{ p }}</div>
+        </sc-for>
+      </div>
+      <div style="font-family:var(--font-display);font-size:24px;color:var(--sd-ink);margin-top:8px">Erros evitados</div>
+      <div style="font-family:var(--font-pixel);font-size:14px;line-height:1.7;color:var(--sd-ink)">
+        <sc-for list="{{ avoided }}" as="p" hint-placeholder-count="3">
+          <div>{{ p }}</div>
+        </sc-for>
+      </div>
+    </div>
+    <div style="width:440px;flex:none;display:flex;flex-direction:column;gap:8px;padding:16px;border:1px solid var(--sd-ink)">
+      <div style="font-family:var(--font-display);font-size:24px;color:var(--sd-ink)">Checagem final</div>
+      <div style="display:flex;flex-direction:column;gap:6px;font-family:var(--font-pixel);font-size:14px;line-height:1.5;color:var(--sd-ink)">
+        <sc-for list="{{ checks }}" as="c" hint-placeholder-count="6">
+          <div style="display:flex;gap:8px"><span style="color:var(--sd-gold)">†</span><span>{{ c }}</span></div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1680}}">
+class Component extends DCLogic {
+  componentDidMount() {
+    if (!window.ScribeAbbot) {
+      this._t = setInterval(() => {
+        if (window.ScribeAbbot) { clearInterval(this._t); this.forceUpdate(); }
+      }, 60);
+    }
+  }
+  componentWillUnmount() { if (this._t) clearInterval(this._t); }
+
+  meta() {
+    return {
+      tag: "ENTREGAVEL 18 — CHEFE",
+      title: "O Abade Caído",
+      fileBase: "BSS_ABADE_CAIDO",
+      anatomy: "CABECA 16×18 EM X44–59 Y10–27, CARECA COM 4 RACHADURAS · ORBITAS 4×5 COM 1PX BLOOD NO FUNDO · HALO INVERTIDO 24×6 EM Y2–8 COM FALHA DE 6PX · HABITO DE Y28 A Y88, 30PX NOS OMBROS E 44PX NA BARRA, RASGADO EM 7 TIRAS · ESCAPULARIO COM CRUZ INVERTIDA BLOOD_DARK · BACULO DE (29,20) A (29,94) COM GANCHO TORTO 10×10 · LIVRO NEGRO 24×20 FLUTUANDO EM X62–85",
+      silNote: "OS PES NUNCA TOCAM O CHAO: AS TIRAS ARRASTAM E AS PONTAS SOBEM, COMO DEBAIXO D'AGUA. AS COSTAS FORMAM UM ARCO E A CABECA ESTA A 1/5 DA ALTURA.",
+      colorMap: [
+        { color: "var(--sd-ink-soft)", label: "HABITO, TIRAS, BARBA, ONDA DE CHOQUE" },
+        { color: "var(--sd-ink)", label: "HACHURA CRUZADA, ORBITAS, BACULO, LIVRO" },
+        { color: "var(--sd-parchment-old)", label: "PELE, ESCAPULARIO, GANCHO, DEDOS" },
+        { color: "var(--sd-blood)", label: "HALO INVERTIDO, BRILHO DAS ORBITAS, LETRAS" },
+        { color: "var(--sd-blood-dark)", label: "CRUZ INVERTIDA DO PEITO, CANTOS DO LIVRO" },
+        { color: "var(--sd-chalk)", label: "OLHOS NA REDENCAO, CINZAS, PENA FINAL" },
+        { color: "var(--sd-gold)", label: "SO NO HALO DA FASE 4 E NA MORTE" }
+      ],
+      rules: "ELE NAO E UM MONSTRO: E UM HOMEM SANTO CORROMPIDO, DE ROSTO HUMANO E TRISTE. GOLD SO APARECE QUANDO A REDENCAO COMECA.",
+      phases: [
+        "FASE 1 (100–75%): PROFANE_WORD (XUL) + STAFF_SLAM",
+        "FASE 2 (75–50%): + SINGI; O LIVRO ORBITA E DISPARA PRJ_PROFANE_LETTER A CADA 1.5S",
+        "FASE 3 (50–25%): + MIRROR_CAST; XURC EM CRUZ GIRATORIA",
+        "FASE 4 (<25%): HALO GOLD, ATAQUES 30% MAIS RAPIDOS, KNEEL A CADA 12S",
+        "XURC SO E BLOQUEADO POR CRUX · PALAVRAS COPIADAS FICAM 4S BLOQUEADAS NO GRIMORIO"
+      ],
+      avoided: [
+        "ROSTO HUMANO E TRISTE, NUNCA GROTESCO",
+        "AS TIRAS DO HABITO SOBEM — E A ASSINATURA VISUAL DELE",
+        "O HALO INVERTIDO TEM QUE SER LEGIVEL: ESPINHOS PARA BAIXO ATE A FASE 4"
+      ],
+      checks: [
+        "14+8+6+3+6+5+4+6+6+2+10+16 = 86 FRAMES DO ABADE, NA CONTAGEM EXATA",
+        "LIVRO NEGRO 24×20: 4+3+2+3+8 = 20 FRAMES, SPRITE SEPARADO",
+        "SO CORES DA PALETA TRAVADA",
+        "96×96 EXATO, PIVOT BASE-CENTRO (48,95), SOMBRA 40×6 FRACA",
+        "LEGIVEL EM 1× SOBRE PARCHMENT",
+        "TELEGRAFIAS E ZONAS EM ESCALA DE ARENA NUM QUADRO A PARTE",
+        "SILHUETA PROPRIA, SEM SEMELHANCA DE REFERENCIA"
+      ]
+    };
+  }
+
+  renderVals() {
+    const B = window.ScribeAbbot;
+    const M = this.meta();
+    const base = Object.assign({
+      pal: {}, s8: 8, s6: 6, s5: 5, s4: 4, s3: 3, s2: 2, s1: 1,
+      anims: [], bookAnims: [], readable: [], sils: [], total: 0, animCount: 0
+    }, M);
+    if (!B) return base;
+    const d = B.build();
+    const idle = d.anims.find(a => a.name === "idle") || d.anims[1];
+    const pick = [idle.frames[0].rows, idle.frames[3].rows, d.anims[8].frames[3].rows];
+    return Object.assign(base, {
+      pal: B.PAL,
+      dims: d.w + "×" + d.h + " PX",
+      pivot: d.pivot,
+      floatNote: "OS PES NUNCA TOCAM O CHAO",
+      total: d.frames + 20,
+      animCount: d.anims.length + 5,
+      base: idle.frames[0].rows,
+      gw: d.w * 5,
+      gh: d.h * 5,
+      pivotL: (d.w / 2 - 3) * 5,
+      pivotT: (d.h - 1) * 5,
+      pivotX: (d.w / 2) * 5,
+      pivotY: (d.h - 7) * 5,
+      readable: pick.map(r => ({ rows: r })),
+      sils: pick.map(r => ({ rows: B.sil(r) })),
+      tele: d.tele.rows,
+      teleLabel: d.tele.label,
+      teleDesc: d.tele.desc,
+      bookAnims: d.book.map(a => {
+        const w = a.frames[0].rows[0].length, h = a.frames[0].rows.length;
+        return {
+          name: a.name,
+          file: a.file.toUpperCase().replace(/_/g, "_\u200B"),
+          meta: a.count + "F · " + a.ms + "MS · " + w + "×" + h + " · LOOP " + a.loop.toUpperCase(),
+          desc: a.desc.toUpperCase(),
+          dur: a.dur,
+          steps: "steps(" + a.count + ")",
+          stripW: a.count * w * 4,
+          previewW: w * 4,
+          previewH: h * 4,
+          frames: a.frames.map(f => ({
+            rows: f.rows,
+            label: ("livro_negro · " + a.name + " · F" + f.n + " · " + a.ms + "ms").toUpperCase().replace(/_/g, "_\u200B")
+          }))
+        };
+      }),
+      anims: d.anims.map(a => {
+        const w = a.frames[0].rows[0].length, h = a.frames[0].rows.length;
+        return {
+          name: a.name,
+          file: a.file.toUpperCase().replace(/_/g, "_\u200B"),
+          meta: a.count + "F · " + a.ms + "MS · " + w + "×" + h + " · LOOP " + a.loop.toUpperCase(),
+          desc: a.desc.toUpperCase(),
+          dur: a.dur,
+          steps: "steps(" + a.count + ")",
+          stripW: a.count * w * 3,
+          previewW: w * 3,
+          previewH: h * 3,
+          cellW: w * 6,
+          cellH: h * 6,
+          frames: a.frames.map(f => ({
+            rows: f.rows,
+            label: (a.name + " · F" + f.n + " · " + a.ms + "ms").toUpperCase().replace(/_/g, "_\u200B"),
+            ev: f.ev ? f.ev.toUpperCase().replace(/_/g, "_\u200B") : ""
+          }))
+        };
+      })
+    });
+  }
+}
+
+</script>
+</body>
+</html>

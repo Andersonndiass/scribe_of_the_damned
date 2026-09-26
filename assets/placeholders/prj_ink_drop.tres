@@ -1,0 +1,13 @@
+[gd_resource type="ImageTexture" format=3]
+
+[sub_resource type="Image" id="Image_ymeuv"]
+data = {
+"data": PackedByteArray(0, 0, 0, 0, 27, 23, 19, 255, 27, 23, 19, 255, 0, 0, 0, 0, 27, 23, 19, 255, 74, 64, 56, 255, 246, 241, 230, 255, 27, 23, 19, 255, 27, 23, 19, 255, 74, 64, 56, 255, 74, 64, 56, 255, 27, 23, 19, 255, 0, 0, 0, 0, 27, 23, 19, 255, 27, 23, 19, 255, 0, 0, 0, 0),
+"format": "RGBA8",
+"height": 4,
+"mipmaps": false,
+"width": 4
+}
+
+[resource]
+image = SubResource("Image_ymeuv")

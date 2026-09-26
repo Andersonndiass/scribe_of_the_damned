@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/colors.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/typography.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/motion.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/layers.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/patterns.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/styles.css">
+<script src="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/_ds_bundle.js"></script>
+<script src="scribe-enemies.js"></script>
+<style>
+body{margin:0;background:var(--sd-ink);image-rendering:pixelated}
+@keyframes sprite-strip{from{transform:translateX(0)}to{transform:translateX(-100%)}}
+a{color:var(--sd-blood)}
+a:hover{color:var(--sd-blood-dark)}
+</style>
+</helmet>
+
+<div style="width:1440px;padding:32px;box-sizing:border-box;display:flex;flex-direction:column;gap:24px;background-color:var(--sd-parchment);background-image:radial-gradient(var(--sd-parchment-old) 0 0.5px,transparent 0.6px);background-size:7px 7px">
+
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;border-bottom:1px solid var(--sd-ink);padding-bottom:12px">
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <div style="font-family:var(--font-pixel);font-size:14px;letter-spacing:.1em;color:var(--sd-blood)">ENTREGAVEL 12 — INIMIGO</div>
+      <div style="font-family:var(--font-display);font-size:48px;line-height:1.2;color:var(--sd-ink);margin-top:6px">Traça-Mãe pequena</div>
+    </div>
+    <div style="font-family:var(--font-pixel);font-size:14px;line-height:1.6;color:var(--sd-ink);text-align:right">
+      <div>ENM_TRACA_MAE · 20×16 PX</div>
+      <div>PIVOT (10,15) · SOMBRA 12×2, +3Y</div>
+      <div>10 FRAMES · 2 ANIMACOES</div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:24px;align-items:stretch">
+    <div style="display:flex;flex-direction:column;gap:8px;padding:12px;border:1px solid var(--sd-ink)">
+      <div style="font-family:var(--font-pixel);font-size:14px;color:var(--sd-ink-soft)">GRADE + PIVOT · 8×</div>
+      <div style="position:relative;width:160px;height:128px;background-color:var(--sd-parchment);background-image:repeating-linear-gradient(to right,var(--sd-parchment-old) 0 1px,transparent 1px 8px),repeating-linear-gradient(to bottom,var(--sd-parchment-old) 0 1px,transparent 1px 8px);outline:1px solid var(--sd-ink)">
+        <x-import component-from-global-scope="ScribeOfTheDamnedDesignSystem_4b5ef4.PixelArt" rows="{{ base }}" palette="{{ pal }}" scale="{{ s8 }}" hint-size="160px,128px"></x-import>
+        <i style="position:absolute;left:64px;top:124px;width:32px;height:2px;background:var(--sd-gold)"></i>
+        <i style="position:absolute;left:80px;top:104px;width:2px;height:24px;background:var(--sd-gold)"></i>
+      </div>
+      <div style="font-family:var(--font-pixel);font-size:14px;color:var(--sd-ink)">BOLSA DE OVOS 6×8 · O DESTAQUE</div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:8px;padding:12px;border:1px solid var(--sd-ink)">
+      <div style="font-family:var(--font-pixel);font-size:14px;color:var(--sd-ink-soft)">1× E 3× SOBRE PARCHMENT</div>
+      <div style="display:flex;gap:16px;align-items:flex-end;padding:12px;background:var(--sd-parchment);outline:1px solid var(--sd-ink-soft)">
+        <sc-for list="{{ readable }}" as="r" hint-placeholder-count="3">
+          <x-import component-from-global-scope="ScribeOfTheDamnedDesignSystem_4b5ef4.PixelArt" rows="{{ r.rows }}" palette="{{ pal }}" scale="{{ s1 }}" hint-size="20px,16px"></x-import>
+        </sc-for>
+      </div>
+      <div style="display:flex;gap:16px;align-items:flex-end;padding:12px;background:var(--sd-parchment-old);outline:1px solid var(--sd-ink-soft)">
+        <sc-for list="{{ readable }}" as="r" hint-placeholder-count="3">
+          <x-import component-from-global-scope="ScribeOfTheDamnedDesignSystem_4b5ef4.PixelArt" rows="{{ r.rows }}" palette="{{ pal }}" scale="{{ s3 }}" hint-size="60px,48px"></x-import>
+        </sc-for>
+      </div>
+      <div style="font-family:var(--font-pixel);font-size:14px;color:var(--sd-ink)">A TRACA QUE CARREGA OUTRAS: O ABDOMEN</div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:8px;padding:12px;border:1px solid var(--sd-ink)">
+      <div style="font-family:var(--font-pixel);font-size:14px;color:var(--sd-ink-soft)">SILHUETA · INK SOLIDO</div>
+      <div style="display:flex;gap:12px;align-items:flex-end;padding:8px;background:var(--sd-parchment);outline:1px solid var(--sd-ink-soft)">
+        <sc-for list="{{ sils }}" as="r" hint-placeholder-count="3">
+          <x-import component-from-global-scope="ScribeOfTheDamnedDesignSystem_4b5ef4.PixelArt" rows="{{ r.rows }}" palette="{{ pal }}" scale="{{ s4 }}" hint-size="80px,64px"></x-import>
+        </sc-for>
+      </div>
+      <div style="font-family:var(--font-pixel);font-size:14px;color:var(--sd-ink);max-width:200px">ASAS COM 2 FUROS + ABDOMEN INCHADO</div>
+    </div>
+
+    <div style="flex:1;display:flex;flex-direction:column;gap:6px;padding:12px;border:1px solid var(--sd-ink)">
+      <div style="font-family:var(--font-pixel);font-size:14px;color:var(--sd-ink-soft)">MAPA DE COR POR REGIAO</div>
+      <div style="display:flex;flex-direction:column;gap:4px;font-family:var(--font-pixel);font-size:14px;color:var(--sd-ink)">
+        <div style="display:flex;gap:8px;align-items:center"><i style="width:14px;height:14px;background:var(--sd-ink)"></i>ANEIS DO ABDOMEN, CABECA, FRANJA, FUROS</div>
+        <div style="display:flex;gap:8px;align-items:center"><i style="width:14px;height:14px;background:var(--sd-chalk);outline:1px solid var(--sd-ink)"></i>4 OLHOS + OVOS BRILHANDO NO DEATH F1</div>
+        <div style="display:flex;gap:8px;align-items:center"><i style="width:14px;height:14px;background:var(--sd-ink-soft);outline:1px solid var(--sd-ink)"></i>BOLSA DE OVOS, TORAX, FRAGMENTOS</div>
+        <div style="display:flex;gap:8px;align-items:center"><i style="width:14px;height:14px;background:var(--sd-parchment);outline:1px solid var(--sd-ink)"></i>ASAS, 6 OVOS DE 1PX</div>
+        <div style="display:flex;gap:8px;align-items:center"><i style="width:14px;height:14px;background:var(--sd-blood)"></i>SO TELEGRAFIA E CONTORNO DE CAMPEAO</div>
+      </div>
+    </div>
+  </div>
+
+  <sc-for list="{{ anims }}" as="a" hint-placeholder-count="2">
+    <div style="display:flex;gap:24px;align-items:flex-start;padding:16px;border:1px solid var(--sd-ink);background:var(--sd-parchment)">
+      <div style="width:232px;flex:none;display:flex;flex-direction:column;gap:6px">
+        <div style="font-family:var(--font-display);font-size:32px;line-height:1;color:var(--sd-ink)">{{ a.name }}</div>
+        <div style="font-family:var(--font-pixel);font-size:14px;line-height:1.5;color:var(--sd-ink)">{{ a.meta }}</div>
+        <div style="font-family:var(--font-pixel);font-size:14px;line-height:1.5;color:var(--sd-ink-soft)">{{ a.file }}</div>
+        <div style="width:80px;height:64px;overflow:hidden;background:var(--sd-parchment);outline:1px solid var(--sd-ink-soft);margin-top:4px">
+          <div style="display:flex;height:64px;width:{{ a.stripW }}px;animation-name:sprite-strip;animation-timing-function:{{ a.steps }};animation-iteration-count:infinite;animation-duration:{{ a.dur }}ms">
+            <sc-for list="{{ a.frames }}" as="f" hint-placeholder-count="4">
+              <x-import component-from-global-scope="ScribeOfTheDamnedDesignSystem_4b5ef4.PixelArt" rows="{{ f.rows }}" palette="{{ pal }}" scale="{{ s4 }}" hint-size="80px,64px"></x-import>
+            </sc-for>
+          </div>
+        </div>
+        <div style="font-family:var(--font-pixel);font-size:14px;color:var(--sd-ink-soft)">PREVIEW 4× · LOOP</div>
+        <div style="font-family:var(--font-pixel);font-size:12px;line-height:1.5;color:var(--sd-ink);margin-top:4px">{{ a.desc }}</div>
+      </div>
+      <div style="display:flex;gap:12px;flex:1;flex-wrap:wrap">
+        <sc-for list="{{ a.frames }}" as="f" hint-placeholder-count="4">
+          <div style="width:160px;flex:none;display:flex;flex-direction:column;gap:8px">
+            <div style="width:160px;height:128px;background-color:var(--sd-parchment);background-image:repeating-linear-gradient(to right,var(--sd-parchment-old) 0 1px,transparent 1px 8px),repeating-linear-gradient(to bottom,var(--sd-parchment-old) 0 1px,transparent 1px 8px);outline:1px solid var(--sd-ink)">
+              <x-import component-from-global-scope="ScribeOfTheDamnedDesignSystem_4b5ef4.PixelArt" rows="{{ f.rows }}" palette="{{ pal }}" scale="{{ s8 }}" hint-size="160px,128px"></x-import>
+            </div>
+            <div style="font-family:var(--font-pixel);font-size:12px;line-height:1.4;color:var(--sd-ink)">{{ f.label }}</div>
+            <sc-if value="{{ f.ev }}" hint-placeholder-val="{{ true }}">
+              <div style="border-top:2px solid var(--sd-gold);padding-top:6px;font-family:var(--font-pixel);font-size:12px;line-height:1.4;color:var(--sd-ink)">{{ f.ev }}</div>
+            </sc-if>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </sc-for>
+
+  <div style="display:flex;gap:24px;align-items:flex-start;padding:16px;border:1px solid var(--sd-ink);background:var(--sd-parchment)">
+    <div style="width:232px;flex:none;font-family:var(--font-display);font-size:32px;line-height:1;color:var(--sd-ink)">Quadros à parte</div>
+    <div style="display:flex;gap:16px;flex:1;flex-wrap:wrap">
+      <sc-for list="{{ extras }}" as="e" hint-placeholder-count="3">
+        <div style="width:240px;flex:none;display:flex;flex-direction:column;gap:8px">
+          <div style="width:240px;height:192px;background-color:var(--sd-parchment);background-image:repeating-linear-gradient(to right,var(--sd-parchment-old) 0 1px,transparent 1px 12px),repeating-linear-gradient(to bottom,var(--sd-parchment-old) 0 1px,transparent 1px 12px);outline:1px solid var(--sd-ink)">
+            <x-import component-from-global-scope="ScribeOfTheDamnedDesignSystem_4b5ef4.PixelArt" rows="{{ e.rows }}" palette="{{ pal }}" scale="{{ s12 }}" hint-size="240px,192px"></x-import>
+          </div>
+          <div style="font-family:var(--font-pixel);font-size:12px;line-height:1.4;color:var(--sd-ink)">{{ e.label }}</div>
+        </div>
+      </sc-for>
+      <div style="width:300px;flex:none;font-family:var(--font-pixel);font-size:12px;line-height:1.7;color:var(--sd-ink)">
+        <div>CAMPEAO: 1.5× (30×24 REDESENHADO), CONTORNO 1PX BLOOD</div>
+        <div>AURA: 4 PARTICULAS BLOOD, 1 VOLTA/S</div>
+        <div>SPAWN DE CAMPEAO: TELEGRAFIA 0.8S, ANEL MAIOR</div>
+        <div>MORTE DE CAMPEAO: HIT-STOP 40MS, SHAKE MEDIO, 3-5 GOTAS GOLD MAGNETIZADAS</div>
+        <div>DISSOLUCAO §6.1: 6F @60MS, DECAL 8×4 DESBOTA EM 2S</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:24px;align-items:stretch">
+    <div style="flex:1;display:flex;flex-direction:column;gap:8px;padding:16px;border:1px solid var(--sd-ink)">
+      <div style="font-family:var(--font-display);font-size:24px;color:var(--sd-ink)">Erros evitados</div>
+      <div style="font-family:var(--font-pixel);font-size:14px;line-height:1.7;color:var(--sd-ink)">
+        <div>O ABDOMEN COM OVOS E O PONTO DE LEITURA, NAO AS ASAS</div>
+        <div>ANTENAS 1PX MAIS LONGAS QUE AS DA TRACA GIGANTE</div>
+        <div>NENHUM PIXEL BLOOD NO CORPO — SO NA TELEGRAFIA E NO CAMPEAO</div>
+      </div>
+    </div>
+    <div style="width:420px;flex:none;display:flex;flex-direction:column;gap:8px;padding:16px;border:1px solid var(--sd-ink)">
+      <div style="font-family:var(--font-display);font-size:24px;color:var(--sd-ink)">Checagem final</div>
+      <div style="display:flex;flex-direction:column;gap:6px;font-family:var(--font-pixel);font-size:14px;line-height:1.5;color:var(--sd-ink)">
+        <div style="display:flex;gap:8px"><span style="color:var(--sd-gold)">†</span><span>{{ total }} FRAMES NA CONTAGEM EXATA (4+6)</span></div>
+        <div style="display:flex;gap:8px"><span style="color:var(--sd-gold)">†</span><span>SO CORES DA PALETA TRAVADA</span></div>
+        <div style="display:flex;gap:8px"><span style="color:var(--sd-gold)">†</span><span>20×16, PIVOT (10,15) MARCADO</span></div>
+        <div style="display:flex;gap:8px"><span style="color:var(--sd-gold)">†</span><span>LEGIVEL EM 1× SOBRE PARCHMENT</span></div>
+        <div style="display:flex;gap:8px"><span style="color:var(--sd-gold)">†</span><span>FICHA APLICADA: 4 ANEIS, 6 OVOS, 2 FUROS POR ASA</span></div>
+        <div style="display:flex;gap:8px"><span style="color:var(--sd-gold)">†</span><span>SILHUETA PROPRIA, SEM SEMELHANCA DE REFERENCIA</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440}}">
+class Component extends DCLogic {
+  componentDidMount() {
+    if (!window.ScribeEnemies) {
+      this._t = setInterval(() => {
+        if (window.ScribeEnemies) { clearInterval(this._t); this.forceUpdate(); }
+      }, 60);
+    }
+  }
+  componentWillUnmount() { if (this._t) clearInterval(this._t); }
+
+  who() { return "mothMother"; }
+  zoom() { return 4; }
+  cell() { return 8; }
+
+  renderVals() {
+    const E = window.ScribeEnemies;
+    const base = { pal: {}, s12: 12, s8: 8, s4: 4, s3: 3, s1: 1, anims: [], extras: [], readable: [], sils: [] };
+    if (!E) return base;
+    const d = E.build(this.who());
+    const z = this.zoom();
+    const anims = d.anims.map(a => ({
+      name: a.name,
+      file: a.file.toUpperCase().replace(/_/g, "_\u200B"),
+      meta: a.count + "F · " + a.ms + "MS · LOOP " + a.loop.toUpperCase(),
+      desc: a.desc.toUpperCase(),
+      dur: a.dur,
+      steps: "steps(" + a.count + ")",
+      stripW: a.count * d.w * z,
+      frames: a.frames.map(f => ({
+        rows: f.rows,
+        label: (a.name + " · F" + f.n + " · " + a.ms + "ms").toUpperCase(),
+        ev: f.ev ? f.ev.toUpperCase().replace(/_/g, "_\u200B") : ""
+      }))
+    }));
+    const move = d.anims.find(a => a.name === "move" || a.name === "fly") || d.anims[1];
+    const pick = [0, 1, 3].filter(i => move.frames[i]).map(i => move.frames[i].rows);
+    return Object.assign(base, {
+      pal: E.PAL,
+      anims,
+      total: d.frames,
+      base: move.frames[0].rows,
+      readable: pick.map(r => ({ rows: r })),
+      sils: pick.map(r => ({ rows: E.sil(r) })),
+      extras: d.extras
+    });
+  }
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://src/data/enemy_data.gd" id="1_ed"]
+[ext_resource type="SpriteFrames" path="res://assets/placeholders/enm_diabrete_frames.tres" id="2_frames"]
+[ext_resource type="Resource" path="res://data/behaviors/chase.tres" id="3_behavior"]
+
+[resource]
+script = ExtResource("1_ed")
+id = &"imp"
+max_hp = 2
+move_speed = 45.0
+radius = 5.0
+contact_damage = 1
+separation_weight = 1.0
+behavior = ExtResource("3_behavior")
+telegraph_time = 0.5
+letter_drop_chance = 0.6
+sprite_frames = ExtResource("2_frames")
+sprite_pivot = Vector2(6, 11)
+dissolve_size = 12

@@ -1,0 +1,42 @@
+{
+  "$meta": {
+    "version": "0.1.0",
+    "status": "PROPOSTA — hex provisórios. Substituir pelos valores de _ds/scribe-of-the-damned-design-system-*/tokens/colors.css quando o design system for exportado.",
+    "source": "Nomes dos tokens extraídos das fichas do Claude Design (--sd-*). Hex escolhidos pelo Claude Code.",
+    "consumers": ["tools/gen_palette.gd -> src/core/palette.gd", "tema da UI (feature 007)"]
+  },
+  "color": {
+    "ink":           { "hex": "#1C1714", "css": "--sd-ink" },
+    "ink_soft":      { "hex": "#4A4039", "css": "--sd-ink-soft" },
+    "parchment":     { "hex": "#E9DCBF", "css": "--sd-parchment" },
+    "parchment_old": { "hex": "#C8B28A", "css": "--sd-parchment-old" },
+    "chalk":         { "hex": "#F7F2E6", "css": "--sd-chalk" },
+    "blood":         { "hex": "#8E1C1C", "css": "--sd-blood" },
+    "blood_dark":    { "hex": "#5B1012", "css": "--sd-blood-dark" },
+    "gold":          { "hex": "#C99A2E", "css": "--sd-gold" },
+    "gold_light":    { "hex": "#E9C866", "css": "--sd-gold-light" }
+  },
+  "duration_ms": {
+    "xs": 50,
+    "s": 100,
+    "m": 200,
+    "l": 400,
+    "xl": 700,
+    "xxl": 2500
+  },
+  "hitstop_ms": {
+    "cast": 60,
+    "champion_death": 40
+  },
+  "screen": {
+    "width": 640,
+    "height": 360,
+    "arena_margin": 24,
+    "hud_safe_rect": { "x": 160, "y": 60, "w": 320, "h": 240 }
+  },
+  "font": {
+    "pixel_small_px": 7,
+    "pixel_large_px": 14,
+    "display_blackletter_px": 24
+  }
+}

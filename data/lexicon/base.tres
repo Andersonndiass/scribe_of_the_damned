@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="LexiconData" load_steps=21 format=3]
+
+[ext_resource type="Script" path="res://src/data/lexicon_data.gd" id="1_ld"]
+[ext_resource type="Script" path="res://src/data/word_data.gd" id="2_wd"]
+[ext_resource type="Resource" path="res://data/words/lux.tres" id="w_lux"]
+[ext_resource type="Resource" path="res://data/words/pax.tres" id="w_pax"]
+[ext_resource type="Resource" path="res://data/words/crux.tres" id="w_crux"]
+[ext_resource type="Resource" path="res://data/words/vita.tres" id="w_vita"]
+[ext_resource type="Resource" path="res://data/words/aqua.tres" id="w_aqua"]
+[ext_resource type="Resource" path="res://data/words/ignis.tres" id="w_ignis"]
+[ext_resource type="Resource" path="res://data/words/mortis.tres" id="w_mortis"]
+[ext_resource type="Resource" path="res://data/words/fides.tres" id="w_fides"]
+[ext_resource type="Resource" path="res://data/words/lumen.tres" id="w_lumen"]
+[ext_resource type="Resource" path="res://data/words/purgo.tres" id="w_purgo"]
+[ext_resource type="Resource" path="res://data/words/gloria.tres" id="w_gloria"]
+[ext_resource type="Resource" path="res://data/words/verbum.tres" id="w_verbum"]
+[ext_resource type="Resource" path="res://data/words/sanctus.tres" id="w_sanctus"]
+[ext_resource type="Resource" path="res://data/words/dominus.tres" id="w_dominus"]
+[ext_resource type="Resource" path="res://data/words/angelus.tres" id="w_angelus"]
+[ext_resource type="Resource" path="res://data/words/spiritus.tres" id="w_spiritus"]
+[ext_resource type="Resource" path="res://data/words/salvator.tres" id="w_salvator"]
+[ext_resource type="Resource" path="res://data/words/miserere.tres" id="w_miserere"]
+
+[resource]
+script = ExtResource("1_ld")
+alphabet = PackedStringArray("A", "C", "D", "E", "F", "G", "I", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "X", "B")
+gated_letters = Dictionary[String, StringName]({"B": &"verbum"})
+words = Array[ExtResource("2_wd")]([ExtResource("w_lux"), ExtResource("w_pax"), ExtResource("w_crux"), ExtResource("w_vita"), ExtResource("w_aqua"), ExtResource("w_ignis"), ExtResource("w_mortis"), ExtResource("w_fides"), ExtResource("w_lumen"), ExtResource("w_purgo"), ExtResource("w_gloria"), ExtResource("w_verbum"), ExtResource("w_sanctus"), ExtResource("w_dominus"), ExtResource("w_angelus"), ExtResource("w_spiritus"), ExtResource("w_salvator"), ExtResource("w_miserere")])
+min_length = 3
+max_length = 8

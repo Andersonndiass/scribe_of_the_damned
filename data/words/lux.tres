@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="WordData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://src/data/word_data.gd" id="1_wd"]
+[ext_resource type="PackedScene" path="res://src/miracles/lux/lux.tscn" id="2_scene"]
+
+[resource]
+script = ExtResource("1_wd")
+id = &"lux"
+latin = "LUX"
+translation_key = &"word_lux"
+power_budget = 1.0
+miracle_scene = ExtResource("2_scene")
+damage = 8.0
+radius = 10.0
+length = 320.0
+duration = 0.3
+vfx_prefix = &"VFX_LUX"

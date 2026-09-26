@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/colors.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/typography.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/motion.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/layers.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/patterns.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/styles.css">
+<script src="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/_ds_bundle.js"></script>
+<script src="scribe-shots.js"></script>
+<style>
+body{margin:0;background:var(--sd-ink);image-rendering:pixelated}
+@keyframes sprite-strip{from{transform:translateX(0)}to{transform:translateX(-100%)}}
+a{color:var(--sd-blood)}
+a:hover{color:var(--sd-blood-dark)}
+</style>
+</helmet>
+
+<div style="width:1440px;padding:32px;box-sizing:border-box;display:flex;flex-direction:column;gap:24px;background-color:var(--sd-parchment);background-image:radial-gradient(var(--sd-parchment-old) 0 0.5px,transparent 0.6px);background-size:7px 7px">
+
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;border-bottom:1px solid var(--sd-ink);padding-bottom:12px">
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <div style="font-family:var(--font-pixel);font-size:14px;letter-spacing:.1em;color:var(--sd-blood)">ENTREGAVEL 22 — PROJETEIS</div>
+      <div style="font-family:var(--font-display);font-size:48px;line-height:1.2;color:var(--sd-ink);margin-top:6px">Projéteis e palavras profanas</div>
+    </div>
+    <div style="font-family:var(--font-pixel);font-size:14px;line-height:1.6;color:var(--sd-ink);text-align:right">
+      <div>PROJETIL DO JOGADOR NUNCA USA BLOOD</div>
+      <div>PROJETIL DE INIMIGO SEMPRE USA BLOOD</div>
+      <div>NENHUM PASSA DE 10×10, EXCETO RAIOS E PAREDES</div>
+    </div>
+  </div>
+
+  <sc-for list="{{ groups }}" as="a" hint-placeholder-count="15">
+    <div style="display:flex;gap:24px;align-items:flex-start;padding:16px;border:1px solid var(--sd-ink);background:var(--sd-parchment)">
+      <div style="width:232px;flex:none;display:flex;flex-direction:column;gap:6px">
+        <div style="font-family:var(--font-display);font-size:24px;line-height:1.3;color:var(--sd-ink)">{{ a.title }}</div>
+        <div style="font-family:var(--font-pixel);font-size:14px;line-height:1.5;color:var(--sd-ink)">{{ a.meta }}</div>
+        <div style="font-family:var(--font-pixel);font-size:14px;line-height:1.5;color:var(--sd-ink-soft)">{{ a.file }}</div>
+        <div style="width:{{ a.previewW }}px;height:{{ a.previewH }}px;overflow:hidden;background:var(--sd-parchment);outline:1px solid var(--sd-ink-soft);margin-top:4px">
+          <div style="display:flex;height:{{ a.previewH }}px;width:{{ a.stripW }}px;animation-name:sprite-strip;animation-timing-function:{{ a.steps }};animation-iteration-count:infinite;animation-duration:{{ a.dur }}ms">
+            <sc-for list="{{ a.frames }}" as="f" hint-placeholder-count="4">
+              <x-import component-from-global-scope="ScribeOfTheDamnedDesignSystem_4b5ef4.PixelArt" rows="{{ f.rows }}" palette="{{ pal }}" scale="{{ a.zoom }}" hint-size="48px,48px"></x-import>
+            </sc-for>
+          </div>
+        </div>
+        <div style="font-family:var(--font-pixel);font-size:14px;color:var(--sd-ink-soft)">PREVIEW {{ a.zoomLabel }} · LOOP</div>
+        <div style="display:flex;gap:12px;align-items:flex-end;padding:8px;margin-top:4px;background:var(--sd-parchment);outline:1px solid var(--sd-ink-soft)">
+          <x-import component-from-global-scope="ScribeOfTheDamnedDesignSystem_4b5ef4.PixelArt" rows="{{ a.one }}" palette="{{ pal }}" scale="{{ s1 }}" hint-size="24px,24px"></x-import>
+          <x-import component-from-global-scope="ScribeOfTheDamnedDesignSystem_4b5ef4.PixelArt" rows="{{ a.sil }}" palette="{{ pal }}" scale="{{ s2 }}" hint-size="24px,24px"></x-import>
+        </div>
+        <div style="font-family:var(--font-pixel);font-size:12px;color:var(--sd-ink)">1× SOBRE PARCHMENT · SILHUETA 2×</div>
+        <div style="font-family:var(--font-pixel);font-size:12px;line-height:1.5;color:var(--sd-ink);margin-top:4px">{{ a.desc }}</div>
+      </div>
+      <div style="display:flex;gap:12px;flex:1;flex-wrap:wrap">
+        <sc-for list="{{ a.frames }}" as="f" hint-placeholder-count="4">
+          <div style="width:{{ a.cellW }}px;flex:none;display:flex;flex-direction:column;gap:8px">
+            <div style="width:{{ a.cellW }}px;height:{{ a.cellH }}px;display:flex;align-items:center;background-color:var(--sd-parchment);background-image:repeating-linear-gradient(to right,var(--sd-parchment-old) 0 1px,transparent 1px {{ a.grid }}px),repeating-linear-gradient(to bottom,var(--sd-parchment-old) 0 1px,transparent 1px {{ a.grid }}px);outline:1px solid var(--sd-ink)">
+              <x-import component-from-global-scope="ScribeOfTheDamnedDesignSystem_4b5ef4.PixelArt" rows="{{ f.rows }}" palette="{{ pal }}" scale="{{ a.cellZoom }}" hint-size="96px,96px"></x-import>
+            </div>
+            <div style="font-family:var(--font-pixel);font-size:12px;line-height:1.4;color:var(--sd-ink)">{{ f.label }}</div>
+            <sc-if value="{{ f.ev }}" hint-placeholder-val="{{ true }}">
+              <div style="border-top:2px solid var(--sd-gold);padding-top:6px;font-family:var(--font-pixel);font-size:12px;line-height:1.4;color:var(--sd-ink)">{{ f.ev }}</div>
+            </sc-if>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </sc-for>
+
+  <div style="display:flex;gap:24px;align-items:stretch">
+    <div style="flex:1;display:flex;flex-direction:column;gap:8px;padding:16px;border:1px solid var(--sd-ink)">
+      <div style="font-family:var(--font-display);font-size:24px;color:var(--sd-ink)">Erros evitados</div>
+      <div style="font-family:var(--font-pixel);font-size:14px;line-height:1.7;color:var(--sd-ink)">
+        <div>PRJ_INK_DROP E O UNICO DO JOGADOR: INK, INK_SOFT E CHALK, SEM NENHUM PIXEL BLOOD</div>
+        <div>TODOS OS PROJETEIS DE INIMIGO CARREGAM BLOOD; GOLD SO NO LASER DE MARTIRIO</div>
+        <div>SO RAIOS E PAREDES PASSAM DE 10×10: XUL 24×8, SINGI 32×16, XURC 16×24, SERMAO 64×6</div>
+      </div>
+    </div>
+    <div style="width:420px;flex:none;display:flex;flex-direction:column;gap:8px;padding:16px;border:1px solid var(--sd-ink)">
+      <div style="font-family:var(--font-display);font-size:24px;color:var(--sd-ink)">Checagem final</div>
+      <div style="display:flex;flex-direction:column;gap:6px;font-family:var(--font-pixel);font-size:14px;line-height:1.5;color:var(--sd-ink)">
+        <div style="display:flex;gap:8px"><span style="color:var(--sd-gold)">†</span><span>{{ total }} FRAMES EM {{ count }} GRUPOS, NA CONTAGEM DA FICHA</span></div>
+        <div style="display:flex;gap:8px"><span style="color:var(--sd-gold)">†</span><span>OS 5 PROJETEIS DA TABELA + IMPACTOS + 3 PALAVRAS + SERMAO</span></div>
+        <div style="display:flex;gap:8px"><span style="color:var(--sd-gold)">†</span><span>SO CORES DA PALETA TRAVADA</span></div>
+        <div style="display:flex;gap:8px"><span style="color:var(--sd-gold)">†</span><span>TAMANHOS EXATOS EM PIXELS, PIVOT NO CENTRO</span></div>
+        <div style="display:flex;gap:8px"><span style="color:var(--sd-gold)">†</span><span>LEGIVEL EM 1× SOBRE PARCHMENT</span></div>
+        <div style="display:flex;gap:8px"><span style="color:var(--sd-gold)">†</span><span>SILHUETA PROPRIA, SEM SEMELHANCA DE REFERENCIA</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440}}">
+class Component extends DCLogic {
+  componentDidMount() {
+    if (!window.ScribeShots) {
+      this._t = setInterval(() => {
+        if (window.ScribeShots) { clearInterval(this._t); this.forceUpdate(); }
+      }, 60);
+    }
+  }
+  componentWillUnmount() { if (this._t) clearInterval(this._t); }
+
+  mod() { return window.ScribeShots; }
+
+  renderVals() {
+    const M = this.mod();
+    const base = { pal: {}, s2: 2, s1: 1, groups: [], total: 0, count: 0 };
+    if (!M) return base;
+    const list = M.build();
+    return Object.assign(base, {
+      pal: M.PAL,
+      total: list.reduce((n, a) => n + a.count, 0),
+      count: list.length,
+      groups: list.map(a => {
+        // zoom escolhido pelo tamanho: nada passa de ~480px de célula
+        const cellZoom = a.w > 48 ? 6 : (a.w > 24 ? 8 : (a.w > 12 ? 10 : 16));
+        const zoom = a.w > 48 ? 3 : (a.w > 24 ? 4 : (a.w > 12 ? 5 : 8));
+        return {
+          title: a.title,
+          file: a.file.toUpperCase().replace(/_/g, "_\u200B"),
+          meta: a.count + "F · " + a.ms + "MS · " + a.w + "×" + a.h + " · LOOP " + a.loop.toUpperCase(),
+          desc: a.desc.toUpperCase(),
+          dur: a.dur,
+          steps: "steps(" + a.count + ")",
+          zoom,
+          zoomLabel: zoom + "×",
+          cellZoom,
+          grid: cellZoom,
+          stripW: a.count * a.w * zoom,
+          previewW: a.w * zoom,
+          previewH: a.h * zoom,
+          cellW: a.w * cellZoom,
+          cellH: a.h * cellZoom,
+          one: a.frames[0].rows,
+          sil: M.sil(a.frames[0].rows),
+          frames: a.frames.map(f => ({
+            rows: f.rows,
+            label: (a.id + " · F" + f.n + " · " + a.ms + "ms").toUpperCase().replace(/_/g, "_\u200B"),
+            ev: f.ev ? f.ev.toUpperCase().replace(/_/g, "_\u200B") : ""
+          }))
+        };
+      })
+    });
+  }
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/colors.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/typography.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/motion.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/layers.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/patterns.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/styles.css">
+<script src="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/_ds_bundle.js"></script>
+<script src="scribe-items.js"></script>
+<style>
+body{margin:0;background:var(--sd-ink);image-rendering:pixelated}
+@keyframes sprite-strip{from{transform:translateX(0)}to{transform:translateX(-100%)}}
+a{color:var(--sd-blood)}
+a:hover{color:var(--sd-blood-dark)}
+</style>
+</helmet>
+
+<div style="width:1440px;padding:32px;box-sizing:border-box;display:flex;flex-direction:column;gap:24px;background-color:var(--sd-parchment);background-image:radial-gradient(var(--sd-parchment-old) 0 0.5px,transparent 0.6px);background-size:7px 7px">
+
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;border-bottom:1px solid var(--sd-ink);padding-bottom:12px">
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <div style="font-family:var(--font-pixel);font-size:14px;letter-spacing:.1em;color:var(--sd-blood)">ENTREGAVEL 31 — ITENS</div>
+      <div style="font-family:var(--font-display);font-size:48px;line-height:1.2;color:var(--sd-ink);margin-top:6px">Ícones da loja</div>
+    </div>
+    <div style="font-family:var(--font-pixel);font-size:14px;line-height:1.6;color:var(--sd-ink);text-align:right">
+      <div>ITM_&lt;ITEM&gt; · 24×24 PX · PIVOT NO CENTRO</div>
+      <div>MOLDURA CIRCULAR INK_SOFT R=11 · AREA UTIL 20×20</div>
+      <div>LUZ DE CIMA PARA A DIREITA · 9 ITENS</div>
+    </div>
+  </div>
+
+  <sc-for list="{{ items }}" as="i" hint-placeholder-count="9">
+    <div style="display:flex;gap:24px;align-items:flex-start;padding:16px;border:1px solid var(--sd-ink);background:var(--sd-parchment)">
+      <div style="width:232px;flex:none;display:flex;flex-direction:column;gap:6px">
+        <div style="font-family:var(--font-display);font-size:32px;line-height:1.2;color:var(--sd-ink)">{{ i.name }}</div>
+        <div style="font-family:var(--font-pixel);font-size:14px;line-height:1.5;color:var(--sd-ink)">{{ i.meta }}</div>
+        <div style="font-family:var(--font-pixel);font-size:14px;line-height:1.5;color:var(--sd-ink-soft)">{{ i.file }}</div>
+        <div style="width:96px;height:96px;overflow:hidden;background:var(--sd-parchment);outline:1px solid var(--sd-ink-soft);margin-top:4px">
+          <div style="display:flex;height:96px;width:{{ i.stripW }}px;animation-name:sprite-strip;animation-timing-function:{{ i.steps }};animation-iteration-count:infinite;animation-duration:{{ i.dur }}ms">
+            <sc-for list="{{ i.frames }}" as="f" hint-placeholder-count="6">
+              <x-import component-from-global-scope="ScribeOfTheDamnedDesignSystem_4b5ef4.PixelArt" rows="{{ f.rows }}" palette="{{ pal }}" scale="{{ s4 }}" hint-size="96px,96px"></x-import>
+            </sc-for>
+          </div>
+        </div>
+        <div style="font-family:var(--font-pixel);font-size:14px;color:var(--sd-ink-soft)">PREVIEW 4× · LOOP</div>
+        <div style="font-family:var(--font-pixel);font-size:12px;line-height:1.5;color:var(--sd-ink);margin-top:4px">{{ i.desc }}</div>
+      </div>
+      <div style="display:flex;gap:12px;flex:1;flex-wrap:wrap">
+        <sc-for list="{{ i.frames }}" as="f" hint-placeholder-count="6">
+          <div style="width:192px;flex:none;display:flex;flex-direction:column;gap:8px">
+            <div style="width:192px;height:192px;background-color:var(--sd-parchment);background-image:repeating-linear-gradient(to right,var(--sd-parchment-old) 0 1px,transparent 1px 8px),repeating-linear-gradient(to bottom,var(--sd-parchment-old) 0 1px,transparent 1px 8px);outline:1px solid var(--sd-ink)">
+              <x-import component-from-global-scope="ScribeOfTheDamnedDesignSystem_4b5ef4.PixelArt" rows="{{ f.rows }}" palette="{{ pal }}" scale="{{ s8 }}" hint-size="192px,192px"></x-import>
+            </div>
+            <div style="font-family:var(--font-pixel);font-size:12px;line-height:1.4;color:var(--sd-ink)">{{ f.label }}</div>
+          </div>
+        </sc-for>
+        <div style="width:200px;flex:none;display:flex;flex-direction:column;gap:8px;padding-left:12px;border-left:1px solid var(--sd-ink-soft)">
+          <div style="display:flex;gap:12px;align-items:flex-end;padding:8px;background:var(--sd-parchment);outline:1px solid var(--sd-ink-soft)">
+            <x-import component-from-global-scope="ScribeOfTheDamnedDesignSystem_4b5ef4.PixelArt" rows="{{ i.one }}" palette="{{ pal }}" scale="{{ s1 }}" hint-size="24px,24px"></x-import>
+            <x-import component-from-global-scope="ScribeOfTheDamnedDesignSystem_4b5ef4.PixelArt" rows="{{ i.one }}" palette="{{ pal }}" scale="{{ s2 }}" hint-size="48px,48px"></x-import>
+            <x-import component-from-global-scope="ScribeOfTheDamnedDesignSystem_4b5ef4.PixelArt" rows="{{ i.sil }}" palette="{{ pal }}" scale="{{ s2 }}" hint-size="48px,48px"></x-import>
+          </div>
+          <div style="font-family:var(--font-pixel);font-size:12px;line-height:1.5;color:var(--sd-ink)">1× · 2× (COMO NA LOJA) · SILHUETA</div>
+          <div style="font-family:var(--font-pixel);font-size:12px;line-height:1.5;color:var(--sd-ink)">{{ i.cap }}</div>
+          <div style="font-family:var(--font-pixel);font-size:12px;line-height:1.5;color:var(--sd-blood)">DESTAQUE: {{ i.hi }}</div>
+        </div>
+      </div>
+    </div>
+  </sc-for>
+
+  <div style="display:flex;gap:24px;align-items:flex-start;padding:16px;border:1px solid var(--sd-ink);background:var(--sd-parchment)">
+    <div style="width:232px;flex:none;display:flex;flex-direction:column;gap:6px">
+      <div style="font-family:var(--font-display);font-size:32px;line-height:1.2;color:var(--sd-ink)">Template 24×24</div>
+      <div style="font-family:var(--font-pixel);font-size:12px;line-height:1.5;color:var(--sd-ink)">PRANCHA EM BRANCO COM A MOLDURA, AS GUIAS DA AREA UTIL 20×20, O CENTRO E A DIRECAO DA LUZ.</div>
+    </div>
+    <div style="display:flex;gap:24px;flex:1;align-items:flex-start">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="width:192px;height:192px;background-color:var(--sd-parchment);background-image:repeating-linear-gradient(to right,var(--sd-parchment-old) 0 1px,transparent 1px 8px),repeating-linear-gradient(to bottom,var(--sd-parchment-old) 0 1px,transparent 1px 8px);outline:1px solid var(--sd-ink)">
+          <x-import component-from-global-scope="ScribeOfTheDamnedDesignSystem_4b5ef4.PixelArt" rows="{{ tpl }}" palette="{{ pal }}" scale="{{ s8 }}" hint-size="192px,192px"></x-import>
+        </div>
+        <div style="font-family:var(--font-pixel);font-size:12px;color:var(--sd-ink-soft)">ITM_TEMPLATE_24.PNG</div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;gap:6px">
+        <div style="font-family:var(--font-pixel);font-size:14px;color:var(--sd-ink-soft)">CHECKLIST DO DESIGN-AGENT PARA ITENS NOVOS</div>
+        <div style="display:flex;flex-direction:column;gap:6px;font-family:var(--font-pixel);font-size:14px;line-height:1.5;color:var(--sd-ink)">
+          <div style="display:flex;gap:8px"><span style="color:var(--sd-gold)">†</span><span>24×24, OBJETO DENTRO DA AREA UTIL DE 20×20</span></div>
+          <div style="display:flex;gap:8px"><span style="color:var(--sd-gold)">†</span><span>SILHUETA LEGIVEL EM PRETO SOLIDO</span></div>
+          <div style="display:flex;gap:8px"><span style="color:var(--sd-gold)">†</span><span>NO MAXIMO 1 COR DE DESTAQUE</span></div>
+          <div style="display:flex;gap:8px"><span style="color:var(--sd-gold)">†</span><span>IDLE DE 4 OU 6 FRAMES, ENTRE 100 E 150MS</span></div>
+          <div style="display:flex;gap:8px"><span style="color:var(--sd-gold)">†</span><span>OBJETO MEDIEVAL FISICO QUE REMETA AO EFEITO</span></div>
+          <div style="display:flex;gap:8px"><span style="color:var(--sd-gold)">†</span><span>SOMBRA POR HACHURA A ESQUERDA E EMBAIXO</span></div>
+          <div style="display:flex;gap:8px"><span style="color:var(--sd-gold)">†</span><span>SEM FUNDO SOLIDO: SO A MOLDURA SUTIL</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:24px;align-items:stretch">
+    <div style="flex:1;display:flex;flex-direction:column;gap:8px;padding:16px;border:1px solid var(--sd-ink)">
+      <div style="font-family:var(--font-display);font-size:24px;color:var(--sd-ink)">Erros evitados</div>
+      <div style="font-family:var(--font-pixel);font-size:14px;line-height:1.7;color:var(--sd-ink)">
+        <div>CADA ICONE E MOSTRADO EM 1× E EM 2× — A LOJA EXIBE EM 2×</div>
+        <div>NENHUM FUNDO SOLIDO ATRAS DO OBJETO, SO A MOLDURA DE 1PX</div>
+        <div>UMA COR DE DESTAQUE POR ICONE, NUNCA GOLD E BLOOD JUNTOS</div>
+      </div>
+    </div>
+    <div style="width:420px;flex:none;display:flex;flex-direction:column;gap:8px;padding:16px;border:1px solid var(--sd-ink)">
+      <div style="font-family:var(--font-display);font-size:24px;color:var(--sd-ink)">Checagem final</div>
+      <div style="display:flex;flex-direction:column;gap:6px;font-family:var(--font-pixel);font-size:14px;line-height:1.5;color:var(--sd-ink)">
+        <div style="display:flex;gap:8px"><span style="color:var(--sd-gold)">†</span><span>{{ total }} FRAMES: 6+4+4+4+4+6+4+6+4</span></div>
+        <div style="display:flex;gap:8px"><span style="color:var(--sd-gold)">†</span><span>SO CORES DA PALETA TRAVADA</span></div>
+        <div style="display:flex;gap:8px"><span style="color:var(--sd-gold)">†</span><span>24×24 EXATO, MOLDURA R=11, AREA UTIL 20×20</span></div>
+        <div style="display:flex;gap:8px"><span style="color:var(--sd-gold)">†</span><span>LEGIVEL EM 1× SOBRE PARCHMENT E EM 2× NA LOJA</span></div>
+        <div style="display:flex;gap:8px"><span style="color:var(--sd-gold)">†</span><span>TEMPLATE COM GUIAS E CHECKLIST ENTREGUE</span></div>
+        <div style="display:flex;gap:8px"><span style="color:var(--sd-gold)">†</span><span>SILHUETA PROPRIA, SEM SEMELHANCA DE REFERENCIA</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440}}">
+class Component extends DCLogic {
+  componentDidMount() {
+    if (!window.ScribeItems) {
+      this._t = setInterval(() => {
+        if (window.ScribeItems) { clearInterval(this._t); this.forceUpdate(); }
+      }, 60);
+    }
+  }
+  componentWillUnmount() { if (this._t) clearInterval(this._t); }
+
+  renderVals() {
+    const I = window.ScribeItems;
+    const base = { pal: {}, s8: 8, s4: 4, s2: 2, s1: 1, items: [], total: 0 };
+    if (!I) return base;
+    const list = I.build();
+    return Object.assign(base, {
+      pal: I.PAL,
+      tpl: I.template(),
+      total: list.reduce((n, i) => n + i.count, 0),
+      items: list.map(i => ({
+        name: i.name,
+        file: i.file.toUpperCase().replace(/_/g, "_\u200B"),
+        meta: i.count + "F · " + i.ms + "MS · LOOP SIM · 24×24",
+        desc: i.desc.toUpperCase(),
+        cap: i.cap,
+        hi: i.hi,
+        dur: i.dur,
+        steps: "steps(" + i.count + ")",
+        stripW: i.count * 96,
+        one: i.frames[0].rows,
+        sil: I.sil(i.frames[0].rows),
+        frames: i.frames.map(f => ({
+          rows: f.rows,
+          label: (i.id + " · F" + f.n + " · " + i.ms + "ms").toUpperCase().replace(/_/g, "_\u200B")
+        }))
+      }))
+    });
+  }
+}
+
+</script>
+</body>
+</html>

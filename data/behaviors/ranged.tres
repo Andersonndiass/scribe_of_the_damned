@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="RangedBehavior" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://src/enemies/behaviors/ranged_behavior.gd" id="1_s"]
+[ext_resource type="Resource" path="res://data/projectiles/prj_page.tres" id="2_e"]
+
+[resource]
+script = ExtResource("1_s")
+keep_min = 110.0
+keep_max = 150.0
+fire_interval = 2.2
+windup = 0.4
+fire_range_mul = 1.6
+projectile = ExtResource("2_e")

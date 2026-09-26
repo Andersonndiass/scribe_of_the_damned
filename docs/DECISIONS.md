@@ -1,0 +1,245 @@
+# Log de decisões
+
+Formato: data · decisão · motivo · alternativas descartadas · status.
+
+---
+
+### D-001 · 2026-09-24 · Godot 4.7.2 em vez de 4.3
+- **Decisão:** o projeto usa Godot 4.7.2 stable (build padrão). As menções a 4.3 em BOOTSTRAP, PLANO e PROMPTS foram trocadas.
+- **Motivo:** pedido do autor ("estou usando a godot 4.7"); é a versão instalada em `D:\Godot`.
+- **Descartado:** voltar para 4.3.
+- **Status:** ✅ aprovada.
+
+### D-002 · 2026-09-24 · Constituição e game bible escritas pelo Claude
+- **Decisão:** como as specs originais não existem, o Claude escreveu a constituição, a game bible, o art bible e os design tokens a partir dos documentos de planejamento e das fichas.
+- **Status:** ✅ aprovada pelo autor no Checkpoint 0 ("pode seguir, aprovado").
+
+### D-003 · 2026-09-24 · Numeração dos princípios casada com o PROMPTS.md
+- **Decisão:** Princípio IV = conteúdo é dado; Princípio IX = cutscenes in-engine.
+- **Status:** ✅ aprovada.
+
+### D-004 · 2026-09-24 · Hex da paleta provisórios
+- **Decisão:** `design-tokens.json` usa hex escolhidos pelo Claude até o `colors.css` do design system chegar.
+- **Como reverter:** trocar os valores e rodar `tools/gen_palette.gd`.
+- **Status:** ⏳ provisória.
+
+### D-005 · 2026-09-24 · Art bible organizada pelas referências das fichas
+- **Status:** ✅ aprovada.
+
+---
+
+## Checkpoint 0: respostas do autor (2026-09-24)
+
+### D-006 · Palavras de 3 a 8 letras (emenda ao Princípio VIII)
+- **Decisão:** o limite de letras por palavra sobe de 6 para **8**. Quanto mais longa a palavra, mais forte o milagre. Palavras de 7–8 letras são "muito fortes".
+- **Motivo:** resposta 1a do autor. **Conflita com a constituição v1.0.0** (máx. 6); o conflito foi apontado e o autor é quem decide. A constituição sobe para v1.1.0.
+- **Consequência:** a feature 002 ganha um grupo de palavras longas (proposta em `000/spec.md` §3.5).
+- **Status:** ✅ aprovada.
+
+### D-007 · Atril variável, padrão 5, máximo 8
+- **Decisão:** o atril começa com **5** espaços e sobe por upgrades até **8**.
+- **Consequência:** MORTIS (6 letras) exige pelo menos 1 upgrade de atril. O drop ponderado **nunca** mira palavras maiores que o atril atual.
+- **Consequência:** a passiva original do Beda ("atril 5") deixou de ser diferencial. Nova proposta: atril **4** + 20% de velocidade (ver D-019).
+- **Status:** ✅ aprovada (Beda: proposta).
+
+### D-008 · Atril cheio recusa a letra
+- **Decisão:** com o atril cheio e sem palavra válida, a letra nova é recusada e fica no chão (animação REJECT).
+- **Status:** ✅ aprovada.
+
+### D-009 · Sem reordenar; o purge devolve as letras ao chão
+- **Decisão:** as letras entram na ordem em que foram coletadas e não podem ser reordenadas. O **purge (Shift)** joga as letras do atril **no chão**, em volta do jogador, para que ele tente de novo. As letras não são destruídas.
+- **Consequência:** recoletar em outra ordem é a forma legítima de "reordenar".
+- **Purge não custa nada** (resposta 4b) e não tem recarga.
+- **Status:** ✅ aprovada.
+
+### D-010 · Velas: 3 iniciais, máximo 8, i-frames de 1s
+- **Decisão:** o jogador começa com 3 velas; upgrades aumentam até 8. Invulnerabilidade de 1s depois do dano (a ajustar em teste).
+- **Status:** ✅ aprovada.
+
+### D-011 · Recuperação de vela
+- **Decisão:** a vela é recuperada por (a) **ficar 5s parado e sem atacar**, (b) upgrade, (c) matar um **inimigo raro (campeão)**, e (d) VITA.
+- **Interpretação a confirmar:** o ataque automático nunca para, então "sem atacar" = **sem conjurar palavra e sem levar dano**. Enquanto parado, recupera 1 vela a cada 3s [valor inicial, rules-agent].
+- **Status:** ✅ aprovada · ⏳ interpretação de "sem atacar" a confirmar.
+
+### D-012 · Dano em velas por tipo de ataque
+- **Decisão:** ataque **fraco** tira 1 vela, ataque **forte** tira 2. Cada ataque e cada inimigo declara o seu nível no `.tres`.
+- **Status:** ✅ aprovada.
+
+### D-013 · Efeitos das 7 palavras base, sem recarga, dicas por letra
+- **Decisão:** os efeitos propostos pelo Claude foram aceitos (LUX raio, PAX empurrão e atordoamento, CRUX cruz com bloqueio, VITA +1 vela, AQUA poça de lentidão, IGNIS área de fogo, MORTIS onda na tela toda). O poder cresce com o tamanho da palavra. **Nenhuma palavra tem recarga.** As 7 são conhecidas desde o início.
+- **Dicas:** a cada letra coletada, o HUD mostra as palavras que ainda são possíveis com o prefixo atual.
+- **Status:** ✅ aprovada.
+
+### D-014 · Heresia só ao conjurar errado; poça no local do erro
+- **Status:** ✅ aprovada.
+
+### D-015 · Letra B ativada (resolve C-001)
+- **Decisão:** o B entra no alfabeto, mas **só cai depois que VERBUM é desbloqueado** na partida.
+- **Status:** ✅ aprovada.
+
+### D-016 · Combos
+- **Decisão:** Vapor = AQUA+IGNIS · Chama Radiante = LUX+IGNIS · Cegueira = LUX+PAX · Martírio = CRUX+LUX · Réquiem = MORTIS+PAX. A ordem não importa. Janela de 2.5s.
+- **Status:** ✅ aprovada.
+
+### D-017 · Apócrifos comprados na loja, só para a partida
+- **Decisão:** FIDES (escudo de 1 golpe), LUMEN (ímã e letra-alvo reforçados por 10s), PURGO (limpa a tela), GLORIA (milagres reforçados por alguns segundos), VERBUM (repete a última palavra). São cartas especiais da loja e valem só naquela partida.
+- **Status:** ✅ aprovada.
+
+### D-018 · Economia
+- **Decisão:** a tinta dourada **não passa** de uma partida para outra. Os preços sobem por onda. O custo do reroll é escolhido pelo Claude (rules-agent). Os 9 itens são criados pelo Claude a partir do design (feature 003).
+- **Status:** ✅ aprovada.
+
+### D-019 · Inimigos, ondas, campeões e personagens
+- **Decisão:** a tabela de inimigos por capítulo foi confirmada. A onda 1 é a mais curta e as seguintes crescem (60s → 90s). Há 1 campeão por onda a partir da onda 3.
+- **Desbloqueios:** Hildegarda ao vencer o Cap. 1 · Beda com 100 palavras · Iluminador com 10 combos · Tomé com 20 heresias sobrevividas.
+- **Passivas (propostas do Claude, sem objeção do autor):** Hildegarda com janela de combo +50% · Tomé sem stun de heresia e 1 vela a menos · Iluminador com 25% de chance de letra dupla · Beda com atril 4 e +20% de velocidade.
+- **Demo:** Anselmo e Hildegarda.
+- **Status:** ✅ aprovada.
+
+### D-020 · Controles
+- **Decisão:** segurar Tab mostra a lista de palavras conhecidas; Esc pausa. Gamepad fica para o futuro.
+- **Status:** ✅ aprovada.
+
+### D-021 · Sem git, CI nem itch por enquanto
+- **Decisão:** não criar repositório, CI nem página no itch agora. A T006 (CI + butler) fica **adiada**. O M0 passa a ser "build web vazio gerado localmente + GUT verde".
+- **Status:** ✅ aprovada.
+
+### D-022 · Arte por script; itens pendentes do autor
+- **Decisão:** os PNGs serão gerados por script a partir dos módulos do Claude Design. Enquanto os `scribe-*.js` não chegam, os sprites entram como placeholders.
+- **Pendente do autor:** ficha 03 (Tomé), `scribe-*.js` e `_ds/`, história (o autor vai mandar uma imagem) e áudio.
+- **Cutscenes:** o Claude as cria no motor quando a história chegar.
+- **Status:** ✅ aprovada.
+
+### D-023 · 2026-09-24 · Bíblia Narrativa canônica
+- **Decisão:** a Bíblia Narrativa v1.0 do autor vira `specs/000-game-bible/narrative.md`. As cutscenes seguem o mapa §12 dela e o Grimório usa os verbetes §11.
+- **Consequência:** o Modo Heresiarca fica anotado como feature futura, fora do roadmap atual.
+- **Status:** ✅ aprovada (texto do autor).
+
+### D-024 · 2026-09-24 · Arte gerada por script sem o export do Claude Design
+- **Decisão:** o autor não vai mandar os `scribe-*.js`. Os sprites serão **gerados por script pelo Claude** a partir do que as fichas descrevem (tamanho, pivot, frames, anatomia, mapa de cor), com a paleta travada. Até lá, placeholders.
+- **Consequência:** a arte final não será pixel a pixel igual à do Claude Design; ela segue as fichas como especificação. Os hex da paleta continuam sendo os da D-004.
+- **Status:** ✅ aprovada ("vai fazer assim mesmo do jeito que a gente falou").
+
+### D-025 · 2026-09-24 · GUT 9.7.1 e só os templates web
+- **Decisão:** GUT 9.7.1 (a versão oficial para Godot 4.7). Dos templates de export do 4.7.2 foram instalados **só** `web_nothreads_debug/release` (baixados por HTTP range, sem o pacote de 1,2 GB).
+- **Status:** ✅ feito na Etapa 1.
+
+### D-026 · 2026-09-24 · Separação com chegada suave e força limitada
+- **Decisão:** inimigos desaceleram a menos de 3× o raio do alvo e a separação é limitada a 1,5× a velocidade deles.
+- **Motivo:** sem isso, 20 Diabretes no mesmo ponto se empilhavam (bug encontrado pelo teste de separação).
+- **Status:** ✅ implementada.
+
+### D-027 · 2026-09-24 · Dados da sonda de balanceamento da onda 1 (sem palavras)
+- **Dados:** parado → morre aos 14,7s (3 mortes). Bot fugindo → morre aos ~50s (7–11 mortes, até 46 vivos, ~55% dos tiros acertam).
+- **Leitura:** esperado nesta fase (o dano principal virá das palavras). **Não mexer nos números agora.** Rodar a sonda de novo no T069 com as 7 palavras e levar o resultado ao rules-agent.
+- **Status:** ⏳ em observação.
+
+### D-028 · 2026-09-24 · target_bonus 6 → 10
+- **Decisão:** bônus da letra-alvo no drop ponderado passa de 6.0 para 10.0 (`data/tuning/drop_tuning.tres`).
+- **Motivo:** com 6.0, um prefixo com uma única continuação (ex.: "L" → U) dava 33% de letra-alvo, abaixo do SC-005 (≥ 40%). Com 10.0: ~43%.
+- **Status:** ✅ aplicada (valor inicial; rules-agent revisa no T069).
+
+### D-029 · 2026-09-24 · Enum do atril se chama `Atril.Status`
+- **Motivo:** `State` colidia com a classe global `State` da StateMachine.
+- **Status:** ✅.
+
+### D-030 · 2026-09-24 · Diabrete com HP 2 (recomendação da C-004 aplicada)
+- **Decisão:** `data/enemies/imp.tres` max_hp 3 → 2.
+- **Motivo:** o autor respondeu "ok" sem escolher opção na C-004; pela regra combinada, aplica-se a recomendação e registra-se. Reversível trocando um número.
+- **Status:** ✅ aprovada pelo autor ("ok1 ok2 ok3", 2026-09-24).
+
+### D-030b · 2026-09-24 · Espaço com atril vazio não é heresia
+- **Motivo:** sem letras não há "fala sem sentido"; evita punir toque acidental.
+- **Status:** ✅ aprovada pelo autor ("ok1 ok2 ok3", 2026-09-24).
+
+### D-031 · 2026-09-24 · Letras do purge ficam soltas (o ímã as ignora)
+- **Motivo:** com o anel do purge (20px) dentro do raio do ímã (40px), as letras voltavam sozinhas em 0.3s na mesma ordem — o purge não servia para "tentar de novo". Agora o jogador escolhe a ordem andando por cima.
+- **Status:** ✅ aprovada pelo autor ("ok1 ok2 ok3", 2026-09-24).
+
+### D-032 · 2026-09-24 · Poça de aggro com raio
+- **Decisão:** a poça atrai só os inimigos a até `heresy_pool_radius` (64px), como diz o FR-019.
+- **Status:** ✅.
+
+### D-033 · 2026-09-24 · `selective_magnet` como alavanca de playtest
+- **Decisão:** novo campo em `DropTuning` (padrão false): quando true, o ímã só puxa letras que continuam uma palavra. Sem efeito medido pelo bot; fica para o playtest humano.
+- **Status:** 🧪 experimento.
+
+### D-034 · 2026-09-24 · Fonte pixel própria para o HUD
+- **Decisão:** `PixelFont` desenha texto com glifos 5×6 feitos à mão (os 20 das letras + H J K W Y Z Æ, dígitos, pontuação). O atlas é branco e só serve de máscara; a cor vem da paleta. Acentos são normalizados (Á→A) até a localização da 007.
+- **Motivo:** a fonte do design system não foi exportada e não se adiciona fonte de terceiros sem o autor.
+- **Status:** ✅ provisório.
+
+### D-035 · 2026-09-24 · Loop de ondas no protótipo
+- **Decisão:** ao fim da onda, espera 3s e recomeça a onda 1 como "Onda 2, 3…"; a página degrada 1 estágio por onda (loop 0→3). A loja (003) entra nesse intervalo.
+- **Status:** ✅.
+
+### D-036 · 2026-09-24 · `atril_changed` ganha `rare_mask`
+- **Motivo:** o HUD precisa mostrar vogais raras em GOLD. Plan §4.3 atualizado.
+- **Status:** ✅.
+
+### D-037 · 2026-09-25 · `PoolManager.try_acquire` para o que é dispensável
+- **Decisão:** letras e dissoluções usam `try_acquire` (nunca instancia; devolve null se o pool esgotou). Sob carga extrema (MORTIS em 300), o excedente não aparece em vez de criar nós na onda.
+- **Status:** ✅ (SC-002 provado por `test_zero_instantiate`).
+
+### D-038 · 2026-09-25 · T082 revisado: otimizar script, não desenho
+- **Decisão:** não migrar para MultiMesh agora. O profiler mostrou o desenho em ~1 ms e o script em 7–50 ms no web. Laços quentes sem alocação, grade de 16 px e chamada tipada ao EnemyManager.
+- **Motivo:** o PROMPTS pedia MultiMesh "se ficar abaixo de 60"; os dados mostram que isso não resolveria.
+- **Status:** ✅ ("pode seguir", 2026-09-25).
+
+### D-039 · 2026-09-25 · Steering escalonado com interpolação
+- **Decisão:** cada inimigo recalcula steering e separação a cada 2 ticks (metade dos inimigos em cada tick), com passo dobrado; o contato com o jogador continua checado todo tick; o EnemyRenderer interpola entre o passo anterior e o atual (atraso ~1 tick).
+- **Resultado:** web Chrome de 7–39 FPS (instável) para 86–90 FPS médios e p95 67–68.
+- **Status:** ✅.
+
+### D-040 · 2026-09-25 · Spec 005: campeões e estreia da Traça
+- **Decisão:** 1 campeão por onda a partir da 3 (mantém a D-019; resposta "1 ok"). A Traça estreia na onda 2 com os números reduzidos pelo rules-agent (recomendação aplicada: item sem resposta).
+- **Status:** ✅ aprovada pelo autor ("1 ok", "2 e 3 ok", 2026-09-25).
+
+### D-041 · 2026-09-25 · Correção: máximo de velas no início da partida
+- **Bug (da 001):** `GameState.start_run` gravava o teto absoluto (8) como máximo atual; o HUD mostrava 8 espaços de vela até o primeiro dano. Encontrado na vitrine da 005.
+- **Correção:** o máximo atual começa em `start_candles` (3), como diz a D-010. Teste `test_hud_starts_with_three_candle_slots`.
+- **Status:** ✅.
+
+### D-042 · 2026-09-25 · Tinta dourada não expira; sobra da onda é recolhida
+- **Decisão:** as gotas de tinta dourada não expiram. No fim da onda, as que sobraram voam até o jogador. Não existe perder tinta por timing.
+- **Motivo:** a tinta é recompensa do campeão (evento raro); expirar puniria o jogador por ter lutado. As letras continuam expirando (FR-012).
+- **Status:** ✅ aprovada ("ok", 2026-09-25).
+
+### D-043 · 2026-09-25 · Caches por slot e renderer que só escreve o que muda
+- **Problema:** a 005 deixou o SC-001 instável no web (41–72 FPS): cada inimigo buscava o comportamento, lia `needs_tick` e chamava funções com várias leituras de propriedade.
+- **Decisão:** o EnemyManager guarda por slot o comportamento, a flag de tick e a velocidade; a perseguição pura (Diabrete) é calculada direto no laço. O EnemyRenderer só escreve textura, material, escala e espelho quando mudam.
+- **Resultado:** SC-001 81–89 / p95 64–69 · SC-503 78–80 / p95 60–65 (Chrome, 3 execuções cada).
+- **Status:** ✅.
+
+### D-044 · 2026-09-26 · Janela de combo conta a partir da 1ª letra da próxima palavra
+- **Decisão:** depois de uma conjuração, a janela fica aberta por até 8 s; os 2.5 s (D-016) só começam a correr quando o jogador coleta a 1ª letra da próxima palavra. Emenda a D-016.
+- **Motivo:** com o ritmo atual de letras (C-004), 2.5 s corridos desde a conjuração tornariam os combos quase impossíveis (parecer do game-design-agent).
+- **Status:** ✅ aprovada pelo autor ("1b").
+
+### D-045 · 2026-09-26 · Nomes dos combos em latim na tela
+- **Decisão:** VAPOR, FLAMMA, CAECITAS, MARTYRIUM, REQUIEM; tradução só no Grimório.
+- **Status:** ✅ aprovada pelo autor ("2sim").
+
+### D-046 · 2026-09-26 · Spec 002 aprovada com os pareceres aplicados
+- **Decisão:** SPIRITUS intangível (não invulnerável), SALVATOR +3 velas sem invulnerabilidade, Cegueira sem cancelar contato, MISERERE como absolvição, PURGO 10 em elites, VERBUM não repete orações nem combos, DOMINUS 20.
+- **Status:** ✅ aprovada pelo autor ("3ok").
+
+---
+
+## Conflitos abertos
+
+- ~~C-001 · VERBUM usa B~~ → resolvido pela D-015.
+- **C-004 · Ritmo de palavras por onda (DECISÃO DO AUTOR).** *Atualização T069:* HP 2 aplicado (D-030); com as 7 palavras e o purge, a sonda automática deixou de ser confiável (laços de purge, ímã puxando letras inúteis). Próximo passo: **playtest humano** no build web; alavancas listadas em `docs/reviews/T069-rules-parecer.md` §4. Dados originais: Sonda na onda 1 (2 execuções por cenário; bot que foge, busca só letras úteis e conjura):
+
+  | Diabrete | Letras caídas | Palavras conjuradas | Sobreviveu? |
+  |---|---|---|---|
+  | HP 3, drop 60% (atual) | 5–10 | 0–1 | 1 de 2 |
+  | HP 3, drop 100% | 13–15 | 0–1 | 0 de 2 |
+  | HP 2, drop 60% | 17–22 | 1–2 | 1 de 2 |
+  | HP 2, drop 100% | 24–28 | 0 | 2 de 2 |
+
+  **Leitura:** o mecanismo funciona (CRUX, AQUA e PAX saíram no jogo real), mas com os números atuais o jogador monta **no máximo ~1 palavra por onda**, e as palavras deveriam ser o dano principal. O gargalo é a morte de inimigos (ataque automático fraco contra HP 3), que limita as letras. O bot é pior que um humano (o ímã puxa letras inúteis e ele não usa purge), então o real deve ser um pouco melhor.
+  **Opções:** (a) Diabrete com HP 2; (b) drop de letra 100%; (c) mais de uma letra por morte; (d) letras iniciais no começo da onda; (e) esperar a Fase 5 (purge + 6 palavras) e medir de novo no T069. **Recomendação do Claude:** (a) HP 2 agora + medir de novo no T069 com purge.
+- **C-005 · SC-001 no web.** ✅ **Resolvido no Chrome** pela D-039 (média 86–90, p95 67–68). Falta só medir no Firefox (autor). Histórico: Scripts em WebAssembly custam ~5–8× o desktop. O Chrome sem janela desta máquina deu de 7 a 39 FPS para o mesmo build (inconclusivo) e não há Firefox. Próximo passo: o autor mede `index.html?stress` no Chrome e no Firefox de verdade. Opções de otimização em `docs/reviews/T085-performance.md` §4.
+- **C-003 · Tamanho do build web.** O build vazio tem **38 MB crus / 9,9 MB comprimidos** (quase tudo é o `index.wasm` do motor). A meta da constituição é "até 25 MB". Proposta para a feature 011: medir a meta como **download comprimido** e, se precisar, compilar um template web próprio sem 3D (o wasm cai bastante). Decidir até a 011.
+- **C-002 · FEATURES.md marca 001–015 como "Tasked ✅"**, mas os arquivos não existem. As specs serão escritas just-in-time.

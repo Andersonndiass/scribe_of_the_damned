@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="WordData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://src/data/word_data.gd" id="1_wd"]
+[ext_resource type="PackedScene" path="res://src/miracles/pax/pax.tscn" id="2_scene"]
+
+[resource]
+script = ExtResource("1_wd")
+id = &"pax"
+latin = "PAX"
+translation_key = &"word_pax"
+miracle_scene = ExtResource("2_scene")
+power_budget = 1.0
+radius = 72.0
+knockback = 80.0
+stun = 1.5
+vfx_prefix = &"VFX_PAX"

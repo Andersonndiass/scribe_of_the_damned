@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="WordData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/data/word_data.gd" id="1_wd"]
+
+[resource]
+script = ExtResource("1_wd")
+id = &"sanctus"
+latin = "SANCTUS"
+translation_key = &"word_sanctus"
+power_budget = 5.0
+group = &"oration"
+requires_unlock = false
+combo_eligible = true
+radius = 90.0
+damage = 3.0
+tick_interval = 0.25
+slow_factor = 0.5
+duration = 6.0
+vfx_prefix = &"VFX_SANCTUS"

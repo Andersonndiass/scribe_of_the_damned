@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="WordData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/data/word_data.gd" id="1_wd"]
+
+[resource]
+script = ExtResource("1_wd")
+id = &"purgo"
+latin = "PURGO"
+translation_key = &"word_purgo"
+power_budget = 2.4
+group = &"apocrypha"
+requires_unlock = true
+combo_eligible = false
+kill_hp_threshold = 999
+damage = 10.0
+kill_batch_per_frame = 30
+vfx_prefix = &"VFX_PURGO"

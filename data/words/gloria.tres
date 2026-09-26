@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="WordData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/data/word_data.gd" id="1_wd"]
+
+[resource]
+script = ExtResource("1_wd")
+id = &"gloria"
+latin = "GLORIA"
+translation_key = &"word_gloria"
+power_budget = 3.5
+group = &"apocrypha"
+requires_unlock = true
+combo_eligible = false
+duration = 6.0
+buff_mul = 1.5
+vfx_prefix = &"VFX_GLORIA"

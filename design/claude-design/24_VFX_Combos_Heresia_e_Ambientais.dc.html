@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/colors.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/typography.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/motion.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/layers.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/patterns.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/styles.css">
+<script src="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/_ds_bundle.js"></script>
+<script src="scribe-vfx.js"></script>
+<style>
+body{margin:0;background:var(--sd-ink);image-rendering:pixelated}
+@keyframes sprite-strip{from{transform:translateX(0)}to{transform:translateX(-100%)}}
+a{color:var(--sd-blood)}
+a:hover{color:var(--sd-blood-dark)}
+</style>
+</helmet>
+
+<div style="width:1680px;padding:32px;box-sizing:border-box;display:flex;flex-direction:column;gap:24px;background-color:var(--sd-parchment);background-image:radial-gradient(var(--sd-parchment-old) 0 0.5px,transparent 0.6px);background-size:7px 7px">
+
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;border-bottom:1px solid var(--sd-ink);padding-bottom:12px">
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <div style="font-family:var(--font-pixel);font-size:14px;letter-spacing:.1em;color:var(--sd-blood)">ENTREGAVEL 24 — VFX</div>
+      <div style="font-family:var(--font-display);font-size:48px;line-height:1.2;color:var(--sd-ink);margin-top:6px">Combos, Heresia e Ambientais</div>
+    </div>
+    <div style="font-family:var(--font-pixel);font-size:14px;line-height:1.6;color:var(--sd-ink);text-align:right">
+      <div>VFX_* · UI_COMBO_WINDOW</div>
+      <div>{{ total }} FRAMES · {{ animCount }} ANIMACOES</div>
+      <div>GOLD SO EM MILAGRES · BLOOD SO EM DANO E TELEGRAFIA</div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:24px;align-items:flex-start">
+    <div style="flex:1;display:flex;flex-direction:column;gap:6px;padding:12px;border:1px solid var(--sd-ink)">
+      <div style="font-family:var(--font-pixel);font-size:14px;color:var(--sd-ink-soft)">MAPA DE COR POR REGIAO</div>
+      <div style="display:flex;flex-direction:column;gap:4px;font-family:var(--font-pixel);font-size:14px;color:var(--sd-ink)">
+        <sc-for list="{{ colorMap }}" as="c" hint-placeholder-count="6">
+          <div style="display:flex;gap:8px;align-items:center"><i style="width:14px;height:14px;flex:none;background:{{ c.color }};outline:1px solid var(--sd-ink)"></i>{{ c.label }}</div>
+        </sc-for>
+      </div>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;gap:8px;padding:12px;border:1px solid var(--sd-ink)">
+      <div style="font-family:var(--font-pixel);font-size:14px;color:var(--sd-ink-soft)">NUMEROS DE DANO · FONTE PIXEL 7PX E 14PX · 8×</div>
+      <div style="padding:10px;background:var(--sd-parchment);outline:1px solid var(--sd-ink-soft);overflow:hidden">
+        <x-import component-from-global-scope="ScribeOfTheDamnedDesignSystem_4b5ef4.PixelArt" rows="{{ digitsNormal }}" palette="{{ pal }}" scale="{{ s4 }}" hint-size="256px,44px"></x-import>
+      </div>
+      <div style="padding:10px;background:var(--sd-parchment);outline:1px solid var(--sd-ink-soft);overflow:hidden">
+        <x-import component-from-global-scope="ScribeOfTheDamnedDesignSystem_4b5ef4.PixelArt" rows="{{ digitsCrit }}" palette="{{ pal }}" scale="{{ s4 }}" hint-size="512px,72px"></x-import>
+      </div>
+      <div style="font-family:var(--font-pixel);font-size:12px;line-height:1.5;color:var(--sd-ink)">NORMAL 7PX EM CHALK COM CONTORNO INK · CRITICO 14PX EM BLOOD COM CONTORNO INK. TODOS OS DIGITOS 0–9 NAS DUAS VERSOES.</div>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;gap:8px;padding:12px;border:1px solid var(--sd-ink)">
+      <div style="font-family:var(--font-pixel);font-size:14px;color:var(--sd-ink-soft)">1× SOBRE PARCHMENT · SILHUETA 2×</div>
+      <div style="display:flex;gap:16px;align-items:flex-end;padding:12px;background:var(--sd-parchment);outline:1px solid var(--sd-ink-soft)">
+        <sc-for list="{{ readable }}" as="r" hint-placeholder-count="4">
+          <x-import component-from-global-scope="ScribeOfTheDamnedDesignSystem_4b5ef4.PixelArt" rows="{{ r.rows }}" palette="{{ pal }}" scale="{{ s1 }}" hint-size="40px,40px"></x-import>
+        </sc-for>
+      </div>
+      <div style="display:flex;gap:16px;align-items:flex-end;padding:12px;background:var(--sd-parchment);outline:1px solid var(--sd-ink-soft)">
+        <sc-for list="{{ sils }}" as="r" hint-placeholder-count="4">
+          <x-import component-from-global-scope="ScribeOfTheDamnedDesignSystem_4b5ef4.PixelArt" rows="{{ r.rows }}" palette="{{ pal }}" scale="{{ s2 }}" hint-size="80px,80px"></x-import>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <sc-for list="{{ groups }}" as="grp" hint-placeholder-count="3">
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div style="font-family:var(--font-display);font-size:32px;line-height:1.2;color:var(--sd-ink);border-bottom:1px solid var(--sd-ink);padding-bottom:6px">{{ grp.title }}</div>
+      <sc-for list="{{ grp.anims }}" as="a" hint-placeholder-count="7">
+        <div style="display:flex;gap:24px;align-items:flex-start;padding:16px;border:1px solid var(--sd-ink);background:var(--sd-parchment)">
+          <div style="width:248px;flex:none;display:flex;flex-direction:column;gap:6px">
+            <div style="font-family:var(--font-display);font-size:24px;line-height:1.3;color:var(--sd-ink)">{{ a.name }}</div>
+            <div style="font-family:var(--font-pixel);font-size:14px;line-height:1.5;color:var(--sd-ink)">{{ a.meta }}</div>
+            <div style="font-family:var(--font-pixel);font-size:14px;line-height:1.5;color:var(--sd-ink-soft)">{{ a.file }}</div>
+            <div style="width:{{ a.previewW }}px;height:{{ a.previewH }}px;overflow:hidden;background:var(--sd-parchment);outline:1px solid var(--sd-ink-soft);margin-top:4px">
+              <div style="display:flex;height:{{ a.previewH }}px;width:{{ a.stripW }}px;animation-name:sprite-strip;animation-timing-function:{{ a.steps }};animation-iteration-count:infinite;animation-duration:{{ a.dur }}ms">
+                <sc-for list="{{ a.frames }}" as="f" hint-placeholder-count="6">
+                  <x-import component-from-global-scope="ScribeOfTheDamnedDesignSystem_4b5ef4.PixelArt" rows="{{ f.rows }}" palette="{{ pal }}" scale="{{ a.zoomPrev }}" hint-size="120px,120px"></x-import>
+                </sc-for>
+              </div>
+            </div>
+            <div style="font-family:var(--font-pixel);font-size:14px;color:var(--sd-ink-soft)">PREVIEW · LOOP</div>
+            <div style="font-family:var(--font-pixel);font-size:12px;line-height:1.5;color:var(--sd-ink);margin-top:4px">{{ a.desc }}</div>
+          </div>
+          <div style="display:flex;gap:12px;flex:1;flex-wrap:wrap">
+            <sc-for list="{{ a.frames }}" as="f" hint-placeholder-count="6">
+              <div style="width:{{ a.cellW }}px;flex:none;display:flex;flex-direction:column;gap:8px">
+                <div style="width:{{ a.cellW }}px;height:{{ a.cellH }}px;display:flex;align-items:center;background-color:var(--sd-parchment);background-image:repeating-linear-gradient(to right,var(--sd-parchment-old) 0 1px,transparent 1px {{ a.gridPx }}),repeating-linear-gradient(to bottom,var(--sd-parchment-old) 0 1px,transparent 1px {{ a.gridPx }});outline:1px solid var(--sd-ink)">
+                  <x-import component-from-global-scope="ScribeOfTheDamnedDesignSystem_4b5ef4.PixelArt" rows="{{ f.rows }}" palette="{{ pal }}" scale="{{ a.zoomCell }}" hint-size="240px,240px"></x-import>
+                </div>
+                <div style="font-family:var(--font-pixel);font-size:12px;line-height:1.4;color:var(--sd-ink)">{{ f.label }}</div>
+                <sc-if value="{{ f.ev }}" hint-placeholder-val="{{ true }}">
+                  <div style="border-top:2px solid var(--sd-gold);padding-top:6px;font-family:var(--font-pixel);font-size:12px;line-height:1.4;color:var(--sd-ink)">{{ f.ev }}</div>
+                </sc-if>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </sc-for>
+
+  <div style="display:flex;gap:24px;align-items:stretch">
+    <div style="flex:1;display:flex;flex-direction:column;gap:8px;padding:16px;border:1px solid var(--sd-ink)">
+      <div style="font-family:var(--font-display);font-size:24px;color:var(--sd-ink)">Regras aplicadas</div>
+      <div style="font-family:var(--font-pixel);font-size:14px;line-height:1.7;color:var(--sd-ink)">
+        <sc-for list="{{ rules }}" as="p" hint-placeholder-count="4">
+          <div>{{ p }}</div>
+        </sc-for>
+      </div>
+    </div>
+    <div style="width:520px;flex:none;display:flex;flex-direction:column;gap:8px;padding:16px;border:1px solid var(--sd-ink)">
+      <div style="font-family:var(--font-display);font-size:24px;color:var(--sd-ink)">Checagem final</div>
+      <div style="display:flex;flex-direction:column;gap:6px;font-family:var(--font-pixel);font-size:14px;line-height:1.5;color:var(--sd-ink)">
+        <sc-for list="{{ checks }}" as="c" hint-placeholder-count="6">
+          <div style="display:flex;gap:8px"><span style="color:var(--sd-gold)">†</span><span>{{ c }}</span></div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1680}}">
+class Component extends DCLogic {
+  componentDidMount() {
+    if (!window.ScribeVfx) {
+      this._t = setInterval(() => {
+        if (window.ScribeVfx) { clearInterval(this._t); this.forceUpdate(); }
+      }, 60);
+    }
+  }
+  componentWillUnmount() { if (this._t) clearInterval(this._t); }
+
+  renderVals() {
+    const B = window.ScribeVfx;
+    const base = {
+      pal: {}, s8: 8, s4: 4, s2: 2, s1: 1,
+      groups: [], readable: [], sils: [], total: 0, animCount: 0,
+      digitsNormal: [], digitsCrit: [],
+      colorMap: [
+        { color: "var(--sd-gold)", label: "MILAGRES: ANEL INTERNO, CRUZES, FAISCAS, BRASA, JANELA DE COMBO" },
+        { color: "var(--sd-gold-light)", label: "OVERLAY DA CHAMA RADIANTE E FLASH DE DISPARO" },
+        { color: "var(--sd-blood)", label: "ANEL EXTERNO, HERESIA, HALO DA BRASA, BORDA DA POCA" },
+        { color: "var(--sd-chalk)", label: "VAPOR, ONDAS DO SINO, OLHO DAS CRUZES, \u00D7 DA CEGUEIRA" },
+        { color: "var(--sd-ink)", label: "GOTAS DE TINTA, POCA, BADALO, CONTORNO, VAZIO DO RASGO" },
+        { color: "var(--sd-ink-soft)", label: "POEIRA, BRASA APAGADA, BRONZE EM DITHERING" },
+        { color: "var(--sd-parchment)", label: "CERA, FIBRAS DO RASGO, BORDA DO PAPEL" }
+      ],
+      rules: [
+        "TUDO EM HACHURA E DITHERING: NENHUM DEGRADE, BLUR OU ALPHA DESENHADO",
+        "O ALPHA 0.5 DO ESCRIBA NO VAPOR E O FADE DO NUMERO DE DANO SAO CODIGO, NAO FRAMES",
+        "DURACOES SO NA ESCALA 50 / 100 / 200 / 400 / 700 / 2500MS",
+        "GOLD SO EM MILAGRES E UI · BLOOD SO EM DANO, HERESIA E TELEGRAFIA"
+      ],
+      checks: [
+        "COMBOS: RADIANT 10 · CEGUEIRA 4 · MARTIRIO 4 + CRUZ 4 · VAPOR 8 · REQUIEM 12 · JANELA 12",
+        "HERESIA: 6 FRAMES @60MS + O TEXTO H\u00C6RESIS! COM A LIGADURA DESENHADA",
+        "AMBIENTAIS: DUST 5 · DUST_SMALL 3 · CANDLE_DRIP 6 · MOTH_EDGE 4 · EMBER 4 · PAGE_TEAR 6 · DAMAGE_NUMBER",
+        "DIGITOS 0–9 NAS DUAS VERSOES, NORMAL 7PX E CRITICO 14PX",
+        "SO CORES DA PALETA TRAVADA",
+        "LEGIVEL EM 1× SOBRE PARCHMENT · EVENTOS DE CODIGO MARCADOS EM GOLD"
+      ]
+    };
+    if (!B) return base;
+    const d = B.build();
+    const all = d.groups.reduce((n, g) => n + g.anims.length, 0);
+    const pick = [
+      d.groups[1].anims[0].frames[4].rows,
+      d.groups[2].anims[0].frames[2].rows,
+      d.groups[2].anims[4].frames[0].rows,
+      d.groups[0].anims[3].frames[3].rows
+    ];
+    return Object.assign(base, {
+      pal: B.PAL,
+      total: d.frames,
+      animCount: all,
+      digitsNormal: d.digits.normal,
+      digitsCrit: d.digits.crit,
+      readable: pick.map(r => ({ rows: r })),
+      sils: pick.map(r => ({ rows: B.sil(r) })),
+      groups: d.groups.map(grp => ({
+        title: grp.title,
+        anims: grp.anims.map(a => {
+          const w = a.frames[0].rows[0].length, h = a.frames[0].rows.length;
+          const zc = w > 90 ? 2 : (w > 40 ? 4 : 8);
+          const zp = Math.max(1, Math.round(zc / 2));
+          return {
+            name: a.name,
+            file: a.file.toUpperCase().replace(/_/g, "_\u200B"),
+            meta: a.count + "F · " + a.ms + "MS · " + w + "×" + h + " · LOOP " + a.loop.toUpperCase(),
+            desc: a.desc,
+            dur: a.dur,
+            steps: "steps(" + a.count + ")",
+            zoomCell: zc,
+            zoomPrev: zp,
+            gridPx: zc + "px",
+            stripW: a.count * w * zp,
+            previewW: w * zp,
+            previewH: h * zp,
+            cellW: w * zc,
+            cellH: h * zc,
+            frames: a.frames.map(f => ({
+              rows: f.rows,
+              label: (a.name + " · F" + f.n + " · " + a.ms + "ms").toUpperCase().replace(/_/g, "_\u200B"),
+              ev: f.ev ? f.ev.toUpperCase().replace(/_/g, "_\u200B") : ""
+            }))
+          };
+        })
+      }))
+    });
+  }
+}
+
+</script>
+</body>
+</html>

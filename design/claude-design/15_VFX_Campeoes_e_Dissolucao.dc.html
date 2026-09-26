@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/colors.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/typography.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/motion.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/layers.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/patterns.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/styles.css">
+<script src="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/_ds_bundle.js"></script>
+<script src="scribe-enemies.js"></script>
+<style>
+body{margin:0;background:var(--sd-ink);image-rendering:pixelated}
+@keyframes sprite-strip{from{transform:translateX(0)}to{transform:translateX(-100%)}}
+a{color:var(--sd-blood)}
+a:hover{color:var(--sd-blood-dark)}
+</style>
+</helmet>
+
+<div style="width:1440px;padding:32px;box-sizing:border-box;display:flex;flex-direction:column;gap:24px;background-color:var(--sd-parchment);background-image:radial-gradient(var(--sd-parchment-old) 0 0.5px,transparent 0.6px);background-size:7px 7px">
+
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;border-bottom:1px solid var(--sd-ink);padding-bottom:12px">
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <div style="font-family:var(--font-pixel);font-size:14px;letter-spacing:.1em;color:var(--sd-blood)">ENTREGAVEL 15 — VFX</div>
+      <div style="font-family:var(--font-display);font-size:48px;line-height:1.2;color:var(--sd-ink);margin-top:6px">Campeões e dissolução</div>
+    </div>
+    <div style="font-family:var(--font-pixel);font-size:14px;line-height:1.6;color:var(--sd-ink);text-align:right">
+      <div>EFEITOS COMPARTILHADOS POR TODOS OS INIMIGOS</div>
+      <div>AURA 8F@125MS · SPAWN 8F@100MS</div>
+      <div>DISSOLUCAO 6F@60MS · DECAL 4 PASSOS EM 2S</div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:24px;align-items:flex-start;padding:16px;border:1px solid var(--sd-ink);background:var(--sd-parchment)">
+    <div style="width:232px;flex:none;display:flex;flex-direction:column;gap:6px">
+      <div style="font-family:var(--font-display);font-size:32px;line-height:1.2;color:var(--sd-ink)">Contorno de campeão</div>
+      <div style="font-family:var(--font-pixel);font-size:14px;line-height:1.5;color:var(--sd-ink)">MOCK DO SHADER · 8×</div>
+      <div style="font-family:var(--font-pixel);font-size:12px;line-height:1.5;color:var(--sd-ink)">1PX BLOOD POR FORA DO CONTORNO INK, NOS 8 VIZINHOS. SOMBRA DO CAMPEAO GANHA 1PX BLOOD_DARK NA BORDA DA ELIPSE.</div>
+    </div>
+    <div style="display:flex;gap:24px;flex:1;align-items:flex-end">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="width:96px;height:96px;background-color:var(--sd-parchment);background-image:repeating-linear-gradient(to right,var(--sd-parchment-old) 0 1px,transparent 1px 8px),repeating-linear-gradient(to bottom,var(--sd-parchment-old) 0 1px,transparent 1px 8px);outline:1px solid var(--sd-ink)">
+          <x-import component-from-global-scope="ScribeOfTheDamnedDesignSystem_4b5ef4.PixelArt" rows="{{ outBefore }}" palette="{{ pal }}" scale="{{ s8 }}" hint-size="96px,96px"></x-import>
+        </div>
+        <div style="font-family:var(--font-pixel);font-size:12px;color:var(--sd-ink)">ANTES · DIABRETE NORMAL</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="width:96px;height:96px;background-color:var(--sd-parchment);background-image:repeating-linear-gradient(to right,var(--sd-parchment-old) 0 1px,transparent 1px 8px),repeating-linear-gradient(to bottom,var(--sd-parchment-old) 0 1px,transparent 1px 8px);outline:1px solid var(--sd-ink)">
+          <x-import component-from-global-scope="ScribeOfTheDamnedDesignSystem_4b5ef4.PixelArt" rows="{{ outAfter }}" palette="{{ pal }}" scale="{{ s8 }}" hint-size="96px,96px"></x-import>
+        </div>
+        <div style="font-family:var(--font-pixel);font-size:12px;color:var(--sd-blood)">DEPOIS · CAMPEAO</div>
+      </div>
+      <div style="display:flex;gap:16px;align-items:flex-end;padding:12px;background:var(--sd-parchment);outline:1px solid var(--sd-ink-soft)">
+        <x-import component-from-global-scope="ScribeOfTheDamnedDesignSystem_4b5ef4.PixelArt" rows="{{ outBefore }}" palette="{{ pal }}" scale="{{ s1 }}" hint-size="12px,12px"></x-import>
+        <x-import component-from-global-scope="ScribeOfTheDamnedDesignSystem_4b5ef4.PixelArt" rows="{{ outAfter }}" palette="{{ pal }}" scale="{{ s1 }}" hint-size="12px,12px"></x-import>
+        <x-import component-from-global-scope="ScribeOfTheDamnedDesignSystem_4b5ef4.PixelArt" rows="{{ outAfter }}" palette="{{ pal }}" scale="{{ s3 }}" hint-size="36px,36px"></x-import>
+        <x-import component-from-global-scope="ScribeOfTheDamnedDesignSystem_4b5ef4.PixelArt" rows="{{ outSil }}" palette="{{ pal }}" scale="{{ s3 }}" hint-size="36px,36px"></x-import>
+      </div>
+      <div style="width:200px;font-family:var(--font-pixel);font-size:12px;line-height:1.6;color:var(--sd-ink)">1× SOBRE PARCHMENT, 3× E SILHUETA EM INK SOLIDO — O CONTORNO BLOOD NAO ALTERA A SILHUETA</div>
+    </div>
+  </div>
+
+  <sc-for list="{{ anims }}" as="a" hint-placeholder-count="9">
+    <div style="display:flex;gap:24px;align-items:flex-start;padding:16px;border:1px solid var(--sd-ink);background:var(--sd-parchment)">
+      <div style="width:232px;flex:none;display:flex;flex-direction:column;gap:6px">
+        <div style="font-family:var(--font-display);font-size:32px;line-height:1.2;color:var(--sd-ink)">{{ a.title }}</div>
+        <div style="font-family:var(--font-pixel);font-size:14px;line-height:1.5;color:var(--sd-ink)">{{ a.meta }}</div>
+        <div style="font-family:var(--font-pixel);font-size:14px;line-height:1.5;color:var(--sd-ink-soft)">{{ a.file }}</div>
+        <div style="width:{{ a.previewW }}px;height:{{ a.previewH }}px;overflow:hidden;background:var(--sd-parchment);outline:1px solid var(--sd-ink-soft);margin-top:4px">
+          <div style="display:flex;height:{{ a.previewH }}px;width:{{ a.stripW }}px;animation-name:sprite-strip;animation-timing-function:{{ a.steps }};animation-iteration-count:infinite;animation-duration:{{ a.dur }}ms">
+            <sc-for list="{{ a.frames }}" as="f" hint-placeholder-count="6">
+              <x-import component-from-global-scope="ScribeOfTheDamnedDesignSystem_4b5ef4.PixelArt" rows="{{ f.rows }}" palette="{{ pal }}" scale="{{ s4 }}" hint-size="80px,80px"></x-import>
+            </sc-for>
+          </div>
+        </div>
+        <div style="font-family:var(--font-pixel);font-size:14px;color:var(--sd-ink-soft)">PREVIEW 4× · LOOP</div>
+        <div style="font-family:var(--font-pixel);font-size:12px;line-height:1.5;color:var(--sd-ink);margin-top:4px">{{ a.desc }}</div>
+      </div>
+      <div style="display:flex;gap:12px;flex:1;flex-wrap:wrap">
+        <sc-for list="{{ a.frames }}" as="f" hint-placeholder-count="6">
+          <div style="width:{{ a.cellW }}px;flex:none;display:flex;flex-direction:column;gap:8px">
+            <div style="width:{{ a.cellW }}px;height:{{ a.cellH }}px;display:flex;align-items:flex-end;background-color:var(--sd-parchment);background-image:repeating-linear-gradient(to right,var(--sd-parchment-old) 0 1px,transparent 1px 8px),repeating-linear-gradient(to bottom,var(--sd-parchment-old) 0 1px,transparent 1px 8px);outline:1px solid var(--sd-ink)">
+              <x-import component-from-global-scope="ScribeOfTheDamnedDesignSystem_4b5ef4.PixelArt" rows="{{ f.rows }}" palette="{{ pal }}" scale="{{ s8 }}" hint-size="160px,160px"></x-import>
+            </div>
+            <div style="font-family:var(--font-pixel);font-size:12px;line-height:1.4;color:var(--sd-ink)">{{ f.label }}</div>
+            <sc-if value="{{ f.ev }}" hint-placeholder-val="{{ true }}">
+              <div style="border-top:2px solid var(--sd-gold);padding-top:6px;font-family:var(--font-pixel);font-size:12px;line-height:1.4;color:var(--sd-ink)">{{ f.ev }}</div>
+            </sc-if>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </sc-for>
+
+  <div style="display:flex;gap:24px;align-items:stretch">
+    <div style="flex:1;display:flex;flex-direction:column;gap:8px;padding:16px;border:1px solid var(--sd-ink)">
+      <div style="font-family:var(--font-display);font-size:24px;color:var(--sd-ink)">Erros evitados</div>
+      <div style="font-family:var(--font-pixel);font-size:14px;line-height:1.7;color:var(--sd-ink)">
+        <div>A AURA ORBITA SEMPRE POR FORA DO SPRITE — RAIO = METADE DA LARGURA + 3PX</div>
+        <div>A DISSOLUCAO SOBE, VIRANDO FUMACA DE TINTA; NENHUM PIXEL CAI</div>
+        <div>GOLD SO NA TINTA DOURADA; BLOOD SO NO CONTORNO, AURA E RUNAS</div>
+      </div>
+    </div>
+    <div style="width:420px;flex:none;display:flex;flex-direction:column;gap:8px;padding:16px;border:1px solid var(--sd-ink)">
+      <div style="font-family:var(--font-display);font-size:24px;color:var(--sd-ink)">Checagem final</div>
+      <div style="display:flex;flex-direction:column;gap:6px;font-family:var(--font-pixel);font-size:14px;line-height:1.5;color:var(--sd-ink)">
+        <div style="display:flex;gap:8px"><span style="color:var(--sd-gold)">†</span><span>{{ total }} FRAMES: AURA 8 · SPAWN 8 · EXPLOSAO 6 · GOTA 4 · 3 DISSOLUCOES 6 · DECAL 4</span></div>
+        <div style="display:flex;gap:8px"><span style="color:var(--sd-gold)">†</span><span>SO CORES DA PALETA TRAVADA</span></div>
+        <div style="display:flex;gap:8px"><span style="color:var(--sd-gold)">†</span><span>TAMANHOS EXATOS: 20×20 AURA · 24×24 RUNAS E EXPLOSAO · 6×8 GOTA · 8×4 DECAL</span></div>
+        <div style="display:flex;gap:8px"><span style="color:var(--sd-gold)">†</span><span>LEGIVEL EM 1× SOBRE PARCHMENT</span></div>
+        <div style="display:flex;gap:8px"><span style="color:var(--sd-gold)">†</span><span>DISSOLUCAO APLICADA EM 12×12, 16×16 E 16×24</span></div>
+        <div style="display:flex;gap:8px"><span style="color:var(--sd-gold)">†</span><span>SILHUETA PROPRIA, SEM SEMELHANCA DE REFERENCIA</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440}}">
+class Component extends DCLogic {
+  componentDidMount() {
+    if (!window.ScribeEnemies) {
+      this._t = setInterval(() => {
+        if (window.ScribeEnemies) { clearInterval(this._t); this.forceUpdate(); }
+      }, 60);
+    }
+  }
+  componentWillUnmount() { if (this._t) clearInterval(this._t); }
+
+  renderVals() {
+    const E = window.ScribeEnemies;
+    const base = { pal: {}, s8: 8, s4: 4, s3: 3, s1: 1, anims: [], total: 0 };
+    if (!E) return base;
+    const v = E.vfx();
+    const TITLE = {
+      aura_campeao: "Aura do campeão",
+      spawn_campeao: "Spawn do campeão",
+      tinta_dourada: "Explosão de Tinta Dourada",
+      gota_idle: "Gota de tinta (item)",
+      dissolucao_12: "Dissolução · 12×12",
+      dissolucao_16: "Dissolução · 16×16",
+      dissolucao_24: "Dissolução · 16×24",
+      decal_mancha: "Decal de mancha"
+    };
+    const order = [v.aura, v.runes, v.burst, v.drop, v.dissolveRound, v.dissolveSquare, v.dissolveTall, v.decal];
+    const anims = order.map(a => {
+      const w = a.frames[0].rows[0].length, h = a.frames[0].rows.length;
+      return {
+        title: TITLE[a.name] || a.name,
+        file: a.file.toUpperCase().replace(/_/g, "_\u200B"),
+        meta: a.count + "F · " + a.ms + "MS · " + w + "×" + h + " · LOOP " + a.loop.toUpperCase(),
+        desc: a.desc.toUpperCase(),
+        dur: a.dur,
+        steps: "steps(" + a.count + ")",
+        stripW: a.count * w * 4,
+        previewW: w * 4,
+        previewH: h * 4,
+        cellW: w * 8,
+        cellH: h * 8,
+        frames: a.frames.map(f => ({
+          rows: f.rows,
+          label: (a.name + " · F" + f.n + " · " + a.ms + "ms").toUpperCase().replace(/_/g, "_\u200B"),
+          ev: f.ev ? f.ev.toUpperCase().replace(/_/g, "_\u200B") : ""
+        }))
+      };
+    });
+    return Object.assign(base, {
+      pal: E.PAL,
+      anims,
+      total: order.reduce((n, a) => n + a.count, 0),
+      outBefore: v.outline.before,
+      outAfter: v.outline.after,
+      outSil: E.sil(v.outline.before)
+    });
+  }
+}
+
+</script>
+</body>
+</html>

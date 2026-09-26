@@ -1,0 +1,9 @@
+# Godot 4+
+.godot/
+/android/
+# Build de export
+/build/*
+!/build/.gdignore
+# Sistema
+Thumbs.db
+.DS_Store

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/colors.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/typography.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/motion.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/layers.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/patterns.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/styles.css">
+<script src="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/_ds_bundle.js"></script>
+<script src="scribe-portraits.js"></script>
+<style>
+body{margin:0;background:var(--sd-ink)}
+canvas{image-rendering:pixelated;display:block}
+@keyframes port-blink{0%,93.7%{transform:translateX(0)}93.75%,96.8%{transform:translateX(-96px)}96.9%,100%{transform:translateX(-192px)}}
+@keyframes port-breath{from{transform:translateY(0)}to{transform:translateY(-2px)}}
+a{color:var(--sd-blood)}
+a:hover{color:var(--sd-blood-dark)}
+</style>
+</helmet>
+
+<div style="width:1440px;padding:32px;box-sizing:border-box;display:flex;flex-direction:column;gap:24px;background-color:var(--sd-parchment);background-image:radial-gradient(var(--sd-parchment-old) 0 0.5px,transparent 0.6px);background-size:7px 7px">
+
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;border-bottom:1px solid var(--sd-ink);padding-bottom:12px">
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <div style="font-family:var(--font-pixel);font-size:14px;letter-spacing:.1em;color:var(--sd-blood)">ENTREGAVEL 06 — RETRATOS</div>
+      <div style="font-family:var(--font-display);font-size:48px;line-height:1;color:var(--sd-ink)">Bustos e closes</div>
+    </div>
+    <div style="font-family:var(--font-pixel);font-size:14px;line-height:1.6;color:var(--sd-ink);text-align:right">
+      <div>BUSTO 48×48 · CONTORNO 1PX INK</div>
+      <div>CLOSE 128×128 · CONTORNO 2PX INK</div>
+      <div>SO HACHURA 45°/135° · LUZ DA DIREITA</div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:24px;align-items:stretch">
+    <div style="flex:1;display:flex;flex-direction:column;gap:8px;padding:16px;border:1px solid var(--sd-ink)">
+      <div style="font-family:var(--font-display);font-size:24px;color:var(--sd-ink)">Animação de seleção</div>
+      <div style="display:flex;gap:24px;align-items:flex-start">
+        <sc-for list="{{ animHeroes }}" as="h" hint-placeholder-count="5">
+          <div style="display:flex;flex-direction:column;gap:6px;align-items:center">
+            <div style="width:96px;height:96px;overflow:hidden;outline:1px solid var(--sd-ink);background:var(--sd-parchment)">
+              <div style="animation:port-breath 1200ms steps(1,end) infinite alternate">
+                <div style="display:flex;width:288px;animation:port-blink 3200ms linear infinite">
+                  <canvas data-port="{{ h.k0 }}" width="48" height="48" style="width:96px;height:96px;flex:none"></canvas>
+                  <canvas data-port="{{ h.k1 }}" width="48" height="48" style="width:96px;height:96px;flex:none"></canvas>
+                  <canvas data-port="{{ h.k2 }}" width="48" height="48" style="width:96px;height:96px;flex:none"></canvas>
+                </div>
+              </div>
+            </div>
+            <div style="font-family:var(--font-pixel);font-size:14px;color:var(--sd-ink)">{{ h.label }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="font-family:var(--font-pixel);font-size:14px;line-height:1.6;color:var(--sd-ink);margin-top:4px">
+        <div>BLINK: F1 PALPEBRA A MEIA ALTURA, F2 FECHADA (1 LINHA INK) · 100MS · A CADA 3-5S</div>
+        <div>RESPIRO: SOBE 1PX, 1200MS PING-PONG · PIXEL INTEIRO, SEM SUB-PIXEL</div>
+      </div>
+    </div>
+    <div style="width:300px;flex:none;display:flex;flex-direction:column;gap:8px;padding:16px;border:1px solid var(--sd-ink)">
+      <div style="font-family:var(--font-display);font-size:24px;color:var(--sd-ink)">1× e silhueta</div>
+      <div style="display:flex;gap:12px;align-items:flex-end;padding:8px;background:var(--sd-parchment);outline:1px solid var(--sd-ink-soft)">
+        <sc-for list="{{ oneUp }}" as="s" hint-placeholder-count="4">
+          <canvas data-port="{{ s.key }}" width="48" height="48" style="width:48px;height:48px"></canvas>
+        </sc-for>
+      </div>
+      <div style="font-family:var(--font-pixel);font-size:14px;color:var(--sd-ink)">48×48 EM 1× SOBRE PARCHMENT E EM INK SOLIDO</div>
+    </div>
+  </div>
+
+  <div style="font-family:var(--font-display);font-size:32px;color:var(--sd-ink);border-bottom:1px solid var(--sd-ink);padding-bottom:6px">Bustos 48×48 — neutro · determinado · assustado</div>
+
+  <sc-for list="{{ cards }}" as="c" hint-placeholder-count="11">
+    <div style="display:flex;gap:24px;align-items:flex-start;padding:16px;border:1px solid var(--sd-ink);background:var(--sd-parchment)">
+      <div style="width:232px;flex:none;display:flex;flex-direction:column;gap:6px">
+        <div style="font-family:var(--font-display);font-size:32px;line-height:1;color:var(--sd-ink)">{{ c.name }}</div>
+        <div style="font-family:var(--font-pixel);font-size:14px;line-height:1.5;color:var(--sd-ink)">{{ c.meta }}</div>
+        <div style="font-family:var(--font-pixel);font-size:14px;line-height:1.5;color:var(--sd-ink-soft)">{{ c.file }}</div>
+        <div style="font-family:var(--font-pixel);font-size:12px;line-height:1.5;color:var(--sd-ink);margin-top:4px">{{ c.desc }}</div>
+      </div>
+      <div style="display:flex;gap:16px;flex:1;flex-wrap:wrap">
+        <sc-for list="{{ c.exprs }}" as="e" hint-placeholder-count="3">
+          <div style="width:192px;flex:none;display:flex;flex-direction:column;gap:8px">
+            <div style="width:192px;height:192px;background-color:var(--sd-parchment);background-image:repeating-linear-gradient(to right,var(--sd-parchment-old) 0 1px,transparent 1px 16px),repeating-linear-gradient(to bottom,var(--sd-parchment-old) 0 1px,transparent 1px 16px);outline:1px solid var(--sd-ink)">
+              <canvas data-port="{{ e.key }}" width="48" height="48" style="width:192px;height:192px"></canvas>
+            </div>
+            <div style="font-family:var(--font-pixel);font-size:12px;line-height:1.4;color:var(--sd-ink)">{{ e.label }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </sc-for>
+
+  <div style="font-family:var(--font-display);font-size:32px;color:var(--sd-ink);border-bottom:1px solid var(--sd-ink);padding-bottom:6px">Closes 128×128 — cutscene</div>
+
+  <div style="display:flex;gap:24px;flex-wrap:wrap">
+    <sc-for list="{{ closes }}" as="k" hint-placeholder-count="9">
+      <div style="width:256px;flex:none;display:flex;flex-direction:column;gap:8px">
+        <div style="width:256px;height:256px;outline:1px solid var(--sd-ink);background:var(--sd-parchment)">
+          <canvas data-port="{{ k.key }}" width="128" height="128" style="width:256px;height:256px"></canvas>
+        </div>
+        <div style="font-family:var(--font-display);font-size:24px;line-height:1;color:var(--sd-ink)">{{ k.name }}</div>
+        <div style="font-family:var(--font-pixel);font-size:12px;line-height:1.4;color:var(--sd-ink)">{{ k.desc }}</div>
+        <div style="font-family:var(--font-pixel);font-size:12px;line-height:1.4;color:var(--sd-ink-soft)">{{ k.file }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="display:flex;gap:24px;align-items:stretch">
+    <div style="flex:1;display:flex;flex-direction:column;gap:8px;padding:16px;border:1px solid var(--sd-ink)">
+      <div style="font-family:var(--font-display);font-size:24px;color:var(--sd-ink)">Regras aplicadas</div>
+      <div style="font-family:var(--font-pixel);font-size:14px;line-height:1.7;color:var(--sd-ink)">
+        <div>EXPRESSAO MUDA SO OLHOS, SOBRANCELHAS E BOCA — O CRANIO E IDENTICO</div>
+        <div>SOMBRA E SO HACHURA: 135° NO ROSTO, 45° NO HABITO, CRUZADA NO 128</div>
+        <div>BLOOD SO EM ASMODEUS, ABADE CAIDO E MALAQUIAS (OLHOS ABERTOS)</div>
+        <div>GOLD SO EM HALO, OCULOS DO ILUMINADOR E RIM LIGHT DO ALIVIADO</div>
+        <div>FANTASMA: CONTORNO CHALK, INTERIOR EM DITHERING 50%, BORDAS SOLTAS</div>
+      </div>
+    </div>
+    <div style="width:420px;flex:none;display:flex;flex-direction:column;gap:8px;padding:16px;border:1px solid var(--sd-ink)">
+      <div style="font-family:var(--font-display);font-size:24px;color:var(--sd-ink)">Checagem final</div>
+      <div style="display:flex;flex-direction:column;gap:6px;font-family:var(--font-pixel);font-size:14px;line-height:1.5;color:var(--sd-ink)">
+        <div style="display:flex;gap:8px"><span style="color:var(--sd-gold)">†</span><span>{{ n48 }} BUSTOS 48×48 + 9 CLOSES 128×128</span></div>
+        <div style="display:flex;gap:8px"><span style="color:var(--sd-gold)">†</span><span>SO CORES DA PALETA TRAVADA</span></div>
+        <div style="display:flex;gap:8px"><span style="color:var(--sd-gold)">†</span><span>TAMANHOS EXATOS; BUSTO = TOPO DA CABECA AO PEITO</span></div>
+        <div style="display:flex;gap:8px"><span style="color:var(--sd-gold)">†</span><span>LEGIVEL EM 1× SOBRE PARCHMENT</span></div>
+        <div style="display:flex;gap:8px"><span style="color:var(--sd-gold)">†</span><span>SEM SOMBREAMENTO SUAVE, SEM BLUR, SEM GRADIENTE</span></div>
+        <div style="display:flex;gap:8px"><span style="color:var(--sd-gold)">†</span><span>FORMATO DO ROSTO IDENTICO ENTRE EXPRESSOES</span></div>
+        <div style="display:flex;gap:8px"><span style="color:var(--sd-gold)">†</span><span>SILHUETA PROPRIA, SEM SEMELHANCA DE REFERENCIA</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440}}">
+class Component extends DCLogic {
+  componentDidMount() {
+    this.paint();
+    this._t = setInterval(() => this.paint(), 200);
+    setTimeout(() => { clearInterval(this._t); this._t = null; }, 4000);
+  }
+  componentWillUnmount() { if (this._t) clearInterval(this._t); }
+  componentDidUpdate() { this.paint(); }
+
+  paint() {
+    const P = window.ScribePortraits;
+    if (!P) return;
+    if (!this._booted) { this._booted = true; this.forceUpdate(); }
+    document.querySelectorAll("canvas[data-port]").forEach(cv => {
+      if (cv.dataset.done) return;
+      const parts = cv.dataset.port.split("|");
+      if (parts.length < 2) return;
+      let rows;
+      try {
+        rows = parts[0] === "close" ? P.close(parts[1]) : P.bust(parts[1], parts[2] || "neutro");
+      } catch (err) { return; }
+      const ctx = cv.getContext("2d");
+      ctx.clearRect(0, 0, cv.width, cv.height);
+      const sil = parts[0] === "sil";
+      rows.forEach((r, y) => {
+        for (let x = 0; x < r.length; x++) {
+          const ch = r[x];
+          if (ch === ".") continue;
+          ctx.fillStyle = sil ? P.PAL.K : (P.PAL[ch] || P.PAL.K);
+          ctx.fillRect(x, y, 1, 1);
+        }
+      });
+      cv.dataset.done = "1";
+    });
+  }
+
+  renderVals() {
+    const NAMES = {
+      anselmo: "Irmão Anselmo", hildegarda: "Irmã Hildegarda", tome: "Frei Tomé",
+      iluminador: "O Iluminador", beda: "Noviço Beda", abade_fantasma: "Fantasma do Abade",
+      asmodeus: "Asmodeus", mae_tracas: "Mãe das Traças", abade_caido: "Abade Caído",
+      malaquias: "Padre Malaquias", semihaza: "Semíhaza"
+    };
+    const DESC = {
+      anselmo: "TONSURA COM BRILHO CHALK, PENA ERGUIDA AO LADO DO ROSTO NO DETERMINADO",
+      hildegarda: "VEU LONGO, ROSTO MAIS FINO, LINHA DE COIF EM CHALK",
+      tome: "SOBRANCELHA UNICA ARQUEADA, BARBA HACHURADA, BRACOS CRUZADOS VISIVEIS",
+      iluminador: "REFLEXO TOTAL NAS LENTES; OCULOS BRILHAM GOLD NO DETERMINADO",
+      beda: "CABELO EM CUIA, OLHOS BRILHANTES, MOCHILA NO OMBRO",
+      abade_fantasma: "CONTORNO CHALK, INTERIOR EM DITHERING 50%, 8PX SOLTOS NAS BORDAS",
+      asmodeus: "OLHO BLOOD 12×12 CENTRALIZADO, RODEADO DE RABISCOS",
+      mae_tracas: "6 OLHOS CHALK EM CACHO, ANTENAS SAINDO DO QUADRO",
+      abade_caido: "ORBITAS VAZIAS COM PONTO BLOOD, HALO INVERTIDO CORTADO NO TOPO",
+      malaquias: "SORRISO LARGO DEMAIS, OLHOS FECHADOS EM ARCO",
+      semihaza: "VENDA DE PERGAMINHO COM TEXTO RISCADO, HALO PARTIDO NOS CANTOS"
+    };
+    const SETS = {
+      anselmo: ["neutro", "determinado", "assustado", "aliviado"],
+      hildegarda: ["neutro", "determinado", "assustado"],
+      tome: ["neutro", "determinado", "assustado"],
+      iluminador: ["neutro", "determinado", "assustado"],
+      beda: ["neutro", "determinado", "assustado"],
+      abade_fantasma: ["neutro", "determinado"],
+      asmodeus: ["neutro"],
+      mae_tracas: ["neutro"],
+      abade_caido: ["neutro", "determinado"],
+      malaquias: ["neutro", "determinado"],
+      semihaza: ["neutro", "assustado"]
+    };
+    const LABEL = {
+      neutro: "NEUTRO", determinado: "DETERMINADO", assustado: "ASSUSTADO", aliviado: "ALIVIADO"
+    };
+    const CLOSES = [
+      ["anselmo/assustado", "Anselmo assustado", "PUPILAS 2PX, REFLEXO DE FOGO BLOOD, 2 TRILHAS DE SUOR CHALK"],
+      ["anselmo/aliviado", "Anselmo aliviado", "OLHOS FECHADOS, LAGRIMA UNICA, RIM LIGHT GOLD DE 4PX NA DIREITA"],
+      ["anselmo/determinado", "Anselmo determinado", "SOMBRA HACHURADA NA METADE ESQUERDA, OLHOS ESTREITOS"],
+      ["abade_vivo/neutro", "Abade vivo", "4 LINHAS DE RUGA NA TESTA, BARBA EM ONDAS"],
+      ["abade_vivo/sorrindo", "Abade sorrindo", "O SORRISO MOSTRA 2 DENTES CHALK"],
+      ["abade_caido/close", "Abade Caído", "PELE RACHADA, ORBITAS INK COM BRILHO BLOOD"],
+      ["malaquias/sorriso", "Malaquias — sorriso", "OLHEIRAS INK_SOFT DE 3PX, 10 DENTES PEQUENOS CHALK"],
+      ["malaquias/olhos_abertos", "Malaquias — olhos abertos", "IRIS BLOOD COM PUPILA VERTICAL"],
+      ["semihaza/vendado", "Semíhaza vendado", "MARMORE RACHADO; O TEXTO DA VENDA LE COMO LINHAS"],
+      ["semihaza/chorando", "Semíhaza chorando", "OLHOS CHALK SEM PUPILA, 3 TRILHAS DE TINTA ATE O QUEIXO"]
+    ];
+
+    const ids = Object.keys(SETS);
+    const cards = ids.map(id => ({
+      name: NAMES[id],
+      desc: DESC[id],
+      meta: SETS[id].length + " EXPRESSOES · 48×48 · 4×",
+      file: (id === "asmodeus" || id === "mae_tracas" || id === "abade_caido" || id === "malaquias" || id === "semihaza"
+        ? "BSS_" : "CHR_") + id.toUpperCase() + "_RETRATO_<EXPR>.PNG",
+      exprs: SETS[id].map(e => ({ key: "b|" + id + "|" + e, label: LABEL[e] }))
+    }));
+
+    const heroes = ["anselmo", "hildegarda", "tome", "iluminador", "beda"];
+    return {
+      cards,
+      n48: ids.reduce((a, id) => a + SETS[id].length, 0),
+      animHeroes: heroes.map(id => ({
+        label: NAMES[id].toUpperCase(),
+        k0: "b|" + id + "|neutro",
+        k1: "b|" + id + "|blink1",
+        k2: "b|" + id + "|blink2"
+      })),
+      oneUp: [
+        { key: "b|anselmo|neutro" }, { key: "sil|anselmo|neutro" },
+        { key: "b|hildegarda|neutro" }, { key: "sil|beda|neutro" }
+      ],
+      closes: CLOSES.map(c => ({
+        key: "close|" + c[0],
+        name: c[1],
+        desc: c[2],
+        file: "CUT_" + c[0].replace("/", "_").toUpperCase() + "_128.PNG"
+      }))
+    };
+  }
+}
+
+</script>
+</body>
+</html>

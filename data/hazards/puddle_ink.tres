@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="PuddleData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/data/puddle_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"puddle_ink"
+size = Vector2(24, 10)
+duration = 3.0
+player_slow_factor = 0.6

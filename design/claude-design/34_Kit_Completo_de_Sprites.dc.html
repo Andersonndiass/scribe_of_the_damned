@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/colors.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/typography.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/motion.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/layers.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/patterns.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/styles.css">
+<script src="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/_ds_bundle.js"></script>
+<script src="pixel-canvas.js"></script>
+<script src="scribe-hud.js"></script>
+<script src="scribe-rig.js"></script>
+<script src="scribe-portraits.js"></script>
+<script src="scribe-enemies.js"></script>
+<script src="scribe-bosses.js"></script>
+<script src="scribe-abbot.js"></script>
+<script src="scribe-priest.js"></script>
+<script src="scribe-angel.js"></script>
+<script src="scribe-letters.js"></script>
+<script src="scribe-shots.js"></script>
+<script src="scribe-items.js"></script>
+<script src="scribe-shop.js"></script>
+<script src="scribe-miracles.js"></script>
+<script src="scribe-vfx.js"></script>
+<script src="scribe-arenas.js"></script>
+<script src="scribe-screens.js"></script>
+<script src="scribe-end.js"></script>
+<script src="scribe-menus.js"></script>
+<script src="scribe-cutscenes.js"></script>
+<script src="scribe-allsprites.js"></script>
+<style>
+body{margin:0;background:var(--sd-ink);image-rendering:pixelated}
+pixel-canvas{display:block;line-height:0}
+pixel-canvas canvas{display:block}
+a{color:var(--sd-blood)}
+a:hover{color:var(--sd-blood-dark)}
+</style>
+</helmet>
+
+<div style="width:1680px;padding:32px;box-sizing:border-box;display:flex;flex-direction:column;gap:20px;background-color:var(--sd-parchment);background-image:radial-gradient(var(--sd-parchment-old) 0 0.5px,transparent 0.6px);background-size:7px 7px">
+
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;border-bottom:1px solid var(--sd-ink);padding-bottom:12px">
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <div style="font-family:var(--font-pixel);font-size:14px;letter-spacing:.1em;color:var(--sd-blood)">ENTREGAVEL 34 — INDICE COMPLETO</div>
+      <div style="font-family:var(--font-display);font-size:48px;line-height:1.2;color:var(--sd-ink);margin-top:6px">Todos os sprites do jogo</div>
+    </div>
+    <div style="font-family:var(--font-pixel);font-size:14px;line-height:1.6;color:var(--sd-ink);text-align:right">
+      <div>{{ count }} SPRITES NESTA ABA · {{ groupCount }} FAMILIAS</div>
+      <div>CADA FRAME DE CADA VERSAO, ISOLADO</div>
+      <div>ABA POR DOMINIO PARA A PAGINA NAO TRAVAR</div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:8px;flex-wrap:wrap;padding:12px;border:1px solid var(--sd-ink);background:var(--sd-parchment)">
+    <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="11">
+      <button type="button" onClick="{{ t.pick }}" style="font-family:var(--font-pixel);font-size:14px;padding:8px 14px;border:1px solid var(--sd-ink);cursor:pointer;background:{{ t.bg }};color:{{ t.fg }}" style-hover="background:var(--sd-blood);color:var(--sd-chalk)">{{ t.label }}</button>
+    </sc-for>
+  </div>
+
+  <div style="font-family:var(--font-pixel);font-size:12px;line-height:1.6;color:var(--sd-ink);max-width:1200px">{{ note }}</div>
+
+  <sc-for list="{{ groups }}" as="grp" hint-placeholder-count="10">
+    <div style="display:flex;flex-direction:column;gap:10px;padding:16px;border:1px solid var(--sd-ink);background:var(--sd-parchment)">
+      <div style="display:flex;gap:16px;align-items:baseline;border-bottom:1px solid var(--sd-ink);padding-bottom:6px">
+        <div style="font-family:var(--font-display);font-size:24px;line-height:1.2;color:var(--sd-ink)">{{ grp.title }}</div>
+        <div style="font-family:var(--font-pixel);font-size:12px;color:var(--sd-ink-soft)">{{ grp.n }}</div>
+      </div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <sc-for list="{{ grp.items }}" as="it" hint-placeholder-count="8">
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <div style="width:{{ it.pw }}px;height:{{ it.ph }}px;overflow:hidden;background-color:var(--sd-parchment);background-image:repeating-linear-gradient(to right,var(--sd-parchment-old) 0 1px,transparent 1px {{ it.grid }}),repeating-linear-gradient(to bottom,var(--sd-parchment-old) 0 1px,transparent 1px {{ it.grid }});outline:1px solid var(--sd-ink)">
+              <x-import component-from-global-scope="pixel-canvas" rows-id="{{ it.id }}" scale="{{ it.z }}" hint-size="80px,80px"></x-import>
+            </div>
+            <div style="font-family:var(--font-pixel);font-size:12px;line-height:1.3;color:var(--sd-ink);max-width:{{ it.pw }}px">{{ it.label }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </sc-for>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1680}}">
+class Component extends DCLogic {
+  state = { tab: "personagens" };
+
+  componentDidMount() {
+    if (!window.ScribeAll) {
+      this._t = setInterval(() => {
+        if (window.ScribeAll) { clearInterval(this._t); this.forceUpdate(); }
+      }, 80);
+    }
+  }
+  componentWillUnmount() { if (this._t) clearInterval(this._t); }
+
+  renderVals() {
+    const A = window.ScribeAll;
+    const base = { tabs: [], groups: [], count: 0, groupCount: 0, note: "CARREGANDO OS MODULOS..." };
+    if (!A) return base;
+    const tabs = A.domains().map(t => ({
+      label: t.label.toUpperCase(),
+      bg: t.key === this.state.tab ? "var(--sd-blood-dark)" : "var(--sd-parchment-old)",
+      fg: t.key === this.state.tab ? "var(--sd-chalk)" : "var(--sd-ink)",
+      pick: () => this.setState({ tab: t.key })
+    }));
+    let d;
+    try { d = A.domain(this.state.tab); } catch (e) { d = null; }
+    if (!d) return Object.assign(base, { tabs, note: "ESTE DOMINIO NAO CARREGOU." });
+    const reg = (window.ScribeCanvasData = window.ScribeCanvasData || {});
+    const pal = A.PAL;
+    const groups = d.groups.map((grp, gi) => ({
+      title: grp.title,
+      n: grp.items.length + " SPRITES",
+      items: grp.items.map((it, ii) => {
+        const id = "all_" + this.state.tab + "_" + gi + "_" + ii;
+        reg[id] = { rows: it.rows, palette: pal };
+        const z = it.w > 240 ? 1 : (it.w > 120 ? 2 : d.z);
+        return {
+          id, label: it.label, z,
+          pw: it.w * z, ph: it.h * z,
+          cw: Math.max(76, it.w * z + 12),
+          grid: z + "px"
+        };
+      })
+    }));
+    return Object.assign(base, {
+      tabs, groups, count: d.count, groupCount: d.groups.length, note: d.note
+    });
+  }
+}
+
+</script>
+</body>
+</html>

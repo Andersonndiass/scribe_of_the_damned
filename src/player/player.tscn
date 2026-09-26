@@ -1,0 +1,70 @@
+[gd_scene load_steps=14 format=3]
+
+[ext_resource type="Script" path="res://src/player/player.gd" id="1_player"]
+[ext_resource type="Resource" path="res://data/player/anselmo.tres" id="2_data"]
+[ext_resource type="SpriteFrames" path="res://assets/placeholders/chr_anselmo_frames.tres" id="3_frames"]
+[ext_resource type="Script" path="res://src/components/flash.gd" id="4_flash"]
+[ext_resource type="Script" path="res://src/components/hurtbox.gd" id="5_hurtbox"]
+[ext_resource type="Script" path="res://src/player/auto_attack.gd" id="6_attack"]
+[ext_resource type="Script" path="res://src/core/state_machine.gd" id="7_sm"]
+[ext_resource type="Script" path="res://src/player/states/idle.gd" id="8_idle"]
+[ext_resource type="Script" path="res://src/player/states/run.gd" id="9_run"]
+[ext_resource type="Script" path="res://src/player/states/stunned.gd" id="10_stunned"]
+[ext_resource type="Script" path="res://src/player/states/hurt.gd" id="11_hurt"]
+[ext_resource type="Script" path="res://src/player/states/dead.gd" id="12_dead"]
+
+[sub_resource type="CircleShape2D" id="Circle_body"]
+radius = 5.0
+
+[node name="Player" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 1
+motion_mode = 1
+script = ExtResource("1_player")
+data = ExtResource("2_data")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+sprite_frames = ExtResource("3_frames")
+animation = &"idle"
+autoplay = "idle"
+centered = false
+offset = Vector2(-8, -15)
+
+[node name="Flash" type="Node" parent="Sprite"]
+script = ExtResource("4_flash")
+
+[node name="Body" type="CollisionShape2D" parent="."]
+position = Vector2(0, -3)
+shape = SubResource("Circle_body")
+
+[node name="Hurtbox" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 8
+monitorable = false
+script = ExtResource("5_hurtbox")
+
+[node name="Shape" type="CollisionShape2D" parent="Hurtbox"]
+position = Vector2(0, -6)
+shape = SubResource("Circle_body")
+
+[node name="AutoAttack" type="Node" parent="."]
+script = ExtResource("6_attack")
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("7_sm")
+initial_state = NodePath("Idle")
+
+[node name="Idle" type="Node" parent="StateMachine"]
+script = ExtResource("8_idle")
+
+[node name="Run" type="Node" parent="StateMachine"]
+script = ExtResource("9_run")
+
+[node name="Stunned" type="Node" parent="StateMachine"]
+script = ExtResource("10_stunned")
+
+[node name="Hurt" type="Node" parent="StateMachine"]
+script = ExtResource("11_hurt")
+
+[node name="Dead" type="Node" parent="StateMachine"]
+script = ExtResource("12_dead")

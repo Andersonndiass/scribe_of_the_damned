@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="WordData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/data/word_data.gd" id="1_wd"]
+
+[resource]
+script = ExtResource("1_wd")
+id = &"salvator"
+latin = "SALVATOR"
+translation_key = &"word_salvator"
+power_budget = 7.0
+group = &"oration"
+requires_unlock = false
+combo_eligible = true
+heal_candles = 3
+clear_projectiles = true
+vfx_prefix = &"VFX_SALVATOR"

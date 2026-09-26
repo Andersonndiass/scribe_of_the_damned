@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/colors.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/typography.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/motion.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/layers.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/tokens/patterns.css">
+<link rel="stylesheet" href="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/styles.css">
+<script src="_ds/scribe-of-the-damned-design-system-4b5ef4d3-ab87-41bb-876c-c7b2cd0c8baa/_ds_bundle.js"></script>
+<script src="pixel-canvas.js"></script>
+<script src="scribe-hud.js"></script>
+<script src="scribe-menus.js"></script>
+<style>
+body{margin:0;background:var(--sd-ink);image-rendering:pixelated}
+@keyframes sprite-strip{from{transform:translateX(0)}to{transform:translateX(-100%)}}
+a{color:var(--sd-blood)}
+a:hover{color:var(--sd-blood-dark)}
+</style>
+</helmet>
+
+<div style="width:1500px;padding:32px;box-sizing:border-box;display:flex;flex-direction:column;gap:24px;background-color:var(--sd-parchment);background-image:radial-gradient(var(--sd-parchment-old) 0 0.5px,transparent 0.6px);background-size:7px 7px">
+
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;border-bottom:1px solid var(--sd-ink);padding-bottom:12px">
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <div style="font-family:var(--font-pixel);font-size:14px;letter-spacing:.1em;color:var(--sd-blood)">ENTREGAVEL 30 — TELAS</div>
+      <div style="font-family:var(--font-display);font-size:48px;line-height:1.2;color:var(--sd-ink);margin-top:6px">Opções, Grimório, Créditos e Loading</div>
+    </div>
+    <div style="font-family:var(--font-pixel);font-size:14px;line-height:1.6;color:var(--sd-ink);text-align:right">
+      <div>UI_&lt;ENTIDADE&gt;_&lt;ANIMACAO&gt;.PNG · 640×360</div>
+      <div>{{ total }} FRAMES · {{ animCount }} ANIMACOES · {{ screenCount }} TELAS</div>
+      <div>TODO BOTAO E FITA, SELO OU PERGAMINHO</div>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div style="font-family:var(--font-display);font-size:32px;line-height:1.2;color:var(--sd-ink);border-bottom:1px solid var(--sd-ink);padding-bottom:6px">Telas completas · 640×360 em 1×</div>
+    <sc-for list="{{ screens }}" as="l" hint-placeholder-count="7">
+      <div style="display:flex;gap:24px;align-items:flex-start;padding:16px;border:1px solid var(--sd-ink);background:var(--sd-parchment)">
+        <div style="width:300px;flex:none;display:flex;flex-direction:column;gap:8px">
+          <div style="font-family:var(--font-display);font-size:24px;line-height:1.3;color:var(--sd-ink)">{{ l.title }}</div>
+          <div style="font-family:var(--font-pixel);font-size:12px;line-height:1.6;color:var(--sd-ink)">{{ l.desc }}</div>
+          <div style="margin-top:4px;font-family:var(--font-pixel);font-size:12px;color:var(--sd-ink-soft)">SILHUETA 1:2</div>
+          <div style="width:320px;height:180px;outline:1px solid var(--sd-ink);overflow:hidden;background:var(--sd-parchment)">
+            <x-import component-from-global-scope="pixel-canvas" rows-id="{{ l.silId }}" scale="{{ zHalf }}" hint-size="320px,180px"></x-import>
+          </div>
+        </div>
+        <div style="width:640px;height:360px;flex:none;outline:1px solid var(--sd-ink);overflow:hidden">
+          <x-import component-from-global-scope="pixel-canvas" rows-id="{{ l.id }}" scale="{{ zOne }}" hint-size="640px,360px"></x-import>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <sc-for list="{{ groups }}" as="grp" hint-placeholder-count="4">
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div style="font-family:var(--font-display);font-size:32px;line-height:1.2;color:var(--sd-ink);border-bottom:1px solid var(--sd-ink);padding-bottom:6px">{{ grp.title }}</div>
+      <sc-for list="{{ grp.anims }}" as="a" hint-placeholder-count="4">
+        <div style="display:flex;gap:24px;align-items:flex-start;padding:16px;border:1px solid var(--sd-ink);background:var(--sd-parchment)">
+          <div style="width:260px;flex:none;display:flex;flex-direction:column;gap:6px">
+            <div style="font-family:var(--font-display);font-size:24px;line-height:1.3;color:var(--sd-ink)">{{ a.name }}</div>
+            <div style="font-family:var(--font-pixel);font-size:14px;line-height:1.5;color:var(--sd-ink)">{{ a.meta }}</div>
+            <div style="font-family:var(--font-pixel);font-size:14px;line-height:1.5;color:var(--sd-ink-soft)">{{ a.file }}</div>
+            <div style="width:{{ a.previewW }}px;height:{{ a.previewH }}px;overflow:hidden;background:var(--sd-parchment);outline:1px solid var(--sd-ink-soft);margin-top:4px">
+              <div style="display:flex;height:{{ a.previewH }}px;width:{{ a.stripW }}px;animation-name:sprite-strip;animation-timing-function:{{ a.steps }};animation-iteration-count:infinite;animation-duration:{{ a.dur }}ms">
+                <sc-for list="{{ a.frames }}" as="f" hint-placeholder-count="4">
+                  <x-import component-from-global-scope="pixel-canvas" rows-id="{{ f.id }}" scale="{{ a.zoomPrev }}" hint-size="160px,160px"></x-import>
+                </sc-for>
+              </div>
+            </div>
+            <div style="font-family:var(--font-pixel);font-size:14px;color:var(--sd-ink-soft)">PREVIEW · LOOP</div>
+            <div style="font-family:var(--font-pixel);font-size:12px;line-height:1.5;color:var(--sd-ink);margin-top:4px">{{ a.desc }}</div>
+          </div>
+          <div style="display:flex;gap:12px;flex:1;flex-wrap:wrap">
+            <sc-for list="{{ a.frames }}" as="f" hint-placeholder-count="4">
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <div style="width:{{ a.cellW }}px;height:{{ a.cellH }}px;display:flex;align-items:center;background-color:var(--sd-parchment);background-image:repeating-linear-gradient(to right,var(--sd-parchment-old) 0 1px,transparent 1px {{ a.gridPx }}),repeating-linear-gradient(to bottom,var(--sd-parchment-old) 0 1px,transparent 1px {{ a.gridPx }});outline:1px solid var(--sd-ink);overflow:hidden">
+                  <x-import component-from-global-scope="pixel-canvas" rows-id="{{ f.id }}" scale="{{ a.zoomCell }}" hint-size="256px,256px"></x-import>
+                </div>
+                <div style="font-family:var(--font-pixel);font-size:12px;line-height:1.4;color:var(--sd-ink)">{{ f.label }}</div>
+                <sc-if value="{{ f.ev }}" hint-placeholder-val="{{ true }}">
+                  <div style="border-top:2px solid var(--sd-gold);padding-top:6px;font-family:var(--font-pixel);font-size:12px;line-height:1.4;color:var(--sd-ink);max-width:{{ a.cellW }}px">{{ f.ev }}</div>
+                </sc-if>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </sc-for>
+
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div style="font-family:var(--font-display);font-size:32px;line-height:1.2;color:var(--sd-ink);border-bottom:1px solid var(--sd-ink);padding-bottom:6px">Estados de medalhão, fita e página</div>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start">
+      <sc-for list="{{ states }}" as="s" hint-placeholder-count="9">
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div style="display:flex;align-items:center;background-color:var(--sd-parchment);background-image:repeating-linear-gradient(to right,var(--sd-parchment-old) 0 1px,transparent 1px {{ s.gridPx }}),repeating-linear-gradient(to bottom,var(--sd-parchment-old) 0 1px,transparent 1px {{ s.gridPx }});outline:1px solid var(--sd-ink);overflow:hidden">
+            <x-import component-from-global-scope="pixel-canvas" rows-id="{{ s.id }}" scale="{{ s.z }}" hint-size="208px,208px"></x-import>
+          </div>
+          <div style="font-family:var(--font-pixel);font-size:12px;color:var(--sd-ink)">{{ s.label }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:24px;align-items:stretch">
+    <div style="flex:1;display:flex;flex-direction:column;gap:8px;padding:16px;border:1px solid var(--sd-ink)">
+      <div style="font-family:var(--font-display);font-size:24px;color:var(--sd-ink)">Erros evitados</div>
+      <div style="font-family:var(--font-pixel);font-size:14px;line-height:1.7;color:var(--sd-ink)">
+        <sc-for list="{{ avoided }}" as="p" hint-placeholder-count="3">
+          <div>{{ p }}</div>
+        </sc-for>
+      </div>
+      <div style="font-family:var(--font-display);font-size:24px;color:var(--sd-ink);margin-top:8px">Mapa de cor</div>
+      <div style="display:flex;flex-direction:column;gap:4px;font-family:var(--font-pixel);font-size:14px;color:var(--sd-ink)">
+        <sc-for list="{{ colorMap }}" as="c" hint-placeholder-count="6">
+          <div style="display:flex;gap:8px;align-items:center"><i style="width:14px;height:14px;flex:none;background:{{ c.color }};outline:1px solid var(--sd-ink)"></i>{{ c.label }}</div>
+        </sc-for>
+      </div>
+    </div>
+    <div style="width:560px;flex:none;display:flex;flex-direction:column;gap:8px;padding:16px;border:1px solid var(--sd-ink)">
+      <div style="font-family:var(--font-display);font-size:24px;color:var(--sd-ink)">Checagem final</div>
+      <div style="display:flex;flex-direction:column;gap:6px;font-family:var(--font-pixel);font-size:14px;line-height:1.5;color:var(--sd-ink)">
+        <sc-for list="{{ checks }}" as="c" hint-placeholder-count="6">
+          <div style="display:flex;gap:8px"><span style="color:var(--sd-gold)">†</span><span>{{ c }}</span></div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1500}}">
+class Component extends DCLogic {
+  componentDidMount() {
+    if (!window.ScribeMenus) {
+      this._t = setInterval(() => {
+        if (window.ScribeMenus) { clearInterval(this._t); this.forceUpdate(); }
+      }, 80);
+    }
+  }
+  componentWillUnmount() { if (this._t) clearInterval(this._t); }
+
+  renderVals() {
+    const B = window.ScribeMenus;
+    const base = {
+      zOne: 1, zHalf: 0.5,
+      groups: [], screens: [], states: [], total: 0, animCount: 0, screenCount: 0,
+      colorMap: [
+        { color: "var(--sd-ink)", label: "FUNDO DO LOADING E DO SHELL, PREENCHIMENTO DO SLIDER, CONTORNO" },
+        { color: "var(--sd-ink-soft)", label: "MESA, PAUTA DO SLIDER, SELO DESLIGADO, ROLOS, ABA INIMIGOS" },
+        { color: "var(--sd-parchment)", label: "PAGINAS, CERA DA VELA, CARTELA DO TITULO" },
+        { color: "var(--sd-parchment-old)", label: "PONTAS TORNEADAS, MOLDURAS, DICA, PORCENTAGEM" },
+        { color: "var(--sd-blood)", label: "SELO LIGADO, CAPITULAR DO LORE, ABA CHEFES, IDIOMA ATIVO" },
+        { color: "var(--sd-blood-dark)", label: "ABA PALAVRAS, BRASAO EM RELEVO" },
+        { color: "var(--sd-gold)", label: "FOCO DOS CONTROLES, ABA COMBOS, VINHAS, CHAMA DA VELA" },
+        { color: "var(--sd-chalk)", label: "PENA DO SLIDER, TEXTO DAS ABAS, CLIQUE PARA COMECAR" }
+      ],
+      avoided: [
+        "TODO CONTROLE TEM FOCO VISIVEL: PENA-CURSOR AO LADO OU BORDA GOLD",
+        "AS TRADUCOES SO EXISTEM NO GRIMORIO — NO GAMEPLAY O LATIM NUNCA E TRADUZIDO",
+        "O PULSO DO CLIQUE PARA COMECAR E ALTERNANCIA DE COR, NAO ALPHA: NADA DE OPACIDADE"
+      ],
+      checks: [
+        "OPCOES: SLIDER EM 6 · WAXTOGGLE EM 3 @50MS · REMAP E ALTO CONTRASTE",
+        "GRIMORIO: 4 ABAS · VIRADA DE PAGINA EM 8 FRAMES @50MS · ENTRADA DESCOBERTA E NAO",
+        "CREDITOS: ROLOS EM 4 FRAMES · GARGULA TROPECANDO EM 3 FRAMES PROPRIOS",
+        "LOADING: VELA EM 0, 25, 50, 75 E 100% COM A CHAMA EM 4 FRAMES · SHELL WEB EM 2",
+        "SO CORES DA PALETA TRAVADA · BLOOD E GOLD SO ONDE A REGRA PERMITE",
+        "TODAS AS TELAS EM 640×360 EXATO, LEGIVEIS EM 1×"
+      ]
+    };
+    if (!B) return base;
+    const d = B.build();
+    window.ScribeCanvasData = window.ScribeCanvasData || {};
+    const reg = (id, rows) => { window.ScribeCanvasData[id] = { rows, palette: B.PAL }; return id; };
+    d.screens.forEach(s => { reg(s.id, s.rows); reg(s.id + "_sil", B.sil(s.rows)); });
+    d.states.forEach((s, i) => reg("st_" + i, s.rows));
+    const all = d.groups.reduce((n, g) => n + g.anims.length, 0);
+
+    return Object.assign(base, {
+      total: d.frames,
+      animCount: all,
+      screenCount: d.screens.length,
+      screens: d.screens.map(s => ({ id: s.id, silId: s.id + "_sil", title: s.title, desc: s.desc })),
+      states: d.states.map((s, i) => ({ id: "st_" + i, label: s.label, z: s.z, gridPx: s.z + "px" })),
+      groups: d.groups.map(grp => ({
+        title: grp.title,
+        anims: grp.anims.map(a => {
+          const w = a.frames[0].rows[0].length, h = a.frames[0].rows.length;
+          const zc = w > 300 ? 1 : (w > 100 ? 2 : (w > 40 ? 4 : 8));
+          const zp = w > 300 ? 0.5 : Math.max(1, Math.round(zc / 2));
+          a.frames.forEach((f, i) => reg(a.name + "_" + i + "_" + w, f.rows));
+          return {
+            name: a.name,
+            file: a.file.toUpperCase().replace(/_/g, "_\u200B"),
+            meta: a.count + "F · " + a.ms + "MS · " + w + "×" + h + " · LOOP " + a.loop.toUpperCase(),
+            desc: a.desc,
+            dur: a.dur,
+            steps: "steps(" + a.count + ")",
+            zoomCell: zc,
+            zoomPrev: zp,
+            gridPx: zc + "px",
+            stripW: a.count * w * zp,
+            previewW: w * zp,
+            previewH: h * zp,
+            cellW: w * zc,
+            cellH: h * zc,
+            frames: a.frames.map((f, i) => ({
+              id: a.name + "_" + i + "_" + w,
+              label: (a.name + " · F" + f.n + " · " + a.ms + "ms").toUpperCase().replace(/_/g, "_\u200B"),
+              ev: f.ev ? f.ev.toUpperCase().replace(/_/g, "_\u200B") : ""
+            }))
+          };
+        })
+      }))
+    });
+  }
+}
+
+</script>
+</body>
+</html>

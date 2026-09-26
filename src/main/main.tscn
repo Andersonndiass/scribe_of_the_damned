@@ -1,0 +1,91 @@
+[gd_scene load_steps=14 format=3]
+
+[ext_resource type="Script" path="res://src/main/main.gd" id="1_main"]
+[ext_resource type="Resource" path="res://data/player/anselmo.tres" id="2_data"]
+[ext_resource type="PackedScene" path="res://src/arena/arena.tscn" id="3_arena"]
+[ext_resource type="PackedScene" path="res://src/player/player.tscn" id="4_player"]
+[ext_resource type="Resource" path="res://data/chapters/chapter_1.tres" id="5_wave"]
+[ext_resource type="Script" path="res://src/enemies/enemy_manager.gd" id="6_em"]
+[ext_resource type="Script" path="res://src/enemies/enemy_renderer.gd" id="7_er"]
+[ext_resource type="Script" path="res://src/waves/wave_director.gd" id="8_wd"]
+[ext_resource type="Script" path="res://src/letters/letter_field.gd" id="9_lf"]
+[ext_resource type="Resource" path="res://data/lexicon/base.tres" id="10_lex"]
+[ext_resource type="Resource" path="res://data/tuning/drop_tuning.tres" id="11_tuning"]
+[ext_resource type="Script" path="res://src/miracles/caster.gd" id="12_caster"]
+[ext_resource type="PackedScene" path="res://src/ui/hud/hud.tscn" id="13_hud"]
+[ext_resource type="Script" path="res://src/ui/minimal/overlays.gd" id="14_overlays"]
+[ext_resource type="Script" path="res://src/enemies/hazard_field.gd" id="15_hazards"]
+[ext_resource type="Script" path="res://src/enemies/enemy_projectile_manager.gd" id="16_eproj"]
+[ext_resource type="Script" path="res://src/letters/gold_ink_field.gd" id="17_gold"]
+[ext_resource type="Script" path="res://src/enemies/champion_rewards.gd" id="18_rewards"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_main")
+player_data = ExtResource("2_data")
+chapter = ExtResource("5_wave")
+
+[node name="Arena" parent="." instance=ExtResource("3_arena")]
+
+[node name="HazardField" type="Node2D" parent="."]
+script = ExtResource("15_hazards")
+
+[node name="FxLayer" type="Node2D" parent="."]
+
+[node name="TelegraphLayer" type="Node2D" parent="."]
+
+[node name="World" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="LetterField" type="Node2D" parent="World" node_paths=PackedStringArray("player")]
+y_sort_enabled = true
+script = ExtResource("9_lf")
+player = NodePath("../Player")
+lexicon_data = ExtResource("10_lex")
+tuning = ExtResource("11_tuning")
+
+[node name="GoldInkField" type="Node2D" parent="World" node_paths=PackedStringArray("player")]
+y_sort_enabled = true
+script = ExtResource("17_gold")
+player = NodePath("../Player")
+
+[node name="EnemyManager" type="Node2D" parent="World" node_paths=PackedStringArray("player")]
+script = ExtResource("6_em")
+player = NodePath("../Player")
+
+[node name="EnemyRenderer" type="Node2D" parent="World" node_paths=PackedStringArray("manager")]
+y_sort_enabled = true
+script = ExtResource("7_er")
+manager = NodePath("../EnemyManager")
+
+[node name="Player" parent="World" instance=ExtResource("4_player")]
+position = Vector2(320, 180)
+
+[node name="EnemyProjectiles" type="Node2D" parent="World" node_paths=PackedStringArray("player")]
+z_index = 1
+script = ExtResource("16_eproj")
+player = NodePath("../Player")
+
+[node name="MiracleLayer" type="Node2D" parent="."]
+
+[node name="ProjectileLayer" type="Node2D" parent="."]
+
+[node name="WaveDirector" type="Node" parent="." node_paths=PackedStringArray("manager", "player", "telegraph_parent")]
+script = ExtResource("8_wd")
+manager = NodePath("../World/EnemyManager")
+player = NodePath("../World/Player")
+telegraph_parent = NodePath("../TelegraphLayer")
+
+[node name="Caster" type="Node" parent="." node_paths=PackedStringArray("letter_field", "player")]
+script = ExtResource("12_caster")
+letter_field = NodePath("../World/LetterField")
+player = NodePath("../World/Player")
+
+[node name="Hud" parent="." instance=ExtResource("13_hud")]
+
+[node name="Overlays" type="CanvasLayer" parent="."]
+script = ExtResource("14_overlays")
+
+[node name="ChampionRewards" type="Node" parent="." node_paths=PackedStringArray("player", "gold")]
+script = ExtResource("18_rewards")
+player = NodePath("../World/Player")
+gold = NodePath("../World/GoldInkField")

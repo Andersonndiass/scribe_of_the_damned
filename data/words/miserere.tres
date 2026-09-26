@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="WordData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/data/word_data.gd" id="1_wd"]
+
+[resource]
+script = ExtResource("1_wd")
+id = &"miserere"
+latin = "MISERERE"
+translation_key = &"word_miserere"
+power_budget = 7.0
+group = &"oration"
+requires_unlock = false
+combo_eligible = true
+damage = 40.0
+forgive_heresy = true
+kill_batch_per_frame = 30
+vfx_prefix = &"VFX_MISERERE"

@@ -1,0 +1,25 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://src/ui/hud/candles.gd" id="1_candles"]
+[ext_resource type="Script" path="res://src/ui/hud/atril_view.gd" id="2_atril"]
+[ext_resource type="Script" path="res://src/ui/hud/word_list.gd" id="3_words"]
+[ext_resource type="Script" path="res://src/ui/hud/wave_timer.gd" id="4_timer"]
+[ext_resource type="Script" path="res://src/ui/hud/ink_counter.gd" id="5_ink"]
+
+[node name="Hud" type="CanvasLayer"]
+layer = 5
+
+[node name="Candles" type="Node2D" parent="."]
+script = ExtResource("1_candles")
+
+[node name="WaveTimer" type="Node2D" parent="."]
+script = ExtResource("4_timer")
+
+[node name="Atril" type="Node2D" parent="."]
+script = ExtResource("2_atril")
+
+[node name="WordList" type="Node2D" parent="."]
+script = ExtResource("3_words")
+
+[node name="Ink" type="Node2D" parent="."]
+script = ExtResource("5_ink")

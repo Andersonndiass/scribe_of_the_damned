@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="WordData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://src/data/word_data.gd" id="1_wd"]
+[ext_resource type="PackedScene" path="res://src/miracles/vita/vita.tscn" id="2_scene"]
+
+[resource]
+script = ExtResource("1_wd")
+id = &"vita"
+latin = "VITA"
+translation_key = &"word_vita"
+miracle_scene = ExtResource("2_scene")
+power_budget = 1.6
+heal_candles = 1
+vfx_prefix = &"VFX_VITA"

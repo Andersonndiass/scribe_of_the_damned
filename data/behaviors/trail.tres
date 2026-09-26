@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="TrailBehavior" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://src/enemies/behaviors/trail_behavior.gd" id="1_s"]
+[ext_resource type="Resource" path="res://data/hazards/puddle_ink.tres" id="2_e"]
+
+[resource]
+script = ExtResource("1_s")
+trail_interval = 2.5
+puddle = ExtResource("2_e")

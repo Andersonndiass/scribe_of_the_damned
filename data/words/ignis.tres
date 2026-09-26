@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="WordData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://src/data/word_data.gd" id="1_wd"]
+[ext_resource type="PackedScene" path="res://src/miracles/ignis/ignis.tscn" id="2_scene"]
+
+[resource]
+script = ExtResource("1_wd")
+id = &"ignis"
+latin = "IGNIS"
+translation_key = &"word_ignis"
+miracle_scene = ExtResource("2_scene")
+power_budget = 2.4
+damage = 2.0
+tick_interval = 0.25
+radius = 48.0
+duration = 3.0
+vfx_prefix = &"VFX_IGNIS"

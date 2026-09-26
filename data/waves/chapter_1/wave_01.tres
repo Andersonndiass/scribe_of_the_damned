@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="WaveData" format=3 uid="uid://cmj5xfhamthfc"]
+
+[ext_resource type="Script" uid="uid://bnln6ltw1u7qd" path="res://src/data/wave_data.gd" id="1_wd"]
+[ext_resource type="Script" uid="uid://dowd1ixnv3yh3" path="res://src/data/spawn_group.gd" id="2_sg"]
+[ext_resource type="Resource" path="res://data/enemies/imp.tres" id="3_imp"]
+
+[sub_resource type="Resource" id="Group_early"]
+script = ExtResource("2_sg")
+enemy = ExtResource("3_imp")
+end_time = 20.0
+
+[sub_resource type="Resource" id="Group_late"]
+script = ExtResource("2_sg")
+enemy = ExtResource("3_imp")
+start_time = 20.0
+spawn_rate_start = 1.0
+spawn_rate_end = 2.0
+
+[resource]
+script = ExtResource("1_wd")
+groups = Array[ExtResource("2_sg")]([SubResource("Group_early"), SubResource("Group_late")])

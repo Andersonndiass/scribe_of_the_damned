@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://src/data/enemy_data.gd" id="1_s"]
+[ext_resource type="Resource" path="res://data/behaviors/trail.tres" id="2_e"]
+[ext_resource type="SpriteFrames" path="res://assets/placeholders/enm_borrao_frames.tres" id="3_e"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"ink_blot"
+max_hp = 3
+move_speed = 28.0
+radius = 6.0
+contact_damage = 1
+separation_weight = 1.0
+behavior = ExtResource("2_e")
+flying = false
+dash_contact_damage = 0
+telegraph_time = 0.5
+letter_drop_chance = 0.7
+sprite_frames = ExtResource("3_e")
+sprite_pivot = Vector2(7, 9)
+dissolve_size = 12

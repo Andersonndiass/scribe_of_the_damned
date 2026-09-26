@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://src/player/ink_drop.gd" id="1_drop"]
+[ext_resource type="Texture2D" path="res://assets/placeholders/prj_ink_drop.tres" id="2_tex"]
+
+[node name="InkDrop" type="Node2D"]
+script = ExtResource("1_drop")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture = ExtResource("2_tex")
