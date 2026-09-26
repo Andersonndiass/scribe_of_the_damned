@@ -89,7 +89,7 @@ Ordem padrão: game-design → rules → mechanics → design + animation → co
 
 - **Etapa:** Etapa 3 — features 001 e 005 Complete; 002 Fase 1 ✅. GUT 149/149. Paleta C (D-048). Otimizações D-049 (projéteis em laço único, STEER_STRIDE 3).
 - **Feature atual:** nenhuma em andamento.
-- **Próximo:** feature 002 Fase 2 (combos, T210–T214). Aberto: C-004 (playtest do autor) e C-005 (Firefox abaixo do SC-001; decisão do autor).
+- **Próximo:** feature 002 Fase 2 (combos, T210–T214). Aberto: C-004 (playtest do autor); C-005 adiada para a 011 (D-050).
 - **Sonda por onda:** `godot --headless --path . -s tools/balance_probe.gd -- cast god wave=N` (linha FLOW; ver T533 §6).
 - **Pendente de sensação:** screen shake (morte de campeão) — o jogo ainda não tem câmera com shake.
 - **Vitrine:** `index.html?roster` (os 5 inimigos) · `index.html?stress` (SC-001) · `index.html?stress=wave9` (SC-503).

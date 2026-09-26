@@ -247,6 +247,10 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
 - **Resultado:** seções −25–40%, FPS do Firefox +~15%; SC-001 continua ❌ no Firefox (T085 §1.4). Nenhum número de jogo mudou.
 - **Status:** ✅ aprovada pelo autor ("1", "pode seguir").
 
+### D-050 · 2026-09-26 · Firefox abaixo do SC-001 aceito por enquanto
+- **Decisão:** o Chrome é a referência do SC-001; o Firefox é medido de novo na feature 011 (publicação), de preferência em outro computador. Sem mais otimizações agora.
+- **Status:** ✅ escolha do autor ("1").
+
 ---
 
 ## Conflitos abertos
@@ -263,6 +267,6 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
 
   **Leitura:** o mecanismo funciona (CRUX, AQUA e PAX saíram no jogo real), mas com os números atuais o jogador monta **no máximo ~1 palavra por onda**, e as palavras deveriam ser o dano principal. O gargalo é a morte de inimigos (ataque automático fraco contra HP 3), que limita as letras. O bot é pior que um humano (o ímã puxa letras inúteis e ele não usa purge), então o real deve ser um pouco melhor.
   **Opções:** (a) Diabrete com HP 2; (b) drop de letra 100%; (c) mais de uma letra por morte; (d) letras iniciais no começo da onda; (e) esperar a Fase 5 (purge + 6 palavras) e medir de novo no T069. **Recomendação do Claude:** (a) HP 2 agora + medir de novo no T069 com purge.
-- **C-005 · SC-001 no web (DECISÃO DO AUTOR).** *Atualização D-049:* otimizado; Firefox ainda 29–31 FPS nesta máquina (cena vazia já dá 55). Falta o autor decidir: aceitar, reduzir a carga no web ou otimizar o acerto dos projéteis. *Atualização 2026-09-26:* medido no Firefox com GPU: **31–35 FPS, p95 12–15 ❌**; os scripts custam ~2,5× o Chrome. O Chrome desta vez deu 58–69 (p95 40–56, variação da máquina; código igual). Opções em `docs/reviews/T085-performance.md` §1.3 e §4. Antes: ✅ **Resolvido no Chrome** pela D-039 (média 86–90, p95 67–68). Histórico: Scripts em WebAssembly custam ~5–8× o desktop. O Chrome sem janela desta máquina deu de 7 a 39 FPS para o mesmo build (inconclusivo) e não há Firefox. Próximo passo: o autor mede `index.html?stress` no Chrome e no Firefox de verdade. Opções de otimização em `docs/reviews/T085-performance.md` §4.
+- **C-005 · SC-001 no web.** ⏸️ Adiado pela D-050 (remedir o Firefox na 011). *Atualização D-049:* otimizado; Firefox ainda 29–31 FPS nesta máquina (cena vazia já dá 55). Falta o autor decidir: aceitar, reduzir a carga no web ou otimizar o acerto dos projéteis. *Atualização 2026-09-26:* medido no Firefox com GPU: **31–35 FPS, p95 12–15 ❌**; os scripts custam ~2,5× o Chrome. O Chrome desta vez deu 58–69 (p95 40–56, variação da máquina; código igual). Opções em `docs/reviews/T085-performance.md` §1.3 e §4. Antes: ✅ **Resolvido no Chrome** pela D-039 (média 86–90, p95 67–68). Histórico: Scripts em WebAssembly custam ~5–8× o desktop. O Chrome sem janela desta máquina deu de 7 a 39 FPS para o mesmo build (inconclusivo) e não há Firefox. Próximo passo: o autor mede `index.html?stress` no Chrome e no Firefox de verdade. Opções de otimização em `docs/reviews/T085-performance.md` §4.
 - ~~**C-003 · Tamanho do build web.**~~ Resolvido pela D-047 (8A): a meta vale para o download comprimido. O build vazio tem **38 MB crus / 9,9 MB comprimidos** (quase tudo é o `index.wasm` do motor). A meta da constituição é "até 25 MB". Proposta para a feature 011: medir a meta como **download comprimido** e, se precisar, compilar um template web próprio sem 3D (o wasm cai bastante). Decidir até a 011.
 - **C-002 · FEATURES.md marca 001–015 como "Tasked ✅"**, mas os arquivos não existem. As specs serão escritas just-in-time.
