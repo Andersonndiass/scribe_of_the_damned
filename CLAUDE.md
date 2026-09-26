@@ -87,16 +87,16 @@ Ordem padrão: game-design → rules → mechanics → design + animation → co
 
 ## Estado atual
 
-- **Etapa:** Etapa 3 — **features 001 e 005 Complete** (2026-09-25). GUT 136/136. Capítulo 1 jogável da onda 1 à 9. Chrome: SC-001 81–89 / p95 64–69 · SC-503 78–80 / p95 60–65.
+- **Etapa:** Etapa 3 — features 001 e 005 Complete; 002 Fase 1 ✅. GUT 149/149. Paleta C (D-048). Otimizações D-049 (projéteis em laço único, STEER_STRIDE 3).
 - **Feature atual:** nenhuma em andamento.
-- **Próximo:** feature 002 Fase 2 (combos, T210–T214). Paleta C aplicada (D-048). Aberto: C-004 (playtest) e C-005 (SC-001 ❌ no Firefox, 31–35 FPS; decidir otimização).
-- **Sonda por onda:** `godot --headless --path . -s tools/balance_probe.gd -- cast wave=N` (bot não mede ritmo de palavras; ver T533).
+- **Próximo:** feature 002 Fase 2 (combos, T210–T214). Aberto: C-004 (playtest do autor) e C-005 (Firefox abaixo do SC-001; decisão do autor).
+- **Sonda por onda:** `godot --headless --path . -s tools/balance_probe.gd -- cast god wave=N` (linha FLOW; ver T533 §6).
 - **Pendente de sensação:** screen shake (morte de campeão) — o jogo ainda não tem câmera com shake.
 - **Vitrine:** `index.html?roster` (os 5 inimigos) · `index.html?stress` (SC-001) · `index.html?stress=wave9` (SC-503).
-- **Pendências de medição do autor:** Firefox em `index.html?stress`; playtest para a C-004.
+- **Firefox:** medido pelo Claude (T085 §1.3–1.4): SC-001 ❌ (29–35 FPS). Medir só com janela e `widget.windows.window_occlusion_tracking.enabled=false`.
 - **Stress:** `godot --path . res://src/debug/stress_scene.tscn -- quit` (desktop) · `build/web/index.html?stress` (web).
 - **Aberto:** C-004 pede playtest humano (alavancas em `docs/reviews/T069-rules-parecer.md` §4).
 - **Fonte:** `src/ui/pixel_font.gd` (5×6 feita à mão, atlas em `assets/placeholders/ui_font_atlas.*`), até a fonte do design system.
-- **Sem git, CI nem itch** por enquanto (D-021). A T006 está adiada.
+- **Git local** (D-047 9B), commit a cada fase; sem GitHub, CI nem itch.
 - **Pendências do autor:** áudio; confirmar "parado e sem atacar" (D-011). Narrativa: `specs/000-game-bible/narrative.md`. Arte: gerada por script a partir das fichas (D-024).
 - **Sprites:** placeholders gerados por `tools/gen_placeholders.gd` até os PNGs reais chegarem.
