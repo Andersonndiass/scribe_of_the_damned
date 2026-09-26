@@ -86,6 +86,14 @@ func test_cast_with_empty_atril_does_nothing() -> void:
 	assert_eq(_player.machine.current.name, &"Idle", "atril vazio não é heresia (D-030)")
 
 
+func test_casting_while_idle_keeps_regen_counting() -> void:
+	_player.vitals.idle_time = 6.0
+	for ch: String in "LUX":
+		_field.collect(ch, false)
+	assert_true(_caster.cast())
+	assert_almost_eq(_player.vitals.idle_time, 6.0, 0.001, "conjurar parado não zera a recuperação (D-011, 1c)")
+
+
 func test_rare_vowel_boosts_power() -> void:
 	var powers: Array[float] = []
 	var cb := func(_w: WordData, pw: float, _o: Vector2, _d: Vector2) -> void: powers.append(pw)

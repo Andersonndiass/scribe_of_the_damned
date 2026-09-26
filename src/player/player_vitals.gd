@@ -2,7 +2,8 @@ class_name PlayerVitals
 extends RefCounted
 ## Velas, i-frames e recuperação parado do jogador (FR-003, FR-004). Lógica pura, sem nós.
 ## Recuperação: depois de `idle_regen_delay` s parado, +1 vela a cada `idle_regen_interval` s
-## (a 1ª vela chega em delay + interval). Movimento, conjuração ou dano zeram a contagem (D-011).
+## (a 1ª vela chega em delay + interval). Só movimento ou dano zeram a contagem; conjurar parado
+## NÃO zera (D-011 revisada: resposta "1c" do autor, 2026-09-26).
 
 var candles: int = 0
 ## Máximo atual da partida (começa em start_candles; upgrades sobem até cap).

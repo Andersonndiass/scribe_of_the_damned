@@ -84,7 +84,7 @@ func test_moving_resets_idle_counter() -> void:
 	assert_eq(_advance(7.75, true), 0, "a contagem recomeçou do zero")
 
 
-func test_cast_resets_idle_counter() -> void:
+func test_notify_action_resets_idle_counter() -> void:
 	_v.damage(1)
 	_advance(7.0, true)
 	_v.notify_action()

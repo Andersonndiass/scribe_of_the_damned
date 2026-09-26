@@ -35,7 +35,6 @@ func _ready() -> void:
 	auto_attack.data = data
 	_sync_state()
 	hurtbox.hit.connect(take_hit)
-	EventBus.word_cast.connect(_on_word_cast)
 	sprite.frame_changed.connect(_on_frame_changed)
 	_pen_flash = ColorRect.new()
 	_pen_flash.size = PEN_FLASH_SIZE
@@ -136,8 +135,6 @@ func _on_frame_changed() -> void:
 		sprite.scale = SQUASH_RUN if sprite.frame % 2 == 0 else Vector2.ONE
 
 
-func _on_word_cast(_word: WordData, _power: float, _origin: Vector2, _direction: Vector2) -> void:
-	vitals.notify_action()
 
 
 func _sync_state() -> void:

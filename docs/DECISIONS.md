@@ -224,6 +224,19 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
 - **Decisão:** SPIRITUS intangível (não invulnerável), SALVATOR +3 velas sem invulnerabilidade, Cegueira sem cancelar contato, MISERERE como absolvição, PURGO 10 em elites, VERBUM não repete orações nem combos, DOMINUS 20.
 - **Status:** ✅ aprovada pelo autor ("3ok").
 
+### D-047 · 2026-09-26 · Respostas do autor às perguntas abertas
+- **D-011 revisada (1C):** recuperar vela exige ficar **sem se mover e sem levar dano**; conjurar parado **não** zera a contagem.
+- **Ritmo de palavras (2B):** construir uma sonda com o jogador invencível que mede letras úteis por minuto; depois o playtest do autor confirma.
+- **Firefox (3B):** o Claude instala o Firefox nesta máquina e mede.
+- **Paleta (4C):** o Claude gera 2–3 variações numa página para o autor escolher.
+- **Áudio (5):** agora só a arquitetura de áudio (sem sons); sons provisórios por script na feature 009.
+- **Screen shake (6B):** entra na feature 006 (Asmodeus), com opção de desligar.
+- **Sprites (7C):** arte gerada por script aos poucos, junto com a feature que usa cada coisa; o que já existe, antes da demo.
+- **Build web (8A):** a meta de 25 MB vale para o **download comprimido** (hoje 9,9 MB). Resolve a C-003.
+- **Git (9B):** repositório local com commits a cada fase, sem GitHub por enquanto.
+- **Ordem (10B→A):** sonda + git antes dos combos da 002.
+- **Status:** ✅ respostas do autor ("1c 2b 3b 4c 5 sigo sua recomendacao 6b 7c 8a 9b 10b depois a").
+
 ---
 
 ## Conflitos abertos
@@ -241,5 +254,5 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
   **Leitura:** o mecanismo funciona (CRUX, AQUA e PAX saíram no jogo real), mas com os números atuais o jogador monta **no máximo ~1 palavra por onda**, e as palavras deveriam ser o dano principal. O gargalo é a morte de inimigos (ataque automático fraco contra HP 3), que limita as letras. O bot é pior que um humano (o ímã puxa letras inúteis e ele não usa purge), então o real deve ser um pouco melhor.
   **Opções:** (a) Diabrete com HP 2; (b) drop de letra 100%; (c) mais de uma letra por morte; (d) letras iniciais no começo da onda; (e) esperar a Fase 5 (purge + 6 palavras) e medir de novo no T069. **Recomendação do Claude:** (a) HP 2 agora + medir de novo no T069 com purge.
 - **C-005 · SC-001 no web.** ✅ **Resolvido no Chrome** pela D-039 (média 86–90, p95 67–68). Falta só medir no Firefox (autor). Histórico: Scripts em WebAssembly custam ~5–8× o desktop. O Chrome sem janela desta máquina deu de 7 a 39 FPS para o mesmo build (inconclusivo) e não há Firefox. Próximo passo: o autor mede `index.html?stress` no Chrome e no Firefox de verdade. Opções de otimização em `docs/reviews/T085-performance.md` §4.
-- **C-003 · Tamanho do build web.** O build vazio tem **38 MB crus / 9,9 MB comprimidos** (quase tudo é o `index.wasm` do motor). A meta da constituição é "até 25 MB". Proposta para a feature 011: medir a meta como **download comprimido** e, se precisar, compilar um template web próprio sem 3D (o wasm cai bastante). Decidir até a 011.
+- ~~**C-003 · Tamanho do build web.**~~ Resolvido pela D-047 (8A): a meta vale para o download comprimido. O build vazio tem **38 MB crus / 9,9 MB comprimidos** (quase tudo é o `index.wasm` do motor). A meta da constituição é "até 25 MB". Proposta para a feature 011: medir a meta como **download comprimido** e, se precisar, compilar um template web próprio sem 3D (o wasm cai bastante). Decidir até a 011.
 - **C-002 · FEATURES.md marca 001–015 como "Tasked ✅"**, mas os arquivos não existem. As specs serão escritas just-in-time.
