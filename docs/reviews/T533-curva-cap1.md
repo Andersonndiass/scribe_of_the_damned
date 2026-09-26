@@ -4,6 +4,8 @@
 
 **PARECER: VÁLIDO COM RESSALVAS. Nenhum número muda agora.**
 
+> ⚠️ **Errata (2026-09-26):** a sonda usada aqui apertava "conjurar" em todo frame, o que desde a Fase 5 da 001 gera heresia constante. A coluna "Palavras" da §2 está **contaminada** (subestima as palavras). Os dados de §1 (curva de carga) continuam válidos. Dados corretos na §6.
+
 ## 1. A curva é monotônica
 - **Duração:** 60 → 90 s. **Diabrete:** 0.5 → 1.8 por s no início da onda.
 - **Carga média (HP/s):** 2.5 · 3.0 · 3.45 · 4.05 · 5.0 · 5.4 · 6.45 · 7.5 · 8.35. Nenhum salto passa de 25%; o maior é o da 4 para a 5 (+23%, entrada da Gárgula).
@@ -38,3 +40,21 @@
 
 ## 5. Sugestão de ferramenta (não é número)
 Um modo **invencível** da sonda que registre letras úteis por minuto e palavras possíveis, para medir o fluxo de letras sem depender de o bot sobreviver.
+
+## 6. Fluxo de letras com a sonda corrigida (2026-09-26, D-047 2B)
+
+Sonda invencível (`-- cast god wave=N`): o bot só conjura quando o atril está VÁLIDO e usa purge. 2 execuções por onda. "Alvo" = letras que servem para alguma palavra conhecida no momento.
+
+| Onda | Letras caídas/min | Alvo/min | Coletadas/min | Comidas (Traça) | Palavras/min | Heresias |
+|---|---|---|---|---|---|---|
+| 1 | 21–32 | 8–9 | 10–19 | 0 | 0–1,0 | 0 |
+| 2 | 35–89 | 9–28 | 18–55 | 7–8 | 0–1,9 | 0 |
+| 3 | 15–54 | 6–24 | 8–32 | 6–8 | 0,9–2,6 | 0 |
+| 4 | 30–31 | 6–7 | 15–16 | 7–10 | 0–0,8 | 0 |
+| 5 | 14–38 | 2–15 | 7–26 | 7–10 | 0–3,0 | 0 |
+| 6 | 24–25 | 6 | 12–14 | 10–11 | 0 | 0 |
+| 7 | 17–22 | 4 | 8–10 | 9–13 | 0,7 | 0 |
+| 8 | 20–27 | 5–6 | 11–12 | 8–15 | 0–0,7 | 0 |
+| 9 | 19–32 | 8 | 10–16 | 10–12 | 0–1,3 | 0 |
+
+**Leitura:** letras não faltam (~25/min), mas só ~6/min servem e a ordem certa raramente se completa: **mediana ~0,7 palavra/min** (0–4 por onda). A partir da onda 4 as Traças comem 7–15 letras por onda. O bot é pior que um humano (não planeja a palavra), então isto é um piso. Confirma a C-004; a decisão continua esperando o playtest do autor.

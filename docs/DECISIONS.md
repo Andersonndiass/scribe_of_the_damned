@@ -18,7 +18,7 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
 - **Decisão:** Princípio IV = conteúdo é dado; Princípio IX = cutscenes in-engine.
 - **Status:** ✅ aprovada.
 
-### D-004 · 2026-09-24 · Hex da paleta provisórios
+### D-004 · 2026-09-24 · Hex da paleta provisórios (substituída pela D-048)
 - **Decisão:** `design-tokens.json` usa hex escolhidos pelo Claude até o `colors.css` do design system chegar.
 - **Como reverter:** trocar os valores e rodar `tools/gen_palette.gd`.
 - **Status:** ⏳ provisória.
@@ -237,12 +237,16 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
 - **Ordem (10B→A):** sonda + git antes dos combos da 002.
 - **Status:** ✅ respostas do autor ("1c 2b 3b 4c 5 sigo sua recomendacao 6b 7c 8a 9b 10b depois a").
 
+### D-048 · 2026-09-26 · Paleta C (ferro-gálica fria)
+- **Decisão:** das 3 variações mostradas no artefato "Paletas do Códice", o autor escolheu a C: tinta #15171C, tinta rala #3E4450, pergaminho #E4DDCB, pergaminho velho #BDB39A, giz #F5F3EC, sangue #7E1627, sangue seco #4E0D18, ouro #B89436, ouro claro #DCC06A. Substitui os hex provisórios da D-004.
+- **Status:** ✅ aprovada pelo autor ("gostei do C").
+
 ---
 
 ## Conflitos abertos
 
 - ~~C-001 · VERBUM usa B~~ → resolvido pela D-015.
-- **C-004 · Ritmo de palavras por onda (DECISÃO DO AUTOR).** *Atualização T069:* HP 2 aplicado (D-030); com as 7 palavras e o purge, a sonda automática deixou de ser confiável (laços de purge, ímã puxando letras inúteis). Próximo passo: **playtest humano** no build web; alavancas listadas em `docs/reviews/T069-rules-parecer.md` §4. Dados originais: Sonda na onda 1 (2 execuções por cenário; bot que foge, busca só letras úteis e conjura):
+- **C-004 · Ritmo de palavras por onda (DECISÃO DO AUTOR).** *Atualização 2026-09-26:* a sonda antiga conjurava em todo frame (heresia constante), então os dados de palavras do T069 e do T533 subestimavam. Com a sonda corrigida e invencível (`docs/reviews/T533-curva-cap1.md` §6): ~25 letras caídas/min, ~6 úteis/min, **mediana ~0,7 palavra/min** nas 9 ondas, 0 heresias. O gargalo é a ordem das letras úteis, não a quantidade. Continua esperando o playtest do autor. *Atualização T069:* HP 2 aplicado (D-030); com as 7 palavras e o purge, a sonda automática deixou de ser confiável (laços de purge, ímã puxando letras inúteis). Próximo passo: **playtest humano** no build web; alavancas listadas em `docs/reviews/T069-rules-parecer.md` §4. Dados originais: Sonda na onda 1 (2 execuções por cenário; bot que foge, busca só letras úteis e conjura):
 
   | Diabrete | Letras caídas | Palavras conjuradas | Sobreviveu? |
   |---|---|---|---|
@@ -253,6 +257,6 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
 
   **Leitura:** o mecanismo funciona (CRUX, AQUA e PAX saíram no jogo real), mas com os números atuais o jogador monta **no máximo ~1 palavra por onda**, e as palavras deveriam ser o dano principal. O gargalo é a morte de inimigos (ataque automático fraco contra HP 3), que limita as letras. O bot é pior que um humano (o ímã puxa letras inúteis e ele não usa purge), então o real deve ser um pouco melhor.
   **Opções:** (a) Diabrete com HP 2; (b) drop de letra 100%; (c) mais de uma letra por morte; (d) letras iniciais no começo da onda; (e) esperar a Fase 5 (purge + 6 palavras) e medir de novo no T069. **Recomendação do Claude:** (a) HP 2 agora + medir de novo no T069 com purge.
-- **C-005 · SC-001 no web.** ✅ **Resolvido no Chrome** pela D-039 (média 86–90, p95 67–68). Falta só medir no Firefox (autor). Histórico: Scripts em WebAssembly custam ~5–8× o desktop. O Chrome sem janela desta máquina deu de 7 a 39 FPS para o mesmo build (inconclusivo) e não há Firefox. Próximo passo: o autor mede `index.html?stress` no Chrome e no Firefox de verdade. Opções de otimização em `docs/reviews/T085-performance.md` §4.
+- **C-005 · SC-001 no web (DECISÃO DO AUTOR).** *Atualização 2026-09-26:* medido no Firefox com GPU: **31–35 FPS, p95 12–15 ❌**; os scripts custam ~2,5× o Chrome. O Chrome desta vez deu 58–69 (p95 40–56, variação da máquina; código igual). Opções em `docs/reviews/T085-performance.md` §1.3 e §4. Antes: ✅ **Resolvido no Chrome** pela D-039 (média 86–90, p95 67–68). Histórico: Scripts em WebAssembly custam ~5–8× o desktop. O Chrome sem janela desta máquina deu de 7 a 39 FPS para o mesmo build (inconclusivo) e não há Firefox. Próximo passo: o autor mede `index.html?stress` no Chrome e no Firefox de verdade. Opções de otimização em `docs/reviews/T085-performance.md` §4.
 - ~~**C-003 · Tamanho do build web.**~~ Resolvido pela D-047 (8A): a meta vale para o download comprimido. O build vazio tem **38 MB crus / 9,9 MB comprimidos** (quase tudo é o `index.wasm` do motor). A meta da constituição é "até 25 MB". Proposta para a feature 011: medir a meta como **download comprimido** e, se precisar, compilar um template web próprio sem 3D (o wasm cai bastante). Decidir até a 011.
 - **C-002 · FEATURES.md marca 001–015 como "Tasked ✅"**, mas os arquivos não existem. As specs serão escritas just-in-time.

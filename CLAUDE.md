@@ -89,7 +89,7 @@ Ordem padrão: game-design → rules → mechanics → design + animation → co
 
 - **Etapa:** Etapa 3 — **features 001 e 005 Complete** (2026-09-25). GUT 136/136. Capítulo 1 jogável da onda 1 à 9. Chrome: SC-001 81–89 / p95 64–69 · SC-503 78–80 / p95 60–65.
 - **Feature atual:** nenhuma em andamento.
-- **Próximo:** feature 002 (spec aprovada, D-044..D-046). Fase 1 (T200–T202) ✅, GUT 142. Próxima: Fase 2 (combos). Depois 003 → 004.
+- **Próximo:** feature 002 Fase 2 (combos, T210–T214). Paleta C aplicada (D-048). Aberto: C-004 (playtest) e C-005 (SC-001 ❌ no Firefox, 31–35 FPS; decidir otimização).
 - **Sonda por onda:** `godot --headless --path . -s tools/balance_probe.gd -- cast wave=N` (bot não mede ritmo de palavras; ver T533).
 - **Pendente de sensação:** screen shake (morte de campeão) — o jogo ainda não tem câmera com shake.
 - **Vitrine:** `index.html?roster` (os 5 inimigos) · `index.html?stress` (SC-001) · `index.html?stress=wave9` (SC-503).

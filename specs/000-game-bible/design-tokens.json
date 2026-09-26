@@ -1,20 +1,50 @@
 {
   "$meta": {
     "version": "0.1.0",
-    "status": "PROPOSTA — hex provisórios. Substituir pelos valores de _ds/scribe-of-the-damned-design-system-*/tokens/colors.css quando o design system for exportado.",
+    "status": "Paleta C (ferro-gálica fria) escolhida pelo autor em 2026-09-26 (D-048). Hex definidos pelo Claude; o autor pode ajustar.",
     "source": "Nomes dos tokens extraídos das fichas do Claude Design (--sd-*). Hex escolhidos pelo Claude Code.",
-    "consumers": ["tools/gen_palette.gd -> src/core/palette.gd", "tema da UI (feature 007)"]
+    "consumers": [
+      "tools/gen_palette.gd -> src/core/palette.gd",
+      "tema da UI (feature 007)"
+    ]
   },
   "color": {
-    "ink":           { "hex": "#1C1714", "css": "--sd-ink" },
-    "ink_soft":      { "hex": "#4A4039", "css": "--sd-ink-soft" },
-    "parchment":     { "hex": "#E9DCBF", "css": "--sd-parchment" },
-    "parchment_old": { "hex": "#C8B28A", "css": "--sd-parchment-old" },
-    "chalk":         { "hex": "#F7F2E6", "css": "--sd-chalk" },
-    "blood":         { "hex": "#8E1C1C", "css": "--sd-blood" },
-    "blood_dark":    { "hex": "#5B1012", "css": "--sd-blood-dark" },
-    "gold":          { "hex": "#C99A2E", "css": "--sd-gold" },
-    "gold_light":    { "hex": "#E9C866", "css": "--sd-gold-light" }
+    "ink": {
+      "hex": "#15171C",
+      "css": "--sd-ink"
+    },
+    "ink_soft": {
+      "hex": "#3E4450",
+      "css": "--sd-ink-soft"
+    },
+    "parchment": {
+      "hex": "#E4DDCB",
+      "css": "--sd-parchment"
+    },
+    "parchment_old": {
+      "hex": "#BDB39A",
+      "css": "--sd-parchment-old"
+    },
+    "chalk": {
+      "hex": "#F5F3EC",
+      "css": "--sd-chalk"
+    },
+    "blood": {
+      "hex": "#7E1627",
+      "css": "--sd-blood"
+    },
+    "blood_dark": {
+      "hex": "#4E0D18",
+      "css": "--sd-blood-dark"
+    },
+    "gold": {
+      "hex": "#B89436",
+      "css": "--sd-gold"
+    },
+    "gold_light": {
+      "hex": "#DCC06A",
+      "css": "--sd-gold-light"
+    }
   },
   "duration_ms": {
     "xs": 50,
@@ -32,7 +62,12 @@
     "width": 640,
     "height": 360,
     "arena_margin": 24,
-    "hud_safe_rect": { "x": 160, "y": 60, "w": 320, "h": 240 }
+    "hud_safe_rect": {
+      "x": 160,
+      "y": 60,
+      "w": 320,
+      "h": 240
+    }
   },
   "font": {
     "pixel_small_px": 7,

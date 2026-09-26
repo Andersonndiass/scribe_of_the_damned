@@ -11,7 +11,7 @@
 | Web · Chrome sem janela · GPU (1ª medição, antes das otimizações) | 39,5 | 21,7 | 7,6 ms | 2,8 ms | ❌ |
 | Web · Chrome sem janela · GPU (depois) | 7–27 | 4–12 | 12–54 ms | 5–28 ms | **inconclusivo** |
 | Web · Chrome sem janela · SwiftShader (CPU) | 9,6 | 6,2 | 50 ms | 19 ms | ❌ (renderização por software) |
-| Firefox | — | — | — | — | **não medido** (não instalado nesta máquina) |
+| Firefox | — | — | — | — | medido em 2026-09-26, ver §1.3 |
 
 **Leitura honesta:**
 1. O mesmo build variou de 7 a 39 FPS entre execuções no Chrome sem janela desta máquina. Esse ambiente **não serve** para dar o veredito do SC-001. É preciso medir num navegador de verdade (T084).
@@ -34,6 +34,22 @@ A 005 deixou o laço dos inimigos ~50% mais caro no web (chamadas de comportamen
 |---|---|---|---|---|
 | SC-001 (300 Diabretes) | 81–89 | 64–69 | 1,2–1,4 ms | 0,85 ms |
 | **SC-503** (mistura da onda 9 + 60 tiros + 20 poças) | **78–80** | **60–65** | 1,3–1,4 ms | 0,87–0,91 ms |
+
+### 1.3 Firefox e nova rodada no Chrome (2026-09-26, depois da paleta C e da 002 Fase 1)
+
+Firefox 156.0.1 instalado pelo Claude (D-047 3B), **com janela** e GPU. O Firefox sem janela desenha por software e dá o mesmo que o SwiftShader (~17–28 FPS), então não serve. Na janela foi preciso desligar o rastreamento de oclusão do Windows (`widget.windows.window_occlusion_tracking.enabled=false`); sem isso a aba congela (0,1 FPS).
+
+| Navegador | Cena | FPS médio | p95 | Mover/separar | Projéteis (total) | Desenho |
+|---|---|---|---|---|---|---|
+| Chrome · GPU (4 exec.) | SC-001 | 58–69 | 40–56 | 1,8–1,9 ms | 1,4–1,5 ms | 0,9 ms |
+| Chrome · GPU | SC-503 (onda 9) | 58 | 40 | — | — | — |
+| **Firefox · GPU · janela (3 exec.)** | SC-001 | **34–35** | **12–15** | 4,2–4,7 ms | 3,8–4,1 ms | 1,3 ms |
+| **Firefox · GPU · janela (2 exec.)** | SC-503 (onda 9) | **31–33** | **13–14** | 4,8 ms | 4,6 ms | 1,4 ms |
+
+**Leitura:**
+1. **Chrome:** o código dos inimigos e projéteis não mudou desde a D-043, mas todos os custos subiram ~40% por igual (o desenho também), e o desktop nativo caiu de 145 para 131 FPS. É variação da máquina, não regressão. Mesmo assim o SC-001 no Chrome ficou **no limite** (p95 50–56 contra a meta 55).
+2. **Firefox:** os scripts em WebAssembly custam **~2,5× o Chrome** em todas as seções. **SC-001 ❌ no Firefox** (metade da meta). Quando o frame passa de 16 ms, o motor roda 2 ticks de física no frame seguinte, o que agrava tudo (a mesma espiral da D-039).
+3. As saídas estão na §4: itens 1 (lógica a 30 Hz) e 2 (projéteis em laço único) atacam as duas maiores seções; o item 5 é decisão do autor.
 
 ## 2. Os 5 maiores custos por frame (T085) — medição anterior às otimizações
 
@@ -63,8 +79,8 @@ A 005 deixou o laço dos inimigos ~50% mais caro no web (chamadas de comportamen
 |---|---|---|---|
 | 1 | Lógica dos inimigos a 30 Hz, com a posição desenhada interpolada | ~½ do item 1 | baixo |
 | 2 | Projéteis num gerenciador de laço único (arrays + 1 desenho), como os inimigos | ~⅔ do item 2 | médio |
-| 3 | Separação escalonada: metade dos inimigos por tick, reusando o empurrão anterior | ~½ do que sobrar do item 1 | baixo |
-| 4 | Renderer só troca textura quando o quadro da animação muda | pequeno | baixo |
+| 3 | ~~Separação escalonada~~ | feito na D-039 | — |
+| 4 | ~~Renderer só escreve o que muda~~ | feito na D-043 | — |
 | 5 | Baixar a carga-alvo do SC-001 no web (ex.: 200 inimigos) | — | decisão do autor |
 
 GDExtension/C++ está fora: a constituição exige GDScript puro.

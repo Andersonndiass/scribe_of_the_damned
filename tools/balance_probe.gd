@@ -3,6 +3,9 @@ extends SceneTree
 ## Roda a cena principal com um bot que foge do inimigo mais próximo e mede a onda 1.
 ## Uso: godot --headless --path . -s tools/balance_probe.gd -- [still]
 ##   still = o bot fica parado (pior caso). move = foge. cast = foge, busca letras e conjura.
+##   god = jogador invencível (2B, D-047): mede o FLUXO DE LETRAS da onda inteira, sem depender de o
+##         bot sobreviver. Imprime uma linha FLOW com letras/min, letras-alvo/min, comidas, coletadas,
+##         palavras e heresias.
 
 const MAIN := "res://src/main/main.tscn"
 const TIME_SCALE := 4.0
@@ -26,11 +29,17 @@ var _max_alive: int = 0
 var _limit: float = 65.0
 var _wave_slot: int = -1
 var _shots: int = 0
+var _god: bool = false
+var _targets: int = 0
+var _eaten: int = 0
+var _heresies: int = 0
+var _purges: int = 0
 
 
 func _initialize() -> void:
 	_still = OS.get_cmdline_user_args().has("still")
 	_cast_mode = OS.get_cmdline_user_args().has("cast")
+	_god = OS.get_cmdline_user_args().has("god")
 	# Overrides só em memória, para simular propostas sem tocar nos .tres: hp=N drop=F
 	var imp: Resource = load("res://data/enemies/imp.tres")
 	for arg: String in OS.get_cmdline_user_args():
@@ -56,7 +65,13 @@ func _initialize() -> void:
 	bus.player_damaged.connect(func(_a: int, _c: int) -> void: _hits += 1)
 	bus.player_died.connect(func() -> void: _died_at = _time)
 	bus.wave_ended.connect(func(_i: int) -> void: _ended = true)
-	bus.letter_dropped.connect(func(_l: String, _r: bool, _t: bool, _p: Vector2) -> void: _dropped += 1)
+	bus.letter_dropped.connect(func(_l: String, _r: bool, t: bool, _p: Vector2) -> void:
+		_dropped += 1
+		if t:
+			_targets += 1)
+	bus.letter_eaten.connect(func(_l: String, _p: Vector2) -> void: _eaten += 1)
+	bus.heresy_committed.connect(func(_p: Vector2) -> void: _heresies += 1)
+	bus.atril_purged.connect(func(_l: PackedStringArray, _p: Vector2) -> void: _purges += 1)
 	bus.letter_collected.connect(func(l: String, _r: bool) -> void: _collected += l)
 	bus.word_cast.connect(func(w: Resource, _pw: float, _o: Vector2, _d: Vector2) -> void: _casts[w.get("latin")] = _casts.get(w.get("latin"), 0) + 1)
 	_player.get_node("AutoAttack").fired.connect(func(_t: Vector2) -> void: _shots += 1)
@@ -75,18 +90,32 @@ func _physics_process(delta: float) -> bool:
 		_time = 0.0
 		return false
 	_time += delta
+	if _god:
+		(_player.get("vitals") as RefCounted).set("iframes_left", 1.0e6)
 	_max_alive = maxi(_max_alive, _manager.get("count"))
 	if not _still:
 		_steer()
 	if _cast_mode:
-		_caster.call("cast")
-		# Beco sem saída (FILL / FULL_REJECT): purge devolve as letras ao chão.
+		# Só conjura com a palavra VÁLIDA: apertar Espaço antes disso é heresia (FR-019).
+		# (Até 2026-09-26 o bot conjurava todo frame e cometia heresia sem parar: medições de
+		# palavras por onda feitas antes disso estão contaminadas.)
 		var atril: RefCounted = _field.get("atril")
-		if atril.call("state", _field.get("lexicon")) in [1, 4]:
+		var st: int = atril.call("state", _field.get("lexicon"))
+		if st == 3:  # Atril.Status.VALID
+			_caster.call("cast")
+		elif st in [1, 4]:  # FILL / FULL_REJECT: beco sem saída → purge
 			_caster.call("purge")
 	if _ended or _died_at >= 0.0 or _time > _limit:
 		print("PROBE onda=%d still=%s tempo=%.1fs mortes=%d golpes_sofridos=%d morreu_em=%s max_vivos=%d onda_terminou=%s tiros=%d conjurações=%s letras_caídas=%d coletadas=%s" % [
 			GameState_wave(), _still, _time, _kills, _hits, ("%.1fs" % _died_at) if _died_at >= 0.0 else "não", _max_alive, _ended, _shots, _casts, _dropped, _collected])
+		if _god:
+			var minutes: float = maxf(_time / 60.0, 0.001)
+			var words: int = 0
+			for k: String in _casts:
+				words += int(_casts[k])
+			print("FLOW onda=%d min=%.2f letras/min=%.1f alvo/min=%.1f comidas=%d coletadas/min=%.1f palavras=%d palavras/min=%.2f heresias=%d purges=%d mortes/min=%.1f" % [
+				GameState_wave(), minutes, _dropped / minutes, _targets / minutes, _eaten,
+				_collected.length() / minutes, words, words / minutes, _heresies, _purges, _kills / minutes])
 		return true
 	return false
 
@@ -122,7 +151,8 @@ func _steer() -> void:
 				best_d = dl
 				best = l.global_position
 		if best != Vector2.INF:
-			flee += (best - p).normalized() * 40.0
+			# Invencível: buscar letras é a prioridade (mede o fluxo, não a sobrevivência).
+			flee += (best - p).normalized() * (400.0 if _god else 40.0)
 	# Evita as bordas puxando para o centro.
 	flee += (Vector2(320, 180) - p) * 0.15
 	if flee.x < -2.0:
