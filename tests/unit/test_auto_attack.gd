@@ -1,9 +1,6 @@
 extends GutTest
 ## T024 Ataque automático a cada attack_interval; sem alvo, não dispara (FR-002).
 
-const INK_DROP_SCENE := preload("res://src/player/ink_drop.tscn")
-
-
 class FakeEnemies:
 	extends RefCounted
 	var target: Vector2 = Vector2(100, 0)
@@ -20,16 +17,16 @@ class FakeEnemies:
 var _origin: Node2D
 var _attack: AutoAttack
 var _fake: FakeEnemies
+var _proj: PlayerProjectileManager
 
 
 func before_each() -> void:
-	PoolManager.clear_all()
 	_origin = Node2D.new()
 	add_child_autofree(_origin)
-	var layer := Node2D.new()
-	_origin.add_child(layer)
-	PoolManager.register(InkDrop.POOL_KEY, INK_DROP_SCENE, 8, layer)
+	_proj = PlayerProjectileManager.new()
+	_origin.add_child(_proj)
 	_attack = AutoAttack.new()
+	_attack.projectiles = _proj
 	_origin.add_child(_attack)
 	var data := PlayerData.new()
 	data.attack_interval = 0.8
@@ -42,7 +39,6 @@ func before_each() -> void:
 
 func after_each() -> void:
 	EnemyQuery.provider = null
-	PoolManager.clear_all()
 
 
 func _simulate(seconds: float) -> void:
@@ -67,7 +63,8 @@ func test_does_not_fire_when_disabled() -> void:
 	assert_signal_emit_count(_attack, "fired", 0)
 
 
-func test_uses_pool_without_instantiating() -> void:
+func test_fires_into_projectile_manager_without_instantiating() -> void:
 	var before: int = PoolManager.instantiate_count
-	_simulate(4.0)
+	_simulate(0.9)
+	assert_eq(_proj.count, 1, "a gota entrou no gerenciador")
 	assert_eq(PoolManager.instantiate_count, before)

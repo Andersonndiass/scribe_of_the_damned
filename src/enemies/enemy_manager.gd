@@ -17,9 +17,9 @@ const QUERY_PAD := 8.0
 ## Maior raio de inimigo previsto (consultas de acerto somam isto ao raio pedido).
 const MAX_ENEMY_RADIUS := 12.0
 const HASH_CELL := 16.0
-## Cada inimigo recalcula steering + separação a cada STEER_STRIDE ticks (metade em cada tick, para
+## Cada inimigo recalcula steering + separação a cada STEER_STRIDE ticks (1/STEER_STRIDE deles em cada tick, para
 ## não gerar picos) com o passo multiplicado; o EnemyRenderer interpola a posição (T085 §4, D-039).
-const STEER_STRIDE := 2
+const STEER_STRIDE := 3
 const AURA_PARTICLES := 4
 const FLASH_TIME := 0.06
 ## O jogador é mirado no meio do corpo, não nos pés.
@@ -219,7 +219,7 @@ func _physics_process(delta: float) -> void:
 		var p: Vector2 = positions[i]
 		if (i + last_tick) % STEER_STRIDE != 0:
 			# Não é a vez deste inimigo: só o contato com o jogador.
-			if can_hit_player and p.distance_to(player_pos) <= radius_of[i] + player_hurt_radius:
+			if can_hit_player and _drawn_position(i).distance_to(player_pos) <= radius_of[i] + player_hurt_radius:
 				player.call(&"take_hit", _contact_damage(i, d), &"contact")
 			continue
 		prev_positions[i] = p
@@ -266,7 +266,7 @@ func _physics_process(delta: float) -> void:
 		p = _clamp_to_world(p + v * step_dt)
 		positions[i] = p
 		velocities[i] = v
-		if can_hit_player and p.distance_to(player_pos) <= radius_of[i] + player_hurt_radius:
+		if can_hit_player and _drawn_position(i).distance_to(player_pos) <= radius_of[i] + player_hurt_radius:
 			player.call(&"take_hit", _contact_damage(i, d), &"contact")
 	Prof.stop(&"inimigos_mover_separar", t_move)
 
@@ -451,6 +451,14 @@ func render_position(i: int) -> Vector2:
 	var age: int = (i + last_tick) % STEER_STRIDE
 	var alpha: float = (float(age) + Engine.get_physics_interpolation_fraction()) / STEER_STRIDE
 	return prev_positions[i].lerp(positions[i], clampf(alpha, 0.0, 1.0))
+
+
+## Onde o sprite estará ao fim deste tick (render_position sem a fração do frame). O contato usa
+## esta posição, não a lógica, que anda até um passo à frente: sem "golpe fantasma" na investida
+## rápida (parecer do animation-agent sobre o STEER_STRIDE 3).
+func _drawn_position(i: int) -> Vector2:
+	var age: int = (i + last_tick) % STEER_STRIDE
+	return prev_positions[i].lerp(positions[i], float(age + 1) / STEER_STRIDE)
 
 
 ## Centro do corpo do jogador (Vector2.INF sem jogador). Para comportamentos.

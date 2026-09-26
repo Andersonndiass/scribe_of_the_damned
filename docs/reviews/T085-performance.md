@@ -51,6 +51,19 @@ Firefox 156.0.1 instalado pelo Claude (D-047 3B), **com janela** e GPU. O Firefo
 2. **Firefox:** os scripts em WebAssembly custam **~2,5× o Chrome** em todas as seções. **SC-001 ❌ no Firefox** (metade da meta). Quando o frame passa de 16 ms, o motor roda 2 ticks de física no frame seguinte, o que agrava tudo (a mesma espiral da D-039).
 3. As saídas estão na §4: itens 1 (lógica a 30 Hz) e 2 (projéteis em laço único) atacam as duas maiores seções; o item 5 é decisão do autor.
 
+### 1.4 Otimizações da C-005 (D-049): projéteis em laço único + STEER_STRIDE 3
+
+**Diagnóstico antes (Firefox, janela):** sem inimigos e sem projéteis (só letras e HUD) o Firefox já fica em **55 FPS, p95 37** (o Chrome, 163). O Firefox sincroniza com o monitor de 60 Hz: um frame de 17–20 ms vira 33 ms, e a média cai para 30–40. Parte do custo é do navegador e não está ao nosso alcance.
+
+**A/B intercalado** (build anterior × novo, alternados, mesma sessão; a máquina estava mais lenta que na §1.3):
+
+| Navegador (SC-001) | Antes (3 exec.) | Depois (3 exec.) | Mover/separar | Projéteis (total) |
+|---|---|---|---|---|
+| Chrome · GPU | 61–64 / p95 40–48 | 54–70 / p95 32–52 | 1,9–2,2 → 1,4–2,0 ms | 1,5–1,7 → 1,1–1,7 ms |
+| Firefox · GPU · janela | 25–31 / p95 7–15 | 29–31 / p95 12–15 | 5,1–7,7 → 3,9–4,7 ms | 4,5–6,7 → 4,0–4,6 ms |
+
+**Leitura:** ganho real de ~25–40% nas duas seções, mas **~15% no FPS do Firefox**, e o ruído da máquina (o mesmo build variou de 32 a 64 no Chrome) é do tamanho do ganho. **SC-001 continua ❌ no Firefox.** A maior seção restante é `projeteis_acerto` (200 consultas ao hash por tick, 2–2,7 ms no Firefox).
+
 ## 2. Os 5 maiores custos por frame (T085) — medição anterior às otimizações
 
 | # | Seção | Desktop | Web (melhor medição) | O que é |
@@ -77,8 +90,8 @@ Firefox 156.0.1 instalado pelo Claude (D-047 3B), **com janela** e GPU. O Firefo
 
 | # | Mudança | Ganho esperado no web | Custo |
 |---|---|---|---|
-| 1 | Lógica dos inimigos a 30 Hz, com a posição desenhada interpolada | ~½ do item 1 | baixo |
-| 2 | Projéteis num gerenciador de laço único (arrays + 1 desenho), como os inimigos | ~⅔ do item 2 | médio |
+| 1 | ~~Lógica dos inimigos a 30 Hz~~ | D-039 (stride 2) e D-049 (stride 3, 20 Hz por inimigo) | — |
+| 2 | ~~Projéteis num gerenciador de laço único~~ | feito na D-049 (`PlayerProjectileManager`) | — |
 | 3 | ~~Separação escalonada~~ | feito na D-039 | — |
 | 4 | ~~Renderer só escreve o que muda~~ | feito na D-043 | — |
 | 5 | Baixar a carga-alvo do SC-001 no web (ex.: 200 inimigos) | — | decisão do autor |

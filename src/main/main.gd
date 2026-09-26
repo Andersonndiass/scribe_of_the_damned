@@ -1,15 +1,12 @@
 extends Node2D
 ## Cena principal: monta arena, mundo e pools, e inicia a partida.
 
-const INK_DROP_SCENE := preload("res://src/player/ink_drop.tscn")
 const TELEGRAPH_SCENE := preload("res://src/enemies/spawn_telegraph.tscn")
 const DISSOLVE_SCENE := preload("res://src/enemies/dissolve_fx.tscn")
 const LETTER_SCENE := preload("res://src/letters/letter.tscn")
 const GOLD_SCENE := preload("res://src/letters/gold_ink.tscn")
 ## Até ~8 campeões × 5 gotas no chão ao mesmo tempo (excedente some: D-037).
 const GOLD_PREWARM := 40
-## Prewarm dimensionado para a carga máxima do SC-001 (300 inimigos, 200 projéteis).
-const INK_DROP_PREWARM := 200
 const TELEGRAPH_PREWARM := 64
 ## Cobre uma MORTIS na capacidade máxima do EnemyManager (visual; excedente é pulado).
 const DISSOLVE_PREWARM := EnemyManager.CAPACITY
@@ -25,7 +22,7 @@ const ROSTER_SCENE := "res://src/debug/roster_scene.tscn"
 ## Pausa entre ondas (a loja entra aqui na feature 003).
 @export var between_waves: float = 3.0
 
-@onready var projectile_layer: Node2D = $ProjectileLayer
+@onready var player_projectiles: PlayerProjectileManager = $PlayerProjectiles
 @onready var telegraph_layer: Node2D = $TelegraphLayer
 @onready var fx_layer: Node2D = $FxLayer
 @onready var wave_director: WaveDirector = $WaveDirector
@@ -44,7 +41,7 @@ func _ready() -> void:
 		get_tree().change_scene_to_file.call_deferred(debug_scene)
 		return
 	GameState.start_run(player_data)
-	PoolManager.register(InkDrop.POOL_KEY, INK_DROP_SCENE, INK_DROP_PREWARM, projectile_layer)
+	($World/Player as Player).auto_attack.projectiles = player_projectiles
 	PoolManager.register(SpawnTelegraph.POOL_KEY, TELEGRAPH_SCENE, TELEGRAPH_PREWARM, telegraph_layer)
 	PoolManager.register(DissolveFx.POOL_KEY, DISSOLVE_SCENE, DISSOLVE_PREWARM, fx_layer)
 	PoolManager.register(Letter.POOL_KEY, LETTER_SCENE, LETTER_PREWARM, letter_field)

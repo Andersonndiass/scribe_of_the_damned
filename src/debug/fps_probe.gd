@@ -76,7 +76,8 @@ func _finish() -> void:
 		# Qualquer navegador (inclusive o Firefox, sem CDP): o resultado vai numa requisição ao
 		# servidor local, que registra a URL no log.
 		JavaScriptBridge.eval("fetch('/fps_result?' + encodeURIComponent(%s)).catch(function(){})" % JSON.stringify(
-			"avg=%.1f p95=%.1f worst_ms=%.1f custos: %s" % [result["avg_fps"], result["p95_fps"], result["worst_ms"], ", ".join(costs)]))
+			"avg=%.1f p95=%.1f worst_ms=%.1f custos: %s" % [
+				result["avg_fps"], result["p95_fps"], result["worst_ms"], ", ".join(costs)]))
 	finished.emit(result)
 
 

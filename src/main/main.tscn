@@ -1,5 +1,6 @@
-[gd_scene load_steps=14 format=3]
+[gd_scene load_steps=15 format=3]
 
+[ext_resource type="Script" path="res://src/player/player_projectiles.gd" id="90_pproj"]
 [ext_resource type="Script" path="res://src/main/main.gd" id="1_main"]
 [ext_resource type="Resource" path="res://data/player/anselmo.tres" id="2_data"]
 [ext_resource type="PackedScene" path="res://src/arena/arena.tscn" id="3_arena"]
@@ -67,7 +68,8 @@ player = NodePath("../Player")
 
 [node name="MiracleLayer" type="Node2D" parent="."]
 
-[node name="ProjectileLayer" type="Node2D" parent="."]
+[node name="PlayerProjectiles" type="Node2D" parent="."]
+script = ExtResource("90_pproj")
 
 [node name="WaveDirector" type="Node" parent="." node_paths=PackedStringArray("manager", "player", "telegraph_parent")]
 script = ExtResource("8_wd")

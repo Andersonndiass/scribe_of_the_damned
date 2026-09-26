@@ -30,6 +30,7 @@ var _manager: EnemyManager
 var _field: LetterField
 var _player: Player
 var _eproj: EnemyProjectileManager
+var _projectiles: PlayerProjectileManager
 var _hazards: HazardField
 var _puddle: PuddleData
 var _shot: EnemyProjectileData
@@ -48,6 +49,7 @@ func setup(p_main: Node2D, p_mode: StringName = &"sc001") -> void:
 	_field = main.get_node("World/LetterField")
 	_player = main.get_node("World/Player")
 	_eproj = main.get_node("World/EnemyProjectiles")
+	_projectiles = main.get_node("PlayerProjectiles")
 	_hazards = main.get_node("HazardField")
 	_puddle = load("res://data/hazards/puddle_ink.tres")
 	_shot = load("res://data/projectiles/prj_page.tres")
@@ -87,10 +89,9 @@ func _physics_process(delta: float) -> void:
 	_time += delta
 	_target.global_position = Vector2(320, 180) + Vector2.RIGHT.rotated(_time * ORBIT_SPEED) * ORBIT_RADIUS
 	_player.vitals.iframes_left = 1.0
-	while PoolManager.free_count(InkDrop.POOL_KEY) > 0:
-		var drop := PoolManager.acquire(InkDrop.POOL_KEY) as InkDrop
+	while _projectiles.count < PROJECTILES:
 		var dir := Vector2.RIGHT.rotated(_rng.randf() * TAU)
-		drop.fire(_random_point(), dir, 220.0, 1, PROJECTILE_RANGE)
+		_projectiles.fire(_random_point(), dir, 220.0, 1, PROJECTILE_RANGE)
 	if mode == &"wave9":
 		# As Traças comem letras; os Monges e Borrões já atiram e sujam, completamos até a carga-alvo.
 		_refill_letters()
@@ -112,7 +113,7 @@ func _refill_letters() -> void:
 
 
 func active_projectiles() -> int:
-	return PROJECTILES - PoolManager.free_count(InkDrop.POOL_KEY)
+	return _projectiles.count
 
 
 func enemy_projectiles() -> int:
