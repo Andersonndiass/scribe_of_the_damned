@@ -11,7 +11,7 @@ var _left: float = 0.0
 func _on_start() -> void:
 	rotation = direction.angle()
 	_left = word.duration
-	EnemyQuery.damage_line(origin, direction, word.length, word.radius, roundi(word.damage * power))
+	EnemyQuery.damage_line(origin, direction, word.length, word.radius, dmg(word.damage))
 	queue_redraw()
 
 

@@ -274,6 +274,15 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
 - **Detalhe:** `AudioManager.sound_played(id)` existe para métricas e testes. Palavras sem som próprio (orações, apócrifos) caem no `word_cast` genérico até a 002 Fase 3–4.
 - **Status:** ✅ parecer do animation-agent.
 
+### D-055 · 2026-09-28 · Apócrifos (002 Fase 3)
+- **VERBUM:** não mexe na janela de combo (não abre, não fecha, não completa). Sem o que repetir, falha: as letras se perdem, sem heresia. Repete a última palavra **base ou apócrifa** com o mesmo poder, e o eco sai como `word_cast` da palavra repetida (marcas, FR-202c). Autor: "1.a 2.1" (lido como 2A).
+- **GLORIA:** `Miracle.dmg()` concentra o dano (× power × GLORIA); VITA cura `heal_candles × GLORIA`, arredondado. Raio, stun, duração e limiar não mudam.
+- **PURGO:** mata os comuns seja qual for o HP e dá **10 literais** nos campeões (o power 2,4 não entra; a GLORIA sim), como a FR-208 escreve.
+- **FIDES:** absorver o golpe dá os i-frames normais, sem perder vela.
+- **Visual (design-agent):** arco GOLD_LIGHT sobre a cabeça (FIDES), 4 pontos CHALK em órbita (LUMEN), colchetes GOLD nos pés (GLORIA), anel CHALK tracejado (PURGO), eco INK_SOFT em xadrez no atril (VERBUM) e letras piscando INK_SOFT na falha.
+- **SC-202 (medição):** `?stress=purgo` e o controle `?stress=purgoctl` no Chrome. Pior frame com PURGO de 25 a 53 ms, contra 19 a 45 ms no controle. O ruído desta máquina é do tamanho da diferença. Limitar as dissoluções a 64 não mudou o quadro de forma clara. Veredito fica para a T240 (Fase 5, com MISERERE e DOMINUS); o suspeito principal são as 300 dissoluções redesenhando ao mesmo tempo.
+- **Status:** ✅ plano aprovado ("pode seguir").
+
 ---
 
 ## Conflitos abertos

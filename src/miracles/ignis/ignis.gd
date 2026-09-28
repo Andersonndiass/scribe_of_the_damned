@@ -27,7 +27,7 @@ func _process(delta: float) -> void:
 		queue_redraw()
 		var em := EnemyQuery.provider as EnemyManager
 		if em != null:
-			em.damage_in_radius(origin, word.radius * power, maxi(1, roundi(word.damage * power)))
+			em.damage_in_radius(origin, word.radius * power, dmg(word.damage))
 	if _left <= 0.0:
 		finish()
 

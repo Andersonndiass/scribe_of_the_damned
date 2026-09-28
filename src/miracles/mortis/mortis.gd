@@ -22,7 +22,7 @@ func _physics_process(delta: float) -> void:
 	_t += delta
 	var em := EnemyQuery.provider as EnemyManager
 	if em != null and _cursor >= 0:
-		_cursor = em.mortis_step(_cursor, BATCH, word.kill_hp_threshold, maxi(1, roundi(word.damage * power)))
+		_cursor = em.mortis_step(_cursor, BATCH, word.kill_hp_threshold, dmg(word.damage))
 	queue_redraw()
 	if _t >= SWEEP_TIME and _cursor < 0:
 		finish()

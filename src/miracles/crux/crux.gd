@@ -25,7 +25,7 @@ func _process(delta: float) -> void:
 		_tick += word.tick_interval
 		var em := EnemyQuery.provider as EnemyManager
 		if em != null:
-			em.damage_cross(origin, word.length, word.width, maxi(1, roundi(word.damage * power)))
+			em.damage_cross(origin, word.length, word.width, dmg(word.damage))
 	if _left <= BLINK_WINDOW:
 		visible = int(_left / 0.1) % 2 == 0
 	if _left <= 0.0:

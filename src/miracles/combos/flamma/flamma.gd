@@ -21,7 +21,7 @@ func _on_start() -> void:
 	_beam_left = BEAM_TIME
 	_tick = word.tick_interval
 	var combo := word as ComboData
-	EnemyQuery.damage_line(origin, direction, word.length, word.width, maxi(1, roundi(combo.burst_damage * power)))
+	EnemyQuery.damage_line(origin, direction, word.length, word.width, dmg(combo.burst_damage))
 	queue_redraw()
 
 
@@ -32,7 +32,7 @@ func _physics_process(delta: float) -> void:
 	if _tick <= 0.0:
 		_tick += word.tick_interval
 		_flicker += 1
-		EnemyQuery.damage_line(origin, direction, word.length, word.width, maxi(1, roundi(word.damage * power)))
+		EnemyQuery.damage_line(origin, direction, word.length, word.width, dmg(word.damage))
 	queue_redraw()
 	if _left <= 0.0:
 		finish()

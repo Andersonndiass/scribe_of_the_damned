@@ -510,6 +510,18 @@ func requiem_step(cursor: int, max_ops: int, kill_threshold: int, damage: int, d
 	return Vector2i(i, drops_left)
 
 
+## PURGO em lotes (002 FR-208): mata os comuns seja qual for o HP e dá `elite_damage` nos
+## campeões (forte contra a massa, fraco contra a elite). Retorna o próximo cursor (-1 = acabou).
+func purgo_step(cursor: int, max_ops: int, elite_damage: int) -> int:
+	var i: int = mini(cursor, count - 1)
+	var ops: int = 0
+	while i >= 0 and ops < max_ops:
+		damage_at(i, elite_damage if champion[i] == 1 else hp[i])
+		i -= 1
+		ops += 1
+	return i
+
+
 ## MORTIS em lotes (FR-021): processa até `max_ops` slots, do `cursor` para baixo. Inimigos com
 ## HP ≤ `kill_threshold` morrem; os outros levam `damage`. Retorna o próximo cursor (-1 = acabou).
 ## Descer os índices é seguro com o swap-remove.

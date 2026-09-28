@@ -26,7 +26,7 @@ func _physics_process(delta: float) -> void:
 	if em != null:
 		if _tick <= 0.0:
 			_tick += word.tick_interval
-			em.damage_in_radius(origin, word.radius, maxi(1, roundi(word.damage * power)))
+			em.damage_in_radius(origin, word.radius, dmg(word.damage))
 		var inside: bool = em.player != null and em.player_body().distance_to(origin) <= word.radius
 		if inside:
 			em.hide_player(origin, word.radius, HIDE_LINGER)

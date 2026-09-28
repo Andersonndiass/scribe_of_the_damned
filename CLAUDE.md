@@ -87,15 +87,15 @@ Ordem padrão: game-design → rules → mechanics → design + animation → co
 
 ## Estado atual
 
-- **Etapa:** Etapa 3 — features 001 e 005 Complete; 002 Fases 1 e 2 ✅ (combos); 009 Fase 1 ✅ (áudio em silêncio). GUT 193/193. Paleta C (D-048).
+- **Etapa:** Etapa 3 — features 001 e 005 Complete; 002 Fases 1–3 ✅ (combos e apócrifos); 009 Fase 1 ✅ (áudio em silêncio). GUT 209/209. Paleta C (D-048).
 - **Feature atual:** 002 vocabulário e combos e 009 áudio (ambas em andamento).
-- **Próximo:** 002 Fase 3 (apócrifos). A 009 Fase 2 (sons provisórios por script) pode entrar quando o autor quiser. Aberto: C-004 (playtest do autor); C-005 adiada para a 011 (D-050).
+- **Próximo:** 002 Fase 4 (Grandes Orações, T230–T232). Playtest com todos os apócrifos: `index.html?unlock=all`. A 009 Fase 2 (sons provisórios por script) pode entrar quando o autor quiser. Aberto: C-004 (playtest do autor); C-005 adiada para a 011 (D-050).
 - **Combos:** `ComboData` estende `WordData`; `power` só no dano (D-051); detalhes em D-052.
 - **Áudio:** `AudioManager` (autoload) + `data/audio/`. Regerar os `.tres`: `godot --headless --path . -s tools/gen_audio_data.gd`; lista do que gravar: `-s tools/audio_report.gd` → `docs/AUDIO-LIST.md`.
 - **Se o auto mode falhar** (classificador sem veredito): sair do auto mode (Shift+Tab) ou o autor roda os comandos com `!` no chat.
 - **Sonda por onda:** `godot --headless --path . -s tools/balance_probe.gd -- cast god wave=N` (linha FLOW; ver T533 §6).
 - **Pendente de sensação:** screen shake (morte de campeão) — o jogo ainda não tem câmera com shake.
-- **Vitrine:** `index.html?roster` (os 5 inimigos) · `index.html?stress` (SC-001) · `index.html?stress=wave9` (SC-503).
+- **Vitrine:** `index.html?roster` (os 5 inimigos) · `index.html?stress` (SC-001) · `index.html?stress=wave9` (SC-503) · `index.html?stress=purgo` / `purgoctl` (SC-202, pior frame do PURGO).
 - **Firefox:** medido pelo Claude (T085 §1.3–1.4): SC-001 ❌ (29–35 FPS). Medir só com janela e `widget.windows.window_occlusion_tracking.enabled=false`.
 - **Stress:** `godot --path . res://src/debug/stress_scene.tscn -- quit` (desktop) · `build/web/index.html?stress` (web).
 - **Aberto:** C-004 pede playtest humano (alavancas em `docs/reviews/T069-rules-parecer.md` §4).

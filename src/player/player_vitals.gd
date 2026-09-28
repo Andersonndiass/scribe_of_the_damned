@@ -45,6 +45,11 @@ func damage(amount: int) -> int:
 	return applied
 
 
+## I-frames sem perder vela (golpe absorvido pelo escudo da FIDES).
+func grant_iframes() -> void:
+	iframes_left = _data.iframes
+
+
 ## Acende velas até o máximo atual. Retorna quanto curou.
 func heal(amount: int) -> int:
 	if amount <= 0 or not is_alive():

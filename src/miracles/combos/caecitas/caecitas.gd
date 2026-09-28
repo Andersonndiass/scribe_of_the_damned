@@ -14,7 +14,7 @@ func _on_start() -> void:
 	var em := EnemyQuery.provider as EnemyManager
 	if em != null:
 		em.blind_in_radius(origin, word.radius, word.stun)
-		em.damage_in_radius(origin, word.radius, maxi(1, roundi(word.damage * power)))
+		em.damage_in_radius(origin, word.radius, dmg(word.damage))
 	queue_redraw()
 
 

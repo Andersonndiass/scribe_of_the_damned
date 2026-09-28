@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="WordData" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="WordData" load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://src/data/word_data.gd" id="1_wd"]
+[ext_resource type="PackedScene" path="res://src/miracles/fides/fides.tscn" id="2_scene"]
 
 [resource]
 script = ExtResource("1_wd")
@@ -12,4 +13,5 @@ group = &"apocrypha"
 requires_unlock = true
 combo_eligible = true
 charges = 1
+miracle_scene = ExtResource("2_scene")
 vfx_prefix = &"VFX_FIDES"

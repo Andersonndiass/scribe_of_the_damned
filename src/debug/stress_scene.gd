@@ -1,7 +1,7 @@
 extends Node
 ## DEBUG (T080): cena de stress = cena principal real + StressDriver + FpsProbe.
 ## Desktop: godot --path . res://src/debug/stress_scene.tscn [-- quit]
-## Web: index.html?stress (SC-001) · index.html?stress=wave9 (SC-503)
+## Web: index.html?stress (SC-001) · index.html?stress=wave9 (SC-503) · index.html?stress=purgo (002 SC-202)
 
 const MAIN_SCENE := preload("res://src/main/main.tscn")
 const StressDriver := preload("res://src/debug/stress_driver.gd")
@@ -17,7 +17,15 @@ func _ready() -> void:
 	add_child(_main)
 	_driver = StressDriver.new()
 	add_child(_driver)
-	_driver.call(&"setup", _main, &"wave9" if _asked().contains("wave9") else &"sc001")
+	var asked: String = _asked()
+	var mode: StringName = &"sc001"
+	if asked.contains("wave9"):
+		mode = &"wave9"
+	elif asked.contains("purgoctl"):
+		mode = &"purgoctl"  # controle: mesmo ciclo e janela, sem conjurar
+	elif asked.contains("purgo"):
+		mode = &"purgo"
+	_driver.call(&"setup", _main, mode)
 	_probe = FpsProbe.new()
 	_probe.counts_provider = _counts
 	add_child(_probe)

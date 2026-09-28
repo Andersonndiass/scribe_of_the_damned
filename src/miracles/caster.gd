@@ -20,6 +20,11 @@ const PURGE_CENTER_OFFSET := Vector2(0, -6)
 
 var heresy_pool: HeresyPool
 var combo_book: ComboBook
+## VERBUM (FR-210): a última palavra base ou apócrifa conjurada e o poder dela.
+var last_repeatable: WordData = null
+var last_repeatable_power: float = 0.0
+
+const VERBUM_ID := &"verbum"
 
 
 func _ready() -> void:
@@ -58,12 +63,17 @@ func cast() -> bool:
 		return false
 	var word: WordData = letter_field.lexicon.word_for(atril.text())
 	var taken: Dictionary = atril.take_all()
+	if word.id == VERBUM_ID:
+		return _cast_verbum()
 	var rare_mul: float = pow(letter_field.tuning.rare_power_bonus, taken["rare_count"])
 	var power: float = word.power_budget * rare_mul
 	var origin: Vector2 = player.global_position + PEN_OFFSET
 	var direction: Vector2 = player.facing
 	var was_open: bool = combo_book.is_open()
 	var combo: ComboData = combo_book.on_cast(word)
+	if word.group == &"base" or word.group == &"apocrypha":
+		last_repeatable = word
+		last_repeatable_power = power
 	EventBus.word_cast.emit(word, power, origin, direction)
 	EventBus.hitstop_requested.emit(CAST_HITSTOP_MS)
 	player.pen_flash()
@@ -78,6 +88,25 @@ func cast() -> bool:
 		EventBus.combo_window_opened.emit(word, combo_tuning.window, _partner_latins())
 	elif was_open:
 		EventBus.combo_window_closed.emit()
+	letter_field.emit_atril()
+	return true
+
+
+## VERBUM: repete a última palavra base ou apócrifa com o mesmo poder. Não mexe na janela de
+## combo (D-055, 1A). Sem o que repetir: falha, as letras se perdem, sem heresia (D-055, 2A).
+func _cast_verbum() -> bool:
+	if last_repeatable == null:
+		EventBus.verbum_failed.emit()
+		letter_field.emit_atril()
+		return false
+	var origin: Vector2 = player.global_position + PEN_OFFSET
+	var direction: Vector2 = player.facing
+	EventBus.verbum_echoed.emit(last_repeatable)
+	# O eco conta como a palavra repetida para quem lê as marcas (chefes, FR-202c).
+	EventBus.word_cast.emit(last_repeatable, last_repeatable_power, origin, direction)
+	EventBus.hitstop_requested.emit(CAST_HITSTOP_MS)
+	player.pen_flash()
+	_start_miracle(last_repeatable, last_repeatable_power, origin, direction)
 	letter_field.emit_atril()
 	return true
 
@@ -97,6 +126,7 @@ func _partner_latins() -> PackedStringArray:
 func _start_miracle(word: WordData, power: float, origin: Vector2, direction: Vector2) -> void:
 	if word.miracle_scene != null and PoolManager.is_registered(word.id):
 		var miracle := PoolManager.acquire(word.id) as Miracle
+		miracle.damage_mul = player.buffs.damage_mul()
 		miracle.start(word, power, origin, direction)
 	else:
 		push_warning("Caster: '%s' não tem cena de milagre registrada" % word.latin)

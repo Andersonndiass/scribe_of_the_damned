@@ -17,9 +17,9 @@ Legenda: `[TEST-FIRST]` = o teste é escrito e falha antes da implementação.
 **Checkpoint 002-A:** ✅ os 5 combos jogáveis (2026-09-28, GUT 175/175, export web ok).
 
 ## Fase 3 — Apócrifos
-- **T220** [TEST-FIRST] `test_player_buffs.gd` → `PlayerBuffs` (FIDES, LUMEN, GLORIA, SPIRITUS, invul).
-- **T221** FIDES, LUMEN, GLORIA, VERBUM (+ B liberado) e PURGO em lotes (SC-202).
-- **T222** Debug `?unlock=all` para playtest.
+- ✅ **T220** [TEST-FIRST] `test_player_buffs.gd` → `PlayerBuffs` (FIDES, LUMEN, GLORIA, SPIRITUS, perdão da MISERERE).
+- ✅ **T221** FIDES, LUMEN, GLORIA, VERBUM (+ B liberado) e PURGO em lotes. `test_apocrypha.gd`. SC-202 medido (`?stress=purgo`): inconclusivo nesta máquina, fica para a T240 (D-055).
+- ✅ **T222** Debug `?unlock=all` / `-- unlock=all` para playtest.
 
 ## Fase 4 — Grandes Orações
 - **T230** SANCTUS, DOMINUS, ANGELUS (7 letras).

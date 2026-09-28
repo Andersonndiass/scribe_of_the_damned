@@ -16,6 +16,8 @@ const PEN_FLASH_TIME := 0.034
 @export var data: PlayerData
 
 var vitals := PlayerVitals.new()
+## Apócrifos e orações (002): FIDES, LUMEN, GLORIA, SPIRITUS, MISERERE.
+var buffs := PlayerBuffs.new()
 var facing: Vector2 = Vector2.RIGHT
 
 @onready var sprite: AnimatedSprite2D = $Sprite
@@ -35,6 +37,7 @@ func _ready() -> void:
 	auto_attack.data = data
 	_sync_state()
 	hurtbox.hit.connect(take_hit)
+	EventBus.wave_ended.connect(func(_i: int) -> void: buffs.on_wave_ended())
 	sprite.frame_changed.connect(_on_frame_changed)
 	_pen_flash = ColorRect.new()
 	_pen_flash.size = PEN_FLASH_SIZE
@@ -48,6 +51,7 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	var idle: bool = velocity.is_zero_approx() and machine.current != null \
 		and machine.current.name == &"Idle"
+	buffs.tick(delta)
 	var healed: int = vitals.tick(delta, idle)
 	if healed > 0:
 		_sync_state()
@@ -86,6 +90,11 @@ func play_anim(anim: StringName) -> void:
 
 ## Dano recebido (1 = fraco, 2 = forte). Chamado pela Hurtbox ou pelo EnemyManager.
 func take_hit(amount: int, _source_tag: StringName = &"") -> void:
+	# FIDES: o escudo absorve o golpe inteiro (1 ou 2 velas) e dá os i-frames normais.
+	if amount > 0 and vitals.is_alive() and not vitals.is_invulnerable() and buffs.absorb_hit():
+		vitals.grant_iframes()
+		EventBus.shield_broken.emit(global_position)
+		return
 	var applied: int = vitals.damage(amount)
 	if applied == 0:
 		return

@@ -6,7 +6,7 @@ extends Node2D
 ## 002: COMBO_READY = VALID numa palavra que fecha combo → 2ª moldura GOLD (forma, não brilho);
 ## as dicas que fecham combo com a última palavra ficam em GOLD.
 
-enum Anim { NONE, CAST, PURGE, HERESY, REJECT }
+enum Anim { NONE, CAST, PURGE, HERESY, REJECT, FIZZLE }
 
 const SLOT := Vector2(12, 14)
 const SLOT_GAP := 2
@@ -15,10 +15,15 @@ const CENTER_X := 320.0
 const HINTS_GAP := 12
 ## Duração das animações (escala de durações do art bible §14 / ficha 26: frames × ms).
 const ANIM_TIME: Dictionary[int, float] = {
-	Anim.CAST: 0.3, Anim.PURGE: 0.2, Anim.HERESY: 0.36, Anim.REJECT: 0.15,
+	Anim.CAST: 0.3, Anim.PURGE: 0.2, Anim.HERESY: 0.36, Anim.REJECT: 0.15, Anim.FIZZLE: 0.2,
 }
 const VALID_PULSE := 0.2
 const HERESY_TEXT := "HÆRESIS!"
+## VERBUM (design-agent): a palavra repetida aparece como fantasma INK_SOFT em xadrez, +2 px.
+const ECHO_TIME := 0.3
+const ECHO_OFFSET := Vector2(2, 2)
+## Falha do VERBUM: as letras piscam INK_SOFT 2 vezes em 0.2 s (sem BLOOD: não é dano).
+const FIZZLE_BLINK := 0.05
 
 var letters := PackedStringArray()
 var status: int = Atril.Status.EMPTY
@@ -31,6 +36,8 @@ var _pulse: float = 0.0
 var _last_letters := PackedStringArray()
 ## Latim das palavras que fecham combo com a última conjurada (vazio sem janela aberta).
 var combo_partners := PackedStringArray()
+var echo_text: String = ""
+var _echo_left: float = 0.0
 
 
 func _ready() -> void:
@@ -42,6 +49,11 @@ func _ready() -> void:
 	EventBus.combo_window_opened.connect(func(_w: WordData, _d: float, partners: PackedStringArray) -> void:
 		combo_partners = partners
 		queue_redraw())
+	EventBus.verbum_echoed.connect(func(w: WordData) -> void:
+		echo_text = w.latin
+		_echo_left = ECHO_TIME
+		queue_redraw())
+	EventBus.verbum_failed.connect(func() -> void: _play(Anim.FIZZLE))
 	EventBus.combo_window_closed.connect(func() -> void:
 		combo_partners = PackedStringArray()
 		queue_redraw())
@@ -92,6 +104,11 @@ func _process(delta: float) -> void:
 			anim = Anim.NONE
 			_last_letters = PackedStringArray()
 		queue_redraw()
+	if _echo_left > 0.0:
+		_echo_left -= delta
+		if _echo_left <= 0.0:
+			echo_text = ""
+		queue_redraw()
 	if status == Atril.Status.VALID:
 		_pulse += delta
 		queue_redraw()
@@ -104,7 +121,7 @@ func _draw() -> void:
 		shake = 1.0 if int(_anim_left / 0.06) % 2 == 0 else -1.0
 	var frame_color: Color = _frame_color()
 	var shown: PackedStringArray = letters
-	if anim in [Anim.CAST, Anim.PURGE, Anim.HERESY] and letters.is_empty():
+	if anim in [Anim.CAST, Anim.PURGE, Anim.HERESY, Anim.FIZZLE] and letters.is_empty():
 		shown = _last_letters
 	for i: int in capacity():
 		var pos := Vector2(rect.position.x + i * (SLOT.x + SLOT_GAP) + shake, rect.position.y)
@@ -119,13 +136,29 @@ func _draw() -> void:
 			var color: Color = Palette.GOLD if (rare or status == Atril.Status.VALID) else Palette.INK
 			if anim == Anim.HERESY:
 				color = Palette.BLOOD
+			elif anim == Anim.FIZZLE:
+				color = Palette.INK_SOFT if int(_anim_left / FIZZLE_BLINK) % 2 == 0 else Palette.PARCHMENT_OLD
 			if anim != Anim.CAST:
 				PixelFont.draw(self, shown[i], pos + Vector2(4, 4 + dy), color)
+	if echo_text != "":
+		_draw_echo(rect)
 	if is_combo_ready() and anim == Anim.NONE:
 		_draw_frame(rect.grow(3.0), frame_color)
 	if anim == Anim.HERESY:
 		PixelFont.draw_centered(self, HERESY_TEXT, CENTER_X, rect.position.y - 10, Palette.BLOOD)
 	_draw_hints(rect)
+
+
+## Fantasma do VERBUM: as letras em INK_SOFT deslocadas, com metade dos pixels cobertos pelo
+## fundo do slot em xadrez (dithering 50%, Princípio VII: sem alpha).
+func _draw_echo(rect: Rect2) -> void:
+	var bg: Color = Palette.CHALK if anim == Anim.CAST else Palette.PARCHMENT_OLD
+	for i: int in mini(echo_text.length(), capacity()):
+		var pos := Vector2(rect.position.x + i * (SLOT.x + SLOT_GAP), rect.position.y)
+		PixelFont.draw(self, echo_text[i], pos + Vector2(4, 4) + ECHO_OFFSET, Palette.INK_SOFT)
+		for y: int in int(SLOT.y):
+			for x: int in range(y % 2, int(SLOT.x), 2):
+				draw_rect(Rect2(pos + Vector2(x, y), Vector2.ONE), bg)
 
 
 ## Moldura de 1 px com retângulos cheios (pixel exato; a linha do draw_rect vazado cai no meio pixel).

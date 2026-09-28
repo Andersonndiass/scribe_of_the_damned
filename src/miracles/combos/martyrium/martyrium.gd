@@ -28,7 +28,7 @@ func _physics_process(delta: float) -> void:
 		_tick += word.hit_cooldown
 		var em := EnemyQuery.provider as EnemyManager
 		if em != null:
-			em.damage_cross_rotated(global_position, _angle, word.length, word.width, maxi(1, roundi(word.damage * power)))
+			em.damage_cross_rotated(global_position, _angle, word.length, word.width, dmg(word.damage))
 	visible = _left > BLINK_WINDOW or int(_left / 0.1) % 2 == 0
 	queue_redraw()
 	if _left <= 0.0:

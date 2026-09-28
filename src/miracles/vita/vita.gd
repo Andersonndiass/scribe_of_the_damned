@@ -1,5 +1,6 @@
 extends Miracle
 ## VITA — acende velas (FR-021). Usa: heal_candles. Não escala com power: vela é inteira.
+## A GLORIA multiplica a cura (002 FR-209), arredondada.
 ## Visual placeholder: 6 faíscas CHALK/GOLD subindo em 0.5s.
 
 const TIME := 0.5
@@ -12,7 +13,7 @@ func _on_start() -> void:
 	_t = 0.0
 	var player := get_tree().get_first_node_in_group(&"player") as Player
 	if player != null:
-		player.heal(word.heal_candles)
+		player.heal(roundi(word.heal_candles * damage_mul))
 	queue_redraw()
 
 

@@ -24,7 +24,7 @@ func _physics_process(delta: float) -> void:
 	var em := EnemyQuery.provider as EnemyManager
 	if em != null and _cursor >= 0:
 		var r: Vector2i = em.requiem_step(_cursor, word.kill_batch_per_frame, word.kill_hp_threshold,
-			maxi(1, roundi(word.damage * power)), _drops_left)
+			dmg(word.damage), _drops_left)
 		_cursor = r.x
 		_drops_left = r.y
 	queue_redraw()

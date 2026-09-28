@@ -41,6 +41,8 @@ func _ready() -> void:
 		get_tree().change_scene_to_file.call_deferred(debug_scene)
 		return
 	GameState.start_run(player_data)
+	if _debug_args().contains("unlock=all"):
+		_unlock_all_words()
 	($World/Player as Player).auto_attack.projectiles = player_projectiles
 	PoolManager.register(SpawnTelegraph.POOL_KEY, TELEGRAPH_SCENE, TELEGRAPH_PREWARM, telegraph_layer)
 	PoolManager.register(DissolveFx.POOL_KEY, DISSOLVE_SCENE, DISSOLVE_PREWARM, fx_layer)
@@ -85,16 +87,29 @@ func _process(delta: float) -> void:
 func _debug_scene_requested() -> String:
 	if has_meta(&"stress") or get_tree().current_scene != self:
 		return ""
-	var asked: String = " ".join(OS.get_cmdline_user_args())
-	if OS.has_feature("web"):
-		var search: Variant = JavaScriptBridge.eval("window.location.search", true)
-		if search is String:
-			asked += " " + (search as String)
+	var asked: String = _debug_args()
 	if asked.contains("stress"):
 		return STRESS_SCENE
 	if asked.contains("roster"):
 		return ROSTER_SCENE
 	return ""
+
+
+## Argumentos de debug: linha de comando (depois de --) e, no web, a query da URL.
+func _debug_args() -> String:
+	var asked: String = " ".join(OS.get_cmdline_user_args())
+	if OS.has_feature("web"):
+		var search: Variant = JavaScriptBridge.eval("window.location.search", true)
+		if search is String:
+			asked += " " + (search as String)
+	return asked
+
+
+## Debug (002 T222, FR-211): ?unlock=all / -- unlock=all libera todos os apócrifos para playtest.
+func _unlock_all_words() -> void:
+	for word: WordData in letter_field.lexicon_data.words:
+		if word.requires_unlock:
+			GameState.unlock_word(word)
 
 
 func _restart() -> void:

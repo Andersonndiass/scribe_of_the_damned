@@ -40,6 +40,11 @@ signal combo_cast(combo: ComboData, power: float)
 ## `partners` = latim das palavras que fecham combo com ela (dicas e COMBO_READY do HUD).
 signal combo_window_opened(word: WordData, duration: float, partners: PackedStringArray)
 signal combo_window_closed()
+## 002 FIDES: o escudo absorveu um golpe.
+signal shield_broken(position: Vector2)
+## 002 VERBUM: repetiu `word` / não havia o que repetir (falha sem heresia, D-055).
+signal verbum_echoed(word: WordData)
+signal verbum_failed()
 
 # Capítulo
 signal chapter_completed(chapter: int)

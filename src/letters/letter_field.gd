@@ -107,7 +107,8 @@ func _on_enemy_killed(slot: int, data: EnemyData, pos: Vector2) -> void:
 	var guaranteed: bool = em != null and slot < em.count and em.guaranteed_drop[slot] == 1
 	if not guaranteed and GameState.rng.randf() >= data.letter_drop_chance:
 		return
-	var r: Dictionary = dropper.roll(atril, lexicon, tuning, GameState.rng, GameState.unlocked_words)
+	var target_mul: float = player.buffs.target_weight_mul() if player != null else 1.0
+	var r: Dictionary = dropper.roll(atril, lexicon, tuning, GameState.rng, GameState.unlocked_words, target_mul)
 	spawn_letter(r["letter"], r["rare"], r["target"], pos)
 
 
@@ -117,7 +118,7 @@ func _physics_process(delta: float) -> void:
 	var t0: int = Prof.start()
 	var can_collect: bool = player != null and player.vitals.is_alive()
 	var body: Vector2 = player.global_position + PLAYER_BODY_OFFSET if player != null else Vector2.INF
-	var magnet_r: float = player.data.magnet_radius if player != null else 0.0
+	var magnet_r: float = player.data.magnet_radius * player.buffs.magnet_mul() if player != null else 0.0
 	for idx: int in range(_active.size() - 1, -1, -1):
 		var l: Letter = _active[idx]
 		l.life -= delta

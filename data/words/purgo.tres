@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="WordData" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="WordData" load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://src/data/word_data.gd" id="1_wd"]
+[ext_resource type="PackedScene" path="res://src/miracles/purgo/purgo.tscn" id="2_scene"]
 
 [resource]
 script = ExtResource("1_wd")
@@ -14,4 +15,5 @@ combo_eligible = false
 kill_hp_threshold = 999
 damage = 10.0
 kill_batch_per_frame = 30
+miracle_scene = ExtResource("2_scene")
 vfx_prefix = &"VFX_PURGO"
