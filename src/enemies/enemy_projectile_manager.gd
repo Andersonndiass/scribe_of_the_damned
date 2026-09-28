@@ -46,6 +46,11 @@ func fire(data: EnemyProjectileData, from: Vector2, dir: Vector2) -> bool:
 	return true
 
 
+## Posições dos tiros ativos (SALVATOR desenha uma cruz onde cada um sumiu).
+func snapshot_positions() -> PackedVector2Array:
+	return _pos.slice(0, count)
+
+
 func clear() -> void:
 	count = 0
 	queue_redraw()

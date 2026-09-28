@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="WordData" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="WordData" load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://src/data/word_data.gd" id="1_wd"]
+[ext_resource type="PackedScene" path="res://src/miracles/salvator/salvator.tscn" id="2_scene"]
 
 [resource]
 script = ExtResource("1_wd")
@@ -13,4 +14,6 @@ requires_unlock = false
 combo_eligible = true
 heal_candles = 3
 clear_projectiles = true
+miracle_scene = ExtResource("2_scene")
+draw_below_world = true
 vfx_prefix = &"VFX_SALVATOR"

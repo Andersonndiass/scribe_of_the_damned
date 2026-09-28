@@ -22,9 +22,9 @@ Legenda: `[TEST-FIRST]` = o teste é escrito e falha antes da implementação.
 - ✅ **T222** Debug `?unlock=all` / `-- unlock=all` para playtest.
 
 ## Fase 4 — Grandes Orações
-- **T230** SANCTUS, DOMINUS, ANGELUS (7 letras).
-- **T231** SPIRITUS, SALVATOR, MISERERE (8 letras).
-- **T232** Integração `test_orations.gd` (atril 7–8).
+- ✅ **T230** SANCTUS, DOMINUS, ANGELUS (7 letras).
+- ✅ **T231** SPIRITUS, SALVATOR, MISERERE (8 letras).
+- ✅ **T232** Integração `test_orations.gd` (atril 7–8). Debug `?atril=8`.
 
 ## Fase 5 — Fechamento
 - **T240** Parecer do rules-agent sobre os números finais; stress com PURGO/MISERERE/DOMINUS (SC-202, SC-205).

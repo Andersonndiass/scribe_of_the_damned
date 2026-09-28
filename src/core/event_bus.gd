@@ -45,6 +45,10 @@ signal shield_broken(position: Vector2)
 ## 002 VERBUM: repetiu `word` / não havia o que repetir (falha sem heresia, D-055).
 signal verbum_echoed(word: WordData)
 signal verbum_failed()
+## 002 MISERERE: apaga as poças de heresia; a próxima heresia foi perdoada (sem stun, letras ficam).
+signal heresy_absolved()
+signal heresy_forgiveness_granted()
+signal heresy_forgiven(position: Vector2)
 
 # Capítulo
 signal chapter_completed(chapter: int)

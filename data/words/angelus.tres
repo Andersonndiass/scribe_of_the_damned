@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="WordData" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="WordData" load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://src/data/word_data.gd" id="1_wd"]
+[ext_resource type="PackedScene" path="res://src/miracles/angelus/angelus.tscn" id="2_scene"]
 
 [resource]
 script = ExtResource("1_wd")
@@ -15,4 +16,8 @@ radius = 40.0
 damage = 4.0
 hit_cooldown = 0.2
 duration = 10.0
+miracle_scene = ExtResource("2_scene")
+draw_below_world = true
+rotation_speed = 1.0
+width = 8.0
 vfx_prefix = &"VFX_ANGELUS"

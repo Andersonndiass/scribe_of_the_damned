@@ -41,8 +41,14 @@ func _ready() -> void:
 		get_tree().change_scene_to_file.call_deferred(debug_scene)
 		return
 	GameState.start_run(player_data)
-	if _debug_args().contains("unlock=all"):
+	var args: String = _debug_args()
+	if args.contains("unlock=all"):
 		_unlock_all_words()
+	var atril_arg: RegExMatch = RegEx.create_from_string("atril=([0-9])").search(args)
+	if atril_arg != null:
+		# Debug (002 Fase 4): atril 7–8 para testar as Grandes Orações antes da loja (003).
+		letter_field.atril.set_capacity(int(atril_arg.get_string(1)))
+		letter_field.emit_atril()
 	($World/Player as Player).auto_attack.projectiles = player_projectiles
 	PoolManager.register(SpawnTelegraph.POOL_KEY, TELEGRAPH_SCENE, TELEGRAPH_PREWARM, telegraph_layer)
 	PoolManager.register(DissolveFx.POOL_KEY, DISSOLVE_SCENE, DISSOLVE_PREWARM, fx_layer)
@@ -50,7 +56,8 @@ func _ready() -> void:
 	PoolManager.register(GoldInk.POOL_KEY, GOLD_SCENE, GOLD_PREWARM, $World/GoldInkField)
 	for word: WordData in letter_field.lexicon_data.words:
 		if word.miracle_scene != null:
-			PoolManager.register(word.id, word.miracle_scene, MIRACLE_PREWARM, miracle_layer)
+			var word_layer: Node2D = fx_layer if word.draw_below_world else miracle_layer
+			PoolManager.register(word.id, word.miracle_scene, MIRACLE_PREWARM, word_layer)
 	for combo: ComboData in ($Caster as Caster).combos:
 		# Vapor e o fogo da Flamma ficam abaixo das letras do chão (design-agent, 002).
 		var layer: Node2D = fx_layer if combo.draw_below_world else miracle_layer

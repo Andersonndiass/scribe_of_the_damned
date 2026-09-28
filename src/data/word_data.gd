@@ -45,6 +45,8 @@ extends Resource
 @export var guaranteed_drop_cap: int = 0
 ## ANGELUS, Martírio: intervalo mínimo entre acertos no mesmo inimigo.
 @export var hit_cooldown: float = 0.0
+## Martírio, ANGELUS: voltas por segundo do que gira em volta do escriba.
+@export var rotation_speed: float = 0.0
 ## SPIRITUS: multiplicador de velocidade do escriba.
 @export var speed_mul: float = 1.0
 ## SALVATOR: apaga os projéteis inimigos da tela.
@@ -53,3 +55,5 @@ extends Resource
 @export var forgive_heresy: bool = false
 @export_group("Arte")
 @export var vfx_prefix: StringName = &""
+## Desenhar abaixo das letras do chão, no FxLayer (Vapor, Flamma, Grandes Orações; design-agent).
+@export var draw_below_world: bool = false

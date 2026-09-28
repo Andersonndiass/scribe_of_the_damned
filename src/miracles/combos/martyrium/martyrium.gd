@@ -22,7 +22,7 @@ func _on_start() -> void:
 func _physics_process(delta: float) -> void:
 	_left -= delta
 	_tick -= delta
-	_angle += TAU * (word as ComboData).rotation_speed * delta
+	_angle += TAU * word.rotation_speed * delta
 	_follow()
 	if _tick <= 0.0:
 		_tick += word.hit_cooldown

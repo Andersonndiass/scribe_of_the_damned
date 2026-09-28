@@ -67,7 +67,7 @@ func input_direction() -> Vector2:
 
 
 func move(direction: Vector2) -> void:
-	velocity = direction * data.move_speed * _hazard_slow()
+	velocity = direction * data.move_speed * buffs.speed_mul() * _hazard_slow()
 	if not direction.is_zero_approx():
 		facing = direction.normalized()
 		sprite.flip_h = facing.x < 0.0
@@ -89,7 +89,10 @@ func play_anim(anim: StringName) -> void:
 
 
 ## Dano recebido (1 = fraco, 2 = forte). Chamado pela Hurtbox ou pelo EnemyManager.
-func take_hit(amount: int, _source_tag: StringName = &"") -> void:
+func take_hit(amount: int, source_tag: StringName = &"") -> void:
+	# SPIRITUS: intangível a corpos; projéteis ainda doem (D-046).
+	if source_tag == &"contact" and buffs.is_intangible():
+		return
 	# FIDES: o escudo absorve o golpe inteiro (1 ou 2 velas) e dá os i-frames normais.
 	if amount > 0 and vitals.is_alive() and not vitals.is_invulnerable() and buffs.absorb_hit():
 		vitals.grant_iframes()
@@ -116,6 +119,11 @@ func heal(amount: int) -> void:
 
 
 ## Flash de 1 quadro na pena (ignora o hit-stop, que congela o tempo do jogo).
+## SPIRITUS: o escriba em xadrez CHALK enquanto está intangível.
+func set_spirit_look(on: bool) -> void:
+	flash.set_dither_tint(on)
+
+
 ## VAPOR: dentro da nuvem o escriba é desenhado em xadrez (oculto).
 func set_hidden_look(on: bool) -> void:
 	flash.set_dither_hidden(on)

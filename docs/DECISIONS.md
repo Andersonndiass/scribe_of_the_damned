@@ -283,6 +283,16 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
 - **SC-202 (medição):** `?stress=purgo` e o controle `?stress=purgoctl` no Chrome. Pior frame com PURGO de 25 a 53 ms, contra 19 a 45 ms no controle. O ruído desta máquina é do tamanho da diferença. Limitar as dissoluções a 64 não mudou o quadro de forma clara. Veredito fica para a T240 (Fase 5, com MISERERE e DOMINUS); o suspeito principal são as 300 dissoluções redesenhando ao mesmo tempo.
 - **Status:** ✅ plano aprovado ("pode seguir").
 
+### D-056 · 2026-09-28 · Grandes Orações (002 Fase 4)
+- **Escala (rules-agent):** mesma regra dos combos, `power` só no dano. Efetivos: SANCTUS 15 a cada 0,25 s (raio 90, 6 s), DOMINUS 100 + stun 3 s, ANGELUS 20 por toque, SPIRITUS 21 por toque, MISERERE 280, SALVATOR 3 velas (GLORIA multiplica a cura). O dano literal foi rejeitado: DOMINUS (7 letras) ficaria abaixo da MORTIS efetiva (70).
+- **Ressalvas para a 006:** num chefe parado, SANCTUS (360) passa a MISERERE (280); conferir MISERERE × GLORIA contra uma fase inteira de chefe.
+- **Números novos (provisórios, parecer final na T240):** ANGELUS `rotation_speed` 1.0 e alcance da pena (`width`) 8 px; SPIRITUS toque a cada 0,25 s em raio 10. `rotation_speed` subiu do `ComboData` para o `WordData`.
+- **Toques:** ANGELUS e SPIRITUS conferem o toque todo tick, com intervalo por inimigo (`EnemyManager.damage_touch`); antes a pena "pulava" o inimigo (animation-agent).
+- **SPIRITUS:** o contato não fere o escriba; projéteis e heresia sim (D-046). **MISERERE:** apaga a poça e o aggro dela; a próxima heresia é perdoada sem stun e sem perder as letras. Letras corrompidas: gancho no Caster para o Cap. 5.
+- **Visual (design-agent):** as 6 ficam abaixo das letras (`draw_below_world`, agora no `WordData`); coroa GOLD nos atordoados; xadrez CHALK no escriba do SPIRITUS; selo GOLD no canto do atril com o perdão guardado. Tempos ajustados pelo animation-agent (flash do SANCTUS 50 ms só quando fere; fantasmas do SPIRITUS só em movimento).
+- **Debug:** `?atril=8` / `-- atril=8` para testar antes da loja (003).
+- **Status:** ✅ plano aprovado ("pode").
+
 ---
 
 ## Conflitos abertos

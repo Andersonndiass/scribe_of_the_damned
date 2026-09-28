@@ -32,6 +32,7 @@ func _ready() -> void:
 	heresy_pool.name = "HeresyPool"
 	add_child(heresy_pool)
 	combo_book = ComboBook.new(combos, combo_tuning)
+	EventBus.heresy_absolved.connect(_on_heresy_absolved)
 	EventBus.letter_collected.connect(func(_l: String, _r: bool) -> void: combo_book.on_letter_collected())
 
 
@@ -111,6 +112,14 @@ func _cast_verbum() -> bool:
 	return true
 
 
+## MISERERE: apaga a poça de heresia ativa e o aggro dela.
+func _on_heresy_absolved() -> void:
+	heresy_pool.absolve()
+	var em := EnemyQuery.provider as EnemyManager
+	if em != null:
+		em.clear_aggro()
+
+
 func _partner_latins() -> PackedStringArray:
 	var out := PackedStringArray()
 	if not combo_tuning.hint_highlight:
@@ -157,6 +166,12 @@ func purge() -> bool:
 func _commit_heresy() -> void:
 	var tuning: DropTuning = letter_field.tuning
 	var pos: Vector2 = player.global_position
+	# MISERERE: a próxima heresia é perdoada — sem stun, sem poça e as letras ficam (FR-212).
+	# (Cap. 5: a letra corrompida também passa por aqui.)
+	if player.buffs.consume_forgiveness():
+		EventBus.heresy_forgiven.emit(pos)
+		letter_field.emit_atril()
+		return
 	letter_field.atril.take_all()
 	player.stun(tuning.heresy_stun)
 	var em := EnemyQuery.provider as EnemyManager

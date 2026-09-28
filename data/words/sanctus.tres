@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="WordData" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="WordData" load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://src/data/word_data.gd" id="1_wd"]
+[ext_resource type="PackedScene" path="res://src/miracles/sanctus/sanctus.tscn" id="2_scene"]
 
 [resource]
 script = ExtResource("1_wd")
@@ -16,4 +17,6 @@ damage = 3.0
 tick_interval = 0.25
 slow_factor = 0.5
 duration = 6.0
+miracle_scene = ExtResource("2_scene")
+draw_below_world = true
 vfx_prefix = &"VFX_SANCTUS"

@@ -10,14 +10,10 @@ extends WordData
 @export var word_b: WordData
 ## Nome em latim na tela (D-045): VAPOR, FLAMMA, CAECITAS, MARTYRIUM, REQUIEM.
 @export var display_name: String = ""
-## Martírio: voltas por segundo da cruz.
-@export var rotation_speed: float = 0.0
 ## Vapor: fora da nuvem, os inimigos perdem o escriba de vista (0 = não o veem).
 @export var stealth_aggro_mul: float = 1.0
 ## Chama Radiante: dano do raio (o `damage` herdado é o do fogo).
 @export var burst_damage: float = 0.0
-## Arte: desenhar abaixo das letras do chão (Vapor, fogo da Flamma), no FxLayer.
-@export var draw_below_world: bool = false
 
 
 ## O combo herda as marcas das duas palavras (FR-202c): conta como `id` se uma delas for `id`.

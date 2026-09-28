@@ -29,6 +29,10 @@ const WANDER_SPEED_MUL := 0.5
 const WANDER_TURN_PER_TICK := 0.02
 ## Venda do cego (design-agent, 002): altura dos olhos em raios acima do pé.
 const BLINDFOLD_Y_MUL := 1.5
+## Coroa dos atordoados (DOMINUS, PAX; design-agent): 3 pontos GOLD girando acima da cabeça.
+const CROWN_ABOVE := 12.0
+const CROWN_RADIUS := 3.0
+const CROWN_POINTS := 3
 
 @export var player: Node2D
 @export var player_hurt_radius: float = 5.0
@@ -70,6 +74,11 @@ var _speed_of := PackedFloat32Array()
 var blind_left := PackedFloat32Array()
 ## REQUIEM: a morte deste slot solta letra com certeza (LetterField consulta).
 var guaranteed_drop := PackedByteArray()
+## Toques com intervalo por inimigo (ANGELUS, SPIRITUS): instante (relógio da física) em que o
+## slot pode ser tocado de novo.
+var touch_ready := PackedFloat32Array()
+## Relógio da física (s), para os intervalos por inimigo.
+var clock: float = 0.0
 
 var _letter_field: LetterField
 var _projectiles: EnemyProjectileManager
@@ -114,6 +123,7 @@ func _init() -> void:
 	_speed_of.resize(CAPACITY)
 	blind_left.resize(CAPACITY)
 	guaranteed_drop.resize(CAPACITY)
+	touch_ready.resize(CAPACITY)
 	## Célula ~ raio de separação: cada consulta toca poucas células com poucos inimigos.
 	_hash = SpatialHash.new(Rect2(Vector2.ZERO, Arena.PAGE_SIZE), HASH_CELL)
 
@@ -165,6 +175,7 @@ func spawn(data: EnemyData, pos: Vector2, is_champion: bool = false) -> int:
 	carried[i] = ""
 	blind_left[i] = 0.0
 	guaranteed_drop[i] = 0
+	touch_ready[i] = 0.0
 	count += 1
 	_hash_dirty = true
 	EventBus.enemy_spawned.emit(i, data)
@@ -187,6 +198,11 @@ func set_aggro(point: Vector2, duration: float, radius: float = INF) -> void:
 	_aggro_radius = radius
 
 
+## MISERERE: a poça de heresia deixa de atrair.
+func clear_aggro() -> void:
+	_aggro_left = 0.0
+
+
 func is_aggro_active() -> bool:
 	return _aggro_left > 0.0
 
@@ -196,6 +212,7 @@ func _physics_process(delta: float) -> void:
 		_aggro_left -= delta
 	if _hide_left > 0.0:
 		_hide_left -= delta
+	clock += delta
 	last_tick += 1
 	if count == 0:
 		return
@@ -437,6 +454,18 @@ func damage_cross(center: Vector2, arm: float, width: float, damage: int) -> int
 	return hits.size()
 
 
+## Toque (ANGELUS, SPIRITUS): fere quem está no raio e ainda não foi tocado nos últimos
+## `cooldown` s. Chamado todo tick: nada "pula" entre um toque e outro. Retorna quantos feriu.
+func damage_touch(center: Vector2, radius: float, damage: int, cooldown: float) -> int:
+	var hits := PackedInt32Array()
+	for i: int in _slots_in_radius(center, radius):
+		if touch_ready[i] <= clock:
+			touch_ready[i] = clock + cooldown
+			hits.append(i)
+	_damage_descending(hits, damage)
+	return hits.size()
+
+
 ## Cruz girada de `angle` rad em torno de `center` (MARTYRIUM). Retorna quantos acertou.
 func damage_cross_rotated(center: Vector2, angle: float, arm: float, width: float, damage: int) -> int:
 	var hits := PackedInt32Array()
@@ -522,6 +551,19 @@ func purgo_step(cursor: int, max_ops: int, elite_damage: int) -> int:
 	return i
 
 
+## DOMINUS em lotes (002 FR-212): atordoa por `stun` s e dá `damage` em todos, do cursor para
+## baixo. Retorna o próximo cursor (-1 = acabou).
+func stun_damage_step(cursor: int, max_ops: int, stun: float, damage: int) -> int:
+	var i: int = mini(cursor, count - 1)
+	var ops: int = 0
+	while i >= 0 and ops < max_ops:
+		stun_left[i] = maxf(stun_left[i], stun)
+		damage_at(i, damage)
+		i -= 1
+		ops += 1
+	return i
+
+
 ## MORTIS em lotes (FR-021): processa até `max_ops` slots, do `cursor` para baixo. Inimigos com
 ## HP ≤ `kill_threshold` morrem; os outros levam `damage`. Retorna o próximo cursor (-1 = acabou).
 ## Descer os índices é seguro com o swap-remove.
@@ -588,6 +630,11 @@ func draw_telegraphs(canvas: CanvasItem, time: float = 0.0) -> void:
 			for k: int in AURA_PARTICLES:
 				var a: float = TAU * (time + float(k) / AURA_PARTICLES)
 				canvas.draw_rect(Rect2((center + Vector2.RIGHT.rotated(a) * r).round(), Vector2.ONE), Palette.BLOOD)
+		if stun_left[i] > 0.0:
+			var head: Vector2 = render_position(i) - Vector2(0, radius_of[i] * 2.0 + CROWN_ABOVE)
+			for k: int in CROWN_POINTS:
+				var a: float = TAU * (time + float(k) / CROWN_POINTS)
+				canvas.draw_rect(Rect2((head + Vector2(cos(a) * CROWN_RADIUS, sin(a))).round(), Vector2.ONE), Palette.GOLD)
 		if blind_left[i] > 0.0:
 			# Venda CHALK 5×1 com contorno INK na linha dos olhos (CAECITAS).
 			var eye: Vector2 = (render_position(i) - Vector2(0, radius_of[i] * BLINDFOLD_Y_MUL)).round()
@@ -640,6 +687,7 @@ func _remove(i: int) -> void:
 		_speed_of[i] = _speed_of[last]
 		blind_left[i] = blind_left[last]
 		guaranteed_drop[i] = guaranteed_drop[last]
+		touch_ready[i] = touch_ready[last]
 	data_of[last] = null
 	behavior_of[last] = null
 	count -= 1

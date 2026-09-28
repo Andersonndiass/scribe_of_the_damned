@@ -24,6 +24,14 @@ const ECHO_TIME := 0.3
 const ECHO_OFFSET := Vector2(2, 2)
 ## Falha do VERBUM: as letras piscam INK_SOFT 2 vezes em 0.2 s (sem BLOOD: não é dano).
 const FIZZLE_BLINK := 0.05
+## MISERERE (design-agent): selo GOLD 5×5 no canto do atril com o perdão guardado; ao ser usado,
+## pisca CHALK 3× em 0.3 s e some, e uma cruz GOLD de 7 px sobe 8 px sobre o escriba em 0.4 s.
+const SEAL_SIZE := 5
+const SEAL_BLINK_TIME := 0.3
+const SEAL_BLINKS := 3
+const FORGIVEN_CROSS_TIME := 0.4
+const FORGIVEN_CROSS_RISE := 8.0
+const FORGIVEN_CROSS_ABOVE := 26.0
 
 var letters := PackedStringArray()
 var status: int = Atril.Status.EMPTY
@@ -37,6 +45,10 @@ var _last_letters := PackedStringArray()
 ## Latim das palavras que fecham combo com a última conjurada (vazio sem janela aberta).
 var combo_partners := PackedStringArray()
 var echo_text: String = ""
+var forgiveness_ready: bool = false
+var _seal_blink_left: float = 0.0
+var _cross_left: float = 0.0
+var _cross_at: Vector2 = Vector2.ZERO
 var _echo_left: float = 0.0
 
 
@@ -54,6 +66,15 @@ func _ready() -> void:
 		_echo_left = ECHO_TIME
 		queue_redraw())
 	EventBus.verbum_failed.connect(func() -> void: _play(Anim.FIZZLE))
+	EventBus.heresy_forgiveness_granted.connect(func() -> void:
+		forgiveness_ready = true
+		queue_redraw())
+	EventBus.heresy_forgiven.connect(func(pos: Vector2) -> void:
+		forgiveness_ready = false
+		_seal_blink_left = SEAL_BLINK_TIME
+		_cross_left = FORGIVEN_CROSS_TIME
+		_cross_at = pos
+		queue_redraw())
 	EventBus.combo_window_closed.connect(func() -> void:
 		combo_partners = PackedStringArray()
 		queue_redraw())
@@ -104,6 +125,10 @@ func _process(delta: float) -> void:
 			anim = Anim.NONE
 			_last_letters = PackedStringArray()
 		queue_redraw()
+	if _seal_blink_left > 0.0 or _cross_left > 0.0:
+		_seal_blink_left -= delta
+		_cross_left -= delta
+		queue_redraw()
 	if _echo_left > 0.0:
 		_echo_left -= delta
 		if _echo_left <= 0.0:
@@ -142,11 +167,27 @@ func _draw() -> void:
 				PixelFont.draw(self, shown[i], pos + Vector2(4, 4 + dy), color)
 	if echo_text != "":
 		_draw_echo(rect)
+	_draw_forgiveness(rect)
 	if is_combo_ready() and anim == Anim.NONE:
 		_draw_frame(rect.grow(3.0), frame_color)
 	if anim == Anim.HERESY:
 		PixelFont.draw_centered(self, HERESY_TEXT, CENTER_X, rect.position.y - 10, Palette.BLOOD)
 	_draw_hints(rect)
+
+
+func _draw_forgiveness(rect: Rect2) -> void:
+	var seal := Rect2(rect.position - Vector2(SEAL_SIZE + 4, 0), Vector2(SEAL_SIZE, SEAL_SIZE))
+	if forgiveness_ready:
+		draw_rect(seal, Palette.GOLD)
+	elif _seal_blink_left > 0.0:
+		var phase: int = int((SEAL_BLINK_TIME - _seal_blink_left) / (SEAL_BLINK_TIME / (SEAL_BLINKS * 2)))
+		if phase % 2 == 0:
+			draw_rect(seal, Palette.CHALK)
+	if _cross_left > 0.0:
+		var k: float = 1.0 - _cross_left / FORGIVEN_CROSS_TIME
+		var c: Vector2 = (_cross_at - Vector2(0, FORGIVEN_CROSS_ABOVE + FORGIVEN_CROSS_RISE * k)).round()
+		draw_rect(Rect2(c + Vector2(-3, 0), Vector2(7, 1)), Palette.GOLD)
+		draw_rect(Rect2(c + Vector2(0, -3), Vector2(1, 7)), Palette.GOLD)
 
 
 ## Fantasma do VERBUM: as letras em INK_SOFT deslocadas, com metade dos pixels cobertos pelo

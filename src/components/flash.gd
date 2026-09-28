@@ -28,6 +28,12 @@ func play() -> void:
 	set_process(true)
 
 
+## SPIRITUS: escriba em xadrez CHALK (metade dos pixels opacos trocados pela cor).
+func set_dither_tint(on: bool) -> void:
+	_material.set_shader_parameter(&"tint_color", Palette.CHALK)
+	_material.set_shader_parameter(&"dither_tint", 1.0 if on else 0.0)
+
+
 ## VAPOR: escriba oculto em xadrez (dithering, Princípio VII).
 func set_dither_hidden(on: bool) -> void:
 	_material.set_shader_parameter(&"dither_hide", 1.0 if on else 0.0)
