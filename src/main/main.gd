@@ -49,6 +49,9 @@ func _ready() -> void:
 	# sozinha. O teste da tela da loja liga a loja de verdade com a meta "shop_manual".
 	if get_tree().current_scene != self and not has_meta(&"shop_manual"):
 		shop_auto_close = true
+	# Sem a tela da loja na cena, não há como sair dela: fecha sozinha.
+	if not has_node("ShopScreen"):
+		shop_auto_close = true
 	var args: String = _debug_args()
 	if args.contains("unlock=all"):
 		_unlock_all_words()
