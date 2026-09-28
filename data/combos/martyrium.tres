@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="ComboData" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://src/data/combo_data.gd" id="1_cd"]
+[ext_resource type="PackedScene" path="res://src/miracles/combos/martyrium/martyrium.tscn" id="2_scene"]
+[ext_resource type="Resource" path="res://data/words/crux.tres" id="3_a"]
+[ext_resource type="Resource" path="res://data/words/lux.tres" id="4_b"]
+
+[resource]
+script = ExtResource("1_cd")
+id = &"martyrium"
+latin = "MARTYRIUM"
+translation_key = &"combo_martyrium"
+power_budget = 3.0
+miracle_scene = ExtResource("2_scene")
+damage = 3.0
+hit_cooldown = 0.25
+length = 160.0
+width = 5.0
+duration = 4.0
+rotation_speed = 1.0
+word_a = ExtResource("3_a")
+word_b = ExtResource("4_b")
+display_name = "MARTYRIUM"
+vfx_prefix = &"VFX_MARTYRIUM"

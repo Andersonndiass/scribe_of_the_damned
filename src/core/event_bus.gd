@@ -34,6 +34,12 @@ signal gold_ink_collected(amount: int, total: int)
 signal word_cast(word: WordData, power: float, origin: Vector2, direction: Vector2)
 signal heresy_committed(position: Vector2)
 signal atril_purged(letters: PackedStringArray, position: Vector2)
+## 002: um combo substituiu o milagre da 2ª palavra (o word_cast dela sai antes).
+signal combo_cast(combo: ComboData, power: float)
+## 002: a palavra abriu a janela de combo; `duration` = segundos contados da 1ª letra;
+## `partners` = latim das palavras que fecham combo com ela (dicas e COMBO_READY do HUD).
+signal combo_window_opened(word: WordData, duration: float, partners: PackedStringArray)
+signal combo_window_closed()
 
 # Capítulo
 signal chapter_completed(chapter: int)

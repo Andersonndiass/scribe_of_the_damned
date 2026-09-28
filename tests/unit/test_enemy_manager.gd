@@ -146,3 +146,56 @@ func test_aggro_point_overrides_player() -> void:
 	_manager.set_aggro(Vector2(300, 60), 2.0)
 	_step(30)
 	assert_lt(_manager.positions[0].y, 180.0, "foi em direção à poça, não ao jogador")
+
+
+func test_blind_enemy_wanders_but_still_hurts_on_contact() -> void:
+	# 002 T212 / D-046: CAECITAS não persegue, mas o contato continua ferindo.
+	_manager.spawn(IMP, Vector2(200, 180))
+	assert_eq(_manager.blind_in_radius(Vector2(200, 180), 20.0, 2.5), 1)
+	var before: float = _manager.positions[0].distance_to(_player.position)
+	_step(60)
+	var after: float = _manager.positions[0].distance_to(_player.position)
+	assert_gt(after, before - IMP.move_speed * 0.6, "cego não fecha a distância como quem persegue")
+	_manager.spawn(IMP, _player.position + EnemyManager.PLAYER_BODY_OFFSET)
+	_manager.blind_in_radius(_player.position, 10.0, 2.5)
+	_player.hits.clear()
+	_step(1)
+	assert_eq(_player.hits.size(), 1, "o cego encostado ainda fere")
+
+
+func test_blindness_wears_off() -> void:
+	_manager.spawn(IMP, Vector2(200, 180))
+	_manager.blind_in_radius(Vector2(200, 180), 20.0, 0.5)
+	_step(40)
+	assert_true(_manager.blind_left[0] <= 0.0, "a cegueira acabou")
+	var before: float = _manager.positions[0].distance_to(_player.position)
+	_step(30)
+	assert_lt(_manager.positions[0].distance_to(_player.position), before, "voltou a perseguir")
+
+
+func test_hidden_player_only_seen_inside_the_cloud() -> void:
+	_manager.spawn(IMP, Vector2(100, 180))  # fora da nuvem
+	_manager.spawn(IMP, Vector2(300, 180))  # dentro da nuvem
+	var before_out: float = _manager.positions[0].distance_to(_player.position)
+	var before_in: float = _manager.positions[1].distance_to(_player.position)
+	for i: int in 60:
+		_manager.hide_player(_player.position, 40.0, 0.1)
+		_step(1)
+	assert_true(_manager.is_player_hidden())
+	assert_gt(_manager.positions[0].distance_to(_player.position), before_out - IMP.move_speed * 0.6, "fora: perdeu o escriba")
+	assert_lt(_manager.positions[1].distance_to(_player.position), before_in, "dentro: ainda persegue")
+
+
+func test_requiem_step_guarantees_drops_up_to_cap() -> void:
+	var drops: Array[bool] = []
+	var on_kill := func(slot: int, _d: EnemyData, _p: Vector2) -> void:
+		drops.append(_manager.guaranteed_drop[slot] == 1)
+	EventBus.enemy_killed.connect(on_kill)
+	for i: int in 5:
+		_manager.spawn(IMP, Vector2(100 + i * 20, 100))
+	var r: Vector2i = _manager.requiem_step(_manager.count - 1, 30, 5, 20, 3)
+	EventBus.enemy_killed.disconnect(on_kill)
+	assert_eq(r.x, -1, "acabou")
+	assert_eq(r.y, 0, "gastou o teto")
+	assert_eq(_manager.count, 0)
+	assert_eq(drops.count(true), 3, "só 3 com letra garantida")

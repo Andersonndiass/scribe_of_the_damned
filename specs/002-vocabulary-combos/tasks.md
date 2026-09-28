@@ -8,13 +8,13 @@ Legenda: `[TEST-FIRST]` = o teste é escrito e falha antes da implementação.
 - ✅ **T202** As 11 palavras novas no `base.tres`; `test_word_power` com 18 palavras (SC-204).
 
 ## Fase 2 — Combos
-- **T210** [TEST-FIRST] `test_combo_book.gd` → `ComboBook` + `ComboData` + os 5 `.tres` (par em qualquer ordem, janela, GLORIA/PURGO fora, combo não encadeia).
-- **T211** Caster: janela de combo, substituição da 2ª palavra, sinais `combo_cast`/`combo_window_opened`. Integração `test_combos.gd` (SC-201).
-- **T212** EnemyManager: `blind_left` (vagar, sem contato) e `guaranteed_drop`.
-- **T213** Os 5 milagres de combo (Vapor, Chama Radiante, Cegueira, Martírio, Réquiem).
-- **T214** HUD: `combo_window.gd` (12 quadros) + dicas destacando o par.
+- ✅ **T210** [TEST-FIRST] `test_combo_book.gd` → `ComboBook` + `ComboData` + os 5 `.tres` (par em qualquer ordem, janela, GLORIA/PURGO fora, combo não encadeia).
+- ✅ **T211** Caster: janela de combo, substituição da 2ª palavra, sinais `combo_cast`/`combo_window_opened` (+ `combo_window_closed`, D-052). Integração `test_combos.gd` (SC-201).
+- ✅ **T212** EnemyManager: `blind_left` (vaga; **o contato continua**, D-046/D-052), `guaranteed_drop` (`requiem_step`) e escriba oculto (`hide_player`, Vapor).
+- ✅ **T213** Os 5 milagres de combo (Vapor, Chama Radiante, Cegueira, Martírio, Réquiem). Números: D-051.
+- ✅ **T214** HUD: `combo_window.gd` (barra em 12 passos + nome do combo) + COMBO_READY no atril + dicas destacando o par.
 
-**Checkpoint 002-A:** os 5 combos jogáveis.
+**Checkpoint 002-A:** ✅ os 5 combos jogáveis (2026-09-28, GUT 175/175, export web ok).
 
 ## Fase 3 — Apócrifos
 - **T220** [TEST-FIRST] `test_player_buffs.gd` → `PlayerBuffs` (FIDES, LUMEN, GLORIA, SPIRITUS, invul).

@@ -87,9 +87,11 @@ Ordem padrão: game-design → rules → mechanics → design + animation → co
 
 ## Estado atual
 
-- **Etapa:** Etapa 3 — features 001 e 005 Complete; 002 Fase 1 ✅. GUT 149/149. Paleta C (D-048). Otimizações D-049 (projéteis em laço único, STEER_STRIDE 3).
-- **Feature atual:** nenhuma em andamento.
-- **Próximo:** feature 002 Fase 2 (combos, T210–T214). Aberto: C-004 (playtest do autor); C-005 adiada para a 011 (D-050).
+- **Etapa:** Etapa 3 — features 001 e 005 Complete; 002 Fases 1 e 2 ✅ (Checkpoint 002-A, 5 combos jogáveis). GUT 175/175. Paleta C (D-048). Otimizações D-049.
+- **Feature atual:** 002 vocabulário e combos (em andamento).
+- **Próximo:** arquitetura de áudio sem sons (D-047 5), depois 002 Fase 3 (apócrifos). Aberto: C-004 (playtest do autor); C-005 adiada para a 011 (D-050).
+- **Combos:** `ComboData` estende `WordData`; `power` só no dano (D-051); detalhes em D-052.
+- **Se o auto mode falhar** (classificador sem veredito): o autor roda os comandos com `!` no chat.
 - **Sonda por onda:** `godot --headless --path . -s tools/balance_probe.gd -- cast god wave=N` (linha FLOW; ver T533 §6).
 - **Pendente de sensação:** screen shake (morte de campeão) — o jogo ainda não tem câmera com shake.
 - **Vitrine:** `index.html?roster` (os 5 inimigos) · `index.html?stress` (SC-001) · `index.html?stress=wave9` (SC-503).

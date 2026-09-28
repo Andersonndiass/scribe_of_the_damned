@@ -24,6 +24,11 @@ const AURA_PARTICLES := 4
 const FLASH_TIME := 0.06
 ## O jogador é mirado no meio do corpo, não nos pés.
 const PLAYER_BODY_OFFSET := Vector2(0, -4)
+## Inimigo que não vê o escriba (CAECITAS, VAPOR) vaga a esta fração da velocidade, girando devagar.
+const WANDER_SPEED_MUL := 0.5
+const WANDER_TURN_PER_TICK := 0.02
+## Venda do cego (design-agent, 002): altura dos olhos em raios acima do pé.
+const BLINDFOLD_Y_MUL := 1.5
 
 @export var player: Node2D
 @export var player_hurt_radius: float = 5.0
@@ -61,6 +66,10 @@ var behavior_of: Array[EnemyBehavior] = []
 var _tick_flag := PackedByteArray()
 var _chase_flag := PackedByteArray()
 var _speed_of := PackedFloat32Array()
+## CAECITAS (002 FR-203, D-046): cego vaga sem perseguir nem atacar, mas o contato ainda fere.
+var blind_left := PackedFloat32Array()
+## REQUIEM: a morte deste slot solta letra com certeza (LetterField consulta).
+var guaranteed_drop := PackedByteArray()
 
 var _letter_field: LetterField
 var _projectiles: EnemyProjectileManager
@@ -74,6 +83,10 @@ var _hash_dirty: bool = true
 var _aggro_point: Vector2 = Vector2.INF
 var _aggro_left: float = 0.0
 var _aggro_radius: float = INF
+## VAPOR: enquanto o escriba está na nuvem, quem está fora dela não o vê.
+var _hide_center: Vector2 = Vector2.INF
+var _hide_radius: float = 0.0
+var _hide_left: float = 0.0
 
 
 func _init() -> void:
@@ -99,6 +112,8 @@ func _init() -> void:
 	_tick_flag.resize(CAPACITY)
 	_chase_flag.resize(CAPACITY)
 	_speed_of.resize(CAPACITY)
+	blind_left.resize(CAPACITY)
+	guaranteed_drop.resize(CAPACITY)
 	## Célula ~ raio de separação: cada consulta toca poucas células com poucos inimigos.
 	_hash = SpatialHash.new(Rect2(Vector2.ZERO, Arena.PAGE_SIZE), HASH_CELL)
 
@@ -148,6 +163,8 @@ func spawn(data: EnemyData, pos: Vector2, is_champion: bool = false) -> int:
 		speed_mul[i] = champion_tuning.speed_mul
 		radius_of[i] = data.radius * champion_tuning.radius_mul
 	carried[i] = ""
+	blind_left[i] = 0.0
+	guaranteed_drop[i] = 0
 	count += 1
 	_hash_dirty = true
 	EventBus.enemy_spawned.emit(i, data)
@@ -177,6 +194,8 @@ func is_aggro_active() -> bool:
 func _physics_process(delta: float) -> void:
 	if _aggro_left > 0.0:
 		_aggro_left -= delta
+	if _hide_left > 0.0:
+		_hide_left -= delta
 	last_tick += 1
 	if count == 0:
 		return
@@ -191,6 +210,8 @@ func _physics_process(delta: float) -> void:
 	var aggro: bool = _aggro_left > 0.0
 	var aggro_r2: float = _aggro_radius * _aggro_radius
 	var can_hit_player: bool = player != null and player.has_method(&"take_hit")
+	var hidden: bool = _hide_left > 0.0
+	var hide_r2: float = _hide_radius * _hide_radius
 	# Laço quente: grade acessada direto, sem alocar (o hash guarda a foto do início do frame).
 	var snap: PackedVector2Array = positions.duplicate()
 	var cs: PackedInt32Array = _hash.cell_start()
@@ -212,11 +233,18 @@ func _physics_process(delta: float) -> void:
 			velocities[i] = Vector2.ZERO
 			prev_positions[i] = positions[i]
 			continue
-		if _tick_flag[i] == 1:
+		var p: Vector2 = positions[i]
+		var sees: bool = true
+		if blind_left[i] > 0.0:
+			blind_left[i] -= delta
+			sees = false
+		elif hidden and p.distance_squared_to(_hide_center) > hide_r2:
+			sees = false
+		if sees and _tick_flag[i] == 1:
 			behavior_of[i].tick(self, i, delta)
 			if i >= count or data_of[i] != d:
 				continue  # o tick removeu este inimigo (swap-remove): o slot já é outro
-		var p: Vector2 = positions[i]
+			p = positions[i]
 		if (i + last_tick) % STEER_STRIDE != 0:
 			# Não é a vez deste inimigo: só o contato com o jogador.
 			if can_hit_player and _drawn_position(i).distance_to(player_pos) <= radius_of[i] + player_hurt_radius:
@@ -227,7 +255,10 @@ func _physics_process(delta: float) -> void:
 		if aggro and p.distance_squared_to(_aggro_point) <= aggro_r2:
 			target = _aggro_point
 		var desired := Vector2.ZERO
-		if _chase_flag[i] == 1:
+		if not sees:
+			var heading: float = anim_phase[i] * TAU + float(last_tick) * WANDER_TURN_PER_TICK
+			desired = Vector2.RIGHT.rotated(heading) * _speed_of[i] * slow_factor[i] * WANDER_SPEED_MUL
+		elif _chase_flag[i] == 1:
 			# = ChaseBehavior.seek, inline (mesma fórmula; test_behavior_contract cobre).
 			if target != Vector2.INF:
 				var to_t: Vector2 = target - p
@@ -406,6 +437,20 @@ func damage_cross(center: Vector2, arm: float, width: float, damage: int) -> int
 	return hits.size()
 
 
+## Cruz girada de `angle` rad em torno de `center` (MARTYRIUM). Retorna quantos acertou.
+func damage_cross_rotated(center: Vector2, angle: float, arm: float, width: float, damage: int) -> int:
+	var hits := PackedInt32Array()
+	for i: int in count:
+		var rel: Vector2 = (positions[i] - center).rotated(-angle)
+		var reach: float = width / 2.0 + radius_of[i]
+		var on_h: bool = absf(rel.y) <= reach and absf(rel.x) <= arm + radius_of[i]
+		var on_v: bool = absf(rel.x) <= reach and absf(rel.y) <= arm + radius_of[i]
+		if on_h or on_v:
+			hits.append(i)
+	_damage_descending(hits, damage)
+	return hits.size()
+
+
 ## Atordoa e empurra para longe de `center` os inimigos no raio (PAX). Retorna quantos.
 func stun_in_radius(center: Vector2, radius: float, stun: float, knockback: float) -> int:
 	var hits := _slots_in_radius(center, radius)
@@ -427,6 +472,42 @@ func slow_in_radius(center: Vector2, radius: float, factor: float, duration: flo
 		slow_factor[i] = minf(slow_factor[i], factor)
 		slow_left[i] = maxf(slow_left[i], duration)
 	return hits.size()
+
+
+## CAECITAS: cega os inimigos no raio por `duration` s (vagam; o contato continua). Retorna quantos.
+func blind_in_radius(center: Vector2, radius: float, duration: float) -> int:
+	var hits := _slots_in_radius(center, radius)
+	for i: int in hits:
+		blind_left[i] = maxf(blind_left[i], duration)
+	return hits.size()
+
+
+## VAPOR: chamado a cada tick enquanto o escriba está na nuvem; quem está fora dela o perde de
+## vista pelos próximos `duration` s.
+func hide_player(center: Vector2, radius: float, duration: float) -> void:
+	_hide_center = center
+	_hide_radius = radius
+	_hide_left = duration
+
+
+func is_player_hidden() -> bool:
+	return _hide_left > 0.0
+
+
+## REQUIEM em lotes: como mortis_step, mas quem morre aqui solta letra com certeza, até
+## `drops_left`. Retorna Vector2i(próximo cursor, drops restantes).
+func requiem_step(cursor: int, max_ops: int, kill_threshold: int, damage: int, drops_left: int) -> Vector2i:
+	var i: int = mini(cursor, count - 1)
+	var ops: int = 0
+	while i >= 0 and ops < max_ops:
+		var dmg: int = hp[i] if hp[i] <= kill_threshold else damage
+		if hp[i] <= dmg and drops_left > 0:
+			guaranteed_drop[i] = 1
+			drops_left -= 1
+		damage_at(i, dmg)
+		i -= 1
+		ops += 1
+	return Vector2i(i, drops_left)
 
 
 ## MORTIS em lotes (FR-021): processa até `max_ops` slots, do `cursor` para baixo. Inimigos com
@@ -495,6 +576,11 @@ func draw_telegraphs(canvas: CanvasItem, time: float = 0.0) -> void:
 			for k: int in AURA_PARTICLES:
 				var a: float = TAU * (time + float(k) / AURA_PARTICLES)
 				canvas.draw_rect(Rect2((center + Vector2.RIGHT.rotated(a) * r).round(), Vector2.ONE), Palette.BLOOD)
+		if blind_left[i] > 0.0:
+			# Venda CHALK 5×1 com contorno INK na linha dos olhos (CAECITAS).
+			var eye: Vector2 = (render_position(i) - Vector2(0, radius_of[i] * BLINDFOLD_Y_MUL)).round()
+			canvas.draw_rect(Rect2(eye - Vector2(3, 1), Vector2(7, 3)), Palette.INK)
+			canvas.draw_rect(Rect2(eye - Vector2(2, 0), Vector2(5, 1)), Palette.CHALK)
 		if state[i] == EnemyBehavior.STATE_WINDUP:
 			var d: EnemyData = data_of[i]
 			var b: EnemyBehavior = d.behavior if d.behavior != null else _default_behavior
@@ -540,6 +626,8 @@ func _remove(i: int) -> void:
 		_tick_flag[i] = _tick_flag[last]
 		_chase_flag[i] = _chase_flag[last]
 		_speed_of[i] = _speed_of[last]
+		blind_left[i] = blind_left[last]
+		guaranteed_drop[i] = guaranteed_drop[last]
 	data_of[last] = null
 	behavior_of[last] = null
 	count -= 1

@@ -251,6 +251,19 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
 - **Decisão:** o Chrome é a referência do SC-001; o Firefox é medido de novo na feature 011 (publicação), de preferência em outro computador. Sem mais otimizações agora.
 - **Status:** ✅ escolha do autor ("1").
 
+### D-051 · 2026-09-28 · Combos: power só no dano e números ajustados pelo rules-agent
+- **Decisão:** nos combos, `power` multiplica **só o dano** (e a cura); raio, comprimento, duração, stun e limiar são literais. Ajustes para cumprir a FR-202 ("nunca faz menos que a 2ª palavra"): **Vapor** raio 120, dano 2 a cada 0,25 s; **Flamma** linha 320 × 20; **Martyrium** duração 4, dano 3. Caecitas e Requiem sem mudança.
+- **Critério da FR-202:** compara por **área coberta**, não por alvo parado (o Martyrium dá ~36 num alvo parado contra ~77 da CRUX, mas cobre um braço de 160 contra 48).
+- **Status:** ✅ parecer do rules-agent; critério por área escolhido pelo autor ("1").
+
+### D-052 · 2026-09-28 · Detalhes de implementação dos combos (002 Fase 2)
+- **Cegueira (D-046 prevalece sobre a T212):** a `tasks.md` dizia "sem contato", mas a D-046 (posterior) manda manter o dano de contato. O cego vaga a 50% da velocidade, não persegue nem ataca; encostado, fere.
+- **Vapor:** quem está fora da nuvem trata o escriba oculto como cegueira (vaga). O escriba oculto é desenhado em xadrez 2×2 pelo shader do flash (sem alpha).
+- **Sinais:** além dos da spec, `combo_window_closed` e o parâmetro `partners` em `combo_window_opened` (latim das palavras que fecham combo), para o HUD não depender do Caster.
+- **ComboData estende WordData:** reusa os parâmetros e o `Miracle.start`; os combos não entram no Lexicon.
+- **Visual (design-agent):** GOLD no laser do Martyrium é a exceção prevista no art bible §2.2; Vapor e o fogo da Flamma ficam no FxLayer, abaixo das letras; venda CHALK no cego; nome do combo em GOLD 2× sobre o escriba por 1 s.
+- **Status:** ✅ dentro do plano aprovado ("pode").
+
 ---
 
 ## Conflitos abertos

@@ -28,6 +28,11 @@ func play() -> void:
 	set_process(true)
 
 
+## VAPOR: escriba oculto em xadrez (dithering, Princípio VII).
+func set_dither_hidden(on: bool) -> void:
+	_material.set_shader_parameter(&"dither_hide", 1.0 if on else 0.0)
+
+
 func _process(delta: float) -> void:
 	_time_left -= delta
 	if _time_left <= 0.0:

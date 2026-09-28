@@ -133,3 +133,47 @@ func test_game_over_appears_after_death_and_offers_restart() -> void:
 	assert_eq(_overlays.mode, MinimalOverlays.Mode.GAME_OVER, "não dá para pausar o Game Over")
 	_overlays.restart()
 	assert_signal_emitted(_overlays, "restart_requested")
+
+
+# --- 002 T214: janela de combo ---------------------------------------------------------------
+
+func _write(word: String) -> void:
+	_field.atril.set_capacity(6)
+	for ch: String in word:
+		_field.collect(ch, false)
+
+
+func test_combo_window_bar_waits_then_shrinks_in_steps() -> void:
+	var bar: HudComboWindow = _hud.get_node("ComboWindow")
+	_write("LUX")
+	assert_true(_caster.cast())
+	assert_true(bar.open)
+	assert_eq(bar.fill_width(), HudComboWindow.BAR.size.x, "cheia até a 1ª letra")
+	_field.collect("P", false)
+	bar._process(1.25)
+	var w: float = bar.fill_width()
+	assert_eq(w, HudComboWindow.BAR.size.x / 2.0, "metade em 1,25 s")
+	assert_eq(fmod(w, HudComboWindow.BAR.size.x / HudComboWindow.STEPS), 0.0, "passos de 4 px")
+
+
+func test_combo_ready_and_partner_hints() -> void:
+	var atril: HudAtril = _hud.get_node("Atril")
+	_write("LUX")
+	_caster.cast()
+	assert_has(atril.combo_partners, "PAX")
+	assert_has(atril.combo_partners, "IGNIS")
+	assert_does_not_have(atril.combo_partners, "LUX")
+	_write("PAX")
+	assert_true(atril.is_combo_ready(), "PAX fecha CAECITAS")
+
+
+func test_combo_name_shows_and_window_closes() -> void:
+	var bar: HudComboWindow = _hud.get_node("ComboWindow")
+	_write("LUX")
+	_caster.cast()
+	_write("PAX")
+	_caster.cast()
+	assert_eq(bar.shown_name, "CAECITAS")
+	assert_false(bar.open, "combo não encadeia")
+	bar._process(HudComboWindow.NAME_TIME + 0.01)
+	assert_eq(bar.shown_name, "", "corte seco depois de 1 s")

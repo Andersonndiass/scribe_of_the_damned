@@ -101,8 +101,11 @@ func emit_atril() -> void:
 	EventBus.atril_changed.emit(atril.letters(), status, hints, atril.rare_mask())
 
 
-func _on_enemy_killed(_slot: int, data: EnemyData, pos: Vector2) -> void:
-	if GameState.rng.randf() >= data.letter_drop_chance:
+func _on_enemy_killed(slot: int, data: EnemyData, pos: Vector2) -> void:
+	# REQUIEM marca o slot antes da morte (o sinal sai antes do swap-remove).
+	var em := EnemyQuery.provider as EnemyManager
+	var guaranteed: bool = em != null and slot < em.count and em.guaranteed_drop[slot] == 1
+	if not guaranteed and GameState.rng.randf() >= data.letter_drop_chance:
 		return
 	var r: Dictionary = dropper.roll(atril, lexicon, tuning, GameState.rng, GameState.unlocked_words)
 	spawn_letter(r["letter"], r["rare"], r["target"], pos)

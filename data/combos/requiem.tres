@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="ComboData" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://src/data/combo_data.gd" id="1_cd"]
+[ext_resource type="PackedScene" path="res://src/miracles/combos/requiem/requiem.tscn" id="2_scene"]
+[ext_resource type="Resource" path="res://data/words/mortis.tres" id="3_a"]
+[ext_resource type="Resource" path="res://data/words/pax.tres" id="4_b"]
+
+[resource]
+script = ExtResource("1_cd")
+id = &"requiem"
+latin = "REQUIEM"
+translation_key = &"combo_requiem"
+power_budget = 4.5
+miracle_scene = ExtResource("2_scene")
+kill_hp_threshold = 5
+damage = 20.0
+guaranteed_drop_cap = 40
+kill_batch_per_frame = 30
+word_a = ExtResource("3_a")
+word_b = ExtResource("4_b")
+display_name = "REQUIEM"
+vfx_prefix = &"VFX_REQUIEM"

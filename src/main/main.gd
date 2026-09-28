@@ -49,6 +49,10 @@ func _ready() -> void:
 	for word: WordData in letter_field.lexicon_data.words:
 		if word.miracle_scene != null:
 			PoolManager.register(word.id, word.miracle_scene, MIRACLE_PREWARM, miracle_layer)
+	for combo: ComboData in ($Caster as Caster).combos:
+		# Vapor e o fogo da Flamma ficam abaixo das letras do chão (design-agent, 002).
+		var layer: Node2D = fx_layer if combo.draw_below_world else miracle_layer
+		PoolManager.register(combo.id, combo.miracle_scene, MIRACLE_PREWARM, layer)
 	EventBus.wave_ended.connect(_on_wave_ended)
 	EventBus.player_died.connect(func() -> void: _next_wave_in = -1.0)
 	overlays.restart_requested.connect(_restart)

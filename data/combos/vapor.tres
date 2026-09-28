@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="ComboData" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://src/data/combo_data.gd" id="1_cd"]
+[ext_resource type="PackedScene" path="res://src/miracles/combos/vapor/vapor.tscn" id="2_scene"]
+[ext_resource type="Resource" path="res://data/words/aqua.tres" id="3_a"]
+[ext_resource type="Resource" path="res://data/words/ignis.tres" id="4_b"]
+
+[resource]
+script = ExtResource("1_cd")
+id = &"vapor"
+latin = "VAPOR"
+translation_key = &"combo_vapor"
+power_budget = 3.0
+miracle_scene = ExtResource("2_scene")
+radius = 120.0
+duration = 4.0
+damage = 2.0
+tick_interval = 0.25
+stealth_aggro_mul = 0.0
+draw_below_world = true
+word_a = ExtResource("3_a")
+word_b = ExtResource("4_b")
+display_name = "VAPOR"
+vfx_prefix = &"VFX_VAPOR"

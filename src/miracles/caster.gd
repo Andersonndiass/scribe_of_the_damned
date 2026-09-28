@@ -14,14 +14,27 @@ const PURGE_CENTER_OFFSET := Vector2(0, -6)
 
 @export var letter_field: LetterField
 @export var player: Player
+## Combos (002 FR-202): pares e janela. Os pools usam a chave = id do combo (Main registra).
+@export var combos: Array[ComboData] = []
+@export var combo_tuning: ComboTuning = preload("res://data/tuning/combo.tres")
 
 var heresy_pool: HeresyPool
+var combo_book: ComboBook
 
 
 func _ready() -> void:
 	heresy_pool = HeresyPool.new()
 	heresy_pool.name = "HeresyPool"
 	add_child(heresy_pool)
+	combo_book = ComboBook.new(combos, combo_tuning)
+	EventBus.letter_collected.connect(func(_l: String, _r: bool) -> void: combo_book.on_letter_collected())
+
+
+func _process(delta: float) -> void:
+	var was_open: bool = combo_book.is_open()
+	combo_book.tick(delta)
+	if was_open and not combo_book.is_open():
+		EventBus.combo_window_closed.emit()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -45,19 +58,48 @@ func cast() -> bool:
 		return false
 	var word: WordData = letter_field.lexicon.word_for(atril.text())
 	var taken: Dictionary = atril.take_all()
-	var power: float = word.power_budget * pow(letter_field.tuning.rare_power_bonus, taken["rare_count"])
+	var rare_mul: float = pow(letter_field.tuning.rare_power_bonus, taken["rare_count"])
+	var power: float = word.power_budget * rare_mul
 	var origin: Vector2 = player.global_position + PEN_OFFSET
 	var direction: Vector2 = player.facing
+	var was_open: bool = combo_book.is_open()
+	var combo: ComboData = combo_book.on_cast(word)
 	EventBus.word_cast.emit(word, power, origin, direction)
 	EventBus.hitstop_requested.emit(CAST_HITSTOP_MS)
 	player.pen_flash()
+	if combo != null:
+		# O combo substitui o milagre da 2ª palavra (FR-202); as vogais raras dela valem para ele.
+		var combo_power: float = combo.power_budget * rare_mul
+		EventBus.combo_cast.emit(combo, combo_power)
+		_start_miracle(combo, combo_power, origin, direction)
+	else:
+		_start_miracle(word, power, origin, direction)
+	if combo_book.is_open():
+		EventBus.combo_window_opened.emit(word, combo_tuning.window, _partner_latins())
+	elif was_open:
+		EventBus.combo_window_closed.emit()
+	letter_field.emit_atril()
+	return true
+
+
+func _partner_latins() -> PackedStringArray:
+	var out := PackedStringArray()
+	if not combo_tuning.hint_highlight:
+		return out
+	var ids: Array[StringName] = combo_book.partner_ids()
+	for c: ComboData in combos:
+		for w: WordData in [c.word_a, c.word_b]:
+			if ids.has(w.id) and not out.has(w.latin):
+				out.append(w.latin)
+	return out
+
+
+func _start_miracle(word: WordData, power: float, origin: Vector2, direction: Vector2) -> void:
 	if word.miracle_scene != null and PoolManager.is_registered(word.id):
 		var miracle := PoolManager.acquire(word.id) as Miracle
 		miracle.start(word, power, origin, direction)
 	else:
 		push_warning("Caster: '%s' não tem cena de milagre registrada" % word.latin)
-	letter_field.emit_atril()
-	return true
 
 
 ## Shift: devolve as letras ao chão, num anel ao redor do jogador. Retorna true se havia letras.

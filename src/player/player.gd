@@ -107,6 +107,11 @@ func heal(amount: int) -> void:
 
 
 ## Flash de 1 quadro na pena (ignora o hit-stop, que congela o tempo do jogo).
+## VAPOR: dentro da nuvem o escriba é desenhado em xadrez (oculto).
+func set_hidden_look(on: bool) -> void:
+	flash.set_dither_hidden(on)
+
+
 func pen_flash() -> void:
 	_pen_flash.visible = true
 	await get_tree().create_timer(PEN_FLASH_TIME, true, false, true).timeout

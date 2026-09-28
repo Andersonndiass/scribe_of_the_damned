@@ -1,5 +1,11 @@
-[gd_scene load_steps=15 format=3]
+[gd_scene load_steps=21 format=3]
 
+[ext_resource type="Script" path="res://src/data/combo_data.gd" id="92_cd"]
+[ext_resource type="Resource" path="res://data/combos/vapor.tres" id="91_vapor"]
+[ext_resource type="Resource" path="res://data/combos/flamma.tres" id="91_flamma"]
+[ext_resource type="Resource" path="res://data/combos/caecitas.tres" id="91_caecitas"]
+[ext_resource type="Resource" path="res://data/combos/martyrium.tres" id="91_martyrium"]
+[ext_resource type="Resource" path="res://data/combos/requiem.tres" id="91_requiem"]
 [ext_resource type="Script" path="res://src/player/player_projectiles.gd" id="90_pproj"]
 [ext_resource type="Script" path="res://src/main/main.gd" id="1_main"]
 [ext_resource type="Resource" path="res://data/player/anselmo.tres" id="2_data"]
@@ -79,6 +85,7 @@ telegraph_parent = NodePath("../TelegraphLayer")
 
 [node name="Caster" type="Node" parent="." node_paths=PackedStringArray("letter_field", "player")]
 script = ExtResource("12_caster")
+combos = Array[ExtResource("92_cd")]([ExtResource("91_vapor"), ExtResource("91_flamma"), ExtResource("91_caecitas"), ExtResource("91_martyrium"), ExtResource("91_requiem")])
 letter_field = NodePath("../World/LetterField")
 player = NodePath("../World/Player")
 
