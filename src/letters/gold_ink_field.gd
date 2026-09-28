@@ -45,7 +45,7 @@ func _physics_process(delta: float) -> void:
 	if _active.is_empty() or player == null:
 		return
 	var body: Vector2 = player.global_position + PLAYER_BODY_OFFSET
-	var magnet_r: float = player.data.magnet_radius
+	var magnet_r: float = RunStats.of(player.data).value(&"magnet_radius")
 	for idx: int in range(_active.size() - 1, -1, -1):
 		var g: GoldInk = _active[idx]
 		var dist: float = g.global_position.distance_to(body)
@@ -63,5 +63,5 @@ func _collect(idx: int) -> void:
 	_active[idx] = _active[_active.size() - 1]
 	_active.pop_back()
 	PoolManager.release(g)
-	GameState.gold_ink += 1
-	EventBus.gold_ink_collected.emit(1, GameState.gold_ink)
+	var got: int = GameState.add_gold(1)
+	EventBus.gold_ink_collected.emit(got, GameState.gold_ink)

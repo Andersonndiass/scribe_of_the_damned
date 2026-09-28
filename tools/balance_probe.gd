@@ -50,6 +50,7 @@ func _initialize() -> void:
 		elif arg.begins_with("drop="):
 			imp.set("letter_drop_chance", float(arg.substr(5)))
 	_main = (load(MAIN) as PackedScene).instantiate()
+	_main.set("shop_auto_close", true)  # sem tela: a loja abre e fecha sozinha (003)
 	root.add_child(_main)
 	_player = _main.get_node("World/Player")
 	_manager = _main.get_node("World/EnemyManager")

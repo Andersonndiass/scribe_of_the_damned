@@ -82,7 +82,8 @@ func test_leftover_gold_is_collected_at_wave_end() -> void:
 	_gold.spawn_drops(4, Vector2(600, 330))
 	EventBus.wave_ended.emit(1)
 	await wait_seconds(1.5)
-	assert_eq(GameState.gold_ink, before + 4, "sobra da onda vai para o jogador (D-042)")
+	var tithe: int = (load("res://data/shop/shop_tuning.tres") as ShopTuning).wave_clear_ink
+	assert_eq(GameState.gold_ink, before + 4 + tithe, "sobra da onda vai para o jogador (D-042) + dízimo (D-058)")
 
 
 func test_champion_spawn_telegraph_is_longer() -> void:

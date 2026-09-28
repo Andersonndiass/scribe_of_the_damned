@@ -50,6 +50,12 @@ signal heresy_absolved()
 signal heresy_forgiveness_granted()
 signal heresy_forgiven(position: Vector2)
 
+# Loja (003)
+signal shop_opened(wave: int)
+signal shop_closed()
+signal item_bought(item: ShopItemData, price: int)
+signal shop_rerolled(cost: int)
+
 # Capítulo
 signal chapter_completed(chapter: int)
 

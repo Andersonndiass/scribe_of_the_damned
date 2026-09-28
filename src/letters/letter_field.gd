@@ -6,6 +6,8 @@ extends Node2D
 
 ## Distância (px) do corpo do jogador em que a letra é coletada.
 const PICKUP_RADIUS := 6.0
+## Tinteiro Duplo: a letra extra cai ao lado da primeira (visual).
+const DOUBLE_LETTER_OFFSET := Vector2(8, 0)
 ## Aceleração do ímã (px/s²): a letra parte devagar e acelera (QUAD_IN, ficha 21).
 const MAGNET_ACCEL := 900.0
 ## Depois de recusada (atril cheio), a letra fica parada este tempo antes de tentar de novo.
@@ -30,7 +32,7 @@ func _ready() -> void:
 	lexicon.set_known_filter(GameState.is_word_known)
 	EventBus.word_unlocked.connect(func(_w: WordData) -> void: emit_atril())
 	# O LetterField fica pronto antes do Main chamar GameState.start_run: lê direto do jogador.
-	atril = Atril.new(player.data.atril_capacity if player != null else GameState.atril_capacity)
+	atril = Atril.new(RunStats.of(player.data).int_value(&"atril_capacity") if player != null else GameState.atril_capacity)
 	EventBus.enemy_killed.connect(_on_enemy_killed)
 	emit_atril()
 
@@ -108,8 +110,15 @@ func _on_enemy_killed(slot: int, data: EnemyData, pos: Vector2) -> void:
 	if not guaranteed and GameState.rng.randf() >= data.letter_drop_chance:
 		return
 	var target_mul: float = player.buffs.target_weight_mul() if player != null else 1.0
-	var r: Dictionary = dropper.roll(atril, lexicon, tuning, GameState.rng, GameState.unlocked_words, target_mul)
+	var stats: RunStats = RunStats.of(player.data) if player != null else null
+	var target_add: float = stats.value(&"target_bonus_add") if stats != null else 0.0
+	var r: Dictionary = dropper.roll(atril, lexicon, tuning, GameState.rng, GameState.unlocked_words, target_mul, target_add)
 	spawn_letter(r["letter"], r["rare"], r["target"], pos)
+	# Tinteiro Duplo (003 FR-310b, D-058): uma letra extra, sorteio independente, ao lado.
+	var double_chance: float = stats.value(&"double_letter_chance") if stats != null else 0.0
+	if double_chance > 0.0 and GameState.rng.randf() < double_chance:
+		var r2: Dictionary = dropper.roll(atril, lexicon, tuning, GameState.rng, GameState.unlocked_words, target_mul, target_add)
+		spawn_letter(r2["letter"], r2["rare"], r2["target"], pos + DOUBLE_LETTER_OFFSET)
 
 
 func _physics_process(delta: float) -> void:
@@ -118,7 +127,7 @@ func _physics_process(delta: float) -> void:
 	var t0: int = Prof.start()
 	var can_collect: bool = player != null and player.vitals.is_alive()
 	var body: Vector2 = player.global_position + PLAYER_BODY_OFFSET if player != null else Vector2.INF
-	var magnet_r: float = player.data.magnet_radius * player.buffs.magnet_mul() if player != null else 0.0
+	var magnet_r: float = RunStats.of(player.data).value(&"magnet_radius") * player.buffs.magnet_mul() if player != null else 0.0
 	for idx: int in range(_active.size() - 1, -1, -1):
 		var l: Letter = _active[idx]
 		l.life -= delta

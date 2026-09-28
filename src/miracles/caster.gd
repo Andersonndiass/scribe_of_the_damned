@@ -173,7 +173,7 @@ func _commit_heresy() -> void:
 		letter_field.emit_atril()
 		return
 	letter_field.atril.take_all()
-	player.stun(tuning.heresy_stun)
+	player.stun(tuning.heresy_stun * RunStats.of(player.data).value(&"heresy_stun_mul"))
 	var em := EnemyQuery.provider as EnemyManager
 	if em != null:
 		em.set_aggro(pos, tuning.heresy_pool_time, tuning.heresy_pool_radius)

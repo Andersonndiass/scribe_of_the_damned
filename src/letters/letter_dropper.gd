@@ -3,7 +3,7 @@ extends RefCounted
 ## Sorteio ponderado de letras (FR-013). Lógica pura e determinística para uma dada seed.
 ##   peso = base_weights[letra] (+ target_bonus se continua uma palavra que cabe no atril)
 ##   letra "trancada" (gated_letters) tem peso 0 até a palavra que a libera ser desbloqueada.
-## target_mul: LUMEN multiplica o bônus da letra-alvo (002 FR-207).
+## target_add: Lentes do Copista somam no bônus (003); target_mul: LUMEN multiplica o total (002 FR-207).
 ## Sem continuação possível (atril em beco sem saída ou palavra completa), os alvos passam a ser
 ## as primeiras letras das palavras que cabem.
 
@@ -12,7 +12,7 @@ const VOWELS := "AEIOU"
 
 ## Retorna {"letter": String, "rare": bool, "target": bool}.
 func roll(atril: Atril, lexicon: Lexicon, tuning: DropTuning, rng: RandomNumberGenerator,
-		unlocked: Array[StringName], target_mul: float = 1.0) -> Dictionary:
+		unlocked: Array[StringName], target_mul: float = 1.0, target_add: float = 0.0) -> Dictionary:
 	var targets: PackedStringArray = lexicon.next_letters(atril.text(), atril.capacity)
 	if targets.is_empty():
 		targets = lexicon.next_letters("", atril.capacity)
@@ -27,7 +27,7 @@ func roll(atril: Atril, lexicon: Lexicon, tuning: DropTuning, rng: RandomNumberG
 		if _is_available(ch, lexicon, unlocked):
 			w = tuning.base_weights.get(ch, 1.0)
 			if targets.has(ch):
-				w += tuning.target_bonus * target_mul
+				w += (tuning.target_bonus + target_add) * target_mul
 		weights[i] = w
 		total += w
 

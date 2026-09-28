@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ShopItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/data/shop_item_data.gd" id="1_si"]
+
+[resource]
+script = ExtResource("1_si")
+id = &"fine_quill"
+kind = &"item"
+display_name = "Pena de Ganso Fina"
+short_desc = "Ataque 15% mais rápido"
+base_price = 8
+stat = &"attack_interval"
+mode = &"mul"
+amount = 0.85
+cap = 0.4
+max_buys = 0
+after_cap = &""

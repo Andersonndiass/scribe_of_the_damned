@@ -67,7 +67,7 @@ func input_direction() -> Vector2:
 
 
 func move(direction: Vector2) -> void:
-	velocity = direction * data.move_speed * buffs.speed_mul() * _hazard_slow()
+	velocity = direction * RunStats.of(data).value(&"move_speed") * buffs.speed_mul() * _hazard_slow()
 	if not direction.is_zero_approx():
 		facing = direction.normalized()
 		sprite.flip_h = facing.x < 0.0

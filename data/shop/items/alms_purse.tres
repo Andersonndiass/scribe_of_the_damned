@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ShopItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/data/shop_item_data.gd" id="1_si"]
+
+[resource]
+script = ExtResource("1_si")
+id = &"alms_purse"
+kind = &"item"
+display_name = "Bolsa do Esmoler"
+short_desc = "Tinta dourada +20%"
+base_price = 5
+stat = &"gold_mul"
+mode = &"add"
+amount = 0.2
+cap = 1.6
+max_buys = 0
+after_cap = &""

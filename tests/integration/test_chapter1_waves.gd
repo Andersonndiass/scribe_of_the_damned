@@ -38,6 +38,7 @@ func before_each() -> void:
 	_main = MAIN_SCENE.instantiate()
 	_main.set("chapter", _compressed_chapter())
 	_main.set("between_waves", 0.3)
+	_main.set("shop_auto_close", true)  # a loja abre e fecha sozinha entre as ondas (003)
 	# Conectar ANTES de entrar na árvore: a onda 1 começa no _ready do Main.
 	EventBus.wave_started.connect(_on_started)
 	EventBus.chapter_completed.connect(_on_completed)

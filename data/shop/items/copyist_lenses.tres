@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ShopItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/data/shop_item_data.gd" id="1_si"]
+
+[resource]
+script = ExtResource("1_si")
+id = &"copyist_lenses"
+kind = &"item"
+display_name = "Lentes do Copista"
+short_desc = "Letra útil cai mais"
+base_price = 6
+stat = &"target_bonus_add"
+mode = &"add"
+amount = 3.0
+cap = 9.0
+max_buys = 0
+after_cap = &""

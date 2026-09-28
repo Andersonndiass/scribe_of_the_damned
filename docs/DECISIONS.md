@@ -301,6 +301,11 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
 - **Ressalvas para a 006:** limitar por fase (DamageFilter) SPIRITUS colado no chefe (até 504), SANCTUS (360) e MISERERE (280, × GLORIA); ANGELUS não fere a menos de 27 px do escriba.
 - **Status:** ✅ feature 002 Complete.
 
+### D-058 · 2026-09-28 · Spec 003 (loja) aprovada
+- **Decisão:** (1A) dízimo de 4 de tinta ao fim de cada onda, além dos campeões; comum não solta tinta. (2A) oferta de 3 itens + 1 vaga fixa de apócrifo. (3A) a letra extra do Tinteiro Duplo é um segundo sorteio independente. (4A) há loja depois da última onda, antes do chefe.
+- **Pareceres aplicados:** loja sem tempo limite; 1 carta travada, pelo preço da visita em que foi travada; reroll 5 +3; preços base e tetos do rules-agent; Círio no teto só acende 1 vela.
+- **Status:** ✅ aprovada pelo autor ("1a 2a 3a 4a").
+
 ---
 
 ## Conflitos abertos

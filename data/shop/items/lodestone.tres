@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ShopItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/data/shop_item_data.gd" id="1_si"]
+
+[resource]
+script = ExtResource("1_si")
+id = &"lodestone"
+kind = &"item"
+display_name = "Pedra-Ímã"
+short_desc = "Ímã +30%"
+base_price = 4
+stat = &"magnet_radius"
+mode = &"percent"
+amount = 0.3
+cap = 100.0
+max_buys = 0
+after_cap = &""

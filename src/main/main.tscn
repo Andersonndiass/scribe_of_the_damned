@@ -1,5 +1,6 @@
-[gd_scene load_steps=21 format=3]
+[gd_scene load_steps=22 format=3]
 
+[ext_resource type="Script" path="res://src/shop/shop.gd" id="93_shop"]
 [ext_resource type="Script" path="res://src/data/combo_data.gd" id="92_cd"]
 [ext_resource type="Resource" path="res://data/combos/vapor.tres" id="91_vapor"]
 [ext_resource type="Resource" path="res://data/combos/flamma.tres" id="91_flamma"]
@@ -98,3 +99,6 @@ script = ExtResource("14_overlays")
 script = ExtResource("18_rewards")
 player = NodePath("../World/Player")
 gold = NodePath("../World/GoldInkField")
+
+[node name="Shop" type="Node" parent="."]
+script = ExtResource("93_shop")

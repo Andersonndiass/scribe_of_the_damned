@@ -87,9 +87,9 @@ Ordem padrão: game-design → rules → mechanics → design + animation → co
 
 ## Estado atual
 
-- **Etapa:** Etapa 3 — features **001, 005 e 002 Complete**; 009 Fase 1 ✅ (áudio em silêncio). GUT 218/218. Paleta C (D-048).
-- **Feature atual:** nenhuma em andamento (009 com a Fase 1 pronta; Fase 2 = sons provisórios por script).
-- **Próximo:** decidir com o autor entre 003 (loja: apócrifos, atril 7–8), 004 e a 009 Fase 2. Ressalvas para a 003 e a 006 na D-057. Playtest: `index.html?unlock=all&atril=8`. A 009 Fase 2 (sons provisórios por script) pode entrar quando o autor quiser. Aberto: C-004 (playtest do autor); C-005 adiada para a 011 (D-050).
+- **Etapa:** Etapa 3 — features **001, 005 e 002 Complete**; 009 Fase 1 ✅ (áudio em silêncio). GUT 245/245. Paleta C (D-048).
+- **Feature atual:** 003 loja (Fase 1 ✅: RunStats, ShopOffer, Shop, dízimo e fluxo; falta a tela). 009 com a Fase 1 pronta.
+- **Próximo:** 003 Fase 2 (tela da loja, T310–T312). Números do escriba: `RunStats.of(data)` (nunca `PlayerData` direto). Playtest: `index.html?unlock=all&atril=8`. A 009 Fase 2 (sons provisórios por script) pode entrar quando o autor quiser. Aberto: C-004 (playtest do autor); C-005 adiada para a 011 (D-050).
 - **Combos:** `ComboData` estende `WordData`; `power` só no dano (D-051); detalhes em D-052.
 - **Áudio:** `AudioManager` (autoload) + `data/audio/`. Regerar os `.tres`: `godot --headless --path . -s tools/gen_audio_data.gd`; lista do que gravar: `-s tools/audio_report.gd` → `docs/AUDIO-LIST.md`.
 - **Se o auto mode falhar** (classificador sem veredito): sair do auto mode (Shift+Tab) ou o autor roda os comandos com `!` no chat.

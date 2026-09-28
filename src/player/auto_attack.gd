@@ -26,8 +26,9 @@ func _physics_process(delta: float) -> void:
 	if not enabled or data == null or projectiles == null:
 		return
 	_time += delta
-	while _time >= data.attack_interval:
-		_time -= data.attack_interval
+	var interval: float = RunStats.of(data).value(&"attack_interval")
+	while _time >= interval:
+		_time -= interval
 		_try_fire()
 
 
