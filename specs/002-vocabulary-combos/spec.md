@@ -1,6 +1,6 @@
 # 002 — Vocabulário e combos
 
-> Status: **Aprovada** (2026-09-26, "1b 2sim 3ok"). Em implementação.
+> Status: **Complete** (2026-09-28). Aprovada em 2026-09-26 ("1b 2sim 3ok"). Fechamento: D-057.
 > Depende de: 001 e 005 (Complete). Game bible §3.5–§3.6. Decisões D-006, D-013, D-015, D-016, D-017. Narrativa §11 (verbetes).
 > Pareceres (2026-09-26): game-design-agent **AJUSTAR** e rules-agent **VÁLIDO COM RESSALVAS**. Os ajustes estão aplicados (marcados **[P]**). Onde divergiram, prevaleceu a opção que preserva o risco do jogo.
 

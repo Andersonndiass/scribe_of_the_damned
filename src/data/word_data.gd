@@ -45,6 +45,8 @@ extends Resource
 @export var guaranteed_drop_cap: int = 0
 ## ANGELUS, Martírio: intervalo mínimo entre acertos no mesmo inimigo.
 @export var hit_cooldown: float = 0.0
+## ANGELUS: quantos objetos orbitam o escriba.
+@export var orbit_count: int = 0
 ## Martírio, ANGELUS: voltas por segundo do que gira em volta do escriba.
 @export var rotation_speed: float = 0.0
 ## SPIRITUS: multiplicador de velocidade do escriba.

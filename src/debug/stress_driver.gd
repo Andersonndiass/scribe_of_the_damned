@@ -3,8 +3,9 @@ extends Node
 ##   modo "sc001" (padrão): 300 Diabretes + 150 letras + 200 projéteis do jogador (SC-001).
 ##   modo "wave9": o mesmo, mas os 300 inimigos são a MISTURA da onda 9 com os comportamentos
 ##                 ativos, mais 60 projéteis inimigos e 20 poças mantidos no ar/chão (SC-503).
-##   modo "purgo": a carga do SC-001 e, a cada PURGO_CYCLE s, um PURGO que limpa os 300; mede o pior
-##                 frame nos PURGO_WINDOW s depois de cada um e repõe os inimigos (002 SC-202).
+##   modo "sweep": a carga do SC-001 e, a cada SWEEP_CYCLE s, uma varredura de tela (sweep_word:
+##                 PURGO, DOMINUS ou MISERERE; vazio = controle, não conjura). Registra os frames nos
+##                 SWEEP_WINDOW s seguintes e repõe os inimigos (002 SC-202).
 ## Inimigos com HP enorme (não morrem) perseguem um alvo que gira no centro; o jogador fica num
 ## canto, sem ataque automático, invulnerável. Nada de gameplay é alterado nos .tres.
 
@@ -17,10 +18,11 @@ const STRESS_HP := 1_000_000
 const ORBIT_RADIUS := 80.0
 const ORBIT_SPEED := 0.8
 const PROJECTILE_RANGE := 900.0
-const PURGO_CYCLE := 3.0
-const PURGO_CAST_AT := 1.0
-const PURGO_WINDOW := 0.8
-const PURGO_CYCLES := 5
+const SWEEP_CYCLE := 3.0
+const SWEEP_CAST_AT := 1.0
+const SWEEP_WINDOW := 0.8
+const SWEEP_CYCLES := 8
+const SLOW_FRAME_MS := 33.0
 ## Proporção da onda 9 (max_alive de wave_09.tres: 110/16/15/12/12), escalada para 300.
 const WAVE9_MIX: Array = [
 	["res://data/enemies/imp.tres", 200],
@@ -45,10 +47,12 @@ var _rng := RandomNumberGenerator.new()
 var _time: float = 0.0
 var _ready_to_run: bool = false
 var _imp_tough: EnemyData
-var _purgo_t: float = 0.0
-var _purgo_cast: bool = false
-var _purgo_cycles: int = 0
-var _purgo_worst_ms: float = 0.0
+## Palavra da varredura (id); vazio = controle.
+var sweep_word: StringName = &""
+var _sweep_t: float = 0.0
+var _sweep_cast: bool = false
+var _sweep_cycles: int = 0
+var _window_ms := PackedFloat32Array()
 var _measure_until_us: int = 0
 var _last_us: int = 0
 
@@ -106,8 +110,8 @@ func _physics_process(delta: float) -> void:
 	while _projectiles.count < PROJECTILES:
 		var dir := Vector2.RIGHT.rotated(_rng.randf() * TAU)
 		_projectiles.fire(_random_point(), dir, 220.0, 1, PROJECTILE_RANGE)
-	if mode == &"purgo" or mode == &"purgoctl":
-		_purgo_tick(delta)
+	if mode == &"sweep":
+		_sweep_tick(delta)
 	if mode == &"wave9":
 		# As Traças comem letras; os Monges e Borrões já atiram e sujam, completamos até a carga-alvo.
 		_refill_letters()
@@ -120,38 +124,47 @@ func _physics_process(delta: float) -> void:
 func _process(_delta: float) -> void:
 	var now: int = Time.get_ticks_usec()
 	if _last_us > 0 and now <= _measure_until_us:
-		_purgo_worst_ms = maxf(_purgo_worst_ms, float(now - _last_us) / 1000.0)
+		_window_ms.append(float(now - _last_us) / 1000.0)
 	_last_us = now
 
 
-## Ciclo do modo purgo: PURGO em PURGO_CAST_AT, mede PURGO_WINDOW s, repõe os 300 no fim do ciclo.
-func _purgo_tick(delta: float) -> void:
-	if _purgo_cycles >= PURGO_CYCLES:
+## Ciclo do modo sweep: conjura em SWEEP_CAST_AT, registra SWEEP_WINDOW s, repõe os 300.
+func _sweep_tick(delta: float) -> void:
+	if _sweep_cycles >= SWEEP_CYCLES:
 		return
-	_purgo_t += delta
-	if not _purgo_cast and _purgo_t >= PURGO_CAST_AT:
-		_purgo_cast = true
-		var word: WordData = null
-		for w: WordData in _field.lexicon_data.words:  # o PURGO é apócrifo: word_for só vê as liberadas
-			if w.id == &"purgo":
-				word = w
-		if mode == &"purgo":
+	_sweep_t += delta
+	if not _sweep_cast and _sweep_t >= SWEEP_CAST_AT:
+		_sweep_cast = true
+		if sweep_word != &"":
+			var word: WordData = null
+			for w: WordData in _field.lexicon_data.words:  # apócrifos: word_for só vê os liberados
+				if w.id == sweep_word:
+					word = w
 			var m := PoolManager.acquire(word.id) as Miracle
 			m.start(word, word.power_budget, Vector2(320, 180), Vector2.RIGHT)
-		_measure_until_us = Time.get_ticks_usec() + int(PURGO_WINDOW * 1_000_000)
-	if _purgo_t >= PURGO_CYCLE:
-		_purgo_t = 0.0
-		_purgo_cast = false
-		_purgo_cycles += 1
-		if _purgo_cycles >= PURGO_CYCLES:
-			_report_purgo()
+		_measure_until_us = Time.get_ticks_usec() + int(SWEEP_WINDOW * 1_000_000)
+	if _sweep_t >= SWEEP_CYCLE:
+		_sweep_t = 0.0
+		_sweep_cast = false
+		_sweep_cycles += 1
+		if _sweep_cycles >= SWEEP_CYCLES:
+			_report_sweep()
 			return
 		while _manager.count < ENEMIES:
 			_manager.spawn(_imp_tough, _random_point())
 
 
-func _report_purgo() -> void:
-	var line: String = "PURGO_PROBE modo=%s worst_ms=%.1f ciclos=%d" % [mode, _purgo_worst_ms, PURGO_CYCLES]
+func _report_sweep() -> void:
+	var sorted: PackedFloat32Array = _window_ms.duplicate()
+	sorted.sort()
+	var slow: int = 0
+	for ms: float in sorted:
+		if ms > SLOW_FRAME_MS:
+			slow += 1
+	var p95: float = sorted[int(floor(0.95 * (sorted.size() - 1)))] if not sorted.is_empty() else 0.0
+	var worst: float = sorted[sorted.size() - 1] if not sorted.is_empty() else 0.0
+	var line: String = "SWEEP_PROBE palavra=%s frames=%d acima_33ms=%d p95_ms=%.1f pior_ms=%.1f" % [
+		sweep_word if sweep_word != &"" else &"controle", sorted.size(), slow, p95, worst]
 	print(line)
 	if OS.has_feature("web"):
 		JavaScriptBridge.eval("fetch('/fps_result?' + encodeURIComponent(%s)).catch(function(){})" % JSON.stringify(line))

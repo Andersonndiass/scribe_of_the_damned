@@ -27,5 +27,5 @@ Legenda: `[TEST-FIRST]` = o teste é escrito e falha antes da implementação.
 - ✅ **T232** Integração `test_orations.gd` (atril 7–8). Debug `?atril=8`.
 
 ## Fase 5 — Fechamento
-- **T240** Parecer do rules-agent sobre os números finais; stress com PURGO/MISERERE/DOMINUS (SC-202, SC-205).
-- **T241** Export web, GUT, `FEATURES.md` (002 → Complete), `CLAUDE.md`, `docs/DECISIONS.md`.
+- ✅ **T240** Parecer do rules-agent (VÁLIDO COM RESSALVAS; FEATHERS → `orbit_count` no `.tres`); stress `?stress=purgo|dominus|miserere` contra o controle `?stress=ctl` (SC-202, SC-205). D-057.
+- ✅ **T241** Export web, GUT 218/218, `FEATURES.md` (002 → Complete), `CLAUDE.md`, `docs/DECISIONS.md`.

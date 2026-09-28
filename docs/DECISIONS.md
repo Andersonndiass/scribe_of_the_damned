@@ -293,6 +293,14 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
 - **Debug:** `?atril=8` / `-- atril=8` para testar antes da loja (003).
 - **Status:** ✅ plano aprovado ("pode").
 
+### D-057 · 2026-09-28 · Fechamento da 002 (T240–T241)
+- **Parecer final do rules-agent:** VÁLIDO COM RESSALVAS. Única correção: o número de penas do ANGELUS saiu do código para o `.tres` (`WordData.orbit_count` = 3). Os números da D-056 ficam.
+- **SC-202 (varreduras):** nova sonda `?stress=purgo|dominus|miserere` contra o controle `?stress=ctl` (mesmo ciclo, sem conjurar), 8 ciclos cada, frames da janela de 0,8 s depois da conjuração. Chrome, 2 rodadas: frames acima de 33 ms — controle 20–29, PURGO 7–8, DOMINUS 4–7, MISERERE 5–8. **As varreduras em lotes não criam pico**; os frames lentos vêm do peso normal dos 300 inimigos vivos nesta máquina. Critério absoluto (nenhum frame > 33 ms) não verificável aqui: nem o controle o cumpre hoje.
+- **SC-205:** A/B intercalado no Chrome entre o build do fim do áudio (`cec562e`) e o atual: 43–52 contra 45–49 FPS, custos por seção iguais. **Sem regressão.** A máquina está mais lenta que em 2026-09-26 (o mesmo build antigo deu 65–88 então); o SC-001 absoluto no Chrome fica para remedir, junto com a C-005, na 011.
+- **Ressalvas para a 003 (rules-agent):** PURGO deve ser o apócrifo mais barato enquanto os comuns tiverem HP ≤ 5; desbloquear VERBUM libera o B no mesmo instante; o atril sobe para 7 antes do 8.
+- **Ressalvas para a 006:** limitar por fase (DamageFilter) SPIRITUS colado no chefe (até 504), SANCTUS (360) e MISERERE (280, × GLORIA); ANGELUS não fere a menos de 27 px do escriba.
+- **Status:** ✅ feature 002 Complete.
+
 ---
 
 ## Conflitos abertos

@@ -31,8 +31,8 @@ Valores **[INICIAL]**, já com os pareceres de 2026-09-26 aplicados.
 | VERBUM | 6 | apócrifo | 3.5 | repete a última palavra base ou apócrifa (não oração, não combo, não VERBUM) |
 | SANCTUS | 7 | oração | 5.0 | radius 90 · damage 3 · tick 0.25 · slow 0.5 · duration 6 |
 | DOMINUS | 7 | oração | 5.0 | stun 3 · damage **20** (tela toda, em lotes) |
-| ANGELUS | 7 | oração | 5.0 | 3 penas · radius **40** · damage 4 · hit_cooldown 0.2 · duration 10 |
-| SPIRITUS | 8 | oração | 7.0 | duration 6 · speed_mul 1.5 · damage 3 por toque · intangível a corpos (projéteis e heresia ainda doem) |
+| ANGELUS | 7 | oração | 5.0 | orbit_count 3 · radius **40** · damage 4 · hit_cooldown 0.2 · duration 10 · rotation_speed 1.0 · width 8 (alcance da pena; D-056) |
+| SPIRITUS | 8 | oração | 7.0 | duration 6 · speed_mul 1.5 · damage 3 por toque · hit_cooldown 0.25 · radius 10 (toque; D-056) · intangível a corpos (projéteis e heresia ainda doem) |
 | SALVATOR | 8 | oração | 7.0 | heal_candles **3** · clear_projectiles · sem invulnerabilidade |
 | MISERERE | 8 | oração | 7.0 | damage 40 (tela toda, em lotes) · apaga poças de heresia e letras corrompidas · forgive_heresy (a próxima) |
 

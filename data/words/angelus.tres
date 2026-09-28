@@ -19,5 +19,6 @@ duration = 10.0
 miracle_scene = ExtResource("2_scene")
 draw_below_world = true
 rotation_speed = 1.0
+orbit_count = 3
 width = 8.0
 vfx_prefix = &"VFX_ANGELUS"
