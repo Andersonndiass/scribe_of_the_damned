@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_rjisc"]
+
+[resource]
+script = ExtResource("1_rjisc")
+id = &"combo_cast_flamma"
+event = &"combo_cast:flamma"
+max_voices = 1
+cooldown_ms = 0
+priority = 3
+note = "FLAMMA: raio + fogo rugindo ao longo da linha."

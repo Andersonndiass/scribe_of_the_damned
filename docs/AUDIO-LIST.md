@@ -1,0 +1,55 @@
+# Lista de áudio — o que falta gravar
+
+> Gerado por `tools/audio_report.gd` a partir de `data/audio/` (009 FR-911). Não editar à mão.
+> Para ligar um som: abra o `.tres` indicado e ponha o arquivo em `stream`. Formatos: `.ogg` (música) e `.wav` (efeitos).
+
+## Efeitos
+
+| Arquivo | Evento | Canal | O que gravar |
+|---|---|---|---|
+| `data/audio/sfx/wave_started.tres` | `wave_started` | UI | Sino curto de mosteiro: a página vira e a onda começa. |
+| `data/audio/sfx/wave_ended.tres` | `wave_ended` | UI | Acorde grave que se resolve: a página respira. |
+| `data/audio/sfx/chapter_completed.tres` | `chapter_completed` | UI | Coro breve e grave: o capítulo foi reescrito. |
+| `data/audio/sfx/enemy_killed.tres` | `enemy_killed` | SFX | Morte genérica: tinta que se desfaz, curta (< 0,25 s). |
+| `data/audio/sfx/enemy_killed_imp.tres` | `enemy_killed:imp` | SFX | Diabrete: guincho agudo que vira borrão de tinta. |
+| `data/audio/sfx/enemy_killed_moth.tres` | `enemy_killed:moth` | SFX | Traça: papel seco se esfarelando. |
+| `data/audio/sfx/enemy_killed_gargoyle.tres` | `enemy_killed:gargoyle` | SFX | Gárgula: pedra rachando. |
+| `data/audio/sfx/enemy_killed_hollow_monk.tres` | `enemy_killed:hollow_monk` | SFX | Monge Oco: suspiro grave que some. |
+| `data/audio/sfx/enemy_killed_ink_blot.tres` | `enemy_killed:ink_blot` | SFX | Borrão: gota grossa espirrando. |
+| `data/audio/sfx/champion_killed.tres` | `champion_killed` | SFX | Campeão: estalo forte + eco de sino rachado. |
+| `data/audio/sfx/player_damaged.tres` | `player_damaged` | SFX | Vela apagando: sopro seco e chiado de pavio. |
+| `data/audio/sfx/player_healed.tres` | `player_healed` | SFX | Vela acendendo: fósforo e chama. |
+| `data/audio/sfx/player_died.tres` | `player_died` | SFX | Morte do escriba: todas as velas se apagam, silêncio pesado. |
+| `data/audio/sfx/letter_dropped.tres` | `letter_dropped` | SFX | Letra caindo: pingo de tinta leve. |
+| `data/audio/sfx/letter_dropped_rare.tres` | `letter_dropped:rare` | SFX | Vogal rara caindo: pingo com brilho metálico (ouro). |
+| `data/audio/sfx/letter_collected.tres` | `letter_collected` | SFX | Coleta: pena riscando o pergaminho, bem curta. |
+| `data/audio/sfx/letter_collected_rare.tres` | `letter_collected:rare` | SFX | Coleta rara: risco de pena + tilintar de ouro. |
+| `data/audio/sfx/letter_rejected.tres` | `letter_rejected` | SFX | Recusa (atril cheio): batida seca de madeira. |
+| `data/audio/sfx/letter_eaten.tres` | `letter_eaten` | SFX | Traça comendo a letra: mastigar de papel. |
+| `data/audio/sfx/gold_ink_collected.tres` | `gold_ink_collected` | SFX | Tinta dourada: moedas pequenas. |
+| `data/audio/sfx/atril_valid.tres` | `atril_valid` | UI | Palavra pronta no atril: nota sustentada de órgão, suave. |
+| `data/audio/sfx/word_cast.tres` | `word_cast` | SFX | Conjuração genérica: palavra latina sussurrada em coro. |
+| `data/audio/sfx/word_cast_lux.tres` | `word_cast:lux` | SFX | LUX: raio de luz, zunido cristalino. |
+| `data/audio/sfx/word_cast_pax.tres` | `word_cast:pax` | SFX | PAX: onda grave que empurra, sopro. |
+| `data/audio/sfx/word_cast_crux.tres` | `word_cast:crux` | SFX | CRUX: madeira cravada no chão. |
+| `data/audio/sfx/word_cast_vita.tres` | `word_cast:vita` | SFX | VITA: respiração que volta, sino claro. |
+| `data/audio/sfx/word_cast_aqua.tres` | `word_cast:aqua` | SFX | AQUA: água se espalhando. |
+| `data/audio/sfx/word_cast_ignis.tres` | `word_cast:ignis` | SFX | IGNIS: fogo pegando no pergaminho. |
+| `data/audio/sfx/word_cast_mortis.tres` | `word_cast:mortis` | SFX | MORTIS: coro grave em onda, sino fúnebre. |
+| `data/audio/sfx/combo_cast.tres` | `combo_cast` | SFX | Combo genérico: coro em uníssono + impacto. |
+| `data/audio/sfx/combo_cast_vapor.tres` | `combo_cast:vapor` | SFX | VAPOR: chiado de água no fogo, névoa. |
+| `data/audio/sfx/combo_cast_flamma.tres` | `combo_cast:flamma` | SFX | FLAMMA: raio + fogo rugindo ao longo da linha. |
+| `data/audio/sfx/combo_cast_caecitas.tres` | `combo_cast:caecitas` | SFX | CAECITAS: clarão agudo que ofusca, zumbido. |
+| `data/audio/sfx/combo_cast_martyrium.tres` | `combo_cast:martyrium` | SFX | MARTYRIUM: laser dourado girando, coro alto. |
+| `data/audio/sfx/combo_cast_requiem.tres` | `combo_cast:requiem` | SFX | REQUIEM: coro de réquiem em onda, muitos sinos. |
+| `data/audio/sfx/heresy_committed.tres` | `heresy_committed` | SFX | Heresia: coro desafinado + estalo sujo de tinta. |
+| `data/audio/sfx/atril_purged.tres` | `atril_purged` | SFX | Purge: letras sacudidas de volta ao chão, papel farfalhando. |
+| `data/audio/sfx/combo_window_opened.tres` | `combo_window_opened` | UI | Janela de combo aberta: tique de relógio de areia. |
+
+## Música
+
+| Arquivo | Camadas | O que gravar |
+|---|---|---|
+| `data/audio/music/chapter_1.tres` | 3 | Capítulo 1 (Mosteiro de São Wendelino, 1348): 3 camadas no mesmo BPM. Base: órgão e drone grave. Camada 2: canto gregoriano masculino. Camada 3: percussão e cordas tensas. |
+
+**Faltam 39 arquivos.**

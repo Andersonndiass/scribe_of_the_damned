@@ -87,11 +87,12 @@ Ordem padrão: game-design → rules → mechanics → design + animation → co
 
 ## Estado atual
 
-- **Etapa:** Etapa 3 — features 001 e 005 Complete; 002 Fases 1 e 2 ✅ (Checkpoint 002-A, 5 combos jogáveis). GUT 175/175. Paleta C (D-048). Otimizações D-049.
-- **Feature atual:** 002 vocabulário e combos (em andamento).
-- **Próximo:** arquitetura de áudio sem sons (D-047 5), depois 002 Fase 3 (apócrifos). Aberto: C-004 (playtest do autor); C-005 adiada para a 011 (D-050).
+- **Etapa:** Etapa 3 — features 001 e 005 Complete; 002 Fases 1 e 2 ✅ (combos); 009 Fase 1 ✅ (áudio em silêncio). GUT 193/193. Paleta C (D-048).
+- **Feature atual:** 002 vocabulário e combos e 009 áudio (ambas em andamento).
+- **Próximo:** 002 Fase 3 (apócrifos). A 009 Fase 2 (sons provisórios por script) pode entrar quando o autor quiser. Aberto: C-004 (playtest do autor); C-005 adiada para a 011 (D-050).
 - **Combos:** `ComboData` estende `WordData`; `power` só no dano (D-051); detalhes em D-052.
-- **Se o auto mode falhar** (classificador sem veredito): o autor roda os comandos com `!` no chat.
+- **Áudio:** `AudioManager` (autoload) + `data/audio/`. Regerar os `.tres`: `godot --headless --path . -s tools/gen_audio_data.gd`; lista do que gravar: `-s tools/audio_report.gd` → `docs/AUDIO-LIST.md`.
+- **Se o auto mode falhar** (classificador sem veredito): sair do auto mode (Shift+Tab) ou o autor roda os comandos com `!` no chat.
 - **Sonda por onda:** `godot --headless --path . -s tools/balance_probe.gd -- cast god wave=N` (linha FLOW; ver T533 §6).
 - **Pendente de sensação:** screen shake (morte de campeão) — o jogo ainda não tem câmera com shake.
 - **Vitrine:** `index.html?roster` (os 5 inimigos) · `index.html?stress` (SC-001) · `index.html?stress=wave9` (SC-503).

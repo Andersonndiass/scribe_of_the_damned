@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_oatf5"]
+
+[resource]
+script = ExtResource("1_oatf5")
+id = &"letter_rejected"
+event = &"letter_rejected"
+max_voices = 1
+cooldown_ms = 100
+note = "Recusa (atril cheio): batida seca de madeira."

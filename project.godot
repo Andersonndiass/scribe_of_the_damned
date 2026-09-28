@@ -21,6 +21,7 @@ EventBus="*res://src/core/event_bus.gd"
 GameState="*res://src/core/game_state.gd"
 PoolManager="*res://src/core/pool_manager.gd"
 Hitstop="*res://src/core/hitstop.gd"
+AudioManager="*res://src/audio/audio_manager.gd"
 
 [display]
 

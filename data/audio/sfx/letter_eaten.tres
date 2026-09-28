@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_griep"]
+
+[resource]
+script = ExtResource("1_griep")
+id = &"letter_eaten"
+event = &"letter_eaten"
+max_voices = 2
+cooldown_ms = 80
+priority = 0
+note = "Traça comendo a letra: mastigar de papel."

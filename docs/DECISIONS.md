@@ -264,6 +264,16 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
 - **Visual (design-agent):** GOLD no laser do Martyrium é a exceção prevista no art bible §2.2; Vapor e o fogo da Flamma ficam no FxLayer, abaixo das letras; venda CHALK no cego; nome do combo em GOLD 2× sobre o escriba por 1 s.
 - **Status:** ✅ dentro do plano aprovado ("pode").
 
+### D-053 · 2026-09-28 · Spec 009 (áudio) aprovada
+- **Decisão:** arquitetura de áudio completa em silêncio (barramentos, `SoundData` por evento, pool de vozes com anti-spam, música em camadas pela intensidade da onda, gate do web, lista do que gravar). Sons provisórios por script na Fase 2; arquivos do autor na Fase 3.
+- **Música:** camadas entram conforme a onda aperta e voltam à base quando o escriba morre.
+- **Status:** ✅ aprovada pelo autor ("1a, 2a").
+
+### D-054 · 2026-09-28 · Números de áudio (parecer do animation-agent)
+- **Decisão:** pool de 24 vozes de SFX + 4 de UI; pitch ±0,05; voz silenciosa ocupada 0,2 s. Morte de inimigo: cooldown **50 ms** (era 40). Música: rampa **700 ms** (era 800) e **400 ms** na morte do escriba (`death_fade_ms`, novo). A rampa da música usa o **relógio real**, para não desacelerar no hit-stop. O som não obedece ao `time_scale`.
+- **Detalhe:** `AudioManager.sound_played(id)` existe para métricas e testes. Palavras sem som próprio (orações, apócrifos) caem no `word_cast` genérico até a 002 Fase 3–4.
+- **Status:** ✅ parecer do animation-agent.
+
 ---
 
 ## Conflitos abertos

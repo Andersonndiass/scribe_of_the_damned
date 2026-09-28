@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="MusicData" format=3]
+
+[ext_resource type="Script" path="res://src/data/music_data.gd" id="1_ghube"]
+
+[resource]
+script = ExtResource("1_ghube")
+id = &"chapter_1"
+intensity_thresholds = PackedFloat32Array(0, 0.34, 0.67)
+note = "Capítulo 1 (Mosteiro de São Wendelino, 1348): 3 camadas no mesmo BPM. Base: órgão e drone grave. Camada 2: canto gregoriano masculino. Camada 3: percussão e cordas tensas."

@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_s5srb"]
+
+[resource]
+script = ExtResource("1_s5srb")
+id = &"letter_collected_rare"
+event = &"letter_collected:rare"
+max_voices = 2
+note = "Coleta rara: risco de pena + tilintar de ouro."
