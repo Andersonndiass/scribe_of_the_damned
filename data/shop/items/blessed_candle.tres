@@ -7,8 +7,8 @@
 script = ExtResource("1_si")
 id = &"blessed_candle"
 kind = &"item"
-display_name = "Círio Bento"
-short_desc = "+1 vela máxima e acende 1"
+display_name = "ITEM_BLESSED_CANDLE"
+short_desc = "ITEM_BLESSED_CANDLE_DESC"
 icon = ExtResource("9_icon")
 base_price = 8
 stat = &"max_candles"

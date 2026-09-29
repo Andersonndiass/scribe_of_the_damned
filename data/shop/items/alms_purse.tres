@@ -7,8 +7,8 @@
 script = ExtResource("1_si")
 id = &"alms_purse"
 kind = &"item"
-display_name = "Bolsa do Esmoler"
-short_desc = "Tinta dourada +20%"
+display_name = "ITEM_ALMS_PURSE"
+short_desc = "ITEM_ALMS_PURSE_DESC"
 icon = ExtResource("9_icon")
 base_price = 5
 stat = &"gold_mul"

@@ -7,8 +7,8 @@
 script = ExtResource("1_si")
 id = &"copyist_lenses"
 kind = &"item"
-display_name = "Lentes do Copista"
-short_desc = "Letra útil cai mais"
+display_name = "ITEM_COPYIST_LENSES"
+short_desc = "ITEM_COPYIST_LENSES_DESC"
 icon = ExtResource("9_icon")
 base_price = 6
 stat = &"target_bonus_add"

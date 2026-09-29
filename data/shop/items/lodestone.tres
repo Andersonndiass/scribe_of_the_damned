@@ -7,8 +7,8 @@
 script = ExtResource("1_si")
 id = &"lodestone"
 kind = &"item"
-display_name = "Pedra-Ímã"
-short_desc = "Ímã +30%"
+display_name = "ITEM_LODESTONE"
+short_desc = "ITEM_LODESTONE_DESC"
 icon = ExtResource("9_icon")
 base_price = 4
 stat = &"magnet_radius"

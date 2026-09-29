@@ -68,8 +68,8 @@ func _on_draw() -> void:
 	_canvas.draw_rect(box.grow(1.0), Palette.INK)
 	_canvas.draw_rect(box, Palette.PARCHMENT)
 	if mode == Mode.PAUSED:
-		PixelFont.draw_centered(_canvas, "PAUSA", 320, 156, Palette.INK, 2)
-		PixelFont.draw_centered(_canvas, "ESC CONTINUAR   R REINICIAR", 320, 190, Palette.INK_SOFT)
+		PixelFont.draw_centered(_canvas, tr(&"PAUSE_TITLE"), 320, 156, Palette.INK, 2)
+		PixelFont.draw_centered(_canvas, tr(&"PAUSE_HINT").format({"pause": Settings.key_label(&"pause"), "restart": Settings.key_label(&"restart")}), 320, 190, Palette.INK_SOFT)
 	else:
-		PixelFont.draw_centered(_canvas, "A PÁGINA ARDEU", 320, 156, Palette.BLOOD, 2)
-		PixelFont.draw_centered(_canvas, "R TENTAR DE NOVO", 320, 190, Palette.INK_SOFT)
+		PixelFont.draw_centered(_canvas, tr(&"GAMEOVER_TITLE"), 320, 156, Palette.BLOOD, 2)
+		PixelFont.draw_centered(_canvas, tr(&"GAMEOVER_HINT").format({"restart": Settings.key_label(&"restart")}), 320, 190, Palette.INK_SOFT)

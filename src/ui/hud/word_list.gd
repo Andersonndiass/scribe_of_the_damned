@@ -6,7 +6,6 @@ extends Node2D
 
 const PANEL := Rect2(8, 64, 140, 232)
 const PAD := 6
-const TITLE := "PALAVRAS"
 
 
 func hud_rect() -> Rect2:
@@ -27,7 +26,7 @@ func _process(_delta: float) -> void:
 func _draw() -> void:
 	draw_rect(PANEL.grow(1.0), Palette.INK)
 	draw_rect(PANEL, Palette.PARCHMENT)
-	PixelFont.draw(self, TITLE, PANEL.position + Vector2(PAD, PAD), Palette.INK_SOFT)
+	PixelFont.draw(self, tr(&"HUD_WORDS"), PANEL.position + Vector2(PAD, PAD), Palette.INK_SOFT)
 	var field := get_tree().get_first_node_in_group(&"letter_field") as LetterField
 	if field == null:
 		return

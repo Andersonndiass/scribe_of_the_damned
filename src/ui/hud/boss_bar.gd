@@ -58,7 +58,7 @@ func _process(delta: float) -> void:
 func _draw() -> void:
 	if boss == null:
 		return
-	PixelFont.draw_centered(self, boss.display_name, BAR.get_center().x, NAME_Y, Palette.INK)
+	PixelFont.draw_centered(self, tr(boss.display_name), BAR.get_center().x, NAME_Y, Palette.INK)
 	draw_rect(BAR.grow(1), Palette.INK)
 	draw_rect(BAR, Palette.PARCHMENT_OLD)
 	draw_rect(Rect2(BAR.position, Vector2(roundf(BAR.size.x * trail), BAR.size.y)), Palette.CHALK)

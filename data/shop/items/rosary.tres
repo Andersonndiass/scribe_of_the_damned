@@ -7,8 +7,8 @@
 script = ExtResource("1_si")
 id = &"rosary"
 kind = &"item"
-display_name = "Rosário de Contas"
-short_desc = "Heresia atordoa metade"
+display_name = "ITEM_ROSARY"
+short_desc = "ITEM_ROSARY_DESC"
 icon = ExtResource("9_icon")
 base_price = 4
 stat = &"heresy_stun_mul"

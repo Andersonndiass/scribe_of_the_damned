@@ -4,8 +4,6 @@ extends Node2D
 
 const CENTER_X := 320.0
 const TOP := 6.0
-const COMPLETE_TEXT := "ONDA COMPLETA"
-const CHAPTER_TEXT := "CAPÍTULO COMPLETO"
 
 var remaining: float = 0.0
 var wave_index: int = 0
@@ -61,8 +59,8 @@ func _draw() -> void:
 	if wave_index == 0:
 		return
 	if not running:
-		PixelFont.draw_centered(self, CHAPTER_TEXT if chapter_done else COMPLETE_TEXT, CENTER_X, TOP + 4, Palette.GOLD)
+		PixelFont.draw_centered(self, tr(&"HUD_CHAPTER_COMPLETE") if chapter_done else tr(&"HUD_WAVE_COMPLETE"), CENTER_X, TOP + 4, Palette.GOLD)
 		return
-	PixelFont.draw_centered(self, "ONDA %d" % wave_index, CENTER_X, TOP, Palette.INK_SOFT)
+	PixelFont.draw_centered(self, tr(&"HUD_WAVE").format({"n": wave_index}), CENTER_X, TOP, Palette.INK_SOFT)
 	var urgent: bool = remaining <= 10.0
 	PixelFont.draw_centered(self, time_text(), CENTER_X, TOP + 10, Palette.BLOOD if urgent else Palette.INK, 2)

@@ -72,6 +72,14 @@ signal boss_letters_burst(position: Vector2, count: int)
 ## Sensação (006 FR-612): força em px e duração em s; a câmera decide se treme (opção).
 signal shake_requested(strength: float, duration: float)
 
+# Configurações (007)
+signal settings_applied()
+## Telas (007): o roteador trocou de tela; a partida pediu para recomeçar.
+signal screen_changed(screen: StringName)
+signal game_restart_requested()
+## Grimório: entrada nova (categoria: words, combos, enemies, bosses).
+signal codex_discovered(category: StringName, id: StringName)
+
 # Capítulo
 signal chapter_completed(chapter: int)
 

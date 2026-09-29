@@ -53,7 +53,7 @@ func _ready() -> void:
 	GameState.start_run(player_data)
 	# Fora do jogo de verdade (testes, sonda, stress) a loja não pausa a árvore: abre e fecha
 	# sozinha. O teste da tela da loja liga a loja de verdade com a meta "shop_manual".
-	if get_tree().current_scene != self and not has_meta(&"shop_manual"):
+	if not is_real_game() and not has_meta(&"shop_manual"):
 		shop_auto_close = true
 	# Sem a tela da loja na cena, não há como sair dela: fecha sozinha.
 	if not has_node("ShopScreen"):
@@ -158,7 +158,8 @@ func _process(delta: float) -> void:
 ## Debug: cena pedida na linha de comando ("stress", "roster") ou na URL (?stress, ?roster).
 ## Só vale quando o Main é a cena inicial.
 func _debug_scene_requested() -> String:
-	if has_meta(&"stress") or get_tree().current_scene != self:
+	# Com o roteador (007), é ele quem troca para as cenas de debug.
+	if has_meta(&"stress") or has_meta(&"app") or get_tree().current_scene != self:
 		return ""
 	var asked: String = _debug_args()
 	if asked.contains("stress"):
@@ -170,12 +171,7 @@ func _debug_scene_requested() -> String:
 
 ## Argumentos de debug: linha de comando (depois de --) e, no web, a query da URL.
 func _debug_args() -> String:
-	var asked: String = " ".join(OS.get_cmdline_user_args())
-	if OS.has_feature("web"):
-		var search: Variant = JavaScriptBridge.eval("window.location.search", true)
-		if search is String:
-			asked += " " + (search as String)
-	return asked
+	return ScreenRouter.debug_args()
 
 
 ## Debug (002 T222, FR-211): ?unlock=all / -- unlock=all libera todos os apócrifos para playtest.
@@ -185,9 +181,16 @@ func _unlock_all_words() -> void:
 			GameState.unlock_word(word)
 
 
+## É a partida de verdade (hospedada pelo roteador ou aberta como cena), não um teste/sonda/stress.
+func is_real_game() -> bool:
+	return has_meta(&"app") or get_tree().current_scene == self
+
+
 func _restart() -> void:
-	# Só recarrega quando o Main é a cena do jogo (nos testes ele é filho do runner do GUT).
-	if get_tree().current_scene == self:
+	# Com o roteador (007) o reinício é um pedido; aberto como cena, recarrega. Nos testes, nada.
+	if has_meta(&"app"):
+		EventBus.game_restart_requested.emit()
+	elif get_tree().current_scene == self:
 		get_tree().reload_current_scene()
 
 

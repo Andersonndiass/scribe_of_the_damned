@@ -326,7 +326,7 @@ func _draw_card(i: int) -> void:
 		for y: float in [rect.position.y - 3.0, rect.end.y - 3.0]:
 			c.draw_rect(Rect2(rect.position.x - 2, y, rect.size.x + 4, 6), Palette.PARCHMENT)
 			c.draw_rect(Rect2(rect.position.x - 2, y + 2, rect.size.x + 4, 1), Palette.INK)
-		PixelFont.draw_centered(c, "APOCRIFO", rect.get_center().x, pos.y + 4, Palette.INK_SOFT)
+		PixelFont.draw_centered(c, tr(&"SHOP_APOCRYPHA"), rect.get_center().x, pos.y + 4, Palette.INK_SOFT)
 	else:
 		c.draw_rect(Rect2(rect.position + Vector2(2, 2), rect.size - Vector2(4, 4)), Palette.PARCHMENT_OLD, false, 1.0)
 	if is_sel:
@@ -339,16 +339,16 @@ func _draw_card(i: int) -> void:
 		_dither(Rect2(pos, CARD_SIZE), Palette.PARCHMENT_OLD)
 		if sold_look:
 			c.draw_circle(pos + ICON_RECT.get_center(), 12, Palette.GOLD)
-			PixelFont.draw_centered(c, "VENDIDO", pos.x + CARD_SIZE.x / 2, pos.y + 84, Palette.INK)
+			PixelFont.draw_centered(c, tr(&"SHOP_SOLD"), pos.x + CARD_SIZE.x / 2, pos.y + 84, Palette.INK)
 		elif _anim_age(i) < 0.034:
 			c.draw_rect(rect, Palette.CHALK)
 		return
-	var lines: PackedStringArray = _wrap(card.display_name, NAME_CHARS)
+	var lines: PackedStringArray = _wrap(tr(card.display_name), NAME_CHARS)
 	var name_scale: int = 2 if apo and lines.size() == 1 and PixelFont.width(lines[0], 2) <= CARD_SIZE.x - 8 else 1
 	for k: int in mini(lines.size(), NAME_Y.size()):
 		PixelFont.draw_centered(c, lines[k], pos.x + CARD_SIZE.x / 2, pos.y + NAME_Y[k] - (3 if name_scale == 2 else 0), Palette.INK, name_scale)
 	c.draw_rect(Rect2(pos + Vector2(8, 78), Vector2(84, 1)), Palette.PARCHMENT_OLD)
-	var desc: PackedStringArray = _wrap(card.short_desc, NAME_CHARS)
+	var desc: PackedStringArray = _wrap(tr(card.short_desc), NAME_CHARS)
 	for k: int in mini(desc.size(), DESC_Y.size()):
 		PixelFont.draw_centered(c, desc[k], pos.x + CARD_SIZE.x / 2, pos.y + DESC_Y[k], Palette.INK_SOFT)
 	if state == &"no_money":
@@ -371,7 +371,7 @@ func _draw_price(i: int, pos: Vector2, state: StringName) -> void:
 
 func _draw_ui() -> void:
 	var c := _canvas
-	PixelFont.draw(c, "SCRIPTORIUM", Vector2(192, 22), Palette.PARCHMENT_OLD, 2)
+	PixelFont.draw(c, tr(&"SHOP_TITLE"), Vector2(192, 22), Palette.PARCHMENT_OLD, 2)
 	var plate: Rect2 = INK_PLATE
 	c.draw_rect(plate.grow(1), Palette.INK_SOFT)
 	c.draw_rect(plate, Palette.PARCHMENT)
@@ -389,7 +389,7 @@ func _draw_ui() -> void:
 	c.draw_rect(die, Palette.PARCHMENT_OLD)
 	for p: Vector2 in [Vector2(3, 3), Vector2(7, 7), Vector2(11, 11)]:
 		c.draw_rect(Rect2(die.position + p - Vector2.ONE, Vector2(2, 2)), Palette.INK)
-	PixelFont.draw(c, "REROLAR", REROLL_PLATE.position + Vector2(22, 9), Palette.INK)
+	PixelFont.draw(c, tr(&"SHOP_REROLL"), REROLL_PLATE.position + Vector2(22, 9), Palette.INK)
 	var cost: int = _shop.offer.reroll_cost()
 	var cost_color: Color = Palette.BLOOD if GameState.gold_ink < cost else Palette.INK
 	c.draw_texture(DROP_ICON, REROLL_PLATE.position + Vector2(68, 8))
@@ -399,8 +399,10 @@ func _draw_ui() -> void:
 	for side: float in [RIBBON.position.x - 6.0, RIBBON.end.x]:
 		c.draw_rect(Rect2(side, RIBBON.position.y, 6, 6), Palette.BLOOD_DARK)
 		c.draw_rect(Rect2(side, RIBBON.end.y - 6, 6, 6), Palette.BLOOD_DARK)
-	PixelFont.draw_centered(c, "PROXIMA ONDA [ENTER]", RIBBON.get_center().x, 237, Palette.CHALK)
-	PixelFont.draw(c, "<> ESCOLHER  ESPACO COMPRAR  L TRAVAR  R REROLAR  ENTER ONDA", LEGEND_POS, Palette.PARCHMENT_OLD)
+	PixelFont.draw_centered(c, tr(&"SHOP_NEXT").format({"next": Settings.key_label(&"shop_next")}), RIBBON.get_center().x, 237, Palette.CHALK)
+	PixelFont.draw(c, tr(&"SHOP_LEGEND").format({
+		"cast": Settings.key_label(&"cast"), "lock": Settings.key_label(&"shop_lock"),
+		"reroll": Settings.key_label(&"shop_reroll"), "next": Settings.key_label(&"shop_next")}), LEGEND_POS, Palette.PARCHMENT_OLD)
 
 
 ## Xadrez de 50% por cima (o "desbotado" sem opacidade, Princípio VII).

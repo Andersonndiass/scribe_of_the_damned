@@ -7,8 +7,8 @@
 script = ExtResource("1_si")
 id = &"double_inkwell"
 kind = &"item"
-display_name = "Tinteiro Duplo"
-short_desc = "10% de letra extra"
+display_name = "ITEM_DOUBLE_INKWELL"
+short_desc = "ITEM_DOUBLE_INKWELL_DESC"
 icon = ExtResource("9_icon")
 base_price = 7
 stat = &"double_letter_chance"

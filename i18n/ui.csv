@@ -1,0 +1,49 @@
+keys,pt_BR,en
+HUD_WAVE,ONDA {n},WAVE {n}
+HUD_WAVE_COMPLETE,ONDA COMPLETA,WAVE COMPLETE
+HUD_CHAPTER_COMPLETE,CAPÍTULO COMPLETO,CHAPTER COMPLETE
+HUD_WORDS,PALAVRAS,WORDS
+PAUSE_TITLE,PAUSA,PAUSED
+PAUSE_HINT,{pause} CONTINUAR   {restart} REINICIAR,{pause} RESUME   {restart} RESTART
+GAMEOVER_TITLE,A PÁGINA ARDEU,THE PAGE BURNED
+GAMEOVER_HINT,{restart} TENTAR DE NOVO,{restart} TRY AGAIN
+SHOP_TITLE,SCRIPTORIUM,SCRIPTORIUM
+SHOP_APOCRYPHA,APÓCRIFO,APOCRYPHA
+SHOP_SOLD,VENDIDO,SOLD
+SHOP_REROLL,REROLAR,REROLL
+SHOP_NEXT,PRÓXIMA ONDA [{next}],NEXT WAVE [{next}]
+SHOP_LEGEND,<> ESCOLHER  {cast} COMPRAR  {lock} TRAVAR  {reroll} REROLAR  {next} ONDA,<> CHOOSE  {cast} BUY  {lock} LOCK  {reroll} REROLL  {next} WAVE
+ITEM_LODESTONE,Pedra-Ímã,Lodestone
+ITEM_LODESTONE_DESC,Ímã +30%,Magnet +30%
+ITEM_ROSARY,Rosário de Contas,Prayer Beads
+ITEM_ROSARY_DESC,Heresia atordoa metade,Heresy stuns half as long
+ITEM_SANDALS,Sandálias do Peregrino,Pilgrim Sandals
+ITEM_SANDALS_DESC,Velocidade +10%,Speed +10%
+ITEM_ALMS_PURSE,Bolsa do Esmoler,Almoner Purse
+ITEM_ALMS_PURSE_DESC,Tinta dourada +20%,Gold ink +20%
+ITEM_COPYIST_LENSES,Lentes do Copista,Copyist Lenses
+ITEM_COPYIST_LENSES_DESC,Letra útil cai mais,Useful letters drop more
+ITEM_DOUBLE_INKWELL,Tinteiro Duplo,Double Inkwell
+ITEM_DOUBLE_INKWELL_DESC,10% de letra extra,10% extra letter
+ITEM_FINE_QUILL,Pena de Ganso Fina,Fine Goose Quill
+ITEM_FINE_QUILL_DESC,Ataque 15% mais rápido,Attack 15% faster
+ITEM_BLESSED_CANDLE,Círio Bento,Blessed Candle
+ITEM_BLESSED_CANDLE_DESC,+1 vela máxima e acende 1,+1 max candle and lights 1
+ITEM_NEW_SHELF,Estante Nova,New Shelf
+ITEM_NEW_SHELF_DESC,+1 espaço no atril,+1 lectern slot
+APOCRYPHA_PURGO_DESC,Limpa a tela,Clears the screen
+APOCRYPHA_FIDES_DESC,Escudo de 1 golpe,Shield against 1 hit
+APOCRYPHA_LUMEN_DESC,Ímã e letra útil X2,Magnet and useful letters X2
+APOCRYPHA_GLORIA_DESC,Milagres X1.5,Miracles X1.5
+APOCRYPHA_VERBUM_DESC,Repete a palavra; libera o B,Repeats the word; unlocks B
+BOSS_ASMODEUS,"ASMODEUS, O RASURADOR","ASMODEUS, THE ERASER"
+KEY_SPACE,ESPAÇO,SPACE
+KEY_ENTER,ENTER,ENTER
+KEY_KP ENTER,ENTER,ENTER
+KEY_ESCAPE,ESC,ESC
+KEY_SHIFT,SHIFT,SHIFT
+KEY_TAB,TAB,TAB
+KEY_LEFT,ESQ,LEFT
+KEY_RIGHT,DIR,RIGHT
+KEY_UP,CIMA,UP
+KEY_DOWN,BAIXO,DOWN

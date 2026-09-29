@@ -1,12 +1,12 @@
 # 007 — Tarefas
 
 ## Fase 1 — Base (lógica, testes primeiro)
-- **T700** [TEST-FIRST] `test_settings.gd` → `Settings` (autoload): volumes, shake, idioma, alto contraste e teclas; salva/carrega `user://settings.cfg`; aplica no AudioServer, no GameState, no TranslationServer e no InputMap (SC-702).
-- **T701** Tradução: `i18n/ui.csv` (chave, pt_BR, en) importado como Translation; `tr()` em todo texto de interface; passar HUD, loja, cartas (display_name/short_desc viram chaves), overlays; teste `test_no_ui_literals.gd` (SC-704) e `test_translations.gd` (toda chave tem pt_BR e en).
-- **T702** [TEST-FIRST] `test_codex.gd` → `Codex` (autoload): descobre palavra/combo ao conjurar, inimigo ao ver, chefe ao enfrentar; salva `user://codex.save`; sem bônus mecânico (SC-703).
-- **T703** `ScreenRouter` + cena raiz `app.tscn` (nova main scene): troca de telas, pausa, volta ao menu; o jogo (`main.tscn`) vira uma tela. Os debug (`?stress`, `?boss`, `?shop`…) continuam indo direto.
+- ✅ **T700** [TEST-FIRST] `test_settings.gd` → `Settings` (autoload): volumes, shake, idioma, alto contraste e teclas; salva/carrega `user://settings.cfg`; aplica no AudioServer, no GameState, no TranslationServer e no InputMap (SC-702).
+- ✅ **T701** Tradução: `i18n/ui.csv` (chave, pt_BR, en) importado como Translation; `tr()` em todo texto de interface; passar HUD, loja, cartas (display_name/short_desc viram chaves), overlays; teste `test_no_ui_literals.gd` (SC-704) e `test_translations.gd` (toda chave tem pt_BR e en).
+- ✅ **T702** [TEST-FIRST] `test_codex.gd` → `Codex` (autoload): descobre palavra/combo ao conjurar, inimigo ao ver, chefe ao enfrentar; salva `user://codex.save`; sem bônus mecânico (SC-703).
+- ✅ **T703** `ScreenRouter` + cena raiz `app.tscn` (nova main scene): troca de telas, pausa, volta ao menu; o jogo (`main.tscn`) vira uma tela. Os debug (`?stress`, `?boss`, `?shop`…) continuam indo direto.
 
-**Checkpoint 007-A:** configurações, tradução e Grimório funcionam por teste; o jogo abre pelo roteador.
+**Checkpoint 007-A:** ✅ configurações, tradução e Grimório funcionam por teste; o jogo abre pelo roteador (2026-09-29, GUT 320/320). Os testes não gravam no save real do Grimório.
 
 ## Fase 2 — Telas
 - **T710** Visual e tempos: parecer do design-agent (fichas 27, 29, 30; alto contraste) e do animation-agent; placeholders por script (sino, livro, medalhões, cadeado, selo, pena-cursor).

@@ -7,8 +7,8 @@
 script = ExtResource("1_si")
 id = &"new_shelf"
 kind = &"item"
-display_name = "Estante Nova"
-short_desc = "+1 espaço no atril"
+display_name = "ITEM_NEW_SHELF"
+short_desc = "ITEM_NEW_SHELF_DESC"
 icon = ExtResource("9_icon")
 base_price = 9
 stat = &"atril_capacity"

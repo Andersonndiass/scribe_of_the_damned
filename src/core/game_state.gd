@@ -20,6 +20,8 @@ var shake_enabled: bool = true
 var aim_with_mouse: bool = true
 ## Onde está o cursor no mundo; Vector2.INF = sem mouse nesta sessão (mira = direção do escriba).
 var aim_point: Vector2 = Vector2.INF
+## Alto contraste (007, D-066): quem desenha consulta; variação dentro da paleta travada.
+var high_contrast: bool = false
 
 
 ## Reinicia a partida a partir dos dados do personagem.
@@ -32,6 +34,9 @@ func start_run(player: PlayerData, seed_value: int = -1) -> void:
 	gold_ink = 0
 	gold_fraction = 0.0
 	run_stats = RunStats.new(player)
+	var codex: Node = get_node_or_null(^"/root/Codex")
+	if codex != null:
+		codex.call(&"begin_run")  # a Vitória lista só as entradas novas desta partida
 	unlocked_words.clear()
 	if seed_value >= 0:
 		rng.seed = seed_value

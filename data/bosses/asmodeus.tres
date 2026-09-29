@@ -10,7 +10,7 @@
 [resource]
 script = ExtResource("1_s")
 id = &"asmodeus"
-display_name = "ASMODEUS, O RASURADOR"
+display_name = "BOSS_ASMODEUS"
 max_hp = 1500
 phases = Array[ExtResource("5_e")]([ExtResource("2_e"), ExtResource("3_e"), ExtResource("4_e")])
 body_radius = 20.0

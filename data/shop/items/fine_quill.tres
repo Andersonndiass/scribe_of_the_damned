@@ -7,8 +7,8 @@
 script = ExtResource("1_si")
 id = &"fine_quill"
 kind = &"item"
-display_name = "Pena de Ganso Fina"
-short_desc = "Ataque 15% mais rápido"
+display_name = "ITEM_FINE_QUILL"
+short_desc = "ITEM_FINE_QUILL_DESC"
 icon = ExtResource("9_icon")
 base_price = 8
 stat = &"attack_interval"
