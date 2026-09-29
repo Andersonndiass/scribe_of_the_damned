@@ -430,6 +430,15 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
 
 ---
 
+### D-075 · 2026-09-29 · Regras de pixel art: sem hachura na pele
+- **Pedido do autor:** "as hachuras estão comendo muito o rosto... feio e com cara de IA; pesquise, pegue referência, veja o melhor jeito de criar esses sprites, crie essa regra, salve em memória e siga nas futuras".
+- **Pesquisa:** Pixel Joint (tutorial de pixel art), Androidarts (Arne), Derek Yu, Lospec (dithering) — consenso: xadrez em pele vira plano duro ou ruído; pixel solto é ruído; sombra deve ser forma de borda definida, sem pillow shading; poucas linhas internas; hachura/dither só em textura e área grande.
+- **Decisão:** o art bible §3 troca "sombreamento só por hachura (135° no rosto)" pelas regras novas (pele em blocos lisos com a rampa CHALK → PARCHMENT → PARCHMENT_OLD → INK_SOFT; hachura só em tecido e cenário). Os closes placeholder foram refeitos assim; `import_art` com `dither=none` para rostos e personagens.
+- **Memória:** regra salva para valer em toda arte futura (por script, importada ou revisada pelo design-agent).
+- **Status:** ✅ aplicado.
+
+---
+
 ## Conflitos abertos
 
 - **C-006 · Vida do Asmodeus (DECISÃO DO AUTOR, playtest).** 1500 (rules-agent) supõe uma palavra a cada ~5 s. A sonda não mede isso. No playtest (`index.html?boss`, ou jogando o capítulo), se a luta passar muito de 4 min, baixar `max_hp` em `data/bosses/asmodeus.tres` (ex.: 1000); se ficar abaixo de 2 min, subir.

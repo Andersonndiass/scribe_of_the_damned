@@ -39,7 +39,11 @@ Borda das chamas do IGNIS (é fogo) · olho de Asmodeus · estola de Malaquias �
 - Pixel art em 1×, filtro Nearest, sem sub-pixel. Respiro e flutuação andam sempre em pixel inteiro.
 - **Proibido:** degradê, blur, antialiasing, sombra difusa, canto arredondado e alpha desenhado.
 - Transparência visual se faz com **dithering**: vitral, eco do VERBUM, fantasmas, sombra do Semíhaza e texto-fantasma da arena (alpha máximo de 0.12).
-- Sombreamento só por **hachura**: 135° no rosto, 45° no hábito, cruzada nos closes de 128px. Luz da direita; nos itens, de cima para a direita.
+- **Sombra (D-075, substitui a regra da hachura no rosto):** luz única da direita (nos itens, de cima para a direita).
+  - **Pele e rosto: sombra em blocos lisos, nunca hachura nem xadrez.** Rampa: CHALK (luz) → PARCHMENT (base) → PARCHMENT_OLD (sombra) → INK_SOFT só em vincos fundos. A sombra é uma forma de borda definida que descreve a estrutura (órbita, lado do nariz, sob o lábio, sob o queixo), sem pillow shading.
+  - **Hachura (45°) só em tecido, cenário e áreas grandes**, no máximo uma área por retrato; se em 100% parecer ruído, vira cor sólida.
+  - Sem pixel órfão (detalhe em clusters); curvas com segmentos em progressão (1-1-2-3, 2-1-2), sem jaggies; poucas linhas internas.
+  - Traços do rosto simples: olho = massa escura + 1 brilho; sobrancelha = massa; nariz pela sombra lateral + ponta; boca = 1 linha + sombra sob o lábio.
 - Todo sprite precisa ser legível em 1× sobre `parchment` e ter silhueta própria em INK sólido.
 
 ## 4. Personagens jogáveis

@@ -48,8 +48,8 @@ cd build/web && python -m http.server 8765 --bind 127.0.0.1
 # Sonda de balanceamento da onda 1: still | move | cast (+ overrides em memória: hp=N drop=F)
 /d/Godot/godot --headless --path . -s tools/balance_probe.gd -- cast hp=3 drop=0.6
 
-# Converter uma imagem (IA/artista) para a arte do jogo: tamanho do asset + 9 cores com pontilhado (D-074)
-/d/Godot/godot --headless --path . -s tools/import_art.gd -- in=C:/caminho/rosto.png out=res://assets/cutscenes/closes/anselmo_scared.png size=192x192 fit=cover dither=fs bg=parchment_old
+# Converter uma imagem (IA/artista) para a arte do jogo: tamanho + 9 cores (D-074). Rostos e personagens: dither=none; cenário: fs (D-075)
+/d/Godot/godot --headless --path . -s tools/import_art.gd -- in=C:/caminho/rosto.png out=res://assets/cutscenes/closes/anselmo_scared.png size=192x192 fit=cover dither=none bg=parchment_old
 
 # Regenerar a paleta a partir dos tokens
 /d/Godot/godot --headless --path . -s tools/gen_palette.gd
