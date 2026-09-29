@@ -4,3 +4,5 @@ extends Resource
 
 @export var chapter: int = 1
 @export var waves: Array[WaveData] = []
+## Chefe depois da loja da última onda (006). Vazio = o capítulo acaba na loja.
+@export var boss: BossData

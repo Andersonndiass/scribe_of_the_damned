@@ -227,6 +227,7 @@ func _init() -> void:
 	ok = _font() and ok
 	ok = _enemies_ch1() and ok
 	ok = _shop_icons() and ok
+	ok = _asmodeus() and ok
 	quit(0 if ok else 1)
 
 
@@ -341,6 +342,136 @@ func _enemies_ch1() -> bool:
 		return false
 	img.save_png(OUT + "itm_gota_dourada.png")
 	return _save(ImageTexture.create_from_image(img), "itm_gota_dourada.tres")
+
+
+# --- Asmodeus, o Rasurador (006 T612): 64×64, pivot (32,32); ficha 16 + design-agent ---
+## Quadros mínimos até o PNG real (D-063): idle 3, telegraph 1, hit 1, invuln 2, death 4, e os
+## overlays crack (F2) e flame 2 (F3).
+func _asmodeus() -> bool:
+	var frames := SpriteFrames.new()
+	frames.remove_animation(&"default")
+	var anims: Dictionary = {
+		&"idle": [_asm_body(0, false), _asm_body(1, false), _asm_body(2, false)],
+		&"telegraph": [_asm_body(0, true)],
+		&"hit": [_asm_recolor(_asm_body(0, false), COLORS["C"])],
+		&"invuln": [_asm_dither(_asm_body(0, false), 0), _asm_dither(_asm_body(0, false), 1)],
+		&"death": [_asm_bayer(_asm_body(0, false), 1), _asm_bayer(_asm_body(0, false), 2), _asm_bayer(_asm_body(0, false), 3), _asm_bayer(_asm_body(0, false), 4)],
+		&"crack": [_asm_crack()],
+		&"flame": [_asm_flame(0), _asm_flame(1)],
+	}
+	for anim: StringName in anims:
+		frames.add_animation(anim)
+		frames.set_animation_loop(anim, anim != &"death")
+		for img: Image in anims[anim]:
+			frames.add_frame(anim, ImageTexture.create_from_image(img))
+	(anims[&"idle"][0] as Image).save_png(OUT + "bss_asmodeus_idle.png")
+	return _save(frames, "bss_asmodeus_frames.tres")
+
+
+func _asm_body(phase: int, raised: bool) -> Image:
+	var img := Image.create_empty(64, 64, false, Image.FORMAT_RGBA8)
+	var K: Color = COLORS["K"]
+	var k: Color = COLORS["k"]
+	var arm_top: int = 17 if raised else 20
+	# Sombra 32×4 em dither.
+	for y: int in range(58, 62):
+		for x: int in range(16, 48):
+			if (x + y) % 2 == 0:
+				_px(img, x, y, k)
+	# Redemoinho: base que afina até (32,58).
+	for y: int in range(44, 59):
+		var half: int = maxi(1, int((58 - y) * 0.7))
+		_box(img, 32 - half, y, half * 2, 1, k)
+		_px(img, 32 - half - 1, y, K)
+		_px(img, 32 + half, y, K)
+		if (y + phase) % 3 == 0:
+			_px(img, 32 - half / 2, y, K)
+	# Braços 4 px até Y50 com raspador 8×5 (PARCHMENT_OLD, fio CHALK).
+	for side: int in [-1, 1]:
+		var ax: int = 18 if side < 0 else 42
+		_box(img, ax, arm_top, 4, 50 - arm_top, k)
+		_box(img, ax - 1, arm_top, 1, 50 - arm_top, K)
+		_box(img, ax + 4, arm_top, 1, 50 - arm_top, K)
+		var sx: int = ax - 2 if side < 0 else ax - 2
+		_box(img, sx, 50, 8, 5, COLORS["O"])
+		_box(img, sx, 54, 8, 1, COLORS["C"])
+	# Tronco X22–41 Y16–44 com rabiscos em 3 camadas.
+	_box(img, 22, 16, 20, 29, k)
+	for y: int in range(16, 45):
+		for x: int in range(22, 42):
+			if (x + y + phase) % 3 == 0 or (x - y + phase) % 5 == 0 or (y + phase) % 4 == 0 and x % 2 == 0:
+				_px(img, x, y, K)
+	_box(img, 21, 16, 1, 29, K)
+	_box(img, 42, 16, 1, 29, K)
+	_box(img, 21, 15, 22, 1, K)
+	# Cabeça 10×10 sem rosto.
+	_box(img, 27, 6, 10, 10, k)
+	_box(img, 26, 6, 1, 10, K)
+	_box(img, 37, 6, 1, 10, K)
+	_box(img, 26, 5, 12, 1, K)
+	# Coroa de 5 penas CHALK; a 2ª e a 4ª partidas.
+	for f: int in 5:
+		var fx: int = 27 + f * 2
+		var top: int = 0 if f % 2 == 0 else 2
+		_box(img, fx, top, 1, 5 - top, COLORS["C"])
+	# Olho 12×10: esclera CHALK, íris BLOOD 6×6 (8×8 na telegrafia), pupila INK 2×4.
+	for y: int in range(24, 34):
+		for x: int in range(26, 38):
+			var dx: float = (x - 31.5) / 6.0
+			var dy: float = (y - 28.5) / 5.0
+			if dx * dx + dy * dy <= 1.0:
+				_px(img, x, y, COLORS["C"])
+	var iris: int = 8 if raised else 6
+	_box(img, 32 - iris / 2, 29 - iris / 2, iris, iris, COLORS["B"])
+	_box(img, 31, 27, 2, 4, K)
+	return img
+
+
+func _asm_recolor(src: Image, c: Color) -> Image:
+	var img: Image = src.duplicate()
+	for y: int in 64:
+		for x: int in 64:
+			var p: Color = img.get_pixel(x, y)
+			if p.a > 0.5 and (p.is_equal_approx(COLORS["k"])):
+				img.set_pixel(x, y, c)
+	return img
+
+
+func _asm_dither(src: Image, parity: int) -> Image:
+	var img: Image = src.duplicate()
+	for y: int in 64:
+		for x: int in 64:
+			if img.get_pixel(x, y).a > 0.5 and (x + y + parity) % 2 == 0:
+				img.set_pixel(x, y, COLORS["P"])
+	return img
+
+
+## Morte: Bayer 4×4 apagando `level` quartos do corpo (1..4).
+func _asm_bayer(src: Image, level: int) -> Image:
+	var bayer: Array[int] = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5]
+	var img: Image = src.duplicate()
+	for y: int in 64:
+		for x: int in 64:
+			if bayer[(y % 4) * 4 + (x % 4)] < level * 4:
+				img.set_pixel(x, y, Color(0, 0, 0, 0))
+	return img
+
+
+func _asm_crack() -> Image:
+	var img := Image.create_empty(64, 64, false, Image.FORMAT_RGBA8)
+	_line(img, Vector2i(27, 24), Vector2i(30, 28), COLORS["K"])
+	_line(img, Vector2i(36, 33), Vector2i(33, 29), COLORS["K"])
+	return img
+
+
+func _asm_flame(parity: int) -> Image:
+	var img := Image.create_empty(64, 64, false, Image.FORMAT_RGBA8)
+	for f: int in 5:
+		var fx: int = 27 + f * 2
+		var top: int = 0 if f % 2 == 0 else 2
+		var h: int = 2 + ((f + parity) % 3)
+		_box(img, fx, maxi(0, top - h), 1, h, COLORS["B"])
+	return img
 
 
 # --- Loja (003 T310): ícones ITM_ 24×24 (ficha 31; formas e destaques do design-agent) ---

@@ -1,6 +1,6 @@
 # 006 — Chefe: Asmodeus, o Rasurador (Cap. 1) + framework de chefes
 
-> Status: **Aprovada** (2026-09-29, "1a2a3a4a"; D-062). Fase 1 ✅ (Checkpoint 006-A).
+> Status: **Aprovada** (2026-09-29, "1a2a3a4a"; D-062). Fases 1–2 ✅ (Checkpoints 006-A e 006-B).
 > Pareceres (2026-09-29): game-design-agent **AJUSTAR** e rules-agent **VÁLIDO COM RESSALVAS**. Ajustes aplicados (marcados **[P]**).
 > Depende de: 002, 003, 005 (Complete). Game bible §3.12. Asset catalog §5 (fases). Ficha 16 (Asmodeus). Narrativa §5.3, §12 (C1-03). Ressalvas da D-057 e D-056. D-047 (6B: screen shake nesta feature, com opção de desligar).
 > Legenda: **[INICIAL]** = número proposto, a validar pelo rules-agent; tudo fica nos `.tres`. **[P?]** = decisão do autor.

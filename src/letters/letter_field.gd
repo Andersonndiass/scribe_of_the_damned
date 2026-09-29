@@ -8,6 +8,9 @@ extends Node2D
 const PICKUP_RADIUS := 6.0
 ## Tinteiro Duplo: a letra extra cai ao lado da primeira (visual).
 const DOUBLE_LETTER_OFFSET := Vector2(8, 0)
+## Rasura (006): não apaga a letra pega há menos disso (s; o BossData manda o valor da luta).
+var erase_grace: float = 0.5
+var _last_push_msec: int = -100000
 ## Aceleração do ímã (px/s²): a letra parte devagar e acelera (QUAD_IN, ficha 21).
 const MAGNET_ACCEL := 900.0
 ## Depois de recusada (atril cheio), a letra fica parada este tempo antes de tentar de novo.
@@ -34,6 +37,7 @@ func _ready() -> void:
 	# O LetterField fica pronto antes do Main chamar GameState.start_run: lê direto do jogador.
 	atril = Atril.new(RunStats.of(player.data).int_value(&"atril_capacity") if player != null else GameState.atril_capacity)
 	EventBus.enemy_killed.connect(_on_enemy_killed)
+	EventBus.atril_erase_requested.connect(erase_last_letter)
 	emit_atril()
 
 
@@ -85,11 +89,47 @@ func eat_letter_near(pos: Vector2, radius: float) -> String:
 ## Tenta pôr a letra no atril. false = recusada (atril cheio).
 func collect(letter: String, rare: bool) -> bool:
 	if atril.push(letter, rare):
+		_last_push_msec = Time.get_ticks_msec()
 		EventBus.letter_collected.emit(letter, rare)
 		emit_atril()
 		return true
 	EventBus.letter_rejected.emit(letter)
 	return false
+
+
+## Rasura (006 FR-609; D-062): apaga a última letra do atril, com as proteções — nunca com a
+## palavra pronta (VALID), nunca a letra pega há menos de `erase_grace` s, nada com o atril vazio.
+## Retorna a letra apagada ("" se protegida).
+func erase_last_letter() -> String:
+	if atril.size() == 0 or atril.state(lexicon) == Atril.Status.VALID:
+		return ""
+	if Time.get_ticks_msec() - _last_push_msec < int(erase_grace * 1000.0):
+		return ""
+	var gone: Dictionary = atril.pop_last()
+	var pos: Vector2 = player.global_position if player != null else Vector2.ZERO
+	EventBus.letter_erased.emit(gone["letter"], pos)
+	emit_atril()
+	return gone["letter"]
+
+
+## Letras no chão que estão em alguma palavra conhecida (LetterSafety, 006 FR-605).
+func count_useful_on_ground() -> int:
+	var useful := {}
+	for w: WordData in lexicon_data.words:
+		if lexicon.is_known(w):
+			for ch: String in w.latin:
+				useful[ch] = true
+	var n: int = 0
+	for l: Letter in _active:
+		if useful.has(l.letter):
+			n += 1
+	return n
+
+
+## Solta uma letra do drop ponderado (FR-013) em `pos` (LetterSafety).
+func drop_safety_letter(pos: Vector2) -> void:
+	var r: Dictionary = dropper.roll(atril, lexicon, tuning, GameState.rng, GameState.unlocked_words)
+	spawn_letter(r["letter"], r["rare"], r["target"], pos)
 
 
 ## Publica o estado do atril e as dicas (FR-023) no EventBus.

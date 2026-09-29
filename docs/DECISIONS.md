@@ -331,6 +331,13 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
 - **Pareceres aplicados:** HP 1500, fases 66/33; teto por conjuração (120 inteiro, 120–240 pela metade) e por fase (para no limiar + 1,5 s invulnerável); telegrafia mínima 600 ms; LetterSafety 3 letras / 4 s; derrota = Game Over normal.
 - **Status:** ✅ aprovada pelo autor ("1a2a3a4a").
 
+### D-063 · 2026-09-29 · Asmodeus na tela (006 Fase 2)
+- **Arquitetura (mechanics-agent):** `EnemyManager.boss_target` (BossHurtbox) testado em cada função de dano; origem pelo `DamageSource` (`Miracle.cast_id`/`tag`, marcados em `dmg()`/`begin_hit()`); varreduras por `hit_boss_sweep` no início; Rasura pelo EventBus (`atril_erase_requested` → `LetterField` aplica as proteções → `letter_erased`). FSM do chefe com estados como nós (Dormant, Enter, Idle, Telegraph, Attack, Recover, Exposed, PhaseShift, Stunned, Dead); executores dos ataques criados no `_ready` (nunca na luta).
+- **Placeholder (design-agent):** 64×64 gerado por script com idle 3, telegraph 1, hit 1, invuln 2, death 4 e overlays de rachadura (F2) e fogo (F3) — **exceção aceita** aos 60 quadros da ficha 16 até o PNG real. Telegrafias em BLOOD tracejado; na Rasura a última letra do atril ganha um traço BLOOD. Barra do chefe 400×10 em Y44–53 com marcas em 66/33%; o cronômetro da onda some na luta.
+- **Tempos (animation-agent):** entrada 2,5 s invulnerável; telegrafia pisca 100 → 50 ms no último terço; palavra no chefe = flash 60 ms; golpe forte no escriba = hit-stop 60 ms + shake médio; troca de fase 1,5 s (hit-stop 60 ms + shake médio); morte 1,5 s (hit-stop 100 ms + shake forte, letras douradas em 0,9 s), capítulo acaba 2,5 s depois. Escala de shake: fraco 1 px/200 ms, médio 2 px/400 ms, forte 4 px/700 ms (a câmera vem na T620).
+- **Fluxo:** loja da onda 9 → `start_boss()` (inimigos restantes se dissolvem) → `boss_defeated` → `chapter_completed`; derrota = Game Over existente. `ChapterData.boss`. Debug `?boss`.
+- **Status:** ✅ dentro do plano aprovado ("pode").
+
 ---
 
 ## Conflitos abertos

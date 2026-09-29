@@ -1,5 +1,7 @@
-[gd_scene load_steps=23 format=3]
+[gd_scene load_steps=25 format=3]
 
+[ext_resource type="PackedScene" path="res://src/bosses/boss.tscn" id="95_boss"]
+[ext_resource type="Script" path="res://src/bosses/letters_burst.gd" id="96_burst"]
 [ext_resource type="Script" path="res://src/ui/shop/shop_screen.gd" id="94_shopscreen"]
 [ext_resource type="Script" path="res://src/shop/shop.gd" id="93_shop"]
 [ext_resource type="Script" path="res://src/data/combo_data.gd" id="92_cd"]
@@ -73,6 +75,12 @@ position = Vector2(320, 180)
 z_index = 1
 script = ExtResource("16_eproj")
 player = NodePath("../Player")
+
+
+[node name="Boss" parent="World" instance=ExtResource("95_boss")]
+
+[node name="LettersBurst" type="Node2D" parent="World"]
+script = ExtResource("96_burst")
 
 [node name="MiracleLayer" type="Node2D" parent="."]
 

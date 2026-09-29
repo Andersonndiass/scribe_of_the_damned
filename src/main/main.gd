@@ -35,9 +35,12 @@ const ROSTER_SCENE := "res://src/debug/roster_scene.tscn"
 @onready var miracle_layer: Node2D = $MiracleLayer
 @onready var overlays: MinimalOverlays = $Overlays
 @onready var shop: Shop = $Shop
+@onready var boss: Boss = $World/Boss
 
 ## Contagem até a loja abrir depois do fim da onda (a tinta que sobrou voa antes).
 var _shop_in: float = -1.0
+## Contagem entre a morte do chefe e o fim do capítulo (006 FR-611).
+var _chapter_end_in: float = -1.0
 ## Índice (0-based) da onda atual no capítulo.
 var wave_slot: int = 0
 
@@ -66,6 +69,10 @@ func _ready() -> void:
 	($World/Player as Player).auto_attack.projectiles = player_projectiles
 	shop.player = $World/Player
 	shop.letter_field = letter_field
+	boss.player = $World/Player
+	boss.manager = $World/EnemyManager
+	boss.letter_field = letter_field
+	EventBus.boss_defeated.connect(func(b: BossData) -> void: _chapter_end_in = b.chapter_end_delay)
 	EventBus.shop_closed.connect(_on_shop_closed)
 	PoolManager.register(SpawnTelegraph.POOL_KEY, TELEGRAPH_SCENE, TELEGRAPH_PREWARM, telegraph_layer)
 	PoolManager.register(DissolveFx.POOL_KEY, DISSOLVE_SCENE, DISSOLVE_PREWARM, fx_layer)
@@ -83,6 +90,10 @@ func _ready() -> void:
 	EventBus.player_died.connect(func() -> void: _shop_in = -1.0)
 	overlays.restart_requested.connect(_restart)
 	start_wave(0)
+	if args.contains("boss"):
+		# Debug (006 FR-615): direto na luta (combina com ?unlock=all&atril=8).
+		wave_director.stop()
+		start_boss.call_deferred()
 	if args.contains("shop"):
 		# Debug (003): abre a loja logo no começo, com tinta, para ver a tela sem jogar a onda.
 		GameState.gold_ink = SHOP_DEBUG_INK
@@ -117,13 +128,27 @@ func _open_shop() -> void:
 func _on_shop_closed() -> void:
 	get_tree().paused = false
 	if wave_slot >= chapter.waves.size() - 1:
-		# Até a 006 existir, fechar a loja da última onda conclui o capítulo.
-		EventBus.chapter_completed.emit(chapter.chapter)
+		if chapter.boss != null:
+			start_boss()
+		else:
+			EventBus.chapter_completed.emit(chapter.chapter)
 		return
 	start_wave(wave_slot + 1)
 
 
+## Luta contra o chefe do capítulo (006 FR-607): os inimigos que sobraram se dissolvem.
+func start_boss() -> void:
+	wave_director.stop()
+	($World/EnemyManager as EnemyManager).dissolve_all()
+	boss.data = chapter.boss
+	boss.start_fight()
+
+
 func _process(delta: float) -> void:
+	if _chapter_end_in > 0.0:
+		_chapter_end_in -= delta
+		if _chapter_end_in <= 0.0:
+			EventBus.chapter_completed.emit(chapter.chapter)
 	if _shop_in > 0.0:
 		_shop_in -= delta
 		if _shop_in <= 0.0:

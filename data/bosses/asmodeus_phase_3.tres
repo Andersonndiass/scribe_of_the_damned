@@ -14,4 +14,5 @@ script = ExtResource("1_s")
 threshold = 0.33
 attacks = Array[ExtResource("8_e")]([ExtResource("2_e"), ExtResource("3_e"), ExtResource("4_e"), ExtResource("5_e"), ExtResource("6_e"), ExtResource("7_e")])
 weights = PackedFloat32Array(25.0, 25.0, 15.0, 15.0, 10.0, 10.0)
+idle_frame_ms = 110
 interval = 1.08

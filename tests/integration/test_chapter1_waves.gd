@@ -17,6 +17,7 @@ var _champions_by_wave: Dictionary[int, int] = {}
 
 func _compressed_chapter() -> ChapterData:
 	var ch: ChapterData = CHAPTER.duplicate()
+	ch.boss = null  # este teste é das ondas; a luta tem o test_boss_fight (006)
 	ch.waves = []
 	for w: WaveData in CHAPTER.waves:
 		var c: WaveData = w.duplicate(true)

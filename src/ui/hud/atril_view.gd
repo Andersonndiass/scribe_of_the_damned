@@ -49,6 +49,11 @@ var forgiveness_ready: bool = false
 var _seal_blink_left: float = 0.0
 var _cross_left: float = 0.0
 var _cross_at: Vector2 = Vector2.ZERO
+## Rasura (006): aviso na última letra durante a telegrafia; rabisco INK por 3 quadros ao apagar.
+var erasure_warning: bool = false
+var _erased_left: float = 0.0
+var _erased_slot: int = -1
+const ERASE_SCRIBBLE := 0.05
 var _echo_left: float = 0.0
 
 
@@ -66,6 +71,13 @@ func _ready() -> void:
 		_echo_left = ECHO_TIME
 		queue_redraw())
 	EventBus.verbum_failed.connect(func() -> void: _play(Anim.FIZZLE))
+	EventBus.erasure_warned.connect(func(active: bool) -> void:
+		erasure_warning = active
+		queue_redraw())
+	EventBus.letter_erased.connect(func(_l: String, _p: Vector2) -> void:
+		_erased_slot = letters.size()
+		_erased_left = ERASE_SCRIBBLE
+		queue_redraw())
 	EventBus.heresy_forgiveness_granted.connect(func() -> void:
 		forgiveness_ready = true
 		queue_redraw())
@@ -125,6 +137,9 @@ func _process(delta: float) -> void:
 			anim = Anim.NONE
 			_last_letters = PackedStringArray()
 		queue_redraw()
+	if _erased_left > 0.0:
+		_erased_left -= delta
+		queue_redraw()
 	if _seal_blink_left > 0.0 or _cross_left > 0.0:
 		_seal_blink_left -= delta
 		_cross_left -= delta
@@ -168,11 +183,24 @@ func _draw() -> void:
 	if echo_text != "":
 		_draw_echo(rect)
 	_draw_forgiveness(rect)
+	_draw_erasure(rect)
 	if is_combo_ready() and anim == Anim.NONE:
 		_draw_frame(rect.grow(3.0), frame_color)
 	if anim == Anim.HERESY:
 		PixelFont.draw_centered(self, HERESY_TEXT, CENTER_X, rect.position.y - 10, Palette.BLOOD)
 	_draw_hints(rect)
+
+
+## Rasura: traço BLOOD na diagonal da última letra (nunca com a palavra pronta) e o rabisco
+## INK em zigue-zague no slot apagado.
+func _draw_erasure(rect: Rect2) -> void:
+	if erasure_warning and not letters.is_empty() and status != Atril.Status.VALID:
+		var pos := Vector2(rect.position.x + (letters.size() - 1) * (SLOT.x + SLOT_GAP), rect.position.y)
+		draw_line(pos + Vector2(1, SLOT.y - 2), pos + Vector2(SLOT.x - 2, 1), Palette.BLOOD, 1.0)
+	if _erased_left > 0.0 and _erased_slot >= 0:
+		var p := Vector2(rect.position.x + _erased_slot * (SLOT.x + SLOT_GAP), rect.position.y)
+		for i: int in 4:
+			draw_line(p + Vector2(2 + i * 2, 3), p + Vector2(3 + i * 2, SLOT.y - 3), Palette.INK, 1.0)
 
 
 func _draw_forgiveness(rect: Rect2) -> void:

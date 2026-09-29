@@ -23,4 +23,18 @@ extends Resource
 @export var stun_mul: float = 0.33
 ## Rasura: não apaga letra pega há menos disso.
 @export var erasure_grace: float = 0.5
+@export_group("Tempos (animation-agent, 006)")
+## Entrada: invulnerável até o fim (a página escurece e os inimigos se dissolvem antes).
+@export var enter_time: float = 2.5
+@export var enter_rise_start: float = 0.4
+@export var enter_rise_end: float = 2.1
+## Troca de fase: animação até aqui, depois idle na nova cadência.
+@export var phase_anim_end: float = 0.9
+## Morte: dissolução; as letras douradas saem em `death_burst_at`; o capítulo acaba depois de
+## `chapter_end_delay`.
+@export var death_time: float = 1.5
+@export var death_burst_at: float = 0.9
+@export var chapter_end_delay: float = 2.5
+## Letras douradas da morte (visual).
+@export var death_letters: int = 12
 @export var sprite_frames: SpriteFrames

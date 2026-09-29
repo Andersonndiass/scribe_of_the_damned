@@ -56,6 +56,22 @@ signal shop_closed()
 signal item_bought(item: ShopItemData, price: int)
 signal shop_rerolled(cost: int)
 
+# Chefe (006)
+signal boss_spawned(boss: BossData)
+signal boss_damaged(hp: int, max_hp: int)
+signal boss_phase_changed(phase_index: int)
+signal boss_exposed(seconds: float)
+signal boss_defeated(boss: BossData)
+## Rasura: o chefe pede; o LetterField aplica as proteções e avisa o que apagou.
+signal atril_erase_requested()
+signal letter_erased(letter: String, position: Vector2)
+## Rasura telegrafando (true) / acabou (false): o atril marca a última letra (design-agent).
+signal erasure_warned(active: bool)
+## Morte do chefe: as letras douradas explodem de `position` (visual).
+signal boss_letters_burst(position: Vector2, count: int)
+## Sensação (006 FR-612): força em px e duração em s; a câmera decide se treme (opção).
+signal shake_requested(strength: float, duration: float)
+
 # Capítulo
 signal chapter_completed(chapter: int)
 

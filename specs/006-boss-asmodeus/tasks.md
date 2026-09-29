@@ -10,13 +10,13 @@
 **Checkpoint 006-A:** ✅ o framework decide e filtra por teste, sem chefe na tela (2026-09-29; `test_boss_targeting` com chefe falso).
 
 ## Fase 2 — Asmodeus
-- **T610** `Boss` + FSM (Enter, Idle, Telegraph, Attack, Recover, Exposed, PhaseShift, Stunned, Dead).
-- **T611** Os 6 ataques (Raio, Swipe, Summon, Raio duplo, Cruz giratória, Rasura) com telegrafia ≥ 600 ms (SC-605). Visual pelo design-agent, tempos pelo animation-agent.
-- **T612** Placeholder BSS_ASMODEUS 64×64 por script (ficha 16).
-- **T613** Fluxo: loja da onda 9 → luta → `chapter_completed`; derrota → Game Over (SC-606, SC-609). HUD da barra de vida. Debug `?boss`.
-- **T614** Integração `test_boss_fight.gd` (fases, ataques por fase, palavras ferem, vitória, derrota).
+- ✅ **T610** `Boss` + FSM (Enter, Idle, Telegraph, Attack, Recover, Exposed, PhaseShift, Stunned, Dead).
+- ✅ **T611** Os 6 ataques (Raio, Swipe, Summon, Raio duplo, Cruz giratória, Rasura) com telegrafia ≥ 600 ms (SC-605). Visual pelo design-agent, tempos pelo animation-agent.
+- ✅ **T612** Placeholder BSS_ASMODEUS 64×64 por script (ficha 16).
+- ✅ **T613** Fluxo: loja da onda 9 → luta → `chapter_completed`; derrota → Game Over (SC-606, SC-609). HUD da barra de vida. Debug `?boss`.
+- ✅ **T614** Integração `test_boss_fight.gd` (fases, ataques por fase, palavras ferem, vitória, derrota).
 
-**Checkpoint 006-B:** Asmodeus jogável do começo ao fim.
+**Checkpoint 006-B:** ✅ Asmodeus jogável do começo ao fim (2026-09-29; `?boss`; conferido no Chrome).
 
 ## Fase 3 — Sensação e fechamento
 - **T620** Câmera + `ScreenShake` (golpe forte do chefe, troca de fase, morte do chefe e do campeão); `GameState.shake_enabled`.

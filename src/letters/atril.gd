@@ -72,6 +72,17 @@ func state(lexicon: Lexicon) -> Status:
 
 
 ## Esvazia e devolve o conteúdo: {"text", "letters", "rare", "rare_count"}.
+## Tira a última letra (Rasura do Asmodeus, 006). Retorna {"letter", "rare"} ou {} se vazio.
+func pop_last() -> Dictionary:
+	if _letters.is_empty():
+		return {}
+	var letter: String = _letters[_letters.size() - 1]
+	var rare: bool = _rare[_rare.size() - 1]
+	_letters.remove_at(_letters.size() - 1)
+	_rare.pop_back()
+	return {"letter": letter, "rare": rare}
+
+
 func take_all() -> Dictionary:
 	var out: Dictionary = {
 		"text": text(),

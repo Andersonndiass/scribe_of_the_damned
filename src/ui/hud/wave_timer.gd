@@ -21,6 +21,9 @@ func hud_rect() -> Rect2:
 func _ready() -> void:
 	EventBus.wave_started.connect(_on_wave_started)
 	EventBus.wave_ended.connect(_on_wave_ended)
+	# Na luta contra o chefe (006) o cronômetro da onda sai: a barra do chefe ocupa o topo.
+	EventBus.boss_spawned.connect(func(_b: BossData) -> void: visible = false)
+	EventBus.wave_started.connect(func(_i: int, _d: float) -> void: visible = true)
 	EventBus.chapter_completed.connect(func(_c: int) -> void:
 		chapter_done = true
 		queue_redraw())

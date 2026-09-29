@@ -1,0 +1,53 @@
+[gd_scene load_steps=14 format=3]
+
+[ext_resource type="Script" path="res://src/bosses/boss.gd" id="1_boss"]
+[ext_resource type="Resource" path="res://data/bosses/asmodeus.tres" id="2_data"]
+[ext_resource type="Script" path="res://src/core/state_machine.gd" id="3_sm"]
+[ext_resource type="Script" path="res://src/bosses/states/dormant.gd" id="4_dormant"]
+[ext_resource type="Script" path="res://src/bosses/states/enter.gd" id="5_enter"]
+[ext_resource type="Script" path="res://src/bosses/states/idle.gd" id="6_idle"]
+[ext_resource type="Script" path="res://src/bosses/states/telegraph.gd" id="7_tel"]
+[ext_resource type="Script" path="res://src/bosses/states/attack.gd" id="8_atk"]
+[ext_resource type="Script" path="res://src/bosses/states/recover.gd" id="9_rec"]
+[ext_resource type="Script" path="res://src/bosses/states/exposed.gd" id="10_exp"]
+[ext_resource type="Script" path="res://src/bosses/states/phase_shift.gd" id="11_ps"]
+[ext_resource type="Script" path="res://src/bosses/states/stunned.gd" id="12_stun"]
+[ext_resource type="Script" path="res://src/bosses/states/dead.gd" id="13_dead"]
+
+[node name="Boss" type="Node2D"]
+script = ExtResource("1_boss")
+data = ExtResource("2_data")
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("3_sm")
+initial_state = NodePath("Dormant")
+
+[node name="Dormant" type="Node" parent="StateMachine"]
+script = ExtResource("4_dormant")
+
+[node name="Enter" type="Node" parent="StateMachine"]
+script = ExtResource("5_enter")
+
+[node name="Idle" type="Node" parent="StateMachine"]
+script = ExtResource("6_idle")
+
+[node name="Telegraph" type="Node" parent="StateMachine"]
+script = ExtResource("7_tel")
+
+[node name="Attack" type="Node" parent="StateMachine"]
+script = ExtResource("8_atk")
+
+[node name="Recover" type="Node" parent="StateMachine"]
+script = ExtResource("9_rec")
+
+[node name="Exposed" type="Node" parent="StateMachine"]
+script = ExtResource("10_exp")
+
+[node name="PhaseShift" type="Node" parent="StateMachine"]
+script = ExtResource("11_ps")
+
+[node name="Stunned" type="Node" parent="StateMachine"]
+script = ExtResource("12_stun")
+
+[node name="Dead" type="Node" parent="StateMachine"]
+script = ExtResource("13_dead")
