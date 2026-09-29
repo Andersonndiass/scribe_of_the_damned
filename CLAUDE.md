@@ -100,6 +100,6 @@ Ordem padrão: game-design → rules → mechanics → design + animation → co
 - **Stress:** `godot --path . res://src/debug/stress_scene.tscn -- quit` (desktop) · `build/web/index.html?stress` (web).
 - **Aberto:** C-004 pede playtest humano (alavancas em `docs/reviews/T069-rules-parecer.md` §4).
 - **Fonte:** `src/ui/pixel_font.gd` (5×6 feita à mão, atlas em `assets/placeholders/ui_font_atlas.*`), até a fonte do design system.
-- **Git local** (D-047 9B), commit a cada fase; sem GitHub, CI nem itch.
+- **Git:** commit a cada fase; `origin` = github.com/Andersonndiass/scribe_of_the_damned (público, D-064). Sem CI nem itch.
 - **Pendências do autor:** áudio; playtest (C-004). Narrativa: `specs/000-game-bible/narrative.md`. Arte: gerada por script a partir das fichas (D-024).
 - **Sprites:** placeholders gerados por `tools/gen_placeholders.gd` até os PNGs reais chegarem.

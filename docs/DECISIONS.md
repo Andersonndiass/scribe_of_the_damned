@@ -338,6 +338,10 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
 - **Fluxo:** loja da onda 9 → `start_boss()` (inimigos restantes se dissolvem) → `boss_defeated` → `chapter_completed`; derrota = Game Over existente. `ChapterData.boss`. Debug `?boss`.
 - **Status:** ✅ dentro do plano aprovado ("pode").
 
+### D-064 · 2026-09-29 · Repositório no GitHub (revê a D-047 9B)
+- **Decisão:** o repositório local passa a ter `origin` = https://github.com/Andersonndiass/scribe_of_the_damned.git (público), com tudo o que está no Git (código, testes, specs, fichas de design, docs). O commit inicial do GitHub (`README.md`) foi juntado ao histórico local, sem force push. CI e itch continuam fora por enquanto.
+- **Status:** ✅ pedido do autor ("se conecte com esse repositório", opção "1" = subir tudo).
+
 ---
 
 ## Conflitos abertos
