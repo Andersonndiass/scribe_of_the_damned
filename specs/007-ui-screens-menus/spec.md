@@ -1,6 +1,6 @@
 # 007 — Telas e menus
 
-> Status: Complete (D-070)
+> Status: **Complete** (2026-09-29; aprovada pela D-066 — "1b 2b 3a"; fechada pela D-070).
 > Parecer (2026-09-29): game-design-agent **AJUSTAR** (três cortes de escopo, aplicados como proposta **[P]**).
 > Depende de: 001–006 (Complete). Game bible §6 (telas; PT-BR e EN; 100% teclado). Fichas 27 (Splash, Menu, Personagem, Capítulo), 29 (Pausa, Game Over, Vitória, Codex Completus), 30 (Opções, Grimório, Créditos, Loading). Narrativa §11 (verbetes do Grimório). D-047 (6B: opção de desligar o shake).
 > **[P?]** = decisão do autor.
