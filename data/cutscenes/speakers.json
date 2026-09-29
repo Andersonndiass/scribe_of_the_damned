@@ -1,9 +1,32 @@
 {
-	"_doc": "Falantes das cutscenes (008 FR-801). name_key = chave de tradução do nome; closes = expressão -> retrato 128x128 (vazio = placeholder desenhado por script até a arte chegar). Narrador sem close.",
+	"_doc": "Falantes das cutscenes (008 FR-801). name_key = chave de tradução do nome; closes = expressão -> arte 192x192 (D-074; gerada com tools/import_art.gd). Se o arquivo não existir, o jogo usa o placeholder desenhado por script. Narrador sem close.",
 	"speakers": {
-		"anselmo": {"name_key": "CS_SPEAKER_ANSELMO", "closes": {"scared": "", "relieved": "", "determined": ""}},
-		"abbot_ghost": {"name_key": "CS_SPEAKER_ABBOT", "closes": {"neutral": "", "smiling": ""}},
-		"asmodeus": {"name_key": "CS_SPEAKER_ASMODEUS", "closes": {"neutral": ""}},
-		"narrator": {"name_key": "", "closes": {"neutral": ""}}
+		"anselmo": {
+			"name_key": "CS_SPEAKER_ANSELMO",
+			"closes": {
+				"scared": "res://assets/cutscenes/closes/anselmo_scared.png",
+				"relieved": "res://assets/cutscenes/closes/anselmo_relieved.png",
+				"determined": "res://assets/cutscenes/closes/anselmo_determined.png"
+			}
+		},
+		"abbot_ghost": {
+			"name_key": "CS_SPEAKER_ABBOT",
+			"closes": {
+				"neutral": "res://assets/cutscenes/closes/abbot_ghost_neutral.png",
+				"smiling": "res://assets/cutscenes/closes/abbot_ghost_smiling.png"
+			}
+		},
+		"asmodeus": {
+			"name_key": "CS_SPEAKER_ASMODEUS",
+			"closes": {
+				"neutral": "res://assets/cutscenes/closes/asmodeus_neutral.png"
+			}
+		},
+		"narrator": {
+			"name_key": "",
+			"closes": {
+				"neutral": ""
+			}
+		}
 	}
 }

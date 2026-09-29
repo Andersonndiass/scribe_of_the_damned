@@ -8,18 +8,19 @@ enum LineState { HIDDEN, TYPING, COMPLETE }
 
 # Faixa e close.
 const BAND := Rect2(0, 292, 640, 68)
-const CLOSE_FRAME := 132
-const CLOSE_LEFT := Vector2(6, 222)
-const CLOSE_RIGHT := Vector2(502, 222)
-const TEXT_LEFT := Rect2(152, 0, 472, 0)
-const TEXT_RIGHT := Rect2(16, 0, 472, 0)
+## Close de 192 (D-074) em moldura de 196, saindo por cima da faixa.
+const CLOSE_FRAME := 196
+const CLOSE_LEFT := Vector2(6, 158)
+const CLOSE_RIGHT := Vector2(438, 158)
+const TEXT_LEFT := Rect2(212, 0, 412, 0)
+const TEXT_RIGHT := Rect2(16, 0, 412, 0)
 const NAME_Y := 298
 ## Linhas a 16 px (a ficha pedia 14; com o glifo de 12 px as linhas colavam).
 const LINE_Y: Array[int] = [310, 326]
 const NARRATOR_Y: Array[int] = [312, 328]
 const TEXT_SCALE := 2
 ## Caracteres por linha na faixa (2 linhas no máximo; o roteiro é validado com estes números).
-const LINE_CHARS := 39
+const LINE_CHARS := 34
 const NARRATOR_CHARS := 48
 const NARRATOR := "narrator"
 const LEFT_SPEAKERS: PackedStringArray = ["anselmo"]

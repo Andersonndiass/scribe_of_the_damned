@@ -1,11 +1,15 @@
 class_name CloseRaster
 extends RefCounted
-## Pincel de pixel para os closes 128×128 (placeholders por script, D-024): pinta numa Image uma vez
-## (o close vira textura em cache). Só cores da paleta; "desbotado" por xadrez em quartos (1 = 25%,
+## Pincel de pixel para os closes das cutscenes (placeholders por script, D-024; 192×192 pela D-074):
+## pinta numa Image uma vez (o close vira textura em cache). As coordenadas de desenho são as do
+## "papel" de 128 (DESIGN), multiplicadas por K na hora de pintar — formas maiores, linhas finas
+## continuam de 1 px (mais detalhe). Só cores da paleta; "desbotado" por xadrez em quartos (1 = 25%,
 ## 2 = 50%, 3 = 75%); sombra por hachura (art bible: 45° e 135°, cruzada nos closes, luz da direita).
-## A máscara marca a silhueta, para o contorno de 2 px no fim.
+## A máscara marca a silhueta, para o contorno no fim.
 
-const SIZE := 128
+const DESIGN := 128
+const SIZE := 192
+const K := float(SIZE) / DESIGN
 
 var img: Image
 var mask := PackedByteArray()
@@ -28,8 +32,8 @@ static func on_pattern(x: int, y: int, quarters: int) -> bool:
 	return true
 
 
-## Um pixel (fora da tela é ignorado). `quarters` 0 = sólido.
-func px(x: int, y: int, c: Color, quarters: int = 0, solid: bool = false) -> void:
+## Um pixel da imagem final (coordenadas de pixel, não de desenho).
+func dot(x: int, y: int, c: Color, quarters: int = 0, solid: bool = false) -> void:
 	if x < 0 or y < 0 or x >= SIZE or y >= SIZE:
 		return
 	# A silhueta conta inteira, mesmo onde o xadrez deixa o fundo aparecer.
@@ -40,45 +44,59 @@ func px(x: int, y: int, c: Color, quarters: int = 0, solid: bool = false) -> voi
 	img.set_pixel(x, y, c)
 
 
-func rect(x: int, y: int, w: int, h: int, c: Color, quarters: int = 0, solid: bool = false) -> void:
-	for yy: int in range(y, y + h):
-		for xx: int in range(x, x + w):
-			px(xx, yy, c, quarters, solid)
+## Um "pixel" do desenho (vira um bloco K×K na imagem).
+func px(x: float, y: float, c: Color, quarters: int = 0, solid: bool = false) -> void:
+	rect(x, y, 1, 1, c, quarters, solid)
+
+
+func rect(x: float, y: float, w: float, h: float, c: Color, quarters: int = 0, solid: bool = false) -> void:
+	for yy: int in range(roundi(y * K), roundi((y + h) * K)):
+		for xx: int in range(roundi(x * K), roundi((x + w) * K)):
+			dot(xx, yy, c, quarters, solid)
 
 
 func ellipse(cx: float, cy: float, rx: float, ry: float, c: Color, quarters: int = 0, solid: bool = false) -> void:
-	for y: int in range(int(cy - ry), int(cy + ry) + 1):
-		var k: float = 1.0 - pow((y - cy) / ry, 2)
+	var pcx: float = cx * K
+	var pcy: float = cy * K
+	var prx: float = rx * K
+	var pry: float = ry * K
+	for y: int in range(int(pcy - pry), int(pcy + pry) + 1):
+		var k: float = 1.0 - pow((y + 0.5 - pcy) / pry, 2)
 		if k < 0.0:
 			continue
-		var half: float = rx * sqrt(k)
-		for x: int in range(int(roundf(cx - half)), int(roundf(cx + half)) + 1):
-			px(x, y, c, quarters, solid)
+		var half: float = prx * sqrt(k)
+		for x: int in range(int(roundf(pcx - half)), int(roundf(pcx + half))):
+			dot(x, y, c, quarters, solid)
 
 
 func polygon(points: PackedVector2Array, c: Color, quarters: int = 0, solid: bool = false) -> void:
-	var box := Rect2(points[0], Vector2.ZERO)
+	var scaled := PackedVector2Array()
 	for p: Vector2 in points:
+		scaled.append(p * K)
+	var box := Rect2(scaled[0], Vector2.ZERO)
+	for p: Vector2 in scaled:
 		box = box.expand(p)
 	for y: int in range(int(box.position.y), int(box.end.y) + 1):
 		for x: int in range(int(box.position.x), int(box.end.x) + 1):
-			if Geometry2D.is_point_in_polygon(Vector2(x + 0.5, y + 0.5), points):
-				px(x, y, c, quarters, solid)
+			if Geometry2D.is_point_in_polygon(Vector2(x + 0.5, y + 0.5), scaled):
+				dot(x, y, c, quarters, solid)
 
 
-## Linha (Bresenham) com espessura `t` (quadrado t×t em cada ponto).
+## Linha (Bresenham, em pixels da imagem) com espessura `t` px.
 func line(a: Vector2, b: Vector2, c: Color, t: int = 1) -> void:
-	var x0: int = int(a.x)
-	var y0: int = int(a.y)
-	var x1: int = int(b.x)
-	var y1: int = int(b.y)
+	var x0: int = roundi(a.x * K)
+	var y0: int = roundi(a.y * K)
+	var x1: int = roundi(b.x * K)
+	var y1: int = roundi(b.y * K)
 	var dx: int = absi(x1 - x0)
 	var dy: int = -absi(y1 - y0)
 	var sx: int = 1 if x0 < x1 else -1
 	var sy: int = 1 if y0 < y1 else -1
 	var err: int = dx + dy
 	while true:
-		rect(x0, y0, t, t, c)
+		for oy: int in t:
+			for ox: int in t:
+				dot(x0 + ox, y0 + oy, c)
 		if x0 == x1 and y0 == y1:
 			break
 		var e2: int = 2 * err
@@ -96,17 +114,23 @@ func path(points: PackedVector2Array, c: Color, t: int = 1) -> void:
 		line(points[i], points[i + 1], c, t)
 
 
-## Hachura dentro de `inside` (Callable(x, y) -> bool): 45° (sobe para a direita) ou 135°.
+## Hachura dentro de `inside` (Callable(x, y) -> bool, em coordenadas de desenho), com o traço de
+## 1 px a cada `spacing` px da imagem: 45° (sobe para a direita), 135° ou 90° (vertical: fios).
 func hatch(area: Rect2i, inside: Callable, angle: int, spacing: int, c: Color, phase: int = 0) -> void:
-	for y: int in range(area.position.y, area.end.y):
-		for x: int in range(area.position.x, area.end.x):
-			var k: int = (x + y) if angle == 45 else (x - y + SIZE)
-			if (k + phase) % spacing == 0 and inside.call(x, y):
-				px(x, y, c)
+	for y: int in range(roundi(area.position.y * K), roundi(area.end.y * K)):
+		for x: int in range(roundi(area.position.x * K), roundi(area.end.x * K)):
+			var k: int = x if angle == 90 else ((x + y) if angle == 45 else (x - y + SIZE))
+			if (k + phase) % spacing == 0 and inside.call(x / K, y / K):
+				dot(x, y, c)
+
+
+## A cor do pixel da imagem que fica sob o ponto de desenho (x, y).
+func color_at(x: float, y: float) -> Color:
+	return img.get_pixel(clampi(roundi(x * K), 0, SIZE - 1), clampi(roundi(y * K), 0, SIZE - 1))
 
 
 ## Contorno de `w` px na cor `c` ao redor de tudo o que foi marcado como sólido.
-func outline(c: Color, w: int = 2) -> void:
+func outline(c: Color, w: int = 3) -> void:
 	var out := PackedByteArray()
 	out.resize(SIZE * SIZE)
 	for y: int in SIZE:

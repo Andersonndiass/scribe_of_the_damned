@@ -421,6 +421,15 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
 
 ---
 
+### D-074 · 2026-09-29 · Qualidade da arte: ilustrações maiores e arte importada
+- **Pedido do autor:** "ainda está estranho, aumente a resolução e melhore a qualidade, pode fazer isso com tudo no design". O Claude apontou o conflito com a constituição VII (640×360, pixel-perfect, 9 cores) antes de agir.
+- **Decisão ("1A 2A 3A"):** (1A) o jogo continua em pixel art 640×360, mas as **ilustrações das cutscenes ficam maiores**: close de **192×192** (era 128; emenda ao art bible §12 e ao catálogo §2, só para os closes de cutscene) — a faixa de diálogo muda junto (moldura 196, texto com 34 caracteres por linha); (2A) a paleta segue com as 9 cores; (3A) a arte final vem do autor (IA de imagem ou artista) e passa pela ferramenta nova **`tools/import_art.gd`** (`ArtQuantizer`), que redimensiona para o tamanho do asset e reduz às 9 cores com pontilhado (Floyd–Steinberg para ilustrações, Bayer para UI), usando o hex exato do `design-tokens.json`.
+- **Closes:** `data/cutscenes/speakers.json` aponta `assets/cutscenes/closes/<falante>_<expressão>.png`; se o arquivo existir, o jogo usa a arte; senão, o placeholder por script (redesenhado com hachura cruzada, olhos com íris e pálpebras, cabelo, pregas; o Abade com rosto velho e triste, como pede o art bible).
+- **A constituição não mudou.**
+- **Status:** ✅ aprovado.
+
+---
+
 ## Conflitos abertos
 
 - **C-006 · Vida do Asmodeus (DECISÃO DO AUTOR, playtest).** 1500 (rules-agent) supõe uma palavra a cada ~5 s. A sonda não mede isso. No playtest (`index.html?boss`, ou jogando o capítulo), se a luta passar muito de 4 min, baixar `max_hp` em `data/bosses/asmodeus.tres` (ex.: 1000); se ficar abaixo de 2 min, subir.

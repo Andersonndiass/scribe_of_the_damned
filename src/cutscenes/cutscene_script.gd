@@ -191,7 +191,7 @@ func _check_key(e: Dictionary, key_frames: Dictionary, track_eases: Dictionary) 
 		_err("%s precisa de valor inicial (init) ou de uma chave em t=0" % track)
 
 
-## Fala e legenda cabem em 2 linhas nos dois idiomas (ficha T810: 39 por linha na faixa, 48 do
+## Fala e legenda cabem em 2 linhas nos dois idiomas (ficha T810 + D-074: 34 por linha na faixa, 48 do
 ## narrador, 32 na legenda).
 func _check_fits(e: Dictionary, type: String) -> void:
 	for loc: String in LOCALES:

@@ -1,15 +1,17 @@
 class_name CutsceneCloses
 extends RefCounted
-## Closes 128×128 das cutscenes (placeholder por script, D-024; ficha T810 + art bible §4 e §12):
-## pintados uma vez numa Image (CloseRaster) e guardados como textura. Sombra por hachura (cruzada
+## Closes das cutscenes, 192×192 (D-074; ficha T810 + art bible §4 e §12). Se o arquivo do close
+## existir (`speakers.json`, gerado com `tools/import_art.gd`), usa a arte; senão, o placeholder por
+## script (D-024), pintado uma vez numa Image (CloseRaster) e guardado como textura. Sombra por hachura (cruzada
 ## no close; luz da direita, sombra à esquerda); contorno de 2 px. O crânio é o mesmo em todas as
 ## expressões; só olhos, sobrancelhas e boca mudam. O Abade é o Abade vivo (rosto humano e triste)
 ## com o "filtro fantasma": tinta clara (CHALK em xadrez) sobre INK_SOFT.
 
-const SIZE := 128
+const SIZE := CloseRaster.SIZE
 const ASMODEUS_TEX := preload("res://assets/placeholders/bss_asmodeus_idle.png")
 
 static var _cache: Dictionary = {}
+static var _speakers: Dictionary = {}
 
 
 static func draw(ci: CanvasItem, o: Vector2, speaker: String, expr: String) -> void:
@@ -21,6 +23,9 @@ static func draw(ci: CanvasItem, o: Vector2, speaker: String, expr: String) -> v
 
 
 static func texture(speaker: String, expr: String) -> Texture2D:
+	var art: String = art_path(speaker, expr)
+	if art != "" and ResourceLoader.exists(art):
+		return load(art)
 	if speaker == "asmodeus":
 		return ASMODEUS_TEX
 	var key: String = speaker + "/" + expr
@@ -35,6 +40,13 @@ static func texture(speaker: String, expr: String) -> Texture2D:
 	return _cache[key]
 
 
+## Caminho da arte do close em `speakers.json` ("" = só placeholder).
+static func art_path(speaker: String, expr: String) -> String:
+	if _speakers.is_empty():
+		_speakers = CutsceneScript.load_speakers()
+	return str(((_speakers.get(speaker, {}) as Dictionary).get("closes", {}) as Dictionary).get(expr, ""))
+
+
 static func _v(points: Array) -> PackedVector2Array:
 	var out := PackedVector2Array()
 	for i: int in range(0, points.size(), 2):
@@ -46,7 +58,7 @@ static func _v(points: Array) -> PackedVector2Array:
 
 const A_CX := 64
 ## Meia-largura do rosto por linha (crânio oval, queixo afunilando).
-static func _anselmo_half(y: int) -> float:
+static func _anselmo_half(y: float) -> float:
 	if y < 26 or y > 85:
 		return -1.0
 	if y <= 60:
@@ -55,7 +67,7 @@ static func _anselmo_half(y: int) -> float:
 	return lerpf(22.6, 8.0, pow(t, 1.4))
 
 
-static func _in_face(x: int, y: int) -> bool:
+static func _in_face(x: float, y: float) -> bool:
 	var h: float = _anselmo_half(y)
 	return h >= 0.0 and absf(x + 0.5 - A_CX) <= h
 
@@ -65,8 +77,8 @@ static func _anselmo(expr: String) -> CloseRaster:
 	# Hábito (ombros) e o capuz dobrado atrás do pescoço.
 	var habit: PackedVector2Array = _v([14, 128, 22, 106, 42, 97, 86, 97, 106, 106, 114, 128])
 	r.polygon(habit, Palette.INK_SOFT, 0, true)
-	r.hatch(Rect2i(14, 97, 40, 31), func(x: int, y: int) -> bool: return Geometry2D.is_point_in_polygon(Vector2(x, y), habit), 45, 3, Palette.INK)
-	r.hatch(Rect2i(14, 108, 22, 20), func(x: int, y: int) -> bool: return Geometry2D.is_point_in_polygon(Vector2(x, y), habit), 135, 3, Palette.INK)
+	r.hatch(Rect2i(14, 97, 40, 31), func(x: float, y: float) -> bool: return Geometry2D.is_point_in_polygon(Vector2(x, y), habit), 45, 3, Palette.INK)
+	r.hatch(Rect2i(14, 108, 22, 20), func(x: float, y: float) -> bool: return Geometry2D.is_point_in_polygon(Vector2(x, y), habit), 135, 3, Palette.INK)
 	r.path(_v([40, 110, 42, 118, 41, 128]), Palette.INK)
 	r.path(_v([88, 110, 86, 119, 87, 128]), Palette.INK)
 	r.path(_v([64, 112, 64, 128]), Palette.INK)
@@ -79,17 +91,17 @@ static func _anselmo(expr: String) -> CloseRaster:
 	r.path(_v([56, 97, 58, 103]), Palette.INK)
 	r.path(_v([72, 97, 70, 103]), Palette.INK)
 	r.path(_v([76, 93, 86, 91, 93, 97]), Palette.PARCHMENT_OLD)
-	r.hatch(Rect2i(32, 90, 20, 20), func(x: int, y: int) -> bool: return Geometry2D.is_point_in_polygon(Vector2(x, y), cowl), 45, 3, Palette.INK)
+	r.hatch(Rect2i(32, 90, 20, 20), func(x: float, y: float) -> bool: return Geometry2D.is_point_in_polygon(Vector2(x, y), cowl), 45, 3, Palette.INK)
 	# Pescoço (sombra do queixo cruzada).
 	r.rect(55, 80, 18, 16, Palette.PARCHMENT, 0, true)
-	r.hatch(Rect2i(55, 80, 8, 16), func(_x: int, _y: int) -> bool: return true, 135, 3, Palette.INK_SOFT)
-	r.hatch(Rect2i(55, 80, 18, 6), func(_x: int, _y: int) -> bool: return true, 45, 3, Palette.INK_SOFT)
+	r.hatch(Rect2i(55, 80, 8, 16), func(_x: float, _y: float) -> bool: return true, 135, 3, Palette.INK_SOFT)
+	r.hatch(Rect2i(55, 80, 18, 6), func(_x: float, _y: float) -> bool: return true, 45, 3, Palette.INK_SOFT)
 	# Orelhas.
 	for side: int in [-1, 1]:
 		var ex: int = A_CX + side * 24
 		r.ellipse(ex, 59, 4, 8, Palette.PARCHMENT, 0, true)
 		r.path(_v([ex - side, 54, ex + side * 2, 57, ex + side, 63, ex - side, 65]), Palette.INK_SOFT)
-	r.hatch(Rect2i(36, 50, 8, 18), func(x: int, y: int) -> bool: return Vector2(x, y).distance_to(Vector2(40, 59)) < 8.0, 135, 2, Palette.INK_SOFT)
+	r.hatch(Rect2i(36, 50, 8, 18), func(x: float, y: float) -> bool: return Vector2(x, y).distance_to(Vector2(40, 59)) < 8.0, 135, 2, Palette.INK_SOFT)
 	# Rosto.
 	for y: int in range(26, 86):
 		var h: float = _anselmo_half(y)
@@ -97,8 +109,8 @@ static func _anselmo(expr: String) -> CloseRaster:
 			for x: int in range(int(roundf(A_CX - h)), int(roundf(A_CX + h))):
 				r.px(x, y, Palette.PARCHMENT, 0, true)
 	# Sombra do rosto (esquerda) em hachura cruzada; mais funda no queixo.
-	r.hatch(Rect2i(40, 46, 16, 40), func(x: int, y: int) -> bool: return _in_face(x, y) and x < A_CX - _anselmo_half(y) * 0.62, 135, 4, Palette.INK_SOFT)
-	r.hatch(Rect2i(44, 72, 16, 14), func(x: int, y: int) -> bool: return _in_face(x, y) and x < A_CX - _anselmo_half(y) * 0.3, 45, 4, Palette.INK_SOFT)
+	r.hatch(Rect2i(40, 46, 16, 40), func(x: float, y: float) -> bool: return _in_face(x, y) and x < A_CX - _anselmo_half(y) * 0.62, 135, 4, Palette.INK_SOFT)
+	r.hatch(Rect2i(44, 72, 16, 14), func(x: float, y: float) -> bool: return _in_face(x, y) and x < A_CX - _anselmo_half(y) * 0.3, 45, 4, Palette.INK_SOFT)
 	# Maçã do rosto e linha do queixo.
 	r.path(_v([45, 64, 48, 69, 52, 72]), Palette.INK_SOFT)
 	r.path(_v([60, 83, 68, 83]), Palette.INK_SOFT)
@@ -115,12 +127,9 @@ static func _anselmo(expr: String) -> CloseRaster:
 		for x: int in range(int(roundf(A_CX - h)), int(roundf(A_CX + h))):
 			if absf(x + 0.5 - A_CX) > h - 4.0:
 				r.px(x, y, Palette.INK_SOFT)
-	# Fios: só onde já é cabelo; o lado da sombra mais escuro.
-	for x: int in range(42, 88, 3):
-		for y: int in range(28, 58):
-			if img_is(r, x, y, Palette.INK_SOFT) and _in_face(x, y) and (y + x) % 5 != 0:
-				r.px(x, y, Palette.INK)
-	r.hatch(Rect2i(41, 32, 12, 26), func(x: int, y: int) -> bool: return _in_face(x, y) and img_is(r, x, y, Palette.INK_SOFT), 45, 2, Palette.INK)
+	# Fios verticais: só onde já é cabelo; o lado da sombra mais escuro.
+	r.hatch(Rect2i(40, 28, 48, 30), func(x: float, y: float) -> bool: return _in_face(x, y) and r.color_at(x, y).is_equal_approx(Palette.INK_SOFT), 90, 3, Palette.INK)
+	r.hatch(Rect2i(40, 32, 13, 26), func(x: float, y: float) -> bool: return _in_face(x, y) and r.color_at(x, y).is_equal_approx(Palette.INK_SOFT), 45, 2, Palette.INK)
 	# Coroa careca com brilho (luz da direita).
 	r.ellipse(64.5, 31, 13, 6, Palette.PARCHMENT)
 	r.px(70, 28, Palette.CHALK)
@@ -135,14 +144,10 @@ static func _anselmo(expr: String) -> CloseRaster:
 	r.px(66, 69, Palette.INK)
 	r.px(66, 62, Palette.CHALK)
 	r.px(66, 63, Palette.CHALK)
-	r.hatch(Rect2i(57, 70, 10, 3), func(_x: int, _y: int) -> bool: return true, 135, 2, Palette.INK_SOFT)
+	r.hatch(Rect2i(57, 70, 10, 3), func(_x: float, _y: float) -> bool: return true, 135, 2, Palette.INK_SOFT)
 	_anselmo_expression(r, expr)
-	r.outline(Palette.INK, 2)
+	r.outline(Palette.INK, 3)
 	return r
-
-
-static func img_is(r: CloseRaster, x: int, y: int, c: Color) -> bool:
-	return r.img.get_pixel(x, y).is_equal_approx(c)
 
 
 ## Olho: branco, íris com pupila e brilho, pálpebra de cima (espessura `lid`) e de baixo.
@@ -214,7 +219,7 @@ static func _anselmo_expression(r: CloseRaster, expr: String) -> void:
 			r.path(_v([63, 47, 63, 52]), Palette.INK_SOFT)
 			r.path(_v([57, 77, 60, 76, 68, 76, 71, 77]), Palette.INK, 2)
 			r.path(_v([60, 80, 68, 80]), Palette.INK_SOFT)
-			r.hatch(Rect2i(46, 72, 12, 12), func(x: int, y: int) -> bool: return _in_face(x, y), 135, 2, Palette.INK_SOFT)
+			r.hatch(Rect2i(46, 72, 12, 12), func(x: float, y: float) -> bool: return _in_face(x, y), 135, 2, Palette.INK_SOFT)
 
 
 # --- Abade Gerbrand (fantasma) --------------------------------------------------------------------
@@ -237,10 +242,10 @@ static func _abbot_ghost(expr: String) -> CloseRaster:
 	# Abertura do rosto: sombra funda do capuz.
 	r.ellipse(64, 60, 21, 28, ink)
 	r.ellipse(64, 60, 20, 27, Palette.INK)
-	r.hatch(Rect2i(44, 32, 40, 56), func(x: int, y: int) -> bool: return pow((x - 64) / 20.0, 2) + pow((y - 60) / 27.0, 2) <= 1.0, 45, 3, ink)
+	r.hatch(Rect2i(44, 32, 40, 56), func(x: float, y: float) -> bool: return pow((x - 64) / 20.0, 2) + pow((y - 60) / 27.0, 2) <= 1.0, 45, 3, ink)
 	# Rosto humano, velho e triste: tinta clara (75%), traços em INK_SOFT sólido.
 	r.ellipse(65, 60, 16, 23, Palette.CHALK)
-	r.hatch(Rect2i(48, 40, 9, 36), func(x: int, y: int) -> bool: return pow((x - 65) / 16.0, 2) + pow((y - 60) / 23.0, 2) <= 1.0 and x < 57, 135, 3, ink)
+	r.hatch(Rect2i(48, 40, 9, 36), func(x: float, y: float) -> bool: return pow((x - 65) / 16.0, 2) + pow((y - 60) / 23.0, 2) <= 1.0 and x < 57, 135, 3, ink)
 	# Rugas da testa.
 	r.path(_v([56, 44, 60, 43, 66, 43, 72, 44]), ink)
 	r.path(_v([58, 47, 63, 46, 69, 46, 73, 47]), ink)
@@ -274,7 +279,7 @@ static func _abbot_ghost(expr: String) -> CloseRaster:
 	# Bigode e barba longa em camadas, com fios.
 	var beard: PackedVector2Array = _v([50, 74, 56, 72, 64, 74, 72, 72, 80, 74, 80, 88, 74, 104, 64, 120, 54, 104, 50, 88])
 	r.polygon(beard, Palette.CHALK, 0, true)
-	r.hatch(Rect2i(50, 84, 10, 30), func(x: int, y: int) -> bool: return Geometry2D.is_point_in_polygon(Vector2(x, y), beard), 135, 3, ink)
+	r.hatch(Rect2i(50, 84, 10, 30), func(x: float, y: float) -> bool: return Geometry2D.is_point_in_polygon(Vector2(x, y), beard), 135, 3, ink)
 	r.path(_v([54, 75, 58, 74, 63, 76, 68, 74, 74, 75, 77, 78]), Palette.CHALK, 2)
 	if expr == "smiling":
 		r.path(_v([59, 79, 62, 80, 68, 80, 71, 78]), ink)
@@ -284,5 +289,5 @@ static func _abbot_ghost(expr: String) -> CloseRaster:
 		var bottom: float = 118.0 - absf(x - 64) * 1.6
 		r.path(_v([x, 83, x + (1 if x > 64 else -1), (83 + bottom) / 2.0, x, bottom]), ink)
 	r.path(_v([50, 88, 56, 104, 64, 120, 72, 104, 80, 88]), Palette.CHALK)
-	r.outline(Palette.CHALK, 2)
+	r.outline(Palette.CHALK, 3)
 	return r
