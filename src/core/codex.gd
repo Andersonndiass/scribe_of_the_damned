@@ -13,6 +13,8 @@ var save_path: String = "user://codex.save"
 var persist: bool = not " ".join(OS.get_cmdline_args()).contains("gut_cmdln")
 
 var _found: Dictionary[StringName, Dictionary] = {}
+## Cutscenes já vistas (008 FR-810; seção própria do save: não é entrada nem "novidade").
+var _seen_cutscenes: Dictionary = {}
 ## Entradas descobertas nesta partida: [categoria, id] (a tela de Vitória lista).
 var _new_this_run: Array = []
 
@@ -32,6 +34,7 @@ func reset() -> void:
 	for c: StringName in CATEGORIES:
 		_found[c] = {}
 	_new_this_run.clear()
+	_seen_cutscenes.clear()
 
 
 func begin_run() -> void:
@@ -60,10 +63,24 @@ func discover(category: StringName, id: StringName) -> void:
 		save()
 
 
+func cutscene_seen(id: StringName) -> bool:
+	return _seen_cutscenes.has(id)
+
+
+## Grava que a cena foi vista (ao terminar ou ser pulada; D-071).
+func mark_cutscene_seen(id: StringName) -> void:
+	if id == &"" or _seen_cutscenes.has(id):
+		return
+	_seen_cutscenes[id] = true
+	if persist or save_path != "user://codex.save":
+		save()
+
+
 func save() -> int:
 	var cfg := ConfigFile.new()
 	for c: StringName in CATEGORIES:
 		cfg.set_value("codex", String(c), PackedStringArray(_found[c].keys()))
+	cfg.set_value("cutscenes", "seen", PackedStringArray(_seen_cutscenes.keys()))
 	return cfg.save(save_path)
 
 
@@ -75,4 +92,6 @@ func load_saved() -> int:
 	for c: StringName in CATEGORIES:
 		for id: String in cfg.get_value("codex", String(c), PackedStringArray()):
 			_found[c][StringName(id)] = true
+	for id: String in cfg.get_value("cutscenes", "seen", PackedStringArray()):
+		_seen_cutscenes[StringName(id)] = true
 	return OK

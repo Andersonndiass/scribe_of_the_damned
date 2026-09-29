@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_mu65g"]
+
+[resource]
+script = ExtResource("1_mu65g")
+id = &"cs_thud"
+event = &"cs_thud"
+max_voices = 1
+cooldown_ms = 0
+priority = 2
+note = "C1-02: Anselmo cai na página (baque abafado em papel)."

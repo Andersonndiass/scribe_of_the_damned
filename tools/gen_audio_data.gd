@@ -47,6 +47,13 @@ const EVENTS: Array = [
 	["heresy_committed", 2, 1, 0, "SFX", "Heresia: coro desafinado + estalo sujo de tinta."],
 	["atril_purged", 1, 1, 0, "SFX", "Purge: letras sacudidas de volta ao chão, papel farfalhando."],
 	["combo_window_opened", 1, 1, 0, "UI", "Janela de combo aberta: tique de relógio de areia."],
+	# Cutscenes do Cap. 1 (008 FR-813): tocadas pelo roteiro (id), com o jogo parado.
+	["cs_fire", 2, 1, 0, "SFX", "C1-01: fogo abafado que apaga (as paredes perdem o desenho), loop curto."],
+	["cs_chest", 2, 1, 0, "SFX", "C1-01: arca de ferro rangendo, correntes."],
+	["cs_page", 2, 1, 0, "SFX", "Virada de página grande, papel grosso."],
+	["cs_thud", 2, 1, 0, "SFX", "C1-02: Anselmo cai na página (baque abafado em papel)."],
+	["cs_erase", 2, 1, 0, "SFX", "C1-03: risco de pena rasurando, áspero."],
+	["cs_gnaw", 1, 1, 0, "SFX", "C1-04: traça roendo papel, estalos secos."],
 ]
 
 

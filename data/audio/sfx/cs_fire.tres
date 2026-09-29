@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_hroct"]
+
+[resource]
+script = ExtResource("1_hroct")
+id = &"cs_fire"
+event = &"cs_fire"
+max_voices = 1
+cooldown_ms = 0
+priority = 2
+note = "C1-01: fogo abafado que apaga (as paredes perdem o desenho), loop curto."

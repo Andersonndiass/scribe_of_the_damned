@@ -21,6 +21,8 @@ const SCRIBE_AT := Vector2(22, 120)
 ## Pontas da pena nos 6 quadros do braço (coordenadas do escriba).
 const ARM_TIPS: Array[Vector2] = [Vector2(84, 76), Vector2(90, 74), Vector2(95, 77), Vector2(88, 79), Vector2(82, 78), Vector2(93, 75)]
 const SHOULDER := Vector2(52, 58)
+## Raio da luz da vela na parede (tijolos acesos).
+const LIGHT_R := 40.0
 
 var _t: float = 0.0
 var _flames: Array[Texture2D] = []
@@ -63,21 +65,27 @@ func _add_layer(layer_name: String, tex: Texture2D, at: Vector2) -> Sprite2D:
 	return s
 
 
-## Fundo: parede de tijolos (INK com juntas INK_SOFT), a luz da vela clareando as juntas perto dela,
-## e a mesa comprida.
+## Fundo: parede de tijolos (INK com juntas INK_SOFT); perto da vela os tijolos acendem (face INK_SOFT,
+## juntas INK) — luz em blocos, sem pontos soltos; e a mesa comprida.
 func _draw_back(c: CanvasItem) -> void:
 	c.draw_rect(Rect2(0, 0, 640, 360), Palette.INK)
-	var light := CANDLE_AT + Vector2(6, 0)
+	var light := CANDLE_AT + Vector2(6, 4)
 	for row: int in int(WALL_BOTTOM / 16):
 		var y: float = row * 16.0
 		var off: float = 16.0 if row % 2 == 1 else 0.0
-		for x: int in range(0, 640, 4):
-			var lit: bool = Vector2(x, y).distance_to(light) <= 44.0
-			c.draw_rect(Rect2(x, y, 4, 1), Palette.PARCHMENT_OLD if lit else Palette.INK_SOFT)
+		for k: int in range(-1, 640 / 32 + 1):
+			var brick := Rect2(k * 32 + off + 1, y + 1, 31, 15)
+			if brick.get_center().distance_to(light) <= LIGHT_R:
+				c.draw_rect(brick, Palette.INK_SOFT)
+		c.draw_rect(Rect2(0, y, 640, 1), Palette.INK_SOFT)
 		for k: int in range(0, 640 / 32 + 1):
-			var jx: float = k * 32 + off
-			var lit_j: bool = Vector2(jx, y + 8).distance_to(light) <= 44.0
-			c.draw_rect(Rect2(jx, y, 1, 16), Palette.PARCHMENT_OLD if lit_j else Palette.INK_SOFT)
+			c.draw_rect(Rect2(k * 32 + off, y, 1, 16), Palette.INK_SOFT)
+		# Nos tijolos acesos, a junta fica escura (o contraste inverte perto da luz).
+		for k: int in range(-1, 640 / 32 + 1):
+			var brick2 := Rect2(k * 32 + off + 1, y + 1, 31, 15)
+			if brick2.get_center().distance_to(light) <= LIGHT_R:
+				c.draw_rect(Rect2(brick2.position.x - 1, y, 33, 1), Palette.INK)
+				c.draw_rect(Rect2(brick2.position.x - 1, y, 1, 16), Palette.INK)
 	c.draw_rect(TABLE, Palette.INK_SOFT)
 	c.draw_rect(Rect2(TABLE.position, Vector2(TABLE.size.x, 2)), Palette.PARCHMENT_OLD)
 	c.draw_rect(Rect2(0, TABLE.end.y - 4, 640, 4), Palette.INK)
@@ -207,42 +215,86 @@ static func _candle_tex(frame: int) -> Texture2D:
 	return _cache[key]
 
 
-## Escriba sentado 96×96, de lado, virado para a escrivaninha: hábito, capuz dobrado, tonsura.
+## Cabeça de perfil 16×18 (virada para a direita), pixel a pixel: coroa careca com brilho da vela,
+## anel de cabelo da tonsura (k), orelha, olho, sobrancelha, nariz, boca e a sombra da nuca e do queixo.
+## K INK · k INK_SOFT · P PARCHMENT · O PARCHMENT_OLD · C CHALK.
+const HEAD: Array[String] = [
+	"....KKKKKK......",
+	"...KPPPPCCK.....",
+	"..KOPPPPPCCK....",
+	".KkOPPPPPPPPK...",
+	".KkkkkPPPPPPPK..",
+	"KkkkkkkPPkkkPK..",
+	"KkkOOkkPPPPPPK..",
+	"KkOPOOkPPPKCPK..",
+	"KkOOOkkPPPPPPPK.",
+	"KkkOkkOPPPPPPPPK",
+	".KkkkOOPPPPPCOK.",
+	".KkkOOOPPPPPK...",
+	"..KkOOPPPPKKK...",
+	"..KOOOPPPPPK....",
+	"...KOOPPPPK.....",
+	"...KOOOOOK......",
+	"....KOOOK.......",
+	"....KOOOK.......",
+]
+const HEAD_AT := Vector2i(46, 25)
+
+
+## Escriba sentado 96×96, de lado, curvado sobre o livro: banco, hábito com cordão e pregas, a luz
+## da vela no contorno direito, capuz dobrado nas costas, a outra mão apoiada no livro e a cabeça.
 static func _scribe() -> Texture2D:
 	if _cache.has("scribe"):
 		return _cache["scribe"]
 	var r := _raster(96)
 	# Banco.
 	r.rect(24, 84, 36, 4, Palette.INK_SOFT, 0, true)
+	r.rect(24, 84, 36, 1, Palette.PARCHMENT_OLD)
 	r.rect(28, 88, 4, 8, Palette.INK_SOFT, 0, true)
 	r.rect(52, 88, 4, 8, Palette.INK_SOFT, 0, true)
-	# Corpo curvado sobre o livro (luz da vela à direita).
-	r.polygon(_v([22, 86, 24, 60, 32, 46, 46, 42, 58, 48, 64, 60, 66, 86]), Palette.INK_SOFT, 0, true)
-	r.polygon(_v([22, 86, 24, 60, 32, 46, 38, 44, 34, 60, 32, 86]), Palette.INK)
-	r.path(_v([58, 50, 63, 60, 65, 84]), Palette.PARCHMENT_OLD)
-	r.path(_v([44, 62, 46, 84]), Palette.INK)
-	# Capuz dobrado nas costas.
-	r.polygon(_v([30, 48, 38, 40, 50, 42, 44, 50, 34, 54]), Palette.INK_SOFT, 0, true)
-	r.polygon(_v([30, 48, 38, 40, 40, 44, 34, 54]), Palette.INK)
-	# Cabeça de perfil (virada para a direita): pele, sombra na nuca, tonsura, olho, nariz.
-	r.ellipse(50, 32, 9, 10, Palette.PARCHMENT, 0, true)
-	r.rect(56, 34, 4, 3, Palette.PARCHMENT, 0, true)
-	r.polygon(_v([41, 28, 45, 22, 46, 40, 42, 38]), Palette.PARCHMENT_OLD)
-	for y: int in range(22, 34):
-		for x: int in range(40, 52):
-			var in_head: bool = pow((x + 0.5 - 50.0) / 9.0, 2) + pow((y + 0.5 - 32.0) / 10.0, 2) <= 1.0
-			var crown: bool = pow((x + 0.5 - 50.0) / 5.0, 2) + pow((y + 0.5 - 23.0) / 2.5, 2) <= 1.0
-			if in_head and not crown and (y < 27 or x < 46):
-				r.px(x, y, Palette.INK_SOFT)
-	r.rect(54, 30, 2, 2, Palette.INK)
-	r.rect(55, 29, 1, 1, Palette.CHALK)
-	r.rect(55, 38, 4, 1, Palette.PARCHMENT_OLD)
+	# Braço de trás (na sombra) com a mão apoiada na página esquerda do livro.
+	r.polygon(_v([56, 50, 64, 54, 78, 68, 76, 72, 60, 62]), Palette.INK, 0, true)
+	r.rect(77, 68, 5, 3, Palette.PARCHMENT_OLD, 0, true)
+	r.rect(81, 69, 1, 2, Palette.PARCHMENT)
+	# Hábito curvado: costas na sombra (bloco INK), frente INK_SOFT, luz da vela no contorno direito.
+	r.polygon(_v([24, 86, 22, 70, 24, 58, 30, 48, 40, 42, 50, 42, 58, 46, 64, 54, 68, 64, 70, 86]), Palette.INK_SOFT, 0, true)
+	r.polygon(_v([24, 86, 22, 70, 24, 58, 30, 48, 36, 45, 32, 60, 31, 86]), Palette.INK)
+	r.path(_v([59, 47, 64, 54, 68, 63, 70, 84]), Palette.PARCHMENT_OLD)
+	# Pregas longas e o cordão na cintura com o nó pendurado.
+	r.path(_v([44, 72, 45, 86]), Palette.INK)
+	r.path(_v([56, 72, 58, 86]), Palette.INK)
+	r.line(Vector2(30, 70), Vector2(68, 67), Palette.PARCHMENT_OLD, 2)
+	r.rect(60, 69, 2, 9, Palette.PARCHMENT_OLD)
+	r.rect(59, 78, 4, 2, Palette.PARCHMENT_OLD)
+	# Capuz dobrado nas costas: rolo INK_SOFT com o lado de baixo INK e um fio de luz em cima.
+	r.polygon(_v([32, 46, 38, 38, 48, 35, 52, 38, 47, 44, 39, 49]), Palette.INK_SOFT, 0, true)
+	r.polygon(_v([32, 46, 36, 41, 40, 45, 39, 49]), Palette.INK)
+	r.path(_v([40, 37, 47, 35, 51, 37]), Palette.PARCHMENT_OLD)
+	# Cabeça (mapa pixel a pixel).
+	for y: int in HEAD.size():
+		for x: int in HEAD[y].length():
+			var ch: String = HEAD[y][x]
+			if ch == ".":
+				continue
+			var c: Color = Palette.INK
+			match ch:
+				"k":
+					c = Palette.INK_SOFT
+				"P":
+					c = Palette.PARCHMENT
+				"O":
+					c = Palette.PARCHMENT_OLD
+				"C":
+					c = Palette.CHALK
+			r.px(HEAD_AT.x + x, HEAD_AT.y + y, c, 0, true)
 	r.outline(Palette.INK, 1)
 	_cache["scribe"] = r.texture()
 	return _cache["scribe"]
 
 
-## Braço que escreve, 96×96 (mesma origem do escriba): manga, mão e a pena na ponta do quadro `i`.
+## Braço que escreve, 96×96 (mesma origem do escriba): manga larga dobrada no cotovelo (INK_SOFT com a
+## parte de baixo INK e a de cima iluminada), a boca da manga aberta, a mão e a pena (bico GOLD) na
+## ponta do quadro `i`.
 static func _arm_tex(i: int) -> Texture2D:
 	var key: String = "arm%d" % i
 	if _cache.has(key):
@@ -250,12 +302,20 @@ static func _arm_tex(i: int) -> Texture2D:
 	var r := _raster(96)
 	var tip: Vector2 = ARM_TIPS[i]
 	var hand: Vector2 = tip + Vector2(-5, 3)
-	var elbow: Vector2 = SHOULDER.lerp(hand, 0.5) + Vector2(0, 7)
-	r.line(SHOULDER, elbow, Palette.INK_SOFT, 5)
-	r.line(elbow, hand + Vector2(-2, 0), Palette.INK_SOFT, 4)
-	r.line(elbow + Vector2(0, 3), hand + Vector2(-2, 3), Palette.INK, 1)
-	r.rect(hand.x - 1, hand.y - 1, 4, 3, Palette.PARCHMENT, 0, true)
-	r.line(hand, tip + Vector2(3, -8), Palette.CHALK, 2)
+	var elbow: Vector2 = Vector2(SHOULDER.x + 6, SHOULDER.y + 12)
+	var cuff: Vector2 = hand + Vector2(-5, 0)
+	# Manga: do ombro ao cotovelo e do cotovelo à boca da manga, larga.
+	r.polygon(PackedVector2Array([SHOULDER + Vector2(-3, -3), SHOULDER + Vector2(4, -2), elbow + Vector2(4, 0),
+		cuff + Vector2(0, -3), cuff + Vector2(1, 4), elbow + Vector2(-2, 5), SHOULDER + Vector2(-4, 4)]), Palette.INK_SOFT, 0, true)
+	r.path(PackedVector2Array([elbow + Vector2(-2, 5), cuff + Vector2(1, 4)]), Palette.INK)
+	r.path(PackedVector2Array([SHOULDER + Vector2(4, -2), elbow + Vector2(4, 0), cuff + Vector2(0, -3)]), Palette.PARCHMENT_OLD)
+	r.rect(cuff.x - 1, cuff.y - 3, 2, 8, Palette.INK)
+	# Mão: bloco de pele com a sombra embaixo; a pena sai entre os dedos.
+	r.rect(hand.x - 2, hand.y - 2, 5, 4, Palette.PARCHMENT, 0, true)
+	r.rect(hand.x - 2, hand.y + 1, 5, 1, Palette.PARCHMENT_OLD)
+	# Pena: haste CHALK de 2 px, barbas mais largas em cima, bico GOLD encostando na página.
+	r.line(tip, tip + Vector2(5, -10), Palette.CHALK, 2)
+	r.polygon(PackedVector2Array([tip + Vector2(4, -8), tip + Vector2(9, -15), tip + Vector2(10, -13), tip + Vector2(6, -7)]), Palette.CHALK, 0, true)
 	r.rect(tip.x, tip.y, 1, 1, Palette.GOLD)
 	r.outline(Palette.INK, 1)
 	_cache[key] = r.texture()
