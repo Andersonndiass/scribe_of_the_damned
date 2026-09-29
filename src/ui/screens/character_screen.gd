@@ -6,7 +6,7 @@ extends UiScreen
 const DATA_PATH := "res://data/ui/characters.json"
 const MEDAL_X: Array[int] = [128, 224, 320, 416, 512]
 const MEDAL_Y := 150
-const MEDAL_R := 24
+const MEDAL_R := 34
 const NAME_Y := 212
 const PASSIVE_Y := 232
 const TITLE_Y := 60
@@ -18,15 +18,30 @@ var characters: Array = []
 var index: int = 0
 
 var _stamp_left: float = -1.0
+## Um busto por medalhão, em camadas (CloseView), e a camada de cima com o selo de cera.
+var _busts: Array[CloseView] = []
+var _overlay: Node2D
 
 
 func _ready() -> void:
 	super()
 	characters = read_json(DATA_PATH).get("characters", [])
+	for i: int in characters.size():
+		var view := CloseView.new()
+		view.show_layers(CharacterBusts.layers(str(characters[i]["id"]), not characters[i]["unlocked"]))
+		add_child(view)
+		_busts.append(view)
+	_overlay = Node2D.new()
+	_overlay.draw.connect(_draw_overlay)
+	add_child(_overlay)
 
 
 func _process(delta: float) -> void:
 	super(delta)
+	for i: int in _busts.size():
+		var lift: int = FOCUS_LIFT if i == index else 0
+		_busts[i].position = Vector2(MEDAL_X[i] - CharacterBusts.SIZE / 2.0, MEDAL_Y - lift - CharacterBusts.SIZE / 2.0).round()
+	_overlay.queue_redraw()
 	if _stamp_left > 0.0:
 		_stamp_left -= delta
 		if _stamp_left <= 0.0:
@@ -70,7 +85,7 @@ func _draw() -> void:
 func _draw_medallion(center: Vector2, c: Dictionary, focused: bool) -> void:
 	var unlocked: bool = c["unlocked"]
 	var ring: Color = Palette.GOLD if unlocked else Palette.INK_SOFT
-	# Círculos pelo ponto médio (D-076); bloqueado = busto liso INK_SOFT sobre INK + cadeado (sem xadrez).
+	# Círculos pelo ponto médio (D-076); o busto em camadas (silhueta + cadeado se bloqueado) é um nó por cima.
 	if focused:
 		UiStyle.disc(self, center, MEDAL_R + 3, Palette.GOLD_LIGHT)
 		if UiStyle.high():
@@ -78,15 +93,15 @@ func _draw_medallion(center: Vector2, c: Dictionary, focused: bool) -> void:
 	UiStyle.disc(self, center, MEDAL_R, Palette.INK)
 	UiStyle.disc(self, center, MEDAL_R - 1, ring)
 	UiStyle.disc(self, center, MEDAL_R - 3, Palette.PARCHMENT if unlocked else Palette.INK)
-	# Busto placeholder: capuz e cabeça, recortado pelo miolo do medalhão.
-	var bust: Color = Palette.INK_SOFT
-	UiStyle.disc(self, center + Vector2(0, -4), 7, bust)
-	draw_rect(Rect2(center.x - 11, center.y + 4, 22, 14), bust)
-	if not unlocked:
-		draw_padlock(center + Vector2(-4, -5), Palette.PARCHMENT_OLD, Palette.PARCHMENT)
-	if focused and _stamp_left > 0.0:
-		var frame: int = STAMP_FRAMES - int(ceilf(_stamp_left / STAMP_FRAME))
-		var seal_c: Vector2 = center + Vector2(MEDAL_R - 4, MEDAL_R - 4)
-		var seal_r: int = 4 + (STAMP_FRAMES - frame)
-		UiStyle.disc(self, seal_c, seal_r + 1, Palette.INK)
-		UiStyle.disc(self, seal_c, seal_r, Palette.GOLD)
+
+
+## Selo de cera ao confirmar, por cima do busto.
+func _draw_overlay() -> void:
+	if _stamp_left <= 0.0 or characters.is_empty():
+		return
+	var center := Vector2(MEDAL_X[index], MEDAL_Y - FOCUS_LIFT)
+	var frame: int = STAMP_FRAMES - int(ceilf(_stamp_left / STAMP_FRAME))
+	var seal_c: Vector2 = center + Vector2(MEDAL_R - 4, MEDAL_R - 4)
+	var seal_r: int = 4 + (STAMP_FRAMES - frame)
+	UiStyle.disc(_overlay, seal_c, seal_r + 1, Palette.INK)
+	UiStyle.disc(_overlay, seal_c, seal_r, Palette.GOLD)

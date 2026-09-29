@@ -21,20 +21,17 @@ const TAB_STEP := 84
 const TAB_W := 80
 const NAME_Y := 70
 const NAME_MAX_BIG := 20
-const FRAME := Rect2(108, 90, 128, 128)
-const PIP_Y := 232
+const FRAME := Rect2(108, 104, 128, 128)
+const PIP_Y := 246
 const PIP_STEP := 8
 const COUNT_Y := 292
 const MEANING_Y := 70
 const KIND_Y := 73
 const RULE_Y := 88
 const LORE_X := 344
-const LORE_Y := 100
 const LORE_STEP := 10
 const LORE_CHARS := 40
 const LORE_LINES := 6
-const GHOST_Y0 := 176
-const GHOST_Y1 := 272
 const FOLIO_Y := 292
 const TILE := 10
 const TILE_STEP := 12
@@ -249,7 +246,7 @@ func _draw_sprite(e: Dictionary) -> void:
 	var size: Vector2 = tex.get_size()
 	var scale: float = 2.0 if category() == &"enemies" else minf(1.0, 120.0 / maxf(size.x, size.y))
 	var s: Vector2 = (size * scale).round()
-	var pos := Vector2(roundf(FRAME.get_center().x - s.x / 2.0), 200 - s.y if category() == &"enemies" else roundf(FRAME.get_center().y - s.y / 2.0))
+	var pos := Vector2(roundf(FRAME.get_center().x - s.x / 2.0), FRAME.end.y - 18 - s.y if category() == &"enemies" else roundf(FRAME.get_center().y - s.y / 2.0))
 	draw_texture_rect(tex, Rect2(pos, s), false)
 
 
@@ -288,26 +285,31 @@ func _draw_right(e: Dictionary, known: bool) -> void:
 	if known:
 		var text: String = tr(e["lore"]) if e["lore"] != "" else tr(&"CODEX_NO_LORE")
 		var lines: PackedStringArray = wrap_words(PixelFont.normalize(text), LORE_CHARS)
-		for i: int in mini(lines.size(), LORE_LINES):
-			PixelFont.draw(self, lines[i], Vector2(LORE_X, LORE_Y + i * LORE_STEP), Palette.INK if e["lore"] != "" else UiStyle.text_on_light(true))
+		var n: int = mini(lines.size(), LORE_LINES)
+		var top: float = _lore_top(n)
+		for i: int in n:
+			# Cada linha centrada na página (o verbete é curto, como uma inscrição).
+			PixelFont.draw_centered(self, lines[i], RIGHT_X, top + i * LORE_STEP, Palette.INK if e["lore"] != "" else UiStyle.text_on_light(true))
 	else:
 		# Texto ilegível: blocos lisos de 2 px em segmentos (D-076: sem xadrez).
 		var widths: Array[int] = [30, 18, 24, 12, 26, 20, 16, 28, 14, 22]
+		var top: float = _lore_top(3)
 		for i: int in 3:
-			var x: float = LORE_X
+			var span: float = 240 - i * 40
+			var x: float = RIGHT_X - span / 2.0
 			var k: int = i * 3
-			while x < LORE_X + 240 - i * 40:
-				var w: float = minf(widths[k % widths.size()], LORE_X + 240 - i * 40 - x)
-				draw_rect(Rect2(x, LORE_Y + 2 + i * LORE_STEP, w, 2), Palette.INK_SOFT)
+			while x < RIGHT_X + span / 2.0:
+				var w: float = minf(widths[k % widths.size()], RIGHT_X + span / 2.0 - x)
+				draw_rect(Rect2(x, top + 2 + i * LORE_STEP, w, 2), Palette.INK_SOFT)
 				x += w + 4
 				k += 1
-	var y: int = GHOST_Y0
-	var k: int = 0
-	while y <= GHOST_Y1:
-		draw_rect(Rect2(LORE_X, y, 248 - (k % 3) * 36, 1), Palette.PARCHMENT_OLD)
-		y += 8
-		k += 1
 	PixelFont.draw_centered(self, tr(&"CODEX_FOLIO").format({"n": index + 1}), RIGHT_X, FOLIO_Y, UiStyle.text_on_light(true))
+
+
+## Topo do bloco de `n` linhas de verbete, centrado entre o fio e o fólio.
+func _lore_top(n: int) -> float:
+	var h: float = n * LORE_STEP
+	return roundf((RULE_Y + FOLIO_Y) / 2.0 - h / 2.0)
 
 
 ## Virada de página: a folha gira sobre a lombada (8 quadros; largura = 280·|1−2t|).

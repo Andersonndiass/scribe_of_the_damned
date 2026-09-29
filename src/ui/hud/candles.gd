@@ -38,5 +38,8 @@ func _draw() -> void:
 		draw_rect(Rect2(base + Vector2(2, 3), Vector2(1, 2)), Palette.INK)
 		if lit:
 			var last: bool = _candles == 1 and int(_pulse / LAST_CANDLE_PULSE) % 2 == 1
-			draw_rect(Rect2(base + Vector2(1, 0), Vector2(3, 3)), Palette.BLOOD if last else Palette.GOLD)
-			draw_rect(Rect2(base + Vector2(2, 0), Vector2(1, 1)), Palette.GOLD_LIGHT)
+			# Chama com ponta (não um quadrado) e o brilho no lado da luz, à direita (D-076).
+			var flame: Color = Palette.BLOOD if last else Palette.GOLD
+			draw_rect(Rect2(base + Vector2(1, 0), Vector2(3, 3)), flame)
+			draw_rect(Rect2(base + Vector2(2, -1), Vector2(1, 1)), flame)
+			draw_rect(Rect2(base + Vector2(3, 0), Vector2(1, 1)), Palette.GOLD_LIGHT)

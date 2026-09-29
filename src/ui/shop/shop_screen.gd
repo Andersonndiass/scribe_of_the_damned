@@ -14,15 +14,10 @@ const NAME_CHARS := 15
 const DESC_Y: Array[float] = [84.0, 92.0, 100.0]
 const PRICE_Y := 116.0
 const HOVER_LIFT := 4.0
-const WALL_BOTTOM := 216.0
-const TABLE := Rect2(0, 216, 640, 56)
-const WINDOW := Rect2(32, 32, 48, 72)
-const MOON := Vector2(58, 46)
 const INK_PLATE := Rect2(520, 16, 104, 24)
 const REROLL_PLATE := Rect2(192, 228, 96, 24)
 const RIBBON := Rect2(448, 230, 176, 20)
 const LEGEND_POS := Vector2(16, 336)
-const SCRIBE := Rect2(96, 176, 32, 40)
 const DROP_ICON := preload("res://assets/placeholders/itm_gota_dourada.tres")
 
 ## Tempos (animation-agent): entrada 5 q @80 ms com 100 ms entre cartas; compra 200 + 400 ms;
@@ -42,8 +37,6 @@ const INK_ROLL_MAX := 0.7
 const INK_POP := 0.1
 const EXIT_TIME := 0.4
 const EXIT_STEPS := 4
-const SCRIBE_FRAME := 0.2
-const SCRIBE_FRAMES := 6
 
 @export var shop_path: NodePath = ^"../Shop"
 
@@ -67,6 +60,10 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	visible = false
 	_shop = get_node_or_null(shop_path) as Shop
+	# A cena (parede, janela, estante, escrivaninha, vela, escriba) em camadas, atrás das cartas.
+	var scene := ShopScene.new()
+	scene.name = "Cena"
+	add_child(scene)
 	_canvas = Node2D.new()
 	_canvas.draw.connect(_on_draw)
 	add_child(_canvas)
@@ -227,71 +224,11 @@ func _process(delta: float) -> void:
 func _on_draw() -> void:
 	if _shop == null or _shop.offer == null:
 		return
-	_draw_room()
-	_draw_scribe()
 	for i: int in _shop.offer.cards.size():
 		_draw_card(i)
 	_draw_ui()
 	if _exit_left >= 0.0:
 		_draw_exit_dither()
-
-
-## Centro e raio da luz da vela na parede.
-const CANDLE_LIGHT := Vector2(140, 196)
-const CANDLE_LIGHT_R := 32.0
-
-
-func _draw_room() -> void:
-	var c := _canvas
-	c.draw_rect(Rect2(0, 0, 640, 360), Palette.INK)
-	for row: int in int(WALL_BOTTOM / 16):
-		var y: float = row * 16.0
-		c.draw_rect(Rect2(0, y, 640, 1), Palette.INK_SOFT)
-		var off: float = 16.0 if row % 2 == 1 else 0.0
-		for x: int in range(0, 640 / 32 + 1):
-			c.draw_rect(Rect2(x * 32 + off, y, 1, 16), Palette.INK_SOFT)
-	c.draw_rect(WINDOW.grow(1), Palette.PARCHMENT_OLD)
-	c.draw_rect(WINDOW, Palette.INK_SOFT)
-	c.draw_rect(Rect2(WINDOW.position.x + WINDOW.size.x / 2, WINDOW.position.y, 1, WINDOW.size.y), Palette.INK)
-	c.draw_rect(Rect2(WINDOW.position.x, WINDOW.position.y + 36, WINDOW.size.x, 1), Palette.INK)
-	UiStyle.disc(c, MOON, 6, Palette.CHALK)
-	# Estrelas em cruz 3×3 (pixel solto é ruído, D-076).
-	for p: Vector2 in [Vector2(40, 60), Vector2(70, 70), Vector2(44, 90)]:
-		c.draw_rect(Rect2(p.x - 1, p.y, 3, 1), Palette.CHALK)
-		c.draw_rect(Rect2(p.x, p.y - 1, 1, 3), Palette.CHALK)
-	# Luz da vela: a argamassa perto dela clareia (PARCHMENT_OLD) em vez de pontos soltos.
-	for row: int in int(WALL_BOTTOM / 16):
-		var y: float = row * 16.0
-		var off: float = 16.0 if row % 2 == 1 else 0.0
-		for x: int in range(108, 173):
-			if Vector2(x, y).distance_to(CANDLE_LIGHT) <= CANDLE_LIGHT_R:
-				c.draw_rect(Rect2(x, y, 1, 1), Palette.PARCHMENT_OLD)
-		for k: int in range(0, 640 / 32 + 1):
-			var jx: float = k * 32 + off
-			for yy: int in range(int(y), int(y) + 16):
-				if Vector2(jx, yy).distance_to(CANDLE_LIGHT) <= CANDLE_LIGHT_R:
-					c.draw_rect(Rect2(jx, yy, 1, 1), Palette.PARCHMENT_OLD)
-	c.draw_rect(TABLE, Palette.INK_SOFT)
-	c.draw_rect(Rect2(TABLE.position, Vector2(TABLE.size.x, 1)), Palette.PARCHMENT_OLD)
-
-
-func _draw_scribe() -> void:
-	var c := _canvas
-	var frame: int = int(_t / SCRIBE_FRAME) % SCRIBE_FRAMES
-	var bob: float = 1.0 if frame == 4 else 0.0
-	c.draw_rect(SCRIBE.grow(1).grow_side(SIDE_BOTTOM, -1), Palette.INK_SOFT)
-	c.draw_rect(SCRIBE, Palette.INK)
-	c.draw_rect(Rect2(SCRIBE.position + Vector2(12, 8 + bob), Vector2(8, 6)), Palette.PARCHMENT)
-	c.draw_rect(Rect2(104, 218, 24, 8), Palette.PARCHMENT)
-	c.draw_rect(Rect2(136, 214, 6, 6), Palette.INK)
-	c.draw_rect(Rect2(152, 200, 4, 16), Palette.PARCHMENT)
-	c.draw_rect(Rect2(153, 197, 2, 3), Palette.CHALK)
-	var tips: Array[Vector2] = [Vector2(137, 213), Vector2(130, 204), Vector2(112, 219), Vector2(116, 219), Vector2(124, 206), Vector2(124, 206)]
-	var hand := Vector2(122, 200 + bob)
-	c.draw_line(hand, tips[frame], Palette.CHALK, 1.0)
-	if frame == 4:
-		for p: Vector2 in [Vector2(110, 216), Vector2(114, 215), Vector2(118, 216)]:
-			c.draw_rect(Rect2(p, Vector2(2, 1)), Palette.CHALK)
 
 
 func _draw_card(i: int) -> void:

@@ -40,6 +40,18 @@ func show_close(who: String, e: String) -> void:
 			_sprites[i].scale = Vector2.ONE
 
 
+## Mostra uma pilha qualquer de camadas (bustos da seleção de personagem, por exemplo).
+func show_layers(textures: Array[Texture2D]) -> void:
+	speaker = ""
+	expr = ""
+	visible = not textures.is_empty()
+	for i: int in _sprites.size():
+		var tex: Texture2D = textures[i] if i < textures.size() else null
+		_sprites[i].texture = tex
+		_sprites[i].visible = tex != null
+		_sprites[i].scale = Vector2.ONE
+
+
 ## Nomes das camadas visíveis, de baixo para cima (testes).
 func layer_count() -> int:
 	var n: int = 0
