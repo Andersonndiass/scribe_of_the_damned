@@ -1,0 +1,222 @@
+{
+	"_doc": "Grimório (007 FR-709, T721; narrativa §11). Ordem das entradas por aba. Palavras e combos mostram o latim (não traduz) e o significado; inimigos e chefes, o nome traduzido. lore vazio = a narrativa ainda não tem verbete (o autor escreve).",
+	"tabs": [
+		{
+			"id": "words",
+			"label": "CODEX_TAB_WORDS",
+			"entries": [
+				{
+					"id": "lux",
+					"name": "LUX",
+					"meaning": "word_lux",
+					"lore": "LORE_LUX"
+				},
+				{
+					"id": "pax",
+					"name": "PAX",
+					"meaning": "word_pax",
+					"lore": "LORE_PAX"
+				},
+				{
+					"id": "crux",
+					"name": "CRUX",
+					"meaning": "word_crux",
+					"lore": "LORE_CRUX"
+				},
+				{
+					"id": "vita",
+					"name": "VITA",
+					"meaning": "word_vita",
+					"lore": "LORE_VITA"
+				},
+				{
+					"id": "aqua",
+					"name": "AQUA",
+					"meaning": "word_aqua",
+					"lore": "LORE_AQUA"
+				},
+				{
+					"id": "ignis",
+					"name": "IGNIS",
+					"meaning": "word_ignis",
+					"lore": "LORE_IGNIS"
+				},
+				{
+					"id": "mortis",
+					"name": "MORTIS",
+					"meaning": "word_mortis",
+					"lore": "LORE_MORTIS"
+				},
+				{
+					"id": "fides",
+					"name": "FIDES",
+					"meaning": "word_fides",
+					"lore": "LORE_FIDES"
+				},
+				{
+					"id": "lumen",
+					"name": "LUMEN",
+					"meaning": "word_lumen",
+					"lore": "LORE_LUMEN"
+				},
+				{
+					"id": "purgo",
+					"name": "PURGO",
+					"meaning": "word_purgo",
+					"lore": "LORE_PURGO"
+				},
+				{
+					"id": "gloria",
+					"name": "GLORIA",
+					"meaning": "word_gloria",
+					"lore": "LORE_GLORIA"
+				},
+				{
+					"id": "verbum",
+					"name": "VERBUM",
+					"meaning": "word_verbum",
+					"lore": "LORE_VERBUM"
+				},
+				{
+					"id": "angelus",
+					"name": "ANGELUS",
+					"meaning": "word_angelus",
+					"lore": ""
+				},
+				{
+					"id": "dominus",
+					"name": "DOMINUS",
+					"meaning": "word_dominus",
+					"lore": ""
+				},
+				{
+					"id": "miserere",
+					"name": "MISERERE",
+					"meaning": "word_miserere",
+					"lore": ""
+				},
+				{
+					"id": "salvator",
+					"name": "SALVATOR",
+					"meaning": "word_salvator",
+					"lore": ""
+				},
+				{
+					"id": "sanctus",
+					"name": "SANCTUS",
+					"meaning": "word_sanctus",
+					"lore": ""
+				},
+				{
+					"id": "spiritus",
+					"name": "SPIRITUS",
+					"meaning": "word_spiritus",
+					"lore": ""
+				}
+			]
+		},
+		{
+			"id": "combos",
+			"label": "CODEX_TAB_COMBOS",
+			"entries": [
+				{
+					"id": "vapor",
+					"name": "VAPOR",
+					"meaning": "combo_vapor",
+					"lore": ""
+				},
+				{
+					"id": "flamma",
+					"name": "FLAMMA",
+					"meaning": "combo_flamma",
+					"lore": ""
+				},
+				{
+					"id": "caecitas",
+					"name": "CAECITAS",
+					"meaning": "combo_caecitas",
+					"lore": ""
+				},
+				{
+					"id": "martyrium",
+					"name": "MARTYRIUM",
+					"meaning": "combo_martyrium",
+					"lore": ""
+				},
+				{
+					"id": "requiem",
+					"name": "REQUIEM",
+					"meaning": "combo_requiem",
+					"lore": ""
+				}
+			]
+		},
+		{
+			"id": "enemies",
+			"label": "CODEX_TAB_ENEMIES",
+			"entries": [
+				{
+					"id": "imp",
+					"name_key": "ENEMY_IMP",
+					"lore": "LORE_IMP"
+				},
+				{
+					"id": "moth",
+					"name_key": "ENEMY_MOTH",
+					"lore": "LORE_MOTH"
+				},
+				{
+					"id": "gargoyle",
+					"name_key": "ENEMY_GARGOYLE",
+					"lore": "LORE_GARGOYLE"
+				},
+				{
+					"id": "hollow_monk",
+					"name_key": "ENEMY_HOLLOW_MONK",
+					"lore": "LORE_HOLLOW_MONK"
+				},
+				{
+					"id": "ink_blot",
+					"name_key": "ENEMY_INK_BLOT",
+					"lore": "LORE_INK_BLOT"
+				},
+				{
+					"id": "champion",
+					"name_key": "ENEMY_CHAMPION",
+					"lore": "LORE_CHAMPION"
+				}
+			]
+		},
+		{
+			"id": "bosses",
+			"label": "CODEX_TAB_BOSSES",
+			"entries": [
+				{
+					"id": "asmodeus",
+					"name_key": "BOSS_ASMODEUS",
+					"lore": "LORE_ASMODEUS"
+				},
+				{
+					"id": "moth_mother",
+					"name_key": "BOSS_MOTH_MOTHER",
+					"lore": "LORE_MOTH_MOTHER"
+				},
+				{
+					"id": "fallen_abbot",
+					"name_key": "BOSS_FALLEN_ABBOT",
+					"lore": "LORE_FALLEN_ABBOT"
+				},
+				{
+					"id": "malachi",
+					"name_key": "BOSS_MALACHI",
+					"lore": "LORE_MALACHI"
+				},
+				{
+					"id": "semihaza",
+					"name_key": "BOSS_SEMIHAZA",
+					"lore": "LORE_SEMIHAZA"
+				}
+			]
+		}
+	]
+}

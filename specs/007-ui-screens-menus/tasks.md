@@ -17,9 +17,11 @@
 **Checkpoint 007-B:** ✅ do splash à vitória só com teclado (2026-09-29, GUT 333/333; fluxo conferido no Chrome: Splash → Menu → Personagem → Capítulo → Jogo → Pausa → Abandonar → Menu; Game Over e Vitória renderizados; `?boss` segue pulando os menus). D-068.
 
 ## Fase 3 — Opções e Grimório
-- **T720** Opções: sliders de volume, shake, idioma (troca na hora, SC-705), alto contraste, remap (esperar tecla, conflito = troca).
-- **T721** Grimório: 4 abas (Palavras, Combos, Inimigos, Chefes), verbetes da narrativa §11 em PT-BR e EN, virada de página; entrada não descoberta = "?????".
-- **T722** Integração `test_screens_flow.gd` (SC-701, SC-705).
+- ✅ **T720** Opções: sliders de volume, shake, idioma (troca na hora, SC-705), alto contraste, remap (esperar tecla, conflito = troca).
+- ✅ **T721** Grimório: 4 abas (Palavras, Combos, Inimigos, Chefes), verbetes da narrativa §11 em PT-BR e EN, virada de página; entrada não descoberta = "?????".
+- ✅ **T722** Integração `test_screens_flow.gd` (SC-701, SC-705).
+
+**Checkpoint 007-C:** ✅ Opções e Grimório pelo Menu e pela Pausa; do Splash à primeira onda e do Game Over ao Menu só com teclado (teste); idioma troca na hora (2026-09-29, GUT 348/348). D-069.
 
 ## Fase 4 — Fechamento
 - **T730** GUT, export web, SC-001 (SC-706), `FEATURES.md`, `CLAUDE.md`, `docs/DECISIONS.md`, push.

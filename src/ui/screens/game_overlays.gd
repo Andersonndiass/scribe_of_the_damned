@@ -3,7 +3,7 @@ extends CanvasLayer
 ## Pausa, Game Over e Vitória dentro da partida (007 FR-704–FR-706, T712; fichas 29) — substituem
 ## os overlays mínimos da 001. Tudo desenhado em código; escurecimento por dithering INK.
 ## - Pausa (Esc): a árvore para na hora; a fita desenrola em 5 quadros @50 ms. Continuar · Grimório ·
-##   Opções · Abandonar (volta ao Menu). Grimório e Opções entram na Fase 3.
+##   Opções · Abandonar (volta ao Menu). Grimório e Opções abrem por cima (embutidos) e voltam à Pausa.
 ## - Game Over: "a página ardeu", estatísticas da partida e os botões 3,5 s depois da morte (uma
 ##   tecla adianta depois de 400 ms). Tentar de novo · Menu.
 ## - Vitória: estatísticas + tempo do chefe, entradas novas do Grimório (uma a cada 400 ms; uma tecla
@@ -36,6 +36,10 @@ const VIC_ENTRIES := Vector2(360, 80)
 const VIC_SEAL := Rect2(292, 196, 56, 72)
 const VIC_BUTTON_Y := 300
 const CHAPTERS_PATH := "res://data/ui/chapters.json"
+const SUBSCREENS: Dictionary = {
+	&"codex": "res://src/ui/screens/codex_screen.tscn",
+	&"options": "res://src/ui/screens/options_screen.tscn",
+}
 
 enum Mode { NONE, PAUSED, GAME_OVER, VICTORY }
 
@@ -46,6 +50,8 @@ var age: float = 0.0
 var buttons_shown: bool = false
 
 var _canvas: Node2D
+## Grimório ou Opções abertos por cima da Pausa.
+var subscreen: UiScreen = null
 var _death_left: float = -1.0
 var _record: Dictionary = {}
 var _entries: Array[String] = []
@@ -83,7 +89,7 @@ func _process(delta: float) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if not event.is_pressed() or event.is_echo():
+	if subscreen != null or not event.is_pressed() or event.is_echo():
 		return
 	var handled: bool = true
 	if mode == Mode.NONE:
@@ -144,8 +150,8 @@ func _set_mode(m: Mode) -> void:
 	match m:
 		Mode.PAUSED:
 			menu.add(&"resume", "PAUSE_RESUME")
-			menu.add(&"codex", "MENU_CODEX", false)
-			menu.add(&"options", "MENU_OPTIONS", false)
+			menu.add(&"codex", "MENU_CODEX")
+			menu.add(&"options", "MENU_OPTIONS")
 			menu.add(&"abandon", "PAUSE_ABANDON")
 		Mode.GAME_OVER:
 			_record = GameState.run_record()
@@ -193,10 +199,31 @@ func _on_chosen(id: StringName) -> void:
 	match id:
 		&"resume":
 			_set_mode(Mode.NONE)
+		&"codex", &"options":
+			open_subscreen(id)
 		&"abandon", &"menu":
 			_to_menu()
 		&"retry":
 			restart()
+
+
+## Abre o Grimório ou as Opções por cima da Pausa; ao fechar, a Pausa volta.
+func open_subscreen(id: StringName) -> void:
+	var scene: PackedScene = load(SUBSCREENS[id])
+	subscreen = scene.instantiate()
+	subscreen.embedded = true
+	subscreen.process_mode = Node.PROCESS_MODE_ALWAYS
+	subscreen.closed.connect(close_subscreen)
+	add_child(subscreen)
+	_canvas.visible = false
+
+
+func close_subscreen() -> void:
+	if subscreen == null:
+		return
+	subscreen.queue_free()
+	subscreen = null
+	_canvas.visible = true
 
 
 func _on_back() -> void:

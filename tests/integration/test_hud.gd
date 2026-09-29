@@ -144,12 +144,33 @@ func _press(action: StringName) -> void:
 	_overlays._unhandled_input(ev)
 
 
-func test_pause_menu_resumes_and_skips_disabled_entries() -> void:
+func test_pause_opens_options_on_top_and_returns() -> void:
+	_press(&"pause")
+	_press(&"move_down")
+	_press(&"move_down")
+	assert_eq(_overlays.menu.focused_id(), &"options")
+	_press(&"cast")
+	assert_not_null(_overlays.subscreen, "Opções abertas por cima da pausa")
+	assert_true(get_tree().paused, "o jogo segue parado")
+	_overlays.subscreen.handle_input(_action(&"pause"))
+	await get_tree().process_frame
+	assert_null(_overlays.subscreen)
+	assert_eq(_overlays.mode, GameOverlays.Mode.PAUSED, "volta à pausa")
+
+
+func _action(action: StringName) -> InputEventAction:
+	var ev := InputEventAction.new()
+	ev.action = action
+	ev.pressed = true
+	return ev
+
+
+func test_pause_menu_resumes() -> void:
 	_press(&"pause")
 	assert_eq(_overlays.mode, GameOverlays.Mode.PAUSED)
 	assert_eq(_overlays.menu.focused_id(), &"resume")
 	_press(&"move_down")
-	assert_eq(_overlays.menu.focused_id(), &"abandon", "Grimório e Opções ficam para a Fase 3")
+	assert_eq(_overlays.menu.focused_id(), &"codex")
 	_press(&"move_up")
 	_press(&"cast")
 	assert_eq(_overlays.mode, GameOverlays.Mode.NONE)

@@ -13,6 +13,8 @@ const REBINDABLE: Array[StringName] = [
 	&"pause", &"restart", &"shop_lock", &"shop_reroll", &"shop_next",
 ]
 
+## Rodando a suíte GUT, as telas não gravam no arquivo real do jogador.
+var persist: bool = not " ".join(OS.get_cmdline_args()).contains("gut_cmdln")
 var shake_enabled: bool = true
 var aim_with_mouse: bool = true
 var high_contrast: bool = false
@@ -93,6 +95,13 @@ func apply() -> void:
 			if extra != _bindings[action] and not _bindings.values().has(extra):
 				_add_key(action, extra)
 	EventBus.settings_applied.emit()
+
+
+## Aplica e guarda (o que as telas chamam a cada mudança).
+func commit() -> void:
+	apply()
+	if persist:
+		save_to(PATH)
 
 
 func save_to(path: String = PATH) -> int:

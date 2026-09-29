@@ -14,6 +14,8 @@ const SCREENS: Dictionary = {
 	&"character": "res://src/ui/screens/character_screen.tscn",
 	&"chapter": "res://src/ui/screens/chapter_screen.tscn",
 	&"credits": "res://src/ui/screens/credits_screen.tscn",
+	&"options": "res://src/ui/screens/options_screen.tscn",
+	&"codex": "res://src/ui/screens/codex_screen.tscn",
 	&"game": "res://src/main/main.tscn",
 }
 const DEBUG_SCENES: Dictionary = {

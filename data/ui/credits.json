@@ -1,5 +1,5 @@
 {
-	"_doc": "Créditos (007 T713). Cada seção: título (chave de tradução) e linhas (nomes próprios, não traduzem). O autor revisa os nomes.",
+	"_doc": "Créditos (007 T713). Cada seção: título (chave de tradução) e linhas (nomes próprios, não traduzem).",
 	"sections": [
 		{
 			"title": "CREDITS_GAME",
@@ -9,12 +9,6 @@
 		},
 		{
 			"title": "CREDITS_AUTHOR",
-			"lines": [
-				"ANDERSONNDIASS"
-			]
-		},
-		{
-			"title": "CREDITS_PLAYTEST",
 			"lines": [
 				"FRANCISCO"
 			]

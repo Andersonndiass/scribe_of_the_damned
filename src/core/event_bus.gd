@@ -13,6 +13,8 @@ signal enemy_spawned(slot: int, data: EnemyData)
 signal enemy_killed(slot: int, data: EnemyData, position: Vector2)
 
 signal champion_killed(data: EnemyData, position: Vector2)
+## Um campeão entrou na página (o Grimório registra o verbete "Campeão").
+signal champion_spawned(slot: int, data: EnemyData)
 
 # Jogador
 signal player_damaged(amount: int, candles: int)

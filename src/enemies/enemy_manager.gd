@@ -183,6 +183,8 @@ func spawn(data: EnemyData, pos: Vector2, is_champion: bool = false) -> int:
 	count += 1
 	_hash_dirty = true
 	EventBus.enemy_spawned.emit(i, data)
+	if is_champion:
+		EventBus.champion_spawned.emit(i, data)
 	return i
 
 

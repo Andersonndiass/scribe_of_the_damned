@@ -4,7 +4,11 @@ extends Node2D
 ## é um sinal (`EventBus.screen_requested`) que o ScreenRouter atende com a transição.
 ## O roteador trava a entrada durante a transição (`accepting`).
 
+## Aberta por cima da Pausa (dentro da partida): voltar fecha a tela em vez de pedir o Menu.
+signal closed()
+
 var menu := MenuList.new()
+var embedded: bool = false
 var accepting: bool = true
 var age: float = 0.0
 
@@ -34,6 +38,14 @@ func handle_input(event: InputEvent) -> bool:
 
 func request(screen: StringName) -> void:
 	EventBus.screen_requested.emit(screen)
+
+
+## Sair da tela: volta à Pausa quando embutida; senão, ao Menu.
+func leave() -> void:
+	if embedded:
+		closed.emit()
+	else:
+		request(&"menu")
 
 
 ## Desenha as fitas do menu numa coluna a partir de `top`, centradas em `center_x`.

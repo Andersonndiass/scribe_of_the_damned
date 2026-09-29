@@ -1,7 +1,7 @@
 extends UiScreen
 ## Menu (007 FR-702; ficha 27): códice aberto com vela na página da esquerda e as fitas na da
-## direita — Jogar · Grimório · Opções · Créditos (no web não há "Sair"). Grimório e Opções entram
-## na Fase 3 (desabilitados até lá). Confirmar em Jogar folheia o livro (10 quadros @60 ms).
+## direita — Jogar · Grimório · Opções · Créditos (no web não há "Sair"). Confirmar em Jogar folheia
+## o livro (10 quadros @60 ms).
 
 const TITLE_Y := 40
 const BOOK := Rect2(180, 96, 280, 170)
@@ -20,8 +20,8 @@ var _flip_left: float = -1.0
 func _ready() -> void:
 	super()
 	menu.add(&"play", "MENU_PLAY")
-	menu.add(&"codex", "MENU_CODEX", false)
-	menu.add(&"options", "MENU_OPTIONS", false)
+	menu.add(&"codex", "MENU_CODEX")
+	menu.add(&"options", "MENU_OPTIONS")
 	menu.add(&"credits", "MENU_CREDITS")
 
 
@@ -43,8 +43,8 @@ func _on_chosen(id: StringName) -> void:
 	match id:
 		&"play":
 			_flip_left = FLIP_FRAMES * FLIP_FRAME
-		&"credits":
-			request(&"credits")
+		&"credits", &"codex", &"options":
+			request(id)
 
 
 func _draw() -> void:

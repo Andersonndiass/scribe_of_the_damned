@@ -368,7 +368,19 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
 - **O que entrou:** Splash → Menu → Personagem → Capítulo → Jogo pelo `ScreenRouter` (transição Bayer INK por shader: 100+100 ms entre menus, 200+200 ms entrando/saindo do jogo, entrada travada); Créditos; Pausa, Game Over e Vitória em `GameOverlays` (substituem os overlays mínimos da 001). Estatísticas por `GameState.run_record()`; entradas novas por `Codex.new_this_run()`.
 - **Dados:** personagens, capítulos e créditos em `data/ui/*.json`; todo texto por chave em `i18n/ui.csv` (PT e EN).
 - **Divergências pequenas das fichas (do Claude):** (1) fitas do Menu com 100 px e do Game Over com 112 px (a ficha pede 128), para caber na página do livro e não encostarem; (2) toda fita tem contorno (INK_SOFT em repouso, GOLD no foco) — sem isso, fita de pergaminho some sobre a página de pergaminho; (3) a pena-cursor dos menus é a da mira espelhada (ponta para a fita); (4) títulos e dicas da Pausa/Game Over ficam sobre uma faixa lisa para ler por cima do jogo escurecido; (5) Game Over e Vitória pausam a árvore (a 001 deixava o jogo rodando atrás); (6) os botões do Game Over saem 3,5 s depois da morte, como a spec (o parecer de tempos falava em 2,5 s).
-- **Pendências:** Grimório e Opções aparecem desabilitados no Menu e na Pausa até a Fase 3; o personagem escolhido só vale na 010 (só o Anselmo é livre); **nome do autor nos créditos** (`data/ui/credits.json`) — pus o usuário do GitHub, o autor troca.
+- **Pendências:** Grimório e Opções aparecem desabilitados no Menu e na Pausa até a Fase 3 (feito na D-069); o personagem escolhido só vale na 010 (só o Anselmo é livre). *Créditos:* o autor pediu "FRANCISCO" (é ele mesmo; a linha separada de testes saiu).
+- **Status:** feito; aguardando o autor ver no build.
+
+---
+
+### D-069 · 2026-09-29 · Opções e Grimório (007 Fase 3)
+- **Opções:** layout do design-agent (ficha 30). Volumes em passos de 10%, selo de cera (Tremor, Mouse, Contraste; 3 quadros @50 ms), idioma PT-BR/EN trocado com ←/→, remapear teclas (a próxima tecla vira a da ação; Esc cancela e não é remapeável). Cada mudança vale na hora e é salva (`Settings.commit`; os testes não gravam no arquivo real). Fitas Restaurar · Voltar lado a lado; Restaurar pede confirmação.
+- **Conflito de tecla:** a regra da D-066 (troca) vale para **todas** as ações que tinham a tecla. Reiniciar e Loja: trocar dividem o R de fábrica (contextos diferentes), então pegar o R troca as duas, e o aviso cita as duas.
+- **Grimório:** 4 abas; ←/→ vira a entrada (8 quadros @50 ms, guarda 1 comando), ↑/↓ troca a aba. O design-agent sugeriu Q/E como atalho; ficou de fora porque são teclas fixas (ruins em AZERTY e sem remap). Verbetes da narrativa §11 em PT e EN (a tradução EN é do Claude). Significado das palavras e combos em `word_*`/`combo_*` (latim nunca traduzido fora do Grimório).
+- **Sem verbete na narrativa:** ANGELUS, DOMINUS, MISERERE, SALVATOR, SANCTUS, SPIRITUS e os 5 combos mostram "SEM VERBETE AINDA" — **o autor escreve** (até 40 caracteres × 6 linhas).
+- **Campeão:** verbete de inimigo próprio, descoberto quando o primeiro aparece (sinal novo `EventBus.champion_spawned`). Ilustração provisória: o sprite do Diabrete.
+- **Chefes futuros** (Mãe das Traças, Abade Caído, Malaquias, Semíhaza) aparecem como "?????" até existirem.
+- **Pela Pausa:** Grimório e Opções abrem por cima (embutidos), com o jogo parado; Esc volta à Pausa.
 - **Status:** feito; aguardando o autor ver no build.
 
 ---

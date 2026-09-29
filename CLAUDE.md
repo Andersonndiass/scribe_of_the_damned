@@ -87,9 +87,9 @@ Ordem padrão: game-design → rules → mechanics → design + animation → co
 
 ## Estado atual
 
-- **Etapa:** Etapa 3 — features **001, 002, 003, 005, 006 Complete**; 007 Fases 1–2 ✅ (Checkpoint 007-B); 009 Fases 1–2 ✅. GUT 333/333. Paleta C (D-048).
-- **Feature atual:** 007 telas e menus (Fase 2 ✅: Splash, Menu, Personagem, Capítulo, Créditos, Pausa, Game Over, Vitória — D-068). Depois: 008 (cutscenes) → 004 (degradação).
-- **Próximo:** 007 Fase 3 (T720 Opções, T721 Grimório, T722 `test_screens_flow`). Telas em `src/ui/screens/` (base `UiScreen`, fita e pena em `UiStyle`); o jogo abre pelo `src/app/app.tscn` (Splash). Números do escriba: `RunStats.of(data)`. Playtest: `index.html?unlock=all&atril=8` (pula os menus). Aberto: C-004, C-006 (playtest do autor); C-005 adiada para a 011 (D-050).
+- **Etapa:** Etapa 3 — features **001, 002, 003, 005, 006 Complete**; 007 Fases 1–3 ✅ (Checkpoint 007-C); 009 Fases 1–2 ✅. GUT 348/348. Paleta C (D-048).
+- **Feature atual:** 007 telas e menus — falta a Fase 4 (T730: SC-001, FEATURES, fechamento). Depois: 008 (cutscenes) → 004 (degradação). Autor = Francisco (créditos).
+- **Próximo:** 007 Fase 4 (T730). Telas em `src/ui/screens/` (base `UiScreen`; fita e pena em `UiStyle`; Opções/Grimório abrem embutidos pela Pausa); o jogo abre pelo `src/app/app.tscn` (Splash). Autoloads: `Settings` (user://settings.cfg; `commit()` aplica e salva), `Codex` (user://codex.save). Texto: `tr()` + `i18n/ui.csv` (PT-BR e EN); teclas na tela: `Settings.key_label(action)`. Dados das telas: `data/ui/*.json`, `data/codex/codex.json`. Luta direto: `index.html?boss&unlock=all&atril=8`; loja direto: `?shop` (os dois pulam os menus). Dano no chefe: `DamageSource`. Números do escriba: `RunStats.of(data)`. Aberto: C-004, C-006 (playtest do autor); verbetes que faltam (D-069); C-005 adiada para a 011 (D-050).
 - **Combos:** `ComboData` estende `WordData`; `power` só no dano (D-051); detalhes em D-052.
 - **Áudio:** `AudioManager` (autoload) + `data/audio/`. Regerar os `.tres`: `godot --headless --path . -s tools/gen_audio_data.gd`; sons provisórios: `-s tools/gen_placeholder_sfx.gd`; lista do que gravar: `-s tools/audio_report.gd` → `docs/AUDIO-LIST.md`.
 - **Se o auto mode falhar** (classificador sem veredito): sair do auto mode (Shift+Tab) ou o autor roda os comandos com `!` no chat.

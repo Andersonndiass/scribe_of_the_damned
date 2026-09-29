@@ -5,6 +5,8 @@ extends Node
 ## não poder: nenhuma entrada dá bônus mecânico (D-018).
 
 const CATEGORIES: Array[StringName] = [&"words", &"combos", &"enemies", &"bosses"]
+## O Campeão é um verbete de inimigo próprio (narrativa §11), descoberto ao aparecer o primeiro.
+const CHAMPION_ID := &"champion"
 
 var save_path: String = "user://codex.save"
 ## Rodando a suíte GUT, o registro real não grava no save do jogador (os testes usam outro caminho).
@@ -23,6 +25,7 @@ func _ready() -> void:
 	EventBus.combo_cast.connect(func(c: ComboData, _p: float) -> void: discover(&"combos", c.id))
 	EventBus.enemy_spawned.connect(func(_s: int, d: EnemyData) -> void: discover(&"enemies", d.id))
 	EventBus.boss_spawned.connect(func(b: BossData) -> void: discover(&"bosses", b.id))
+	EventBus.champion_spawned.connect(func(_s: int, _d: EnemyData) -> void: discover(&"enemies", CHAMPION_ID))
 
 
 func reset() -> void:
