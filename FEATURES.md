@@ -13,7 +13,7 @@
 | 005 | enemies-roster (+ ondas Cap. 1) | 001 | **Complete ✅** (2026-09-25 · shake da morte do campeão pendente) |
 | 006 | boss-asmodeus (Cap. 1) | 002, 005 | **Complete** ✅ (2026-09-29 · vida do chefe a confirmar no playtest) |
 | 007 | ui-screens-menus | 001 | **Complete** ✅ (2026-09-29 · verbetes que faltam: autor, D-069) |
-| 008 | cutscenes-cap1 (**in-engine**, AnimationPlayer + roteiros) | 007 | Spec em rascunho (2026-09-29) |
+| 008 | cutscenes-cap1 (**in-engine**, AnimationPlayer + roteiros) | 007 | Spec aprovada (2026-09-29, D-071) |
 | 009 | audio | 001 | Tasked ✅ |
 | 010 | characters-unlocks | 003 | Tasked ✅ |
 | 011 | web-export-itch (demo) | 001–010 | Tasked ✅ |

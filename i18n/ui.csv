@@ -193,3 +193,23 @@ CODEX_KIND_BOSS,CHEFE,BOSS
 CODEX_FOLIO,- {n} -,- {n} -
 CODEX_HINT,{prev} {next} PÁGINA   {up} {down} ABA   {back} VOLTA,{prev} {next} PAGE   {up} {down} TAB   {back} BACK
 OPT_HINT,{up} {down} ESCOLHE   {prev} {next} MUDA   {back} VOLTA,{up} {down} SELECT   {prev} {next} CHANGE   {back} BACK
+CS_C1_01_CAPTION_1,"Mosteiro de São Wendelino. 1348, o ano da peste.","Monastery of Saint Wendelin. 1348, the year of the plague."
+CS_C1_01_ANSELMO_1,O códice... o Abade disse para nunca abri-lo.,The codex... the Abbot said never to open it.
+CS_C1_01_ANSELMO_2,...Mas o Abade não está aqui.,...But the Abbot is not here.
+CS_C1_01_NARRATOR_1,"Dentro do livro, só a Palavra pode salvá-lo.","Inside the book, only the Word can save him."
+CS_C1_02_ABBOT_1,Irmão Anselmo... Você abriu. Claro que abriu.,Brother Anselmo... You opened it. Of course you did.
+CS_C1_02_ABBOT_2,"A Palavra sustenta a página. Onde ela some, há o vazio.","The Word holds up the page. Where it fades, there is the void."
+CS_C1_02_ANSELMO_1,...E se eu errar?,...And if I get it wrong?
+CS_C1_02_ABBOT_3,Então o vazio fala pela sua boca. E fere você.,Then the void speaks through your mouth. And it wounds you.
+CS_C1_03_ASMODEUS_1,Tuas palavras... eu as APAGO.,Thy words... I ERASE them.
+CS_C1_03_ANSELMO_1,...Catorze anos copiando. E ele apaga assim.,...Fourteen years of copying. And he erases it just like that.
+CS_C1_04_ABBOT_1,Uma página limpa. Há muitas outras.,One clean page. There are many more.
+CS_C1_04_ANSELMO_1,...Traças. Eu detesto traças.,...Moths. I hate moths.
+CS_C3_01_ABBOT_1,Não... aquele sou eu. O que restou de mim.,No... that is me. What is left of me.
+CS_C3_02_FALLEN_ABBOT_1,"Obrigado, filho. Leve isto.","Thank you, son. Take this."
+CS_C4_01_MALACHI_1,"Venha, filho. Confesse.","Come, son. Confess."
+CS_C5_02_ANSELMO_1,...Foi um sonho?,...Was it a dream?
+CS_SPEAKER_ANSELMO,IRMÃO ANSELMO,BROTHER ANSELMO
+CS_SPEAKER_ABBOT,ABADE GERBRAND,ABBOT GERBRAND
+CS_SPEAKER_ASMODEUS,ASMODEUS,ASMODEUS
+CS_SKIP_HOLD,SEGURE {pause} PARA PULAR,HOLD {pause} TO SKIP

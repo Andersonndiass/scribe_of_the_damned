@@ -1,6 +1,6 @@
 # 008 — Cutscenes do Capítulo 1
 
-> Status: **Rascunho** (2026-09-29) — aguardando o autor.
+> Status: **Aprovada** (2026-09-29, "1A 2A 3A — pressionar por 3 segundos"; D-071).
 > Parecer (2026-09-29): game-design-agent **AJUSTAR** — tetos de tempo por cena, C1-02 mais curta e quatro correções de canon (aplicados abaixo). mechanics-agent: sistema proposto (seção "Arquitetura").
 > Depende de: 006 (entrada e morte do Asmodeus), 007 (telas, roteador, tradução, Vitória). Constituição IX (cutscenes in-engine, AnimationPlayer + builder JSON→Animation, nada de vídeo). Narrativa §5, §10 (falas âncora), §12 (beats C1-01…C1-04). Plano de etapas DV-10 (os roteiros nascem nesta spec) e R-04 (builder com tolerância de 1 quadro). Asset catalog §2 (closes 128×128).
 > **[P]** = proposta do Claude (fala ou regra inventada, o autor aprova ou reescreve). **[P?]** = decisão do autor.
@@ -14,7 +14,7 @@ Contar o Capítulo 1 dentro do motor: quatro cenas curtas (C1-01 a C1-04) que ab
 | Item | Feature |
 |---|---|
 | Cutscenes dos capítulos 2–5 (C2-01 … C5-02) | 012–015 (usam o mesmo builder) |
-| Áudio definitivo das cenas (vozes não existem; música e efeitos) | 009 Fase 3 (aqui, eventos de som provisórios) |
+| Gravar as vozes (o autor gera no ElevenLabs a partir de `docs/voice/`) e o áudio definitivo de música e efeitos | autor / 009 Fase 3 (aqui: o jogo já toca a voz se o arquivo existir; efeitos provisórios) |
 | Arte definitiva (closes, cenário do scriptorium) | quando os PNGs chegarem (aqui, placeholders por script, D-024) |
 | Tutorial interativo (dicas na tela durante a onda 1) | fora do roadmap atual (a C1-02 só **conta** a regra) |
 | "Rever cutscenes" num menu | **[P?]** fora (ver pergunta 1) |
@@ -70,7 +70,7 @@ Tetos assistindo sem adiantar **[P]** (pilar "curto e intenso"; números finais 
 
 ### Palco
 - **FR-804** `CutscenePlayer` (cena própria) com camadas: fundo, atores, efeitos e a faixa de diálogo (close do falante + nome + texto que aparece letra a letra). Tudo em 640×360, com a paleta travada; placeholders por script onde não houver arte (closes 128×128 de Anselmo e do Abade, cenário do scriptorium, fantasma, Asmodeus já existe).
-- **FR-805** Controles: **Espaço/Enter ou clique** completa o texto da fala e, completo, adianta para a próxima (o clique segue a D-067); **segurar Esc por 1 s** pula a cena inteira (anel de progresso visível) **[P]**. Toque rápido no Esc não faz nada (não há pausa dentro da cena).
+- **FR-805** Controles: **Espaço/Enter ou clique** completa o texto da fala e, completo, adianta para a próxima (o clique segue a D-067); **segurar Esc por 3 s** pula a cena inteira **[D-071]**: enquanto segura, aparece uma animação de carregamento **subindo** (enche de baixo para cima; o visual é do design-agent e o tempo do animation-agent); ao completar, a cena pula. Soltar antes zera. Toque rápido no Esc não faz nada (não há pausa dentro da cena).
 - **FR-806** Pular leva ao **mesmo estado** que assistir até o fim: as trilhas vão ao valor final, as marcas pendentes disparam em ordem e `cutscene_finished` sai **sempre por último** (também se o JSON estiver quebrado: o jogo nunca trava numa cena).
 - **FR-806b** Durante a cena, a entrada é da cena (o Esc não abre a Pausa por baixo). O som das cenas toca com a árvore do jogo parada (o AudioManager ganha vozes que não pausam) e o hit-stop não desacelera a cena.
 
@@ -79,12 +79,13 @@ Tetos assistindo sem adiantar **[P]** (pilar "curto e intenso"; números finais 
 - **FR-808** C1-03: substitui a animação de entrada do chefe (006 FR-607): a árvore do jogo fica parada, a cena roda por cima e **o fim da cena** solta o Asmodeus já pronto para lutar (a barra aparece nessa hora). Testes, sonda de balanceamento e `?boss` seguem pela entrada normal.
 - **FR-809** C1-04: depois da morte do chefe (006 FR-611), antes da Vitória (007 FR-706).
 - **FR-810** **[P?]** C1-01 e C1-02 só na **primeira vez**; depois, a partida começa direto. C1-03 e C1-04 **sempre** (curtas; marcam a luta). "Já vista" fica no save do Grimório (`user://codex.save`, seção própria, sem virar entrada nem "novidade" na Vitória), gravada quando a cena **termina ou é pulada**.
-- **FR-810b** Quais cenas cada capítulo usa fica no `ChapterData` (intro, chefe, fim), não no código; velocidade do texto e tempo de segurar o Esc em `data/tuning/cutscene.tres` (números com o animation-agent).
+- **FR-810b** Quais cenas cada capítulo usa fica no `ChapterData` (intro, chefe, fim), não no código; velocidade do texto e tempo de segurar o Esc (3 s, D-071) em `data/tuning/cutscene.tres` (números com o animation-agent).
 - **FR-811** Atalhos de debug: `?cutscene=c1_01` (… `c1_04`) abre a cena sozinha; `?boss`, `?shop`, `?unlock=all` continuam pulando tudo.
 
 ### Texto e som
 - **FR-812** Toda fala e legenda em `i18n/ui.csv` (PT-BR e EN); troca de idioma vale na cena seguinte. O latim não aparece nas falas.
 - **FR-813** Sons por evento do `AudioManager` (fogo, corrente, virada de página, rasura, sino); com o áudio provisório da 009 enquanto os arquivos não chegam.
+- **FR-814** **Vozes [D-071]:** cada fala pode ter voz, uma por idioma, em `assets/audio/voice/<pt_BR|en>/<id>.mp3` (id = chave da fala em minúsculas). O jogo toca a do idioma atual; sem arquivo, a fala só aparece escrita. Todas as falas do jogo, em PT-BR e EN, com direção de voz por personagem: `docs/voice/VOICE-LINES.md` e `docs/voice/voice_lines.csv`. Quando as vozes chegarem, o `end` de cada fala se ajusta à duração do áudio (animation-agent), respeitando os tetos das cenas.
 
 ## Arquitetura (mechanics-agent, resumo)
 
@@ -101,8 +102,9 @@ Tetos assistindo sem adiantar **[P]** (pilar "curto e intenso"; números finais 
 - **SC-805** Do Capítulo à onda 1 só com teclado, passando pelas cenas (teste do fluxo da 007 estendido).
 - **SC-806** O SC-001 se mantém (as cenas não rodam durante a onda); a cena roda a 60 FPS no Chrome.
 
-## Perguntas ao autor
+## Decisões do autor (D-071)
 
-1. **Repetição (FR-810).** a) C1-01 e C1-02 só na primeira vez; C1-03 e C1-04 sempre **(recomendado)**; b) todas sempre (puláveis); c) todas só na primeira vez.
-2. **Falas [P].** a) aprovar as falas propostas como estão **(recomendado para destravar; dá para trocar depois no CSV)**; b) você reescreve (me manda as falas).
-3. **Pular (FR-805).** a) segurar Esc 1 s **(recomendado: evita pular sem querer)**; b) um toque no Esc pula.
+1. **1A:** C1-01 e C1-02 só na primeira vez; C1-03 e C1-04 sempre.
+2. **2A:** falas propostas aprovadas (trocáveis no `i18n/ui.csv` e em `docs/voice/`).
+3. **3A, com ajuste:** segurar Esc por **3 s**, com animação de carregamento subindo; ao completar, pula.
+4. **Vozes:** o autor gera as falas no ElevenLabs a partir de `docs/voice/` (PT-BR e EN); o jogo toca quando os arquivos existirem (FR-814).

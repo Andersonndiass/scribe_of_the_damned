@@ -393,6 +393,16 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
 
 ---
 
+### D-071 · 2026-09-29 · Spec 008 (cutscenes do Cap. 1) aprovada
+- **Respostas do autor:** "1A. 2A. 3A pressionar por 3 segundos e aparece uma animação de carregamento subindo e quando finalizar pula a cena."
+- **Repetição:** C1-01 e C1-02 só na primeira vez (gravado ao terminar ou pular); C1-03 e C1-04 sempre.
+- **Falas:** as propostas [P] aprovadas; ajustes de canon do game-design-agent aplicados (arca no subsolo, a heresia fere quem a diz, o Abade queria que Anselmo entrasse).
+- **Pular:** segurar Esc **3 s** (a proposta era 1 s), com animação de carregamento subindo.
+- **Vozes (novo):** o autor vai gerar as falas no ElevenLabs. Todas as falas do jogo, em PT-BR e EN, com direção por personagem, ficam em `docs/voice/VOICE-LINES.md` e `docs/voice/voice_lines.csv` (inclui as falas âncora dos caps. 3–5, para os roteiros futuros). O jogo toca `assets/audio/voice/<idioma>/<id>.mp3` quando existir (FR-814). Na tela, "…" vira "..." e sem apóstrofo (a PixelFont não tem esses sinais).
+- **Status:** ✅ aprovada.
+
+---
+
 ## Conflitos abertos
 
 - **C-006 · Vida do Asmodeus (DECISÃO DO AUTOR, playtest).** 1500 (rules-agent) supõe uma palavra a cada ~5 s. A sonda não mede isso. No playtest (`index.html?boss`, ou jogando o capítulo), se a luta passar muito de 4 min, baixar `max_hp` em `data/bosses/asmodeus.tres` (ex.: 1000); se ficar abaixo de 2 min, subir.
