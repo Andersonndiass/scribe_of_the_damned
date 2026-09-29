@@ -24,6 +24,9 @@ var aim_point: Vector2 = Vector2.INF
 var high_contrast: bool = false
 ## Escolhas das telas de Personagem e Capítulo (007); vazio = o padrão da cena do jogo.
 var picked_character: StringName = &""
+## Cutscenes a tocar na rota "cutscene" e a tela que vem depois (008 FR-807).
+var cutscene_queue: Array[StringName] = []
+var after_cutscene: StringName = &"game"
 var picked_chapter: ChapterData = null
 
 

@@ -17,6 +17,7 @@ const SCREENS: Dictionary = {
 	&"options": "res://src/ui/screens/options_screen.tscn",
 	&"codex": "res://src/ui/screens/codex_screen.tscn",
 	&"game": "res://src/main/main.tscn",
+	&"cutscene": "res://src/cutscenes/cutscene_screen.tscn",
 }
 const DEBUG_SCENES: Dictionary = {
 	"stress": "res://src/debug/stress_scene.tscn",
@@ -48,6 +49,13 @@ func _ready() -> void:
 		if args.contains(key):
 			get_tree().change_scene_to_file.call_deferred(DEBUG_SCENES[key])
 			return
+	var cs: RegExMatch = RegEx.create_from_string("cutscene=(c\\d_\\d\\d)").search(args)
+	if cs != null:
+		GameState.cutscene_queue.clear()
+		GameState.cutscene_queue.append(StringName(cs.get_string(1)))
+		GameState.after_cutscene = &"menu"
+		goto(&"cutscene")
+		return
 	for key: String in SKIP_TO_GAME:
 		if args.contains(key):
 			goto(&"game")

@@ -148,7 +148,8 @@ func _advance_time(dt: float) -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if state == Phase.IDLE:
+	# Só enquanto a cena toca: carregada e parada (READY) não pode prender a entrada do jogo.
+	if state != Phase.PLAYING:
 		return
 	# A entrada é da cena: o Esc não abre a Pausa por baixo (FR-806b).
 	get_viewport().set_input_as_handled()

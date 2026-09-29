@@ -12,11 +12,16 @@ var _app: ScreenRouter
 func before_each() -> void:
 	Settings.reset_defaults()
 	Settings.apply()
+	# As cenas de abertura (008) têm teste próprio; aqui o jogador já as viu.
+	Codex.mark_cutscene_seen(&"c1_01")
+	Codex.mark_cutscene_seen(&"c1_02")
 	_app = APP.instantiate()
 	add_child_autofree(_app)
 
 
 func after_each() -> void:
+	Codex.reset()
+	Codex.load_saved()
 	get_tree().paused = false
 	Engine.time_scale = 1.0
 	Settings.reset_defaults()

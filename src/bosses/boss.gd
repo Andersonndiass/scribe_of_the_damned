@@ -59,7 +59,8 @@ func _ready() -> void:
 
 
 ## Começa a luta (FR-607): o chefe entra no alto da página.
-func start_fight() -> void:
+## `skip_enter`: a cutscene já mostrou a entrada (008 FR-808) — o chefe começa lutando.
+func start_fight(skip_enter: bool = false) -> void:
 	filter = BossDamageFilter.new(filter_data, data)
 	picker = AttackPicker.new(GameState.rng)
 	safety = LetterSafety.new(safety_tuning)
@@ -73,7 +74,12 @@ func start_fight() -> void:
 	visible = true
 	EventBus.boss_spawned.emit(data)
 	EventBus.boss_damaged.emit(filter.hp, data.max_hp)
-	machine.transition_to(&"Enter")
+	if skip_enter:
+		reveal = 1.0
+		targetable = true
+		machine.transition_to(&"Idle")
+	else:
+		machine.transition_to(&"Enter")
 
 
 func executor_for(attack: AttackData) -> BossAttack:

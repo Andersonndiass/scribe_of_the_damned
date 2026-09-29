@@ -43,6 +43,9 @@ var _shop_in: float = -1.0
 var _chapter_end_in: float = -1.0
 ## Índice (0-based) da onda atual no capítulo.
 var wave_slot: int = 0
+## Cutscenes do chefe e do fim (008 FR-808, FR-809), carregadas ao abrir — nada é criado na onda.
+var boss_cutscene: CutscenePlayer
+var outro_cutscene: CutscenePlayer
 
 
 func _ready() -> void:
@@ -94,7 +97,8 @@ func _ready() -> void:
 	overlays.restart_requested.connect(_restart)
 	EventBus.chapter_completed.connect(func(_c: int) -> void:
 		if is_real_game():
-			overlays.show_victory())
+			_play_outro())
+	_prepare_cutscenes(args)
 	start_wave(0)
 	if args.contains("boss"):
 		# Debug (006 FR-615): direto na luta (combina com ?unlock=all&atril=8).
@@ -147,7 +151,49 @@ func start_boss() -> void:
 	wave_director.stop()
 	($World/EnemyManager as EnemyManager).dissolve_all()
 	boss.data = chapter.boss
-	boss.start_fight()
+	if boss_cutscene == null:
+		boss.start_fight()
+		return
+	# C1-03: o jogo para, a cena mostra a entrada, e o fim dela solta o chefe já lutando.
+	get_tree().paused = true
+	boss_cutscene.play()
+	await _cutscene_done(boss_cutscene.cutscene_id)
+	get_tree().paused = false
+	boss.start_fight(true)
+
+
+## As cenas do capítulo só na partida de verdade (testes, sonda e ?boss seguem direto).
+func _prepare_cutscenes(args: String) -> void:
+	if not is_real_game() or args.contains("boss") or chapter == null:
+		return
+	if chapter.boss_cutscene != &"":
+		boss_cutscene = CutscenePlayer.new()
+		boss_cutscene.name = "BossCutscene"
+		add_child(boss_cutscene)
+		boss_cutscene.load_cutscene(chapter.boss_cutscene)
+	if chapter.outro_cutscene != &"":
+		outro_cutscene = CutscenePlayer.new()
+		outro_cutscene.name = "OutroCutscene"
+		add_child(outro_cutscene)
+		outro_cutscene.load_cutscene(chapter.outro_cutscene)
+
+
+## C1-04 entre o fim do capítulo e a Vitória (nunca por cima do Game Over).
+func _play_outro() -> void:
+	if outro_cutscene == null or overlays.mode == GameOverlays.Mode.GAME_OVER:
+		overlays.show_victory()
+		return
+	get_tree().paused = true
+	outro_cutscene.play()
+	await _cutscene_done(outro_cutscene.cutscene_id)
+	overlays.show_victory()
+
+
+func _cutscene_done(id: StringName) -> void:
+	while true:
+		var args: Array = await EventBus.cutscene_finished
+		if args[0] == id:
+			return
 
 
 func _process(delta: float) -> void:

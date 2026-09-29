@@ -31,8 +31,15 @@ func handle_input(event: InputEvent) -> bool:
 	if is_confirm(event):
 		var ch: Dictionary = chapters[index]
 		if ch["unlocked"] and ch["data"] != "":
-			GameState.picked_chapter = load(ch["data"])
-			request(&"game")
+			var data: ChapterData = load(ch["data"])
+			GameState.picked_chapter = data
+			var queue: Array[StringName] = CutsceneScreen.pending_intro(data)
+			if queue.is_empty():
+				request(&"game")
+			else:
+				GameState.cutscene_queue = queue
+				GameState.after_cutscene = &"game"
+				request(&"cutscene")
 		return true
 	if is_back(event):
 		request(&"character")

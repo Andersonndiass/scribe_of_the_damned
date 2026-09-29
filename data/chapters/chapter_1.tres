@@ -18,3 +18,6 @@ script = ExtResource("1_cd")
 chapter = 1
 waves = Array[ExtResource("2_wd")]([ExtResource("w1"), ExtResource("w2"), ExtResource("w3"), ExtResource("w4"), ExtResource("w5"), ExtResource("w6"), ExtResource("w7"), ExtResource("w8"), ExtResource("w9")])
 boss = ExtResource("99_boss")
+intro_cutscenes = Array[StringName]([&"c1_01", &"c1_02"])
+boss_cutscene = &"c1_03"
+outro_cutscene = &"c1_04"
