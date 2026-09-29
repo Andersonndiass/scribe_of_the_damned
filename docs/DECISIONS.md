@@ -385,6 +385,14 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
 
 ---
 
+### D-070 · 2026-09-29 · Fechamento da 007 (T730)
+- **Resultado:** telas completas (Splash, Menu, Personagem, Capítulo, Jogo, Pausa, Game Over, Vitória, Opções, Grimório, Créditos), PT-BR e EN, 100% teclado (teste do fluxo), opções salvas, Grimório salvo entre partidas.
+- **SC-706 / SC-001:** Chrome com GPU, `?stress`: 102–105 FPS de média, p95 76–80 (antes 87–91 / 67–70). As telas não rodam durante a onda.
+- **Fica para depois:** o personagem escolhido só vale na 010; o HTML de Loading é da 011 (D-066); verbetes que faltam (D-069) e o Campeão com arte própria.
+- **Status:** ✅ 007 Complete.
+
+---
+
 ## Conflitos abertos
 
 - **C-006 · Vida do Asmodeus (DECISÃO DO AUTOR, playtest).** 1500 (rules-agent) supõe uma palavra a cada ~5 s. A sonda não mede isso. No playtest (`index.html?boss`, ou jogando o capítulo), se a luta passar muito de 4 min, baixar `max_hp` em `data/bosses/asmodeus.tres` (ex.: 1000); se ficar abaixo de 2 min, subir.

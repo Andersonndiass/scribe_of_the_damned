@@ -24,4 +24,6 @@
 **Checkpoint 007-C:** ✅ Opções e Grimório pelo Menu e pela Pausa; do Splash à primeira onda e do Game Over ao Menu só com teclado (teste); idioma troca na hora (2026-09-29, GUT 348/348). D-069.
 
 ## Fase 4 — Fechamento
-- **T730** GUT, export web, SC-001 (SC-706), `FEATURES.md`, `CLAUDE.md`, `docs/DECISIONS.md`, push.
+- ✅ **T730** GUT, export web, SC-001 (SC-706), `FEATURES.md`, `CLAUDE.md`, `docs/DECISIONS.md`, push.
+
+**007 Complete** (2026-09-29): GUT 348/348; SC-001 no Chrome com GPU 102–105 FPS, p95 76–80 (SC-706 ✅); `?stress` segue pulando os menus. D-070.
