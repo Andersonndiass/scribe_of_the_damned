@@ -3,15 +3,15 @@ extends RefCounted
 ## GERADO por tools/gen_palette.gd a partir de design-tokens.json. NÃO EDITAR À MÃO.
 ## Princípio VII: nenhuma cor fora desta lista.
 
-const BLOOD := Color(0.4941, 0.0863, 0.1529, 1.0)  # #7E1627
-const BLOOD_DARK := Color(0.3059, 0.0510, 0.0941, 1.0)  # #4E0D18
-const CHALK := Color(0.9608, 0.9529, 0.9255, 1.0)  # #F5F3EC
-const GOLD := Color(0.7216, 0.5804, 0.2118, 1.0)  # #B89436
-const GOLD_LIGHT := Color(0.8627, 0.7529, 0.4157, 1.0)  # #DCC06A
-const INK := Color(0.0824, 0.0902, 0.1098, 1.0)  # #15171C
-const INK_SOFT := Color(0.2431, 0.2667, 0.3137, 1.0)  # #3E4450
-const PARCHMENT := Color(0.8941, 0.8667, 0.7961, 1.0)  # #E4DDCB
-const PARCHMENT_OLD := Color(0.7412, 0.7020, 0.6039, 1.0)  # #BDB39A
+const BLOOD := Color(126 / 255.0, 22 / 255.0, 39 / 255.0, 1.0)  # #7E1627
+const BLOOD_DARK := Color(78 / 255.0, 13 / 255.0, 24 / 255.0, 1.0)  # #4E0D18
+const CHALK := Color(245 / 255.0, 243 / 255.0, 236 / 255.0, 1.0)  # #F5F3EC
+const GOLD := Color(184 / 255.0, 148 / 255.0, 54 / 255.0, 1.0)  # #B89436
+const GOLD_LIGHT := Color(220 / 255.0, 192 / 255.0, 106 / 255.0, 1.0)  # #DCC06A
+const INK := Color(21 / 255.0, 23 / 255.0, 28 / 255.0, 1.0)  # #15171C
+const INK_SOFT := Color(62 / 255.0, 68 / 255.0, 80 / 255.0, 1.0)  # #3E4450
+const PARCHMENT := Color(228 / 255.0, 221 / 255.0, 203 / 255.0, 1.0)  # #E4DDCB
+const PARCHMENT_OLD := Color(189 / 255.0, 179 / 255.0, 154 / 255.0, 1.0)  # #BDB39A
 
 const ALL: Dictionary[StringName, Color] = {
 	&"blood": BLOOD,

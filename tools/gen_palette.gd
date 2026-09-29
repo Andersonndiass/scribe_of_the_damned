@@ -37,7 +37,8 @@ func _generate() -> int:
 		var hex: String = (colors[token_name] as Dictionary)["hex"]
 		var c := Color.html(hex)
 		var const_name: String = token_name.to_upper()
-		lines.append("const %s := Color(%.4f, %.4f, %.4f, 1.0)  # %s" % [const_name, c.r, c.g, c.b, hex])
+		# n/255 exato: com casas decimais arredondadas, a Image (RGBA8) trunca e grava 1 abaixo (D-076).
+		lines.append("const %s := Color(%d / 255.0, %d / 255.0, %d / 255.0, 1.0)  # %s" % [const_name, c.r8, c.g8, c.b8, hex])
 		all_entries.append("\t&\"%s\": %s," % [token_name, const_name])
 
 	lines.append("")

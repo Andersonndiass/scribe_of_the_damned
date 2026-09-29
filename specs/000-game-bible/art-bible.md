@@ -44,6 +44,9 @@ Borda das chamas do IGNIS (é fogo) · olho de Asmodeus · estola de Malaquias �
   - **Hachura (45°) só em tecido, cenário e áreas grandes**, no máximo uma área por retrato; se em 100% parecer ruído, vira cor sólida.
   - Sem pixel órfão (detalhe em clusters); curvas com segmentos em progressão (1-1-2-3, 2-1-2), sem jaggies; poucas linhas internas.
   - Traços do rosto simples: olho = massa escura + 1 brilho; sobrancelha = massa; nariz pela sombra lateral + ponta; boca = 1 linha + sombra sob o lábio.
+  - **Ícones e sprites pequenos (D-076):** silhueta reconhecível em 1 cor e em tamanho real; nenhum elemento importante com 1 px de espessura; mesmo molde para a família (moldura, contorno, luz, escala); 1 cor de destaque; 3 tons por material; círculos pelo algoritmo de ponto médio, fechados.
+  - **Acabamento (D-076):** sem banding (faixas paralelas acompanhando o contorno); anti-aliasing só nos degraus de canto, nunca na borda externa de sprite nem em sprite pequeno.
+  - **UI e HUD (D-076):** painéis em 9-slice; bordas de 1–2 px consistentes; contraste alto sobre o pergaminho; desabilitado = cor sólida apagada + traço (não xadrez); xadrez só no escurecimento de tela inteira e na transparência de fantasmas.
 - Todo sprite precisa ser legível em 1× sobre `parchment` e ter silhueta própria em INK sólido.
 
 ## 4. Personagens jogáveis
