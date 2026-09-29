@@ -9,7 +9,7 @@
 | 001 | core-loop | 000 | **Complete ✅** (2026-09-25 · Firefox a medir pelo autor) |
 | 002 | vocabulary-combos | 001 | **Complete** ✅ (2026-09-28) |
 | 003 | shop-scriptorium | 001 | **Complete** ✅ (2026-09-28) |
-| 004 | arena-degradation | 001 | Tasked ✅ |
+| 004 | arena-degradation | 001 | Spec em rascunho (2026-09-29) |
 | 005 | enemies-roster (+ ondas Cap. 1) | 001 | **Complete ✅** (2026-09-25 · shake da morte do campeão pendente) |
 | 006 | boss-asmodeus (Cap. 1) | 002, 005 | **Complete** ✅ (2026-09-29 · vida do chefe a confirmar no playtest) |
 | 007 | ui-screens-menus | 001 | **Complete** ✅ (2026-09-29 · verbetes que faltam: autor, D-069) |
