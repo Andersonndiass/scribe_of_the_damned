@@ -51,13 +51,14 @@ func test_cast_plays_collect_valid_and_word_sounds() -> void:
 func test_sound_with_stream_plays_without_new_code() -> void:
 	# SC-901: pôr um stream no .tres basta.
 	var s: SoundData = AudioManager.event_map.resolve(&"letter_rejected")
+	var original: AudioStream = s.stream
 	var wav := AudioStreamWAV.new()
 	wav.data = PackedByteArray([0, 0, 0, 0])
 	s.stream = wav
 	_field.atril.set_capacity(1)
 	_field.collect("L", false)
 	_field.collect("U", false)  # recusada: atril cheio
-	s.stream = null
+	s.stream = original  # o Resource é compartilhado: devolve o som provisório
 	assert_has(_played, &"letter_rejected")
 
 

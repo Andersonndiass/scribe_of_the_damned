@@ -1,11 +1,13 @@
 [gd_resource type="Resource" script_class="SoundData" format=3]
 
 [ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_t0w3s"]
+[ext_resource type="AudioStream" path="res://assets/audio/placeholders/sfx_enemy_killed_moth.tres" id="2_jx27w"]
 
 [resource]
 script = ExtResource("1_t0w3s")
 id = &"enemy_killed_moth"
 event = &"enemy_killed:moth"
+stream = ExtResource("2_jx27w")
 max_voices = 3
 cooldown_ms = 50
 note = "Traça: papel seco se esfarelando."

@@ -1,11 +1,13 @@
 [gd_resource type="Resource" script_class="SoundData" format=3]
 
 [ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_ovhwu"]
+[ext_resource type="AudioStream" path="res://assets/audio/placeholders/sfx_champion_killed.tres" id="2_klgqj"]
 
 [resource]
 script = ExtResource("1_ovhwu")
 id = &"champion_killed"
 event = &"champion_killed"
+stream = ExtResource("2_klgqj")
 max_voices = 2
 cooldown_ms = 0
 priority = 3

@@ -1,11 +1,13 @@
 [gd_resource type="Resource" script_class="SoundData" format=3]
 
 [ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_rjxfx"]
+[ext_resource type="AudioStream" path="res://assets/audio/placeholders/sfx_enemy_killed_ink_blot.tres" id="2_yejn1"]
 
 [resource]
 script = ExtResource("1_rjxfx")
 id = &"enemy_killed_ink_blot"
 event = &"enemy_killed:ink_blot"
+stream = ExtResource("2_yejn1")
 max_voices = 3
 cooldown_ms = 50
 note = "Borrão: gota grossa espirrando."

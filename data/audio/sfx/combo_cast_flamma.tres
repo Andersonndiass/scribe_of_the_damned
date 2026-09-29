@@ -1,11 +1,13 @@
 [gd_resource type="Resource" script_class="SoundData" format=3]
 
 [ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_rjisc"]
+[ext_resource type="AudioStream" path="res://assets/audio/placeholders/sfx_combo_cast_flamma.tres" id="2_cwgx5"]
 
 [resource]
 script = ExtResource("1_rjisc")
 id = &"combo_cast_flamma"
 event = &"combo_cast:flamma"
+stream = ExtResource("2_cwgx5")
 max_voices = 1
 cooldown_ms = 0
 priority = 3

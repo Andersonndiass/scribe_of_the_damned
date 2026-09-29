@@ -1,6 +1,6 @@
 # 009 — Áudio
 
-> Status: **Aprovada** (2026-09-28, "1a, 2a"; D-053). Fase 1 ✅ (Checkpoint 009-A). Próxima: Fase 2 (sons provisórios por script).
+> Status: **Aprovada** (2026-09-28, "1a, 2a"; D-053). Fases 1–2 ✅ (Checkpoints 009-A e 009-B). Fase 3 (arquivos do autor) quando eles chegarem.
 > Depende de: 001 (Complete). Game bible §5 [PENDENTE]. Decisões D-047 (5: arquitetura agora, sem sons; sons provisórios por script nesta feature). PROMPTS D4.
 > Os arquivos de áudio reais são do autor e chegam depois; até lá tudo toca em silêncio.
 

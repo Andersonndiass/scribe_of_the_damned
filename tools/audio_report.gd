@@ -6,6 +6,8 @@ extends SceneTree
 const MAP_PATH := "res://data/audio/event_map.tres"
 const MUSIC_DIR := "res://data/audio/music/"
 const OUT_PATH := "res://docs/AUDIO-LIST.md"
+## Sons provisórios gerados por script (009 Fase 2) contam como "falta gravar".
+const PLACEHOLDER_DIR := "res://assets/audio/placeholders/"
 
 
 func _init() -> void:
@@ -18,15 +20,17 @@ func _init() -> void:
 		"",
 		"## Efeitos",
 		"",
-		"| Arquivo | Evento | Canal | O que gravar |",
-		"|---|---|---|---|",
+		"| Arquivo | Evento | Canal | Hoje | O que gravar |",
+		"|---|---|---|---|---|",
 	]
 	var missing: int = 0
 	for s: SoundData in map.sounds:
-		if s.stream != null:
+		var placeholder: bool = s.stream != null and s.stream.resource_path.begins_with(PLACEHOLDER_DIR)
+		if s.stream != null and not placeholder:
 			continue
 		missing += 1
-		lines.append("| `data/audio/sfx/%s.tres` | `%s` | %s | %s |" % [s.id, s.event, s.bus, s.note])
+		lines.append("| `data/audio/sfx/%s.tres` | `%s` | %s | %s | %s |" % [
+			s.id, s.event, s.bus, "provisório" if placeholder else "silêncio", s.note])
 	lines.append_array(["", "## Música", "", "| Arquivo | Camadas | O que gravar |", "|---|---|---|"])
 	var dir := DirAccess.open(MUSIC_DIR)
 	if dir != null:

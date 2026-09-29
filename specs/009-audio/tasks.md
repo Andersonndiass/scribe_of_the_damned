@@ -13,10 +13,10 @@
 **Checkpoint 009-A:** ✅ o jogo inteiro passa pelo áudio em silêncio, e a lista do que gravar existe (2026-09-28, GUT 193/193, 38 sons + 1 música em `docs/AUDIO-LIST.md`; console limpo de áudio no Chrome e no Firefox; FPS do stress igual com e sem áudio).
 
 ## Fase 2 — Sons provisórios por script
-- **T910** `tools/gen_placeholder_sfx.gd`: sons curtos gerados (FR-912) para os eventos de prioridade ≥ 1, ligados nos `.tres`. Passam pelo animation-agent (tempo e sensação).
-- **T911** GUT + export; SC-001 com som ligado.
+- ✅ **T910** `tools/gen_placeholder_sfx.gd`: sons curtos gerados (FR-912) para os eventos de prioridade ≥ 1, ligados nos `.tres`. Passam pelo animation-agent (tempo e sensação).
+- ✅ **T911** GUT + export; SC-001 com som ligado.
 
-**Checkpoint 009-B:** o jogo tem som provisório em todos os eventos principais.
+**Checkpoint 009-B:** ✅ o jogo tem som provisório em todos os eventos principais (2026-09-29, 36 sons sintetizados; GUT 251/251; D-061).
 
 ## Fase 3 — Arquivos do autor
 - **T920** Trocar os placeholders pelos arquivos recebidos (só `.tres`) e regenerar o AUDIO-LIST.

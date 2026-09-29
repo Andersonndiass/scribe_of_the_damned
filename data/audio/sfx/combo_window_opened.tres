@@ -1,11 +1,13 @@
 [gd_resource type="Resource" script_class="SoundData" format=3]
 
 [ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_ui203"]
+[ext_resource type="AudioStream" path="res://assets/audio/placeholders/sfx_combo_window_opened.tres" id="2_lrrif"]
 
 [resource]
 script = ExtResource("1_ui203")
 id = &"combo_window_opened"
 event = &"combo_window_opened"
+stream = ExtResource("2_lrrif")
 bus = &"UI"
 max_voices = 1
 cooldown_ms = 0

@@ -1,11 +1,13 @@
 [gd_resource type="Resource" script_class="SoundData" format=3]
 
 [ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_o3i7m"]
+[ext_resource type="AudioStream" path="res://assets/audio/placeholders/sfx_wave_started.tres" id="2_yrdas"]
 
 [resource]
 script = ExtResource("1_o3i7m")
 id = &"wave_started"
 event = &"wave_started"
+stream = ExtResource("2_yrdas")
 bus = &"UI"
 max_voices = 1
 cooldown_ms = 0

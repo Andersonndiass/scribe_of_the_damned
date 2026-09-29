@@ -320,6 +320,12 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
 - **Sonda:** o modo de compra se chama `buy` (não `shop`, que colide com o `?shop` de debug do jogo).
 - **Status:** ✅ feature 003 Complete.
 
+### D-061 · 2026-09-29 · Sons provisórios por script (009 Fase 2)
+- **Decisão:** `tools/gen_placeholder_sfx.gd` sintetiza 36 sons (ondas simples, envelope, deslizamento, acordes, sinos inarmônicos) para os eventos de prioridade ≥ 1 e os liga nos `.tres` (`assets/audio/placeholders/sfx_*.tres`, 22 kHz mono 16 bits, ~1 MB cru). Não mexe em `.tres` cujo som já seja do autor. O `AUDIO-LIST.md` continua listando os provisórios como "falta gravar". Queda de letra comum e letra comida seguem em silêncio (prioridade 0).
+- **Ajustes do animation-agent:** Monge Oco 200 ms; ataque do VAPOR 10 ms; coleta de letra mais baixa e menos aguda (vol 0,12, filtro 0,6); Gárgula e Borrão mais baixos; combo genérico acima da conjuração.
+- **Web:** console sem erro de áudio no Chrome e no Firefox. Download comprimido 11,2 MB (meta 25). Desempenho: carga normal igual; na varredura do PURGO (300 mortes com som) o p95 subiu de 17 para 23–24 ms e 0–4 frames passaram de 33 ms (antes 0). Alavanca se precisar: `enemy_killed*` com 2 vozes em vez de 3.
+- **Status:** ✅ plano aprovado ("pode").
+
 ---
 
 ## Conflitos abertos

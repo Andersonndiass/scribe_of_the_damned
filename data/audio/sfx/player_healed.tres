@@ -1,11 +1,13 @@
 [gd_resource type="Resource" script_class="SoundData" format=3]
 
 [ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_skr75"]
+[ext_resource type="AudioStream" path="res://assets/audio/placeholders/sfx_player_healed.tres" id="2_iacow"]
 
 [resource]
 script = ExtResource("1_skr75")
 id = &"player_healed"
 event = &"player_healed"
+stream = ExtResource("2_iacow")
 max_voices = 1
 cooldown_ms = 0
 priority = 2

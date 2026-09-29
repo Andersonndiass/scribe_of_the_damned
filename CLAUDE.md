@@ -87,11 +87,11 @@ Ordem padrão: game-design → rules → mechanics → design + animation → co
 
 ## Estado atual
 
-- **Etapa:** Etapa 3 — features **001, 005, 002 e 003 Complete**; 009 Fase 1 ✅ (áudio em silêncio). GUT 250/250. Paleta C (D-048). Chrome: SC-001 87–91 / p95 67–70.
-- **Feature atual:** nenhuma em andamento. 009 com a Fase 1 pronta.
-- **Próximo:** decidir com o autor: 006 (chefe Asmodeus; ressalvas D-057), 004, 007 ou a 009 Fase 2. Loja direto: `index.html?shop`. Sonda do capítulo com loja: `balance_probe -- cast god chapter buy`. Números do escriba: `RunStats.of(data)` (nunca `PlayerData` direto). Playtest: `index.html?unlock=all&atril=8`. A 009 Fase 2 (sons provisórios por script) pode entrar quando o autor quiser. Aberto: C-004 (playtest do autor); C-005 adiada para a 011 (D-050).
+- **Etapa:** Etapa 3 — features **001, 005, 002 e 003 Complete**; 009 Fases 1–2 ✅ (áudio com sons provisórios). GUT 251/251. Paleta C (D-048). Chrome: SC-001 87–91 / p95 67–70.
+- **Feature atual:** nenhuma em andamento. 009 espera os arquivos do autor (Fase 3).
+- **Próximo:** decidir com o autor: 006 (chefe Asmodeus; ressalvas D-057), 004, 007 ou a 009 Fase 2. Loja direto: `index.html?shop`. Sonda do capítulo com loja: `balance_probe -- cast god chapter buy`. Números do escriba: `RunStats.of(data)` (nunca `PlayerData` direto). Playtest: `index.html?unlock=all&atril=8`. Aberto: C-004 (playtest do autor); C-005 adiada para a 011 (D-050).
 - **Combos:** `ComboData` estende `WordData`; `power` só no dano (D-051); detalhes em D-052.
-- **Áudio:** `AudioManager` (autoload) + `data/audio/`. Regerar os `.tres`: `godot --headless --path . -s tools/gen_audio_data.gd`; lista do que gravar: `-s tools/audio_report.gd` → `docs/AUDIO-LIST.md`.
+- **Áudio:** `AudioManager` (autoload) + `data/audio/`. Regerar os `.tres`: `godot --headless --path . -s tools/gen_audio_data.gd`; sons provisórios: `-s tools/gen_placeholder_sfx.gd`; lista do que gravar: `-s tools/audio_report.gd` → `docs/AUDIO-LIST.md`.
 - **Se o auto mode falhar** (classificador sem veredito): sair do auto mode (Shift+Tab) ou o autor roda os comandos com `!` no chat.
 - **Sonda por onda:** `godot --headless --path . -s tools/balance_probe.gd -- cast god wave=N` (linha FLOW; ver T533 §6).
 - **Pendente de sensação:** screen shake (morte de campeão) — o jogo ainda não tem câmera com shake.

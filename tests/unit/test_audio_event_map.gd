@@ -42,3 +42,10 @@ func test_every_word_and_combo_of_chapter_1_has_its_own_sound() -> void:
 func test_every_sound_says_what_to_record() -> void:
 	for s: SoundData in MAP.sounds:
 		assert_ne(s.note, "", "%s tem nota" % s.id)
+
+
+func test_every_priority_sound_has_a_stream() -> void:
+	# 009 Fase 2 (T910): todo evento de prioridade ≥ 1 toca algo (provisório ou do autor).
+	for s: SoundData in MAP.sounds:
+		if s.priority >= 1:
+			assert_not_null(s.stream, "%s tem som" % s.id)

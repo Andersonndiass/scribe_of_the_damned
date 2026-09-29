@@ -1,11 +1,13 @@
 [gd_resource type="Resource" script_class="SoundData" format=3]
 
 [ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_eapjg"]
+[ext_resource type="AudioStream" path="res://assets/audio/placeholders/sfx_enemy_killed_hollow_monk.tres" id="2_c00w4"]
 
 [resource]
 script = ExtResource("1_eapjg")
 id = &"enemy_killed_hollow_monk"
 event = &"enemy_killed:hollow_monk"
+stream = ExtResource("2_c00w4")
 max_voices = 2
 cooldown_ms = 60
 note = "Monge Oco: suspiro grave que some."

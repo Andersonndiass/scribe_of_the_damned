@@ -1,11 +1,13 @@
 [gd_resource type="Resource" script_class="SoundData" format=3]
 
 [ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_pfiv0"]
+[ext_resource type="AudioStream" path="res://assets/audio/placeholders/sfx_chapter_completed.tres" id="2_orwfw"]
 
 [resource]
 script = ExtResource("1_pfiv0")
 id = &"chapter_completed"
 event = &"chapter_completed"
+stream = ExtResource("2_orwfw")
 bus = &"UI"
 max_voices = 1
 cooldown_ms = 0

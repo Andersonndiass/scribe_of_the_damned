@@ -1,11 +1,13 @@
 [gd_resource type="Resource" script_class="SoundData" format=3]
 
 [ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_3eixw"]
+[ext_resource type="AudioStream" path="res://assets/audio/placeholders/sfx_enemy_killed_gargoyle.tres" id="2_sotam"]
 
 [resource]
 script = ExtResource("1_3eixw")
 id = &"enemy_killed_gargoyle"
 event = &"enemy_killed:gargoyle"
+stream = ExtResource("2_sotam")
 max_voices = 2
 cooldown_ms = 60
 note = "Gárgula: pedra rachando."
