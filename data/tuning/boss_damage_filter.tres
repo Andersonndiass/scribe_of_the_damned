@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="BossDamageFilterData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/data/boss_damage_filter_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+cast_soft_cap = 120.0
+cast_hard_cap = 240.0
+over_soft_mul = 0.5
+uncapped_tags = Array[StringName]([&"auto", &"purgo"])

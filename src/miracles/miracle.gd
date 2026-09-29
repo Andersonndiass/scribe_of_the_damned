@@ -9,6 +9,9 @@ var origin: Vector2
 var direction: Vector2 = Vector2.RIGHT
 ## GLORIA (002 FR-209): multiplica só o dano e a cura, nunca raio, stun, duração ou limiar.
 var damage_mul: float = 1.0
+## Origem para o chefe (006): conjuração e id da palavra/combo. O Caster preenche.
+var cast_id: int = 0
+var tag: StringName = &""
 
 
 func start(p_word: WordData, p_power: float, p_origin: Vector2, p_direction: Vector2) -> void:
@@ -22,7 +25,14 @@ func start(p_word: WordData, p_power: float, p_origin: Vector2, p_direction: Vec
 
 ## Dano final de um valor-base do WordData: × power × GLORIA, no mínimo 1.
 func dmg(base: float) -> int:
+	begin_hit()
 	return maxi(1, roundi(base * power * damage_mul))
+
+
+## Marca quem fere a partir de agora (DamageSource), para o chefe (006). O dmg() já chama; quem
+## calcula o dano por conta própria (PURGO) chama antes do golpe.
+func begin_hit() -> void:
+	DamageSource.mark(tag if tag != &"" else (word.id if word != null else &"miracle"), cast_id)
 
 
 ## Sobrescrever: aplica o efeito.

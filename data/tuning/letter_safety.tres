@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="LetterSafetyTuning" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/data/letter_safety_tuning.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+min_useful = 3
+wait = 4.0
+cooldown = 4.0
+min_distance = 48.0
+max_distance = 80.0

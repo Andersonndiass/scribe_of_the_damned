@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="PhaseData" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://src/data/phase_data.gd" id="1_s"]
+[ext_resource type="Resource" path="res://data/bosses/attacks/beam.tres" id="2_e"]
+[ext_resource type="Resource" path="res://data/bosses/attacks/swipe.tres" id="3_e"]
+[ext_resource type="Script" path="res://src/data/attack_data.gd" id="4_e"]
+
+[resource]
+script = ExtResource("1_s")
+threshold = 1.0
+attacks = Array[ExtResource("4_e")]([ExtResource("2_e"), ExtResource("3_e")])
+weights = PackedFloat32Array(60.0, 40.0)
+interval = 1.6

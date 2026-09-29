@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="AttackData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/data/attack_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"beam"
+kind = &"beam"
+telegraph = 0.9
+active = 0.2
+recover = 0.4
+damage = 2
+width = 12.0

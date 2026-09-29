@@ -326,6 +326,11 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
 - **Web:** console sem erro de áudio no Chrome e no Firefox. Download comprimido 11,2 MB (meta 25). Desempenho: carga normal igual; na varredura do PURGO (300 mortes com som) o p95 subiu de 17 para 23–24 ms e 0–4 frames passaram de 33 ms (antes 0). Alavanca se precisar: `enemy_killed*` com 2 vozes em vez de 3.
 - **Status:** ✅ plano aprovado ("pode").
 
+### D-062 · 2026-09-29 · Spec 006 (Asmodeus + framework de chefes) aprovada
+- **Decisão:** (1A) Rasura nas F2–F3, com proteções (nunca apaga palavra pronta nem a letra pega há < 0,5 s); (2A) janela de exposição de 1 s com +25% das palavras depois de Raio/Swipe errado; (3A) DOMINUS atordoa o chefe só 1 s; (4A) luta de 3–4 min.
+- **Pareceres aplicados:** HP 1500, fases 66/33; teto por conjuração (120 inteiro, 120–240 pela metade) e por fase (para no limiar + 1,5 s invulnerável); telegrafia mínima 600 ms; LetterSafety 3 letras / 4 s; derrota = Game Over normal.
+- **Status:** ✅ aprovada pelo autor ("1a2a3a4a").
+
 ---
 
 ## Conflitos abertos

@@ -15,6 +15,9 @@ func _on_start() -> void:
 	_t = 0.0
 	var em := EnemyQuery.provider as EnemyManager
 	_cursor = em.count - 1 if em != null else -1
+	if em != null:
+		em.hit_boss_sweep(dmg(word.damage))
+		em.stun_boss(word.stun)
 	queue_redraw()
 
 

@@ -16,6 +16,9 @@ func _on_start() -> void:
 	_t = 0.0
 	var em := EnemyQuery.provider as EnemyManager
 	_cursor = em.count - 1 if em != null else -1
+	if em != null:
+		begin_hit()
+		em.hit_boss_sweep(maxi(1, roundi(word.damage * damage_mul)))  # 10 literais, como nos campeões
 	queue_redraw()
 
 
@@ -25,6 +28,7 @@ func _physics_process(delta: float) -> void:
 	if em != null and _cursor >= 0:
 		# "Dá 10 de dano" (FR-208): o power da palavra não entra; a GLORIA sim.
 		var elite: int = maxi(1, roundi(word.damage * damage_mul))
+		begin_hit()
 		_cursor = em.purgo_step(_cursor, word.kill_batch_per_frame, elite)
 	queue_redraw()
 	if _t >= SWEEP_TIME and _cursor < 0:

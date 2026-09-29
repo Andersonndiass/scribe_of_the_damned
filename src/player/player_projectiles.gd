@@ -49,6 +49,7 @@ func _physics_process(delta: float) -> void:
 	if count == 0:
 		return
 	var t0: int = Prof.start()
+	DamageSource.mark(&"auto", 0)  # uma vez por laço: o chefe (006) lê a origem
 	var i: int = 0
 	while i < count:
 		var v: Vector2 = _vel[i]
@@ -59,6 +60,7 @@ func _physics_process(delta: float) -> void:
 			_remove(i)
 		else:
 			i += 1
+	DamageSource.clear()
 	queue_redraw()
 	Prof.stop(&"projeteis_total", t0)
 

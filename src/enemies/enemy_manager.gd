@@ -79,6 +79,10 @@ var guaranteed_drop := PackedByteArray()
 var touch_ready := PackedFloat32Array()
 ## Relógio da física (s), para os intervalos por inimigo.
 var clock: float = 0.0
+## Chefe na página (006): testado em cada função de dano, com a origem do DamageSource.
+var boss_target: BossHurtbox = null
+## Toque com intervalo (ANGELUS, SPIRITUS) no chefe: instante em que pode ser tocado de novo.
+var _boss_touch_ready: float = 0.0
 
 var _letter_field: LetterField
 var _projectiles: EnemyProjectileManager
@@ -365,8 +369,11 @@ func dissolve_all() -> void:
 # --- EnemyQuery provider -------------------------------------------------------------------
 
 func query_nearest(pos: Vector2, radius: float) -> Vector2:
+	var boss_pos: Vector2 = Vector2.INF
+	if _boss_live() and boss_target.hurt_center().distance_to(pos) <= radius + boss_target.hurt_radius():
+		boss_pos = boss_target.hurt_center()
 	if count == 0:
-		return Vector2.INF
+		return boss_pos
 	_rebuild_hash_if_dirty()
 	var best: int = -1
 	var best_d: float = radius * radius
@@ -377,10 +384,15 @@ func query_nearest(pos: Vector2, radius: float) -> Vector2:
 		if d2 <= best_d:
 			best_d = d2
 			best = j
-	return positions[best] if best >= 0 else Vector2.INF
+	if best >= 0 and (boss_pos == Vector2.INF or best_d <= boss_pos.distance_squared_to(pos)):
+		return positions[best]
+	return boss_pos
 
 
 func query_hit(pos: Vector2, radius: float, damage: int) -> bool:
+	if _boss_live() and _boss_in_circle(pos, radius):
+		_hit_boss(damage)
+		return true
 	if count == 0:
 		return false
 	var t0: int = Prof.start()
@@ -420,6 +432,12 @@ func _query_hit(pos: Vector2, radius: float, damage: int) -> bool:
 ## `width`. Retorna quantos acertou. Aplica do maior slot para o menor (seguro com swap-remove).
 func damage_line(origin: Vector2, dir: Vector2, length: float, width: float, damage: int) -> int:
 	var d: Vector2 = dir.normalized()
+	if _boss_live():
+		var rel_b: Vector2 = boss_target.hurt_center() - origin
+		var along_b: float = rel_b.dot(d)
+		var rb: float = boss_target.hurt_radius()
+		if along_b >= -rb and along_b <= length + rb and absf(rel_b.cross(d)) <= width / 2.0 + rb:
+			_hit_boss(damage)
 	var hits := PackedInt32Array()
 	for i: int in count:
 		var rel: Vector2 = positions[i] - origin
@@ -435,6 +453,8 @@ func damage_line(origin: Vector2, dir: Vector2, length: float, width: float, dam
 
 ## Dano em todos os inimigos a até `radius` de `center`. Retorna quantos acertou.
 func damage_in_radius(center: Vector2, radius: float, damage: int) -> int:
+	if _boss_live() and _boss_in_circle(center, radius):
+		_hit_boss(damage)
 	var hits := _slots_in_radius(center, radius)
 	_damage_descending(hits, damage)
 	return hits.size()
@@ -442,6 +462,8 @@ func damage_in_radius(center: Vector2, radius: float, damage: int) -> int:
 
 ## Dano nos inimigos que tocam a cruz (+) centrada em `center`, com braços de `arm` px.
 func damage_cross(center: Vector2, arm: float, width: float, damage: int) -> int:
+	if _boss_live() and _boss_on_cross(center, 0.0, arm, width):
+		_hit_boss(damage)
 	var hits := PackedInt32Array()
 	for i: int in count:
 		var rel: Vector2 = positions[i] - center
@@ -457,6 +479,9 @@ func damage_cross(center: Vector2, arm: float, width: float, damage: int) -> int
 ## Toque (ANGELUS, SPIRITUS): fere quem está no raio e ainda não foi tocado nos últimos
 ## `cooldown` s. Chamado todo tick: nada "pula" entre um toque e outro. Retorna quantos feriu.
 func damage_touch(center: Vector2, radius: float, damage: int, cooldown: float) -> int:
+	if _boss_live() and _boss_in_circle(center, radius) and _boss_touch_ready <= clock:
+		_boss_touch_ready = clock + cooldown
+		_hit_boss(damage)
 	var hits := PackedInt32Array()
 	for i: int in _slots_in_radius(center, radius):
 		if touch_ready[i] <= clock:
@@ -468,6 +493,8 @@ func damage_touch(center: Vector2, radius: float, damage: int, cooldown: float) 
 
 ## Cruz girada de `angle` rad em torno de `center` (MARTYRIUM). Retorna quantos acertou.
 func damage_cross_rotated(center: Vector2, angle: float, arm: float, width: float, damage: int) -> int:
+	if _boss_live() and _boss_on_cross(center, angle, arm, width):
+		_hit_boss(damage)
 	var hits := PackedInt32Array()
 	for i: int in count:
 		var rel: Vector2 = (positions[i] - center).rotated(-angle)
@@ -562,6 +589,39 @@ func stun_damage_step(cursor: int, max_ops: int, stun: float, damage: int) -> in
 		i -= 1
 		ops += 1
 	return i
+
+
+## Varredura de tela no chefe (006): MORTIS, DOMINUS, MISERERE, PURGO e REQUIEM chamam 1× no
+## começo. Só o dano: o chefe nunca morre "por limiar".
+func hit_boss_sweep(amount: int) -> void:
+	if _boss_live():
+		_hit_boss(amount)
+
+
+## DOMINUS no chefe (o chefe aplica o próprio multiplicador; D-062 3A).
+func stun_boss(seconds: float) -> void:
+	if _boss_live():
+		boss_target.stun(seconds)
+
+
+func _boss_live() -> bool:
+	return boss_target != null and is_instance_valid(boss_target) and boss_target.is_targetable()
+
+
+func _boss_in_circle(center: Vector2, radius: float) -> bool:
+	var r: float = radius + boss_target.hurt_radius()
+	return boss_target.hurt_center().distance_squared_to(center) <= r * r
+
+
+func _boss_on_cross(center: Vector2, angle: float, arm: float, width: float) -> bool:
+	var rel: Vector2 = (boss_target.hurt_center() - center).rotated(-angle)
+	var rb: float = boss_target.hurt_radius()
+	var reach: float = width / 2.0 + rb
+	return (absf(rel.y) <= reach and absf(rel.x) <= arm + rb) or (absf(rel.x) <= reach and absf(rel.y) <= arm + rb)
+
+
+func _hit_boss(amount: int) -> void:
+	boss_target.take(amount, DamageSource.tag, DamageSource.cast_id)
 
 
 ## MORTIS em lotes (FR-021): processa até `max_ops` slots, do `cursor` para baixo. Inimigos com

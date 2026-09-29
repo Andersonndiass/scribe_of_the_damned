@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="AttackData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/data/attack_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"rotating_cross"
+kind = &"rotating_cross"
+telegraph = 1.2
+active = 5.0
+recover = 0.4
+damage = 2
+width = 10.0
+reach = 180.0
+arms = 4
+turn_degrees_per_s = 36.0
+duration = 5.0

@@ -26,6 +26,9 @@ var last_repeatable_power: float = 0.0
 
 const VERBUM_ID := &"verbum"
 
+## Contador de conjurações (006): cada milagre, eco do VERBUM incluso, é uma conjuração nova.
+var _next_cast_id: int = 1
+
 
 func _ready() -> void:
 	heresy_pool = HeresyPool.new()
@@ -136,6 +139,9 @@ func _start_miracle(word: WordData, power: float, origin: Vector2, direction: Ve
 	if word.miracle_scene != null and PoolManager.is_registered(word.id):
 		var miracle := PoolManager.acquire(word.id) as Miracle
 		miracle.damage_mul = player.buffs.damage_mul()
+		miracle.cast_id = _next_cast_id
+		miracle.tag = word.id
+		_next_cast_id += 1
 		miracle.start(word, power, origin, direction)
 	else:
 		push_warning("Caster: '%s' não tem cena de milagre registrada" % word.latin)
