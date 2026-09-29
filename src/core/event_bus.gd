@@ -87,6 +87,12 @@ signal codex_discovered(category: StringName, id: StringName)
 # Capítulo
 signal chapter_completed(chapter: int)
 
+# Cutscenes (008): o fluxo do jogo escuta só o `cutscene_finished`, que sai sempre por último.
+signal cutscene_started(id: StringName)
+signal cutscene_mark_reached(id: StringName, mark: StringName)
+signal cutscene_skipped(id: StringName)
+signal cutscene_finished(id: StringName, skipped: bool)
+
 # Sensação
 signal hitstop_requested(duration_ms: int)
 

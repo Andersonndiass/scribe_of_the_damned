@@ -10,6 +10,12 @@ signal sound_played(id: StringName)
 
 const VOICES_SFX := 24
 const VOICES_UI := 4
+## Vozes de efeito que tocam com a árvore parada (cutscenes com o jogo pausado atrás, 008 FR-806b).
+const VOICES_ALWAYS := 4
+## Falas dubladas (008 FR-814, FR-816): `<pasta>/<idioma>/<id>.mp3` e `<pasta>/latin/<palavra>.mp3`.
+const VOICE_DIR := "res://assets/audio/voice"
+const VOICE_EXTS: PackedStringArray = ["mp3", "ogg", "wav"]
+const HERESY_VOICE := &"haeresis"
 const EVENT_MAP_PATH := "res://data/audio/event_map.tres"
 const CHAPTER_MUSIC_PATH := "res://data/audio/music/chapter_1.tres"
 
@@ -24,8 +30,16 @@ var last_played: StringName = &""
 var _unlocked: bool = true
 var _sfx: VoiceAllocator
 var _ui: VoiceAllocator
+var _always: VoiceAllocator
 var _sfx_players: Array[AudioStreamPlayer] = []
 var _ui_players: Array[AudioStreamPlayer] = []
+var _always_players: Array[AudioStreamPlayer] = []
+var _always_silent_end := PackedFloat64Array()
+## Fala dublada (cutscene ou balão) e latim conjurado: um player cada, tocam com o jogo parado.
+var _line_player: AudioStreamPlayer
+var _latin_player: AudioStreamPlayer
+## Último arquivo de voz tocado (testes e métricas); vazio = nenhum.
+var last_voice: String = ""
 ## Fim da voz silenciosa (s); -1 = voz com stream (libera quando o player para).
 var _sfx_silent_end := PackedFloat64Array()
 var _ui_silent_end := PackedFloat64Array()
@@ -45,8 +59,13 @@ func _ready() -> void:
 	_ui = VoiceAllocator.new(VOICES_UI)
 	_sfx_players = _make_players(VOICES_SFX, &"SFX", Node.PROCESS_MODE_PAUSABLE)
 	_ui_players = _make_players(VOICES_UI, &"UI", Node.PROCESS_MODE_ALWAYS)
+	_always = VoiceAllocator.new(VOICES_ALWAYS)
+	_always_players = _make_players(VOICES_ALWAYS, &"SFX", Node.PROCESS_MODE_ALWAYS)
+	_line_player = _make_players(1, &"SFX", Node.PROCESS_MODE_ALWAYS)[0]
+	_latin_player = _make_players(1, &"SFX", Node.PROCESS_MODE_ALWAYS)[0]
 	_sfx_silent_end.resize(VOICES_SFX)
 	_ui_silent_end.resize(VOICES_UI)
+	_always_silent_end.resize(VOICES_ALWAYS)
 	music = MusicDirector.new()
 	music.name = "Music"
 	add_child(music)
@@ -67,11 +86,45 @@ func _make_players(n: int, bus: StringName, mode: Node.ProcessMode) -> Array[Aud
 # --- API --------------------------------------------------------------------------------------
 
 ## Toca o som de id `id` (cutscenes e animações, FR-907). Retorna true se ocupou uma voz.
-func play(id: StringName) -> bool:
+## `always`: toca mesmo com a árvore parada (cutscenes por cima do jogo pausado).
+func play(id: StringName, always: bool = false) -> bool:
 	if event_map == null:
 		return false
 	var s: SoundData = event_map.by_id(id)
-	return play_sound(s) if s != null else false
+	return play_sound(s, always) if s != null else false
+
+
+## Caminho da voz de uma fala no idioma atual (ou "" se não existir o arquivo).
+static func voice_path(key: String, folder: String) -> String:
+	for ext: String in VOICE_EXTS:
+		var path: String = "%s/%s/%s.%s" % [VOICE_DIR, folder, key.to_lower(), ext]
+		if ResourceLoader.exists(path):
+			return path
+	return ""
+
+
+## Fala dublada (008 FR-814): a voz de `key` no idioma atual, se o arquivo existir.
+func play_line_voice(key: String) -> bool:
+	return _play_file(_line_player, voice_path(key, TranslationServer.get_locale()))
+
+
+func stop_line_voice() -> void:
+	_line_player.stop()
+
+
+## Latim pronunciado (008 FR-816): o mesmo áudio nos dois idiomas.
+func play_latin(word_id: StringName) -> bool:
+	return _play_file(_latin_player, voice_path(String(word_id), "latin"))
+
+
+func _play_file(p: AudioStreamPlayer, path: String) -> bool:
+	if path == "" or not _unlocked:
+		return false
+	p.stop()
+	p.stream = load(path)
+	p.play()
+	last_voice = path
+	return true
 
 
 ## Toca o som do evento `key` (com variante opcional).
@@ -82,17 +135,17 @@ func play_event(key: StringName, variant: StringName = &"") -> bool:
 	return play_sound(s) if s != null else false
 
 
-func play_sound(s: SoundData) -> bool:
+func play_sound(s: SoundData, always: bool = false) -> bool:
 	if not _unlocked:
 		return false
 	var ui: bool = s.bus == &"UI"
-	var alloc: VoiceAllocator = _ui if ui else _sfx
+	var alloc: VoiceAllocator = _ui if ui else (_always if always else _sfx)
 	var now: float = Time.get_ticks_msec() / 1000.0
 	var v: int = alloc.request(s.id, s.max_voices, s.cooldown_ms, s.priority, now)
 	if v < 0:
 		return false
-	var p: AudioStreamPlayer = (_ui_players if ui else _sfx_players)[v]
-	var silent_end: PackedFloat64Array = _ui_silent_end if ui else _sfx_silent_end
+	var p: AudioStreamPlayer = (_ui_players if ui else (_always_players if always else _sfx_players))[v]
+	var silent_end: PackedFloat64Array = _ui_silent_end if ui else (_always_silent_end if always else _sfx_silent_end)
 	p.stop()
 	if s.stream != null:
 		p.stream = s.stream
@@ -146,6 +199,7 @@ func _process(_delta: float) -> void:
 	var now: float = Time.get_ticks_msec() / 1000.0
 	_release_finished(_sfx, _sfx_players, _sfx_silent_end, now)
 	_release_finished(_ui, _ui_players, _ui_silent_end, now)
+	_release_finished(_always, _always_players, _always_silent_end, now)
 
 
 func _release_finished(alloc: VoiceAllocator, players: Array[AudioStreamPlayer],
@@ -189,9 +243,14 @@ func _connect_events() -> void:
 			play_event(&"atril_valid")
 		_atril_valid = valid)
 	EventBus.word_cast.connect(func(w: WordData, _pw: float, _o: Vector2, _dir: Vector2) -> void:
-		play_event(&"word_cast", w.id))
-	EventBus.combo_cast.connect(func(c: ComboData, _pw: float) -> void: play_event(&"combo_cast", c.id))
-	EventBus.heresy_committed.connect(func(_p: Vector2) -> void: play_event(&"heresy_committed"))
+		play_event(&"word_cast", w.id)
+		play_latin(w.id))
+	EventBus.combo_cast.connect(func(c: ComboData, _pw: float) -> void:
+		play_event(&"combo_cast", c.id)
+		play_latin(c.id))
+	EventBus.heresy_committed.connect(func(_p: Vector2) -> void:
+		play_event(&"heresy_committed")
+		play_latin(HERESY_VOICE))
 	EventBus.atril_purged.connect(func(_l: PackedStringArray, _p: Vector2) -> void: play_event(&"atril_purged"))
 	EventBus.combo_window_opened.connect(func(_w: WordData, _d: float, _pa: PackedStringArray) -> void:
 		play_event(&"combo_window_opened"))

@@ -4,5 +4,8 @@
 
 [resource]
 script = ExtResource("1_ct")
-chars_per_second = 40.0
+chars_per_second = 30.0
 skip_hold = 3.0
+skip_show_after = 0.1
+skip_drain = 0.2
+post_boss_delay = 0.4
