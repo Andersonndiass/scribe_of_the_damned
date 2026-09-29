@@ -41,7 +41,7 @@ func _ready() -> void:
 
 
 func hud_rect() -> Rect2:
-	return Rect2(BAR.position.x, NAME_Y, BAR.size.x, BAR.end.y - NAME_Y + 2)
+	return Rect2(BAR.position.x, NAME_Y, BAR.size.x, MARK_TOP + MARK_H + 4 - NAME_Y)
 
 
 func _process(delta: float) -> void:
@@ -66,5 +66,9 @@ func _draw() -> void:
 	for i: int in range(1, boss.phases.size()):
 		var x: float = roundf(BAR.position.x + BAR.size.x * boss.phases[i].threshold)
 		var color: Color = Palette.BLOOD if (_alert_left > 0.0 and _alert_phase == i) else Palette.INK
+		# Marca de 2 px (INK + CHALK) para não sumir sobre a vida; cabeça 4×4 INK com miolo CHALK embaixo (em cima encostava no nome).
+		var core: Color = Palette.BLOOD if color == Palette.BLOOD else Palette.CHALK
 		draw_rect(Rect2(x, MARK_TOP, 1, MARK_H), color)
-		draw_rect(Rect2(x - 1, MARK_TOP - 1, 3, 3), Palette.CHALK)
+		draw_rect(Rect2(x + 1, MARK_TOP, 1, MARK_H), Palette.CHALK)
+		draw_rect(Rect2(x - 1, MARK_TOP + MARK_H, 4, 4), Palette.INK)
+		draw_rect(Rect2(x, MARK_TOP + MARK_H + 1, 2, 2), core)

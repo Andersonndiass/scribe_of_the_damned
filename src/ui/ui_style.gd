@@ -37,6 +37,26 @@ static func dim_level() -> float:
 	return 0.75 if high() else 0.5
 
 
+## Painel padrão (D-076, 9-slice desenhado): borda de 1 px INK (2 no alto contraste) com o pixel do
+## canto recortado, miolo `fill`, assento de 1 px INK_SOFT embaixo.
+static func draw_panel(ci: CanvasItem, r: Rect2, fill: Color = Palette.PARCHMENT) -> void:
+	var w: float = outline_w()
+	var outer: Rect2 = r.grow(w)
+	ci.draw_rect(Rect2(outer.position.x + 1, outer.position.y, outer.size.x - 2, outer.size.y), Palette.INK)
+	ci.draw_rect(Rect2(outer.position.x, outer.position.y + 1, outer.size.x, outer.size.y - 2), Palette.INK)
+	ci.draw_rect(r, fill)
+	ci.draw_rect(Rect2(outer.position.x + 1, outer.end.y, outer.size.x - 2, 1), Palette.INK_SOFT)
+
+
+## Etiqueta de destaque: texto INK sobre GOLD_LIGHT com borda INK (GOLD em texto não lê no pergaminho).
+static func draw_tag(ci: CanvasItem, text: String, center_x: float, y: float) -> void:
+	var w: float = PixelFont.width(text)
+	var r := Rect2(roundf(center_x - w / 2.0 - 4), y - 3, w + 8, 12)
+	ci.draw_rect(r.grow(1), Palette.INK)
+	ci.draw_rect(r, Palette.GOLD_LIGHT)
+	PixelFont.draw_centered(ci, text, center_x, y, Palette.INK)
+
+
 ## Largura de uma fita para `text` (escala 1); `min_w` encolhe a fita onde o espaço é curto.
 static func ribbon_width(text: String, min_w: float = RIBBON_MIN_W) -> float:
 	return maxf(min_w, PixelFont.width(text) + RIBBON_PAD)

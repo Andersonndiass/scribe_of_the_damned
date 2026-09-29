@@ -163,29 +163,43 @@ func _draw() -> void:
 	var shown: PackedStringArray = letters
 	if anim in [Anim.CAST, Anim.PURGE, Anim.HERESY, Anim.FIZZLE] and letters.is_empty():
 		shown = _last_letters
+	var valid: bool = status == Atril.Status.VALID and anim == Anim.NONE
+	if valid:
+		# Palavra pronta: anel externo que pulsa GOLD/GOLD_LIGHT por fora da moldura INK (D-076).
+		var pulse: Color = Palette.GOLD if int(_pulse / VALID_PULSE) % 2 == 0 else Palette.GOLD_LIGHT
+		_draw_frame(Rect2(rect.position + Vector2(shake, 0), rect.size).grow(2.0), pulse)
 	for i: int in capacity():
 		var pos := Vector2(rect.position.x + i * (SLOT.x + SLOT_GAP) + shake, rect.position.y)
 		var slot := Rect2(pos, SLOT)
+		var rare: bool = i < shown.size() and (rare_mask >> i) & 1 == 1 and anim == Anim.NONE
+		var bg: Color = Palette.PARCHMENT_OLD
+		if anim == Anim.CAST:
+			bg = Palette.CHALK
+		elif valid or rare:
+			bg = Palette.GOLD_LIGHT
 		draw_rect(slot.grow(1.0), frame_color)
-		draw_rect(slot, Palette.PARCHMENT_OLD if anim != Anim.CAST else Palette.CHALK)
-		if i < shown.size():
-			var dy: float = 0.0
-			if anim == Anim.PURGE:
-				dy = (1.0 - _anim_left / ANIM_TIME[Anim.PURGE]) * 6.0
-			var rare: bool = (rare_mask >> i) & 1 == 1 and anim == Anim.NONE
-			var color: Color = Palette.GOLD if (rare or status == Atril.Status.VALID) else Palette.INK
-			if anim == Anim.HERESY:
-				color = Palette.BLOOD
-			elif anim == Anim.FIZZLE:
-				color = Palette.INK_SOFT if int(_anim_left / FIZZLE_BLINK) % 2 == 0 else Palette.PARCHMENT_OLD
-			if anim != Anim.CAST:
-				PixelFont.draw(self, shown[i], pos + Vector2(4, 4 + dy), color)
+		draw_rect(slot, bg)
 	if echo_text != "":
 		_draw_echo(rect)
+	for i: int in mini(shown.size(), capacity()):
+		var pos := Vector2(rect.position.x + i * (SLOT.x + SLOT_GAP) + shake, rect.position.y)
+		var dy: float = 0.0
+		if anim == Anim.PURGE:
+			dy = (1.0 - _anim_left / ANIM_TIME[Anim.PURGE]) * 6.0
+		# Letra sempre INK (GOLD sobre o slot dava 1.38:1, ilegível); o ouro vai para o fundo.
+		var color: Color = Palette.INK
+		if anim == Anim.HERESY:
+			color = Palette.BLOOD
+		elif anim == Anim.FIZZLE:
+			color = Palette.INK_SOFT if int(_anim_left / FIZZLE_BLINK) % 2 == 0 else Palette.PARCHMENT_OLD
+		if anim != Anim.CAST:
+			PixelFont.draw(self, shown[i], pos + Vector2(4, 4 + dy), color)
 	_draw_forgiveness(rect)
 	_draw_erasure(rect)
 	if is_combo_ready() and anim == Anim.NONE:
-		_draw_frame(rect.grow(3.0), frame_color)
+		# Combo pronto: moldura de 2 px (INK por fora, GOLD por dentro).
+		_draw_frame(rect.grow(4.0), Palette.INK)
+		_draw_frame(rect.grow(3.0), Palette.GOLD)
 	if anim == Anim.HERESY:
 		PixelFont.draw_centered(self, HERESY_TEXT, CENTER_X, rect.position.y - 10, Palette.BLOOD)
 	_draw_hints(rect)
@@ -196,7 +210,9 @@ func _draw() -> void:
 func _draw_erasure(rect: Rect2) -> void:
 	if erasure_warning and not letters.is_empty() and status != Atril.Status.VALID:
 		var pos := Vector2(rect.position.x + (letters.size() - 1) * (SLOT.x + SLOT_GAP), rect.position.y)
-		draw_line(pos + Vector2(1, SLOT.y - 2), pos + Vector2(SLOT.x - 2, 1), Palette.BLOOD, 1.0)
+		# Diagonal em degraus de 2×1 (traço de 1 px de draw_line some).
+		for k: int in int(SLOT.x) - 2:
+			draw_rect(Rect2(pos + Vector2(1 + k, SLOT.y - 2 - k), Vector2(2, 1)), Palette.BLOOD)
 	if _erased_left > 0.0 and _erased_slot >= 0:
 		var p := Vector2(rect.position.x + _erased_slot * (SLOT.x + SLOT_GAP), rect.position.y)
 		for i: int in 4:
@@ -204,30 +220,34 @@ func _draw_erasure(rect: Rect2) -> void:
 
 
 func _draw_forgiveness(rect: Rect2) -> void:
-	var seal := Rect2(rect.position - Vector2(SEAL_SIZE + 4, 0), Vector2(SEAL_SIZE, SEAL_SIZE))
+	# Selo 7×7: 1 px INK por fora e o miolo 5×5 (GOLD pronto; pisca CHALK ao ser usado).
+	var seal := Rect2(rect.position - Vector2(SEAL_SIZE + 5, -1), Vector2(SEAL_SIZE, SEAL_SIZE))
 	if forgiveness_ready:
+		draw_rect(seal.grow(1.0), Palette.INK)
 		draw_rect(seal, Palette.GOLD)
 	elif _seal_blink_left > 0.0:
 		var phase: int = int((SEAL_BLINK_TIME - _seal_blink_left) / (SEAL_BLINK_TIME / (SEAL_BLINKS * 2)))
 		if phase % 2 == 0:
+			draw_rect(seal.grow(1.0), Palette.INK)
 			draw_rect(seal, Palette.CHALK)
 	if _cross_left > 0.0:
 		var k: float = 1.0 - _cross_left / FORGIVEN_CROSS_TIME
 		var c: Vector2 = (_cross_at - Vector2(0, FORGIVEN_CROSS_ABOVE + FORGIVEN_CROSS_RISE * k)).round()
-		draw_rect(Rect2(c + Vector2(-3, 0), Vector2(7, 1)), Palette.GOLD)
-		draw_rect(Rect2(c + Vector2(0, -3), Vector2(1, 7)), Palette.GOLD)
+		# Cruz de braços de 2 px com contorno INK.
+		var h_bar := Rect2(c + Vector2(-4, -1), Vector2(8, 2))
+		var v_bar := Rect2(c + Vector2(-1, -4), Vector2(2, 8))
+		draw_rect(h_bar.grow(1.0), Palette.INK)
+		draw_rect(v_bar.grow(1.0), Palette.INK)
+		draw_rect(h_bar, Palette.GOLD)
+		draw_rect(v_bar, Palette.GOLD)
 
 
-## Fantasma do VERBUM: as letras em INK_SOFT deslocadas, com metade dos pixels cobertos pelo
-## fundo do slot em xadrez (dithering 50%, Princípio VII: sem alpha).
+## Eco do VERBUM: as letras em INK_SOFT sólido, deslocadas, por baixo das letras reais (D-076: o
+## xadrez destruía o glifo de 1 px e apagava metade da letra de verdade).
 func _draw_echo(rect: Rect2) -> void:
-	var bg: Color = Palette.CHALK if anim == Anim.CAST else Palette.PARCHMENT_OLD
 	for i: int in mini(echo_text.length(), capacity()):
 		var pos := Vector2(rect.position.x + i * (SLOT.x + SLOT_GAP), rect.position.y)
 		PixelFont.draw(self, echo_text[i], pos + Vector2(4, 4) + ECHO_OFFSET, Palette.INK_SOFT)
-		for y: int in int(SLOT.y):
-			for x: int in range(y % 2, int(SLOT.x), 2):
-				draw_rect(Rect2(pos + Vector2(x, y), Vector2.ONE), bg)
 
 
 ## Moldura de 1 px com retângulos cheios (pixel exato; a linha do draw_rect vazado cai no meio pixel).
@@ -243,10 +263,10 @@ func _frame_color() -> Color:
 		Anim.HERESY, Anim.REJECT:
 			return Palette.BLOOD
 		Anim.CAST:
-			return Palette.GOLD_LIGHT
+			return Palette.INK
 	match status:
 		Atril.Status.VALID:
-			return Palette.GOLD if int(_pulse / VALID_PULSE) % 2 == 0 else Palette.GOLD_LIGHT
+			return Palette.INK
 		Atril.Status.PARTIAL:
 			return Palette.INK
 		Atril.Status.FULL_REJECT:
@@ -259,6 +279,9 @@ func _draw_hints(rect: Rect2) -> void:
 	var y: float = rect.position.y + 4
 	for i: int in hints.size():
 		var first_valid: bool = status == Atril.Status.VALID and i == 0
-		var color: Color = Palette.GOLD if (first_valid or combo_partners.has(hints[i])) else Palette.INK_SOFT
-		PixelFont.draw(self, hints[i], Vector2(x, y), color)
+		var gold: bool = first_valid or combo_partners.has(hints[i])
+		if gold:
+			# Dica em destaque: texto INK sobre etiqueta GOLD_LIGHT (GOLD em texto dava 2.1:1).
+			draw_rect(Rect2(x - 2, y - 2, PixelFont.width(hints[i]) + 4, 10), Palette.GOLD_LIGHT)
+		PixelFont.draw(self, hints[i], Vector2(x, y), Palette.INK if gold else Palette.INK_SOFT)
 		x += PixelFont.width(hints[i]) + 8

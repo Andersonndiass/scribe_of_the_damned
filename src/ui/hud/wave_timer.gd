@@ -59,7 +59,7 @@ func _draw() -> void:
 	if wave_index == 0:
 		return
 	if not running:
-		PixelFont.draw_centered(self, tr(&"HUD_CHAPTER_COMPLETE") if chapter_done else tr(&"HUD_WAVE_COMPLETE"), CENTER_X, TOP + 4, Palette.GOLD)
+		UiStyle.draw_tag(self, tr(&"HUD_CHAPTER_COMPLETE") if chapter_done else tr(&"HUD_WAVE_COMPLETE"), CENTER_X, TOP + 4)
 		return
 	PixelFont.draw_centered(self, tr(&"HUD_WAVE").format({"n": wave_index}), CENTER_X, TOP, Palette.INK_SOFT)
 	var urgent: bool = remaining <= 10.0

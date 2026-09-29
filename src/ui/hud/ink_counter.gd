@@ -21,5 +21,6 @@ func _process(_delta: float) -> void:
 func _draw() -> void:
 	var text: String = str(maxi(shown, 0))
 	var x: float = TOP_RIGHT.x - PixelFont.width(text)
-	PixelFont.draw(self, text, Vector2(x, TOP_RIGHT.y + 2), Palette.GOLD)
+	# Número em INK (GOLD em texto não lê no pergaminho); o ouro fica na gota com contorno.
+	PixelFont.draw(self, text, Vector2(x, TOP_RIGHT.y + 2), Palette.INK)
 	draw_texture(ICON, Vector2(x - 9, TOP_RIGHT.y))
