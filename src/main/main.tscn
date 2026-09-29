@@ -1,5 +1,6 @@
-[gd_scene load_steps=22 format=3]
+[gd_scene load_steps=23 format=3]
 
+[ext_resource type="Script" path="res://src/ui/shop/shop_screen.gd" id="94_shopscreen"]
 [ext_resource type="Script" path="res://src/shop/shop.gd" id="93_shop"]
 [ext_resource type="Script" path="res://src/data/combo_data.gd" id="92_cd"]
 [ext_resource type="Resource" path="res://data/combos/vapor.tres" id="91_vapor"]
@@ -102,3 +103,6 @@ gold = NodePath("../World/GoldInkField")
 
 [node name="Shop" type="Node" parent="."]
 script = ExtResource("93_shop")
+
+[node name="ShopScreen" type="CanvasLayer" parent="."]
+script = ExtResource("94_shopscreen")

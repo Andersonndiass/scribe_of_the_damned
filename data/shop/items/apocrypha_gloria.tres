@@ -1,7 +1,8 @@
-[gd_resource type="Resource" script_class="ShopItemData" load_steps=3 format=3]
+[gd_resource type="Resource" script_class="ShopItemData" load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://src/data/shop_item_data.gd" id="1_si"]
 [ext_resource type="Resource" path="res://data/words/gloria.tres" id="2_word"]
+[ext_resource type="Texture2D" path="res://assets/placeholders/itm_apocrypha_gloria.tres" id="9_icon"]
 
 [resource]
 script = ExtResource("1_si")
@@ -9,5 +10,6 @@ id = &"apocrypha_gloria"
 kind = &"apocrypha"
 display_name = "GLORIA"
 short_desc = "Milagres ×1,5"
+icon = ExtResource("9_icon")
 base_price = 9
 word = ExtResource("2_word")

@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="ShopItemData" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="ShopItemData" load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://src/data/shop_item_data.gd" id="1_si"]
+[ext_resource type="Texture2D" path="res://assets/placeholders/itm_new_shelf.tres" id="9_icon"]
 
 [resource]
 script = ExtResource("1_si")
@@ -8,6 +9,7 @@ id = &"new_shelf"
 kind = &"item"
 display_name = "Estante Nova"
 short_desc = "+1 espaço no atril"
+icon = ExtResource("9_icon")
 base_price = 9
 stat = &"atril_capacity"
 mode = &"add"

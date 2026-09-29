@@ -5,7 +5,7 @@ extends RefCounted
 ## Acentos são normalizados (Á→A, Ç→C…) até a localização da feature 007.
 
 const ATLAS := preload("res://assets/placeholders/ui_font_atlas.tres")
-const CHARS := "ABCDEFGHIJKLMNOPQRSTUVWXYZÆ0123456789:!?-./, "
+const CHARS := "ABCDEFGHIJKLMNOPQRSTUVWXYZÆ0123456789:!?-./, +%[];<>"
 const GLYPH := Vector2i(5, 6)
 const ADVANCE := 6
 const LINE_HEIGHT := 7

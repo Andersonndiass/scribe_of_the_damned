@@ -14,6 +14,9 @@ const LETTER_PREWARM := 150
 ## Instâncias de cada milagre em paralelo (conjurar é limitado pela coleta de letras).
 const MIRACLE_PREWARM := 4
 
+## Debug ?shop: tinta e espera antes de abrir a loja.
+const SHOP_DEBUG_INK := 30
+const SHOP_DEBUG_DELAY := 0.5
 const STRESS_SCENE := "res://src/debug/stress_scene.tscn"
 const ROSTER_SCENE := "res://src/debug/roster_scene.tscn"
 @export var player_data: PlayerData
@@ -80,6 +83,11 @@ func _ready() -> void:
 	EventBus.player_died.connect(func() -> void: _shop_in = -1.0)
 	overlays.restart_requested.connect(_restart)
 	start_wave(0)
+	if args.contains("shop"):
+		# Debug (003): abre a loja logo no começo, com tinta, para ver a tela sem jogar a onda.
+		GameState.gold_ink = SHOP_DEBUG_INK
+		wave_director.stop()
+		_shop_in = SHOP_DEBUG_DELAY
 
 
 ## Começa a onda `slot` (0-based) do capítulo. Usado também pela sonda de balanceamento.

@@ -1,0 +1,436 @@
+class_name ShopScreen
+extends CanvasLayer
+## Tela do Scriptorium Noturno (003 FR-313, FR-314; ficha 28). Placeholder desenhado em código
+## com as medidas do design-agent e os tempos do animation-agent (2026-09-28).
+## Só teclado: ←/→ escolhe, Espaço compra, L trava, R rerola, Enter vai para a próxima onda.
+## Roda com a árvore pausada (PROCESS_MODE_ALWAYS); toda a lógica fica no Shop.
+
+const CARD_SIZE := Vector2(100, 140)
+const CARD_Y := 64.0
+const CARD_X: Array[float] = [192.0, 300.0, 408.0, 524.0]
+const ICON_RECT := Rect2(26, 8, 48, 48)
+const NAME_Y: Array[float] = [62.0, 70.0]
+const NAME_CHARS := 15
+const DESC_Y: Array[float] = [84.0, 92.0, 100.0]
+const PRICE_Y := 116.0
+const HOVER_LIFT := 4.0
+const WALL_BOTTOM := 216.0
+const TABLE := Rect2(0, 216, 640, 56)
+const WINDOW := Rect2(32, 32, 48, 72)
+const MOON := Vector2(58, 46)
+const INK_PLATE := Rect2(520, 16, 104, 24)
+const REROLL_PLATE := Rect2(192, 228, 96, 24)
+const RIBBON := Rect2(448, 230, 176, 20)
+const LEGEND_POS := Vector2(16, 336)
+const SCRIBE := Rect2(96, 176, 32, 40)
+const DROP_ICON := preload("res://assets/placeholders/itm_gota_dourada.tres")
+
+## Tempos (animation-agent): entrada 5 q @80 ms com 100 ms entre cartas; compra 200 + 400 ms;
+## sem tinta treme 4 × 50 ms e o preço fica BLOOD por 400 ms; trava 100 ms; reroll 400 ms por
+## carta com 100 ms entre cartas; tinta sobe 20 ms por unidade (no máximo 700 ms); saída 4 × 100 ms.
+const ENTER_TIME := 0.4
+const ENTER_STAGGER := 0.1
+const BUY_HIT := 0.2
+const BUY_SETTLE := 0.4
+const SHAKE_TIME := 0.2
+const SHAKE_STEP := 0.05
+const ALERT_TIME := 0.4
+const REROLL_TIME := 0.4
+const REROLL_STAGGER := 0.1
+const INK_STEP := 0.02
+const INK_ROLL_MAX := 0.7
+const INK_POP := 0.1
+const EXIT_TIME := 0.4
+const EXIT_STEPS := 4
+const SCRIBE_FRAME := 0.2
+const SCRIBE_FRAMES := 6
+
+@export var shop_path: NodePath = ^"../Shop"
+
+var selected: int = 0
+
+var _shop: Shop
+var _canvas: Node2D
+var _t: float = 0.0
+var _anim_start := PackedFloat32Array()
+var _anim_kind: Array[StringName] = []
+var _shake_left := PackedFloat32Array()
+var _alert_left := PackedFloat32Array()
+var _ink_shown: float = 0.0
+var _ink_rate: float = 0.0
+var _pop_left: float = 0.0
+var _exit_left: float = -1.0
+
+
+func _ready() -> void:
+	layer = 20
+	process_mode = Node.PROCESS_MODE_ALWAYS
+	visible = false
+	_shop = get_node_or_null(shop_path) as Shop
+	_canvas = Node2D.new()
+	_canvas.draw.connect(_on_draw)
+	add_child(_canvas)
+	EventBus.shop_opened.connect(_on_opened)
+	EventBus.shop_closed.connect(_on_closed)
+
+
+func _on_opened(_wave: int) -> void:
+	var n: int = _shop.offer.cards.size()
+	_anim_start.resize(n)
+	_anim_kind.resize(n)
+	_shake_left.resize(n)
+	_alert_left.resize(n)
+	_shake_left.fill(0.0)
+	_alert_left.fill(0.0)
+	for i: int in n:
+		_start_anim(i, &"enter", i * ENTER_STAGGER)
+	selected = 0
+	_ink_shown = GameState.gold_ink
+	_exit_left = -1.0
+	visible = true
+	_canvas.queue_redraw()
+
+
+func _on_closed() -> void:
+	# A onda já recomeçou por baixo; a tela sai em dithering (4 × 100 ms).
+	_exit_left = EXIT_TIME
+
+
+func is_closing() -> bool:
+	return _exit_left >= 0.0
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if visible and _shop != null and _shop.is_open and handle_input(event):
+		get_viewport().set_input_as_handled()
+
+
+## Trata uma tecla da loja. Retorna true se era da loja (e consome a entrada).
+func handle_input(event: InputEvent) -> bool:
+	if not event.is_pressed() or event.is_echo():
+		return false
+	var n: int = _shop.offer.cards.size()
+	if event.is_action(&"move_left"):
+		_finish_entry()
+		selected = (selected - 1 + n) % n
+	elif event.is_action(&"move_right"):
+		_finish_entry()
+		selected = (selected + 1) % n
+	elif event.is_action(&"cast"):
+		_finish_entry()
+		_try_buy(selected)
+	elif event.is_action(&"shop_lock"):
+		_finish_entry()
+		if _shop.toggle_lock(selected) or _shop.offer.locked_slot() == -1:
+			_start_anim(selected, &"lock", 0.0)
+	elif event.is_action(&"shop_reroll"):
+		_finish_entry()
+		_try_reroll()
+	elif event.is_action(&"shop_next"):
+		_shop.close()
+	elif event.is_action(&"pause"):
+		pass  # o jogo já está parado na loja: Esc não faz nada aqui
+	else:
+		return false
+	_canvas.queue_redraw()
+	return true
+
+
+## Estado visível da carta `i` (testes e desenho).
+func card_state(i: int) -> StringName:
+	if _shop.offer.cards[i] == null:
+		return &"empty"
+	var kind: StringName = _anim_kind[i] if i < _anim_kind.size() else &""
+	if kind != &"" and _anim_age(i) >= 0.0 and _anim_age(i) < _anim_length(kind):
+		return kind
+	if _shop.offer.is_sold(i):
+		return &"sold"
+	if not _shop.can_afford(i):
+		return &"no_money"
+	if _shop.offer.locked_slot() == i:
+		return &"locked"
+	return &"idle"
+
+
+func _try_buy(i: int) -> void:
+	if _shop.offer.is_sold(i):
+		return
+	if _shop.buy(i):
+		_start_anim(i, &"buy", 0.0)
+		_pop_left = INK_POP
+		_ink_rate = maxf(absf(_ink_shown - GameState.gold_ink) / INK_ROLL_MAX, 1.0 / INK_STEP)
+	else:
+		_shake_left[i] = SHAKE_TIME
+		_alert_left[i] = ALERT_TIME
+
+
+func _try_reroll() -> void:
+	if not _shop.reroll():
+		return
+	_ink_rate = maxf(absf(_ink_shown - GameState.gold_ink) / INK_ROLL_MAX, 1.0 / INK_STEP)
+	var k: int = 0
+	for i: int in _shop.offer.cards.size():
+		if not _shop.offer.is_sold(i) and i != _shop.offer.locked_slot():
+			_start_anim(i, &"reroll", k * REROLL_STAGGER)
+			k += 1
+
+
+func _start_anim(i: int, kind: StringName, delay: float) -> void:
+	_anim_kind[i] = kind
+	_anim_start[i] = _t + delay
+
+
+func _anim_age(i: int) -> float:
+	return _t - _anim_start[i]
+
+
+func _anim_length(kind: StringName) -> float:
+	match kind:
+		&"enter":
+			return ENTER_TIME
+		&"buy":
+			return BUY_HIT + BUY_SETTLE
+		&"reroll":
+			return REROLL_TIME
+		&"lock":
+			return 0.1
+	return 0.0
+
+
+## Qualquer tecla termina a entrada na hora (animation-agent).
+func _finish_entry() -> void:
+	for i: int in _anim_kind.size():
+		if _anim_kind[i] == &"enter":
+			_anim_kind[i] = &""
+
+
+func _process(delta: float) -> void:
+	if not visible:
+		return
+	_t += delta
+	for i: int in _shake_left.size():
+		_shake_left[i] = maxf(0.0, _shake_left[i] - delta)
+		_alert_left[i] = maxf(0.0, _alert_left[i] - delta)
+	_pop_left = maxf(0.0, _pop_left - delta)
+	var target: float = GameState.gold_ink
+	if not is_equal_approx(_ink_shown, target):
+		_ink_shown = move_toward(_ink_shown, target, maxf(_ink_rate, 1.0 / INK_STEP) * delta)
+	if _exit_left >= 0.0:
+		_exit_left -= delta
+		if _exit_left < 0.0:
+			visible = false
+	_canvas.queue_redraw()
+
+
+# --- desenho ------------------------------------------------------------------------------
+
+func _on_draw() -> void:
+	if _shop == null or _shop.offer == null:
+		return
+	_draw_room()
+	_draw_scribe()
+	for i: int in _shop.offer.cards.size():
+		_draw_card(i)
+	_draw_ui()
+	if _exit_left >= 0.0:
+		_draw_exit_dither()
+
+
+func _draw_room() -> void:
+	var c := _canvas
+	c.draw_rect(Rect2(0, 0, 640, 360), Palette.INK)
+	for row: int in int(WALL_BOTTOM / 16):
+		var y: float = row * 16.0
+		c.draw_rect(Rect2(0, y, 640, 1), Palette.INK_SOFT)
+		var off: float = 16.0 if row % 2 == 1 else 0.0
+		for x: int in range(0, 640 / 32 + 1):
+			c.draw_rect(Rect2(x * 32 + off, y, 1, 16), Palette.INK_SOFT)
+	c.draw_rect(WINDOW.grow(1), Palette.PARCHMENT_OLD)
+	c.draw_rect(WINDOW, Palette.INK_SOFT)
+	c.draw_rect(Rect2(WINDOW.position.x + WINDOW.size.x / 2, WINDOW.position.y, 1, WINDOW.size.y), Palette.INK)
+	c.draw_rect(Rect2(WINDOW.position.x, WINDOW.position.y + 36, WINDOW.size.x, 1), Palette.INK)
+	c.draw_circle(MOON, 6, Palette.CHALK)
+	for p: Vector2 in [Vector2(40, 60), Vector2(70, 70), Vector2(44, 90)]:
+		c.draw_rect(Rect2(p, Vector2.ONE), Palette.CHALK)
+	# Luz da vela em xadrez PARCHMENT_OLD sobre a parede (sem alpha).
+	for y: int in range(164, int(WALL_BOTTOM), 2):
+		for x: int in range(108 + (y / 2) % 2, 172, 2):
+			if Vector2(x, y).distance_to(Vector2(140, 196)) <= 32.0 and (x + y) % 4 == 0:
+				c.draw_rect(Rect2(x, y, 1, 1), Palette.PARCHMENT_OLD)
+	c.draw_rect(TABLE, Palette.INK_SOFT)
+	c.draw_rect(Rect2(TABLE.position, Vector2(TABLE.size.x, 1)), Palette.PARCHMENT_OLD)
+
+
+func _draw_scribe() -> void:
+	var c := _canvas
+	var frame: int = int(_t / SCRIBE_FRAME) % SCRIBE_FRAMES
+	var bob: float = 1.0 if frame == 4 else 0.0
+	c.draw_rect(SCRIBE.grow(1).grow_side(SIDE_BOTTOM, -1), Palette.INK_SOFT)
+	c.draw_rect(SCRIBE, Palette.INK)
+	c.draw_rect(Rect2(SCRIBE.position + Vector2(12, 8 + bob), Vector2(8, 6)), Palette.PARCHMENT)
+	c.draw_rect(Rect2(104, 218, 24, 8), Palette.PARCHMENT)
+	c.draw_rect(Rect2(136, 214, 6, 6), Palette.INK)
+	c.draw_rect(Rect2(152, 200, 4, 16), Palette.PARCHMENT)
+	c.draw_rect(Rect2(153, 197, 2, 3), Palette.CHALK)
+	var tips: Array[Vector2] = [Vector2(137, 213), Vector2(130, 204), Vector2(112, 219), Vector2(116, 219), Vector2(124, 206), Vector2(124, 206)]
+	var hand := Vector2(122, 200 + bob)
+	c.draw_line(hand, tips[frame], Palette.CHALK, 1.0)
+	if frame == 4:
+		for p: Vector2 in [Vector2(110, 216), Vector2(114, 215), Vector2(118, 216)]:
+			c.draw_rect(Rect2(p, Vector2.ONE), Palette.CHALK)
+
+
+func _draw_card(i: int) -> void:
+	var card: ShopItemData = _shop.offer.cards[i]
+	if card == null:
+		return
+	var c := _canvas
+	var state: StringName = card_state(i)
+	var pos := Vector2(CARD_X[i], CARD_Y)
+	var width: float = CARD_SIZE.x
+	var show_back: bool = false
+	match state:
+		&"enter":
+			var f: int = clampi(int(_anim_age(i) / (ENTER_TIME / 5.0)), 0, 4)
+			width = [100.0, 50.0, 50.0, 100.0, 100.0][f]
+			show_back = f < 2
+			pos.y += 8.0 - 2.0 * f
+		&"reroll":
+			var f: int = clampi(int(_anim_age(i) / (REROLL_TIME / 6.0)), 0, 5)
+			width = [100.0, 66.0, 2.0, 2.0, 66.0, 100.0][f]
+			show_back = f in [1, 2, 3, 4]
+		&"buy":
+			if _anim_age(i) < BUY_HIT:
+				pos.y += 1.0
+		_:
+			if _shake_left[i] > 0.0:
+				pos.x += 1.0 if int(_shake_left[i] / SHAKE_STEP) % 2 == 0 else -1.0
+	var is_sel: bool = i == selected and state != &"enter"
+	if is_sel:
+		pos.y -= HOVER_LIFT
+	pos = pos.round()
+	var rect := Rect2(pos + Vector2((CARD_SIZE.x - width) / 2.0, 0), Vector2(width, CARD_SIZE.y)).abs()
+	var shadow := Vector2(3, 6) if is_sel else Vector2(2, 2)
+	c.draw_rect(Rect2(rect.position + shadow, rect.size), Palette.INK_SOFT)
+	if show_back or width < CARD_SIZE.x:
+		c.draw_rect(rect.grow(1), Palette.PARCHMENT_OLD)
+		c.draw_rect(rect, Palette.INK_SOFT)
+		if state == &"reroll":
+			for k: int in 6:
+				c.draw_rect(Rect2(rect.position.x + k * rect.size.x / 6.0, rect.end.y - 2, 1, 2), Palette.BLOOD)
+		return
+	var apo: bool = card.kind == &"apocrypha"
+	c.draw_rect(rect.grow(2 if is_sel else 1), Palette.GOLD if is_sel else Palette.INK)
+	c.draw_rect(rect, Palette.PARCHMENT_OLD if apo else Palette.PARCHMENT)
+	if apo:
+		for y: float in [rect.position.y - 3.0, rect.end.y - 3.0]:
+			c.draw_rect(Rect2(rect.position.x - 2, y, rect.size.x + 4, 6), Palette.PARCHMENT)
+			c.draw_rect(Rect2(rect.position.x - 2, y + 2, rect.size.x + 4, 1), Palette.INK)
+		PixelFont.draw_centered(c, "APOCRIFO", rect.get_center().x, pos.y + 4, Palette.INK_SOFT)
+	else:
+		c.draw_rect(Rect2(rect.position + Vector2(2, 2), rect.size - Vector2(4, 4)), Palette.PARCHMENT_OLD, false, 1.0)
+	if is_sel:
+		c.draw_rect(Rect2(pos + Vector2(CARD_SIZE.x / 2 - 3, -8), Vector2(7, 4)), Palette.GOLD)
+	if card.icon != null:
+		c.draw_texture_rect(card.icon, Rect2(pos + ICON_RECT.position, ICON_RECT.size), false)
+	# Vendida: só o ícone apagado, o selo e "VENDIDO" (o texto da carta sai).
+	var sold_look: bool = state == &"sold" or (state == &"buy" and _anim_age(i) >= BUY_HIT)
+	if sold_look or state == &"buy":
+		_dither(Rect2(pos, CARD_SIZE), Palette.PARCHMENT_OLD)
+		if sold_look:
+			c.draw_circle(pos + ICON_RECT.get_center(), 12, Palette.GOLD)
+			PixelFont.draw_centered(c, "VENDIDO", pos.x + CARD_SIZE.x / 2, pos.y + 84, Palette.INK)
+		elif _anim_age(i) < 0.034:
+			c.draw_rect(rect, Palette.CHALK)
+		return
+	var lines: PackedStringArray = _wrap(card.display_name, NAME_CHARS)
+	var name_scale: int = 2 if apo and lines.size() == 1 and PixelFont.width(lines[0], 2) <= CARD_SIZE.x - 8 else 1
+	for k: int in mini(lines.size(), NAME_Y.size()):
+		PixelFont.draw_centered(c, lines[k], pos.x + CARD_SIZE.x / 2, pos.y + NAME_Y[k] - (3 if name_scale == 2 else 0), Palette.INK, name_scale)
+	c.draw_rect(Rect2(pos + Vector2(8, 78), Vector2(84, 1)), Palette.PARCHMENT_OLD)
+	var desc: PackedStringArray = _wrap(card.short_desc, NAME_CHARS)
+	for k: int in mini(desc.size(), DESC_Y.size()):
+		PixelFont.draw_centered(c, desc[k], pos.x + CARD_SIZE.x / 2, pos.y + DESC_Y[k], Palette.INK_SOFT)
+	if state == &"no_money":
+		_dither(Rect2(pos + Vector2(4, 8), Vector2(92, 100)), Palette.INK_SOFT)
+	_draw_price(i, pos, state)
+	if _shop.offer.locked_slot() == i:
+		c.draw_rect(Rect2(pos + Vector2(CARD_SIZE.x / 2 - 2, -2), Vector2(4, 4)), Palette.GOLD)
+		c.draw_rect(Rect2(pos + Vector2(86, 4), Vector2(8, 9)), Palette.PARCHMENT_OLD)
+		c.draw_rect(Rect2(pos + Vector2(89, 8), Vector2(2, 3)), Palette.INK)
+
+
+func _draw_price(i: int, pos: Vector2, state: StringName) -> void:
+	var text: String = str(_shop.offer.prices[i])
+	var color: Color = Palette.BLOOD if (state == &"no_money" or _alert_left[i] > 0.0) else Palette.INK
+	var w: float = 6 + 3 + PixelFont.width(text, 2)
+	var x: float = roundf(pos.x + CARD_SIZE.x / 2 - w / 2)
+	_canvas.draw_texture(DROP_ICON, Vector2(x, pos.y + PRICE_Y - 1))
+	PixelFont.draw(_canvas, text, Vector2(x + 9, pos.y + PRICE_Y - 3), color, 2)
+
+
+func _draw_ui() -> void:
+	var c := _canvas
+	PixelFont.draw(c, "SCRIPTORIUM", Vector2(192, 22), Palette.PARCHMENT_OLD, 2)
+	var plate: Rect2 = INK_PLATE
+	c.draw_rect(plate.grow(1), Palette.INK_SOFT)
+	c.draw_rect(plate, Palette.PARCHMENT)
+	var lift: float = -1.0 if _pop_left > 0.0 else 0.0
+	c.draw_texture(DROP_ICON, Vector2(528, 24))
+	var ink_text: String = str(roundi(_ink_shown))
+	if _pop_left > 0.0:
+		for o: Vector2 in [Vector2(-1, 0), Vector2(1, 0), Vector2(0, -1), Vector2(0, 1)]:
+			PixelFont.draw(c, ink_text, Vector2(540, 22 + lift) + o, Palette.GOLD, 2)
+	PixelFont.draw(c, ink_text, Vector2(540, 22 + lift), Palette.INK, 2)
+	# Reroll: dado de osso, custo; BLOOD só sem tinta.
+	c.draw_rect(REROLL_PLATE.grow(1), Palette.INK_SOFT)
+	c.draw_rect(REROLL_PLATE, Palette.PARCHMENT)
+	var die := Rect2(REROLL_PLATE.position + Vector2(4, 5), Vector2(14, 14))
+	c.draw_rect(die, Palette.PARCHMENT_OLD)
+	for p: Vector2 in [Vector2(3, 3), Vector2(7, 7), Vector2(11, 11)]:
+		c.draw_rect(Rect2(die.position + p - Vector2.ONE, Vector2(2, 2)), Palette.INK)
+	PixelFont.draw(c, "REROLAR", REROLL_PLATE.position + Vector2(22, 9), Palette.INK)
+	var cost: int = _shop.offer.reroll_cost()
+	var cost_color: Color = Palette.BLOOD if GameState.gold_ink < cost else Palette.INK
+	c.draw_texture(DROP_ICON, REROLL_PLATE.position + Vector2(68, 8))
+	PixelFont.draw(c, str(cost), REROLL_PLATE.position + Vector2(77, 9), cost_color)
+	# Fita da próxima onda, com rabo de andorinha.
+	c.draw_rect(RIBBON, Palette.BLOOD_DARK)
+	for side: float in [RIBBON.position.x - 6.0, RIBBON.end.x]:
+		c.draw_rect(Rect2(side, RIBBON.position.y, 6, 6), Palette.BLOOD_DARK)
+		c.draw_rect(Rect2(side, RIBBON.end.y - 6, 6, 6), Palette.BLOOD_DARK)
+	PixelFont.draw_centered(c, "PROXIMA ONDA [ENTER]", RIBBON.get_center().x, 237, Palette.CHALK)
+	PixelFont.draw(c, "<> ESCOLHER  ESPACO COMPRAR  L TRAVAR  R REROLAR  ENTER ONDA", LEGEND_POS, Palette.PARCHMENT_OLD)
+
+
+## Xadrez de 50% por cima (o "desbotado" sem opacidade, Princípio VII).
+func _dither(r: Rect2, color: Color) -> void:
+	for y: int in int(r.size.y):
+		for x: int in range(y % 2, int(r.size.x), 2):
+			_canvas.draw_rect(Rect2(r.position + Vector2(x, y), Vector2.ONE), color)
+
+
+## Saída: dithering Bayer em 4 passos cobrindo a tela da loja cada vez menos.
+func _draw_exit_dither() -> void:
+	var step: int = clampi(EXIT_STEPS - 1 - int(_exit_left / (EXIT_TIME / EXIT_STEPS)), 0, EXIT_STEPS - 1)
+	var bayer: Array[int] = [0, 2, 3, 1]
+	for y: int in range(0, 360, 2):
+		for x: int in range(0, 640, 2):
+			if bayer[(x / 2 % 2) + (y / 2 % 2) * 2] <= step:
+				_canvas.draw_rect(Rect2(x, y, 2, 2), Palette.INK)
+
+
+func _wrap(text: String, max_chars: int) -> PackedStringArray:
+	var out := PackedStringArray()
+	var line: String = ""
+	for word: String in PixelFont.normalize(text).split(" ", false):
+		if line.is_empty():
+			line = word
+		elif line.length() + 1 + word.length() <= max_chars:
+			line += " " + word
+		else:
+			out.append(line)
+			line = word
+	if not line.is_empty():
+		out.append(line)
+	return out

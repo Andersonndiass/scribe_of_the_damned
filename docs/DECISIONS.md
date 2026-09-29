@@ -306,6 +306,14 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
 - **Pareceres aplicados:** loja sem tempo limite; 1 carta travada, pelo preço da visita em que foi travada; reroll 5 +3; preços base e tetos do rules-agent; Círio no teto só acende 1 vela.
 - **Status:** ✅ aprovada pelo autor ("1a 2a 3a 4a").
 
+### D-059 · 2026-09-28 · Tela da loja (003 Fase 2)
+- **Visual (design-agent):** medidas e cores da especificação de 2026-09-28 (os dados de pixel das fichas 28/31 não estão no repositório): parede INK com juntas INK_SOFT, janela com lua, mesa INK_SOFT; cartas 100×140 (itens em PARCHMENT; apócrifo em PARCHMENT_OLD com rolos); ícones 24×24 gerados por script; carta vendida só com ícone, selo GOLD e "VENDIDO". Fonte ganhou `+ % [ ] ; < >`.
+- **Tempos (animation-agent):** entrada 400 ms com 100 ms entre cartas; compra 200 + 400 ms; sem tinta treme 200 ms e o preço fica BLOOD 400 ms; reroll vira as cartas; tinta sobe 20 ms/unidade até 700 ms; o "pop" 1,2× virou 1 px de subida com contorno GOLD (sem subpixel); saída em dithering 400 ms.
+- **Comportamento:** Enter fecha a loja na hora (a onda recomeça por baixo) e a tela sai em dithering; Esc não faz nada na loja (o jogo já está parado); qualquer tecla termina a entrada das cartas.
+- **Debug:** `index.html?shop` abre a loja em 0,5 s com 30 de tinta.
+- **Testes:** com a árvore pausada, esperar com `get_tree().create_timer(t, true)` (o `wait_seconds` do GUT pausa junto).
+- **Status:** ✅ dentro do plano aprovado ("pode").
+
 ---
 
 ## Conflitos abertos

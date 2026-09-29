@@ -93,7 +93,7 @@ const GLYPHS: Dictionary[String, Array] = {
 
 # --- Fonte pixel 5×6 (ficha 26): as letras dos losangos + estes glifos extras ---
 ## Tem de ser igual a PixelFont.CHARS (test_pixel_font confere).
-const FONT_CHARS := "ABCDEFGHIJKLMNOPQRSTUVWXYZÆ0123456789:!?-./, "
+const FONT_CHARS := "ABCDEFGHIJKLMNOPQRSTUVWXYZÆ0123456789:!?-./, +%[];<>"
 const FONT_EXTRA: Dictionary[String, Array] = {
 	"H": ["#...#", "#...#", "#####", "#...#", "#...#", "#...#"],
 	"J": ["....#", "....#", "....#", "....#", "#...#", ".###."],
@@ -120,6 +120,14 @@ const FONT_EXTRA: Dictionary[String, Array] = {
 	"/": ["....#", "...#.", "..#..", ".#...", "#....", "....."],
 	",": [".....", ".....", ".....", ".....", "..#..", ".#..."],
 	" ": [".....", ".....", ".....", ".....", ".....", "....."],
+	# Loja (003, design-agent): preços, teclas e percentuais.
+	"+": [".....", "..#..", "..#..", "#####", "..#..", "..#.."],
+	"%": ["##..#", "##.#.", "..#..", ".#...", "#..##", "...##"],
+	"[": [".###.", ".#...", ".#...", ".#...", ".#...", ".###."],
+	"]": [".###.", "...#.", "...#.", "...#.", "...#.", ".###."],
+	";": [".....", "..#..", ".....", ".....", "..#..", ".#..."],
+	"<": ["...#.", "..##.", ".###.", "..##.", "...#.", "....."],
+	">": [".#...", ".##..", ".###.", ".##..", ".#...", "....."],
 }
 
 
@@ -218,6 +226,7 @@ func _init() -> void:
 	ok = _letters() and ok
 	ok = _font() and ok
 	ok = _enemies_ch1() and ok
+	ok = _shop_icons() and ok
 	quit(0 if ok else 1)
 
 
@@ -332,6 +341,166 @@ func _enemies_ch1() -> bool:
 		return false
 	img.save_png(OUT + "itm_gota_dourada.png")
 	return _save(ImageTexture.create_from_image(img), "itm_gota_dourada.tres")
+
+
+# --- Loja (003 T310): ícones ITM_ 24×24 (ficha 31; formas e destaques do design-agent) ---
+## Moldura circular INK_SOFT r=11, área útil 20×20, sem fundo sólido, 1 cor de destaque.
+func _shop_icons() -> bool:
+	var ok: bool = true
+	var icons: Dictionary[String, Callable] = {
+		"lodestone": _ico_lodestone, "rosary": _ico_rosary, "sandals": _ico_sandals,
+		"alms_purse": _ico_purse, "copyist_lenses": _ico_lenses, "double_inkwell": _ico_inkwell,
+		"fine_quill": _ico_quill, "blessed_candle": _ico_candle, "new_shelf": _ico_shelf,
+		"apocrypha_fides": _ico_scroll.bind("F", &"shield"), "apocrypha_lumen": _ico_scroll.bind("L", &"eye"),
+		"apocrypha_purgo": _ico_scroll.bind("P", &"flame"), "apocrypha_gloria": _ico_scroll.bind("G", &"halo"),
+		"apocrypha_verbum": _ico_scroll.bind("V", &"echo"),
+	}
+	for id: String in icons:
+		var img := Image.create_empty(24, 24, false, Image.FORMAT_RGBA8)
+		_ring(img, Vector2i(12, 12), 11, COLORS["k"])
+		icons[id].call(img)
+		img.save_png(OUT + "itm_%s.png" % id)
+		ok = _save(ImageTexture.create_from_image(img), "itm_%s.tres" % id) and ok
+	return ok
+
+
+func _px(img: Image, x: int, y: int, c: Color) -> void:
+	if x >= 0 and y >= 0 and x < img.get_width() and y < img.get_height():
+		img.set_pixel(x, y, c)
+
+
+func _box(img: Image, x: int, y: int, w: int, h: int, c: Color) -> void:
+	for yy: int in h:
+		for xx: int in w:
+			_px(img, x + xx, y + yy, c)
+
+
+func _line(img: Image, a: Vector2i, b: Vector2i, c: Color) -> void:
+	var n: int = maxi(absi(b.x - a.x), absi(b.y - a.y))
+	for i: int in n + 1:
+		var t: float = float(i) / maxf(1.0, float(n))
+		_px(img, roundi(lerpf(a.x, b.x, t)), roundi(lerpf(a.y, b.y, t)), c)
+
+
+func _ring(img: Image, c: Vector2i, r: int, col: Color) -> void:
+	for a: int in 96:
+		var ang: float = TAU * a / 96.0
+		_px(img, roundi(c.x + cos(ang) * r), roundi(c.y + sin(ang) * r), col)
+
+
+func _disc(img: Image, c: Vector2i, r: int, col: Color) -> void:
+	for y: int in range(-r, r + 1):
+		for x: int in range(-r, r + 1):
+			if x * x + y * y <= r * r:
+				_px(img, c.x + x, c.y + y, col)
+
+
+func _ico_lodestone(img: Image) -> void:
+	_disc(img, Vector2i(10, 13), 5, COLORS["K"])
+	_line(img, Vector2i(7, 11), Vector2i(12, 16), COLORS["k"])
+	_line(img, Vector2i(10, 9), Vector2i(13, 12), COLORS["k"])
+	for p: Vector2i in [Vector2i(17, 7), Vector2i(18, 10), Vector2i(16, 5)]:
+		_px(img, p.x, p.y, COLORS["C"])
+
+
+func _ico_rosary(img: Image) -> void:
+	for a: int in 10:
+		var ang: float = TAU * a / 10.0
+		_px(img, roundi(12 + cos(ang) * 5), roundi(9 + sin(ang) * 4), COLORS["k"])
+	_box(img, 12, 13, 1, 7, COLORS["G"])
+	_box(img, 10, 15, 5, 1, COLORS["G"])
+
+
+func _ico_sandals(img: Image) -> void:
+	_box(img, 9, 5, 7, 14, COLORS["O"])
+	_box(img, 10, 4, 5, 1, COLORS["O"])
+	_box(img, 9, 9, 7, 1, COLORS["K"])
+	_box(img, 9, 14, 7, 1, COLORS["K"])
+	for p: Vector2i in [Vector2i(5, 17), Vector2i(4, 19), Vector2i(6, 20)]:
+		_px(img, p.x, p.y, COLORS["C"])
+
+
+func _ico_purse(img: Image) -> void:
+	_disc(img, Vector2i(11, 14), 5, COLORS["O"])
+	_box(img, 9, 6, 5, 3, COLORS["O"])
+	_box(img, 8, 9, 7, 1, COLORS["K"])
+	_box(img, 17, 16, 2, 3, COLORS["G"])
+	_px(img, 17, 15, COLORS["G"])
+
+
+func _ico_lenses(img: Image) -> void:
+	for c: Vector2i in [Vector2i(8, 12), Vector2i(16, 12)]:
+		_disc(img, c, 3, COLORS["k"])
+		_ring(img, c, 4, COLORS["K"])
+	_box(img, 12, 11, 1, 1, COLORS["K"])
+	_px(img, 7, 11, COLORS["C"])
+	_px(img, 15, 11, COLORS["C"])
+
+
+func _ico_inkwell(img: Image) -> void:
+	_box(img, 5, 13, 6, 6, COLORS["K"])
+	_box(img, 7, 11, 2, 2, COLORS["K"])
+	_box(img, 13, 13, 6, 6, COLORS["K"])
+	_box(img, 15, 11, 2, 2, COLORS["K"])
+	for p: Vector2i in [Vector2i(11, 4), Vector2i(10, 5), Vector2i(12, 5), Vector2i(10, 6), Vector2i(11, 6), Vector2i(12, 6), Vector2i(10, 7), Vector2i(12, 7)]:
+		_px(img, p.x, p.y, COLORS["C"])
+
+
+func _ico_quill(img: Image) -> void:
+	_line(img, Vector2i(7, 18), Vector2i(18, 5), COLORS["C"])
+	_line(img, Vector2i(9, 18), Vector2i(18, 7), COLORS["C"])
+	_line(img, Vector2i(11, 12), Vector2i(17, 5), COLORS["C"])
+	_px(img, 6, 19, COLORS["G"])
+	_px(img, 5, 20, COLORS["G"])
+
+
+func _ico_candle(img: Image) -> void:
+	_box(img, 10, 9, 4, 11, COLORS["O"])
+	_box(img, 11, 12, 2, 5, COLORS["K"])
+	_box(img, 10, 13, 4, 1, COLORS["K"])
+	_box(img, 11, 5, 2, 3, COLORS["L"])
+	_px(img, 11, 4, COLORS["L"])
+
+
+func _ico_shelf(img: Image) -> void:
+	_box(img, 5, 11, 14, 1, COLORS["k"])
+	_box(img, 5, 19, 14, 1, COLORS["k"])
+	_box(img, 7, 5, 2, 6, COLORS["K"])
+	_box(img, 10, 6, 2, 5, COLORS["K"])
+	_box(img, 7, 13, 2, 6, COLORS["K"])
+	_box(img, 15, 13, 2, 6, COLORS["G"])
+
+
+## Carta de apócrifo: rolo de pergaminho 16×20 com a inicial e um símbolo (design-agent).
+func _ico_scroll(img: Image, initial: String, symbol: StringName) -> void:
+	_box(img, 4, 3, 16, 18, COLORS["P"])
+	_box(img, 4, 2, 16, 1, COLORS["K"])
+	_box(img, 4, 21, 16, 1, COLORS["K"])
+	var glyph: Array = GLYPHS[initial] if GLYPHS.has(initial) else FONT_EXTRA.get(initial, [])
+	for y: int in 6:
+		for x: int in 5:
+			if (glyph[y] as String)[x] == "#":
+				_px(img, 6 + x, 5 + y, COLORS["K"])
+	match symbol:
+		&"shield":
+			_box(img, 13, 12, 5, 5, COLORS["G"])
+			_box(img, 14, 17, 3, 1, COLORS["G"])
+			_px(img, 15, 18, COLORS["G"])
+		&"eye":
+			_box(img, 12, 14, 7, 3, COLORS["k"])
+			_box(img, 15, 14, 1, 3, COLORS["C"])
+		&"flame":
+			_box(img, 14, 14, 3, 4, COLORS["k"])
+			_box(img, 15, 12, 1, 3, COLORS["C"])
+		&"halo":
+			_ring(img, Vector2i(15, 15), 3, COLORS["L"])
+		&"echo":
+			# "V" repetido em xadrez INK_SOFT, deslocado: o eco do VERBUM.
+			var v: Array = GLYPHS["V"]
+			for y: int in 6:
+				for x: int in 5:
+					if (v[y] as String)[x] == "#" and (x + y) % 2 == 0:
+						_px(img, 12 + x, 12 + y, COLORS["k"])
 
 
 ## Desce tudo 1px (respiro / passo), mantendo a linha dos pés.

@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="ShopItemData" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="ShopItemData" load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://src/data/shop_item_data.gd" id="1_si"]
+[ext_resource type="Texture2D" path="res://assets/placeholders/itm_double_inkwell.tres" id="9_icon"]
 
 [resource]
 script = ExtResource("1_si")
@@ -8,6 +9,7 @@ id = &"double_inkwell"
 kind = &"item"
 display_name = "Tinteiro Duplo"
 short_desc = "10% de letra extra"
+icon = ExtResource("9_icon")
 base_price = 7
 stat = &"double_letter_chance"
 mode = &"add"

@@ -10,11 +10,11 @@
 **Checkpoint 003-A:** ✅ a loja funciona por código e por teste, sem tela (2026-09-28, GUT 245/245). Fora do jogo de verdade (testes, sonda, stress) a loja abre e fecha sozinha (`shop_auto_close`).
 
 ## Fase 2 — Tela
-- **T310** Placeholders por script (ficha 31/28): 14 ícones 24×24 e o escriba sentado (6 quadros). Parecer do design-agent antes.
-- **T311** `ShopScreen`: cartas (8 estados), contador de tinta, reroll, trava, fita da próxima onda; teclado (FR-314). Tempos pelo animation-agent.
-- **T312** Integração `test_shop_flow.gd`: onda → loja → compra/trava/reroll só no teclado → próxima onda (SC-305).
+- ✅ **T310** Placeholders por script (ficha 31/28): 14 ícones 24×24 e o escriba sentado (6 quadros). Parecer do design-agent antes.
+- ✅ **T311** `ShopScreen`: cartas (8 estados), contador de tinta, reroll, trava, fita da próxima onda; teclado (FR-314). Tempos pelo animation-agent.
+- ✅ **T312** Integração `test_shop_flow.gd`: onda → loja → compra/trava/reroll só no teclado → próxima onda (SC-305).
 
-**Checkpoint 003-B:** a loja jogável entre as ondas.
+**Checkpoint 003-B:** ✅ a loja jogável entre as ondas (2026-09-28, GUT 250/250; conferida no Chrome com `index.html?shop`).
 
 ## Fase 3 — Fechamento
 - **T320** Sonda de balanceamento: o bot compra na loja; ~5 cartas no Cap. 1 (SC-306).
