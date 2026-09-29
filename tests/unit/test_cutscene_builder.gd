@@ -157,6 +157,29 @@ func test_cues_fire_on_their_frame_when_played() -> void:
 	assert_almost_eq(actor.position.x, 140.0, 0.01, "valor final da trilha")
 
 
+func test_long_line_is_rejected() -> void:
+	var d: Dictionary = _script()
+	d["events"][2]["key"] = "LORE_MORTIS"
+	assert_gt(_parse(d).errors.size(), 0, "fala que passa de 2 linhas é recusada")
+
+
+func test_every_chapter_1_line_fits_two_lines() -> void:
+	var f := FileAccess.open("res://i18n/ui.csv", FileAccess.READ)
+	f.get_csv_line()
+	var n: int = 0
+	while not f.eof_reached():
+		var row: PackedStringArray = f.get_csv_line()
+		if row.size() < 3 or not row[0].begins_with("CS_C1_"):
+			continue
+		n += 1
+		for text: String in [row[1], row[2]]:
+			var norm: String = PixelFont.normalize(text)
+			var lines: int = CutsceneBand.caption_lines(norm).size() if row[0].contains("CAPTION") \
+				else UiStyle.wrap_words(norm, CutsceneBand.chars_for("narrator" if row[0].contains("NARRATOR") else "anselmo")).size()
+			assert_lte(lines, 2, "%s cabe em 2 linhas" % row[0])
+	assert_eq(n, 12, "as 12 falas e legendas do Cap. 1")
+
+
 # --- roteiros do projeto ----------------------------------------------------------------------
 
 func test_every_project_script_is_valid() -> void:

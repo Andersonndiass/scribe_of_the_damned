@@ -111,24 +111,56 @@ static func draw_quill(ci: CanvasItem, tip: Vector2, mirrored: bool = false) -> 
 		ci.draw_rect(Rect2(o + Vector2i(p.x * sx, p.y), Vector2.ONE), Palette.INK)
 
 
-## Xadrez 50% (ou 75% com `level` > 0.6) de `color` sobre `r` — o "desbotado" sem alpha. Desenha uma
-## textura 2×2 em mosaico (pixels só ligados ou desligados), feita uma vez por cor e nível.
+## Xadrez de `color` sobre `r` — o "desbotado" sem alpha: 25% (`level` < 0.4), 50% ou 75%
+## (`level` > 0.6). Desenha uma textura 4×4 em mosaico (pixels só ligados ou desligados), feita uma
+## vez por cor e nível.
 static func dither(ci: CanvasItem, r: Rect2, color: Color, level: float = 0.5) -> void:
+	var step: int = 1 if level < 0.4 else (3 if level > 0.6 else 2)
 	ci.texture_repeat = CanvasItem.TEXTURE_REPEAT_ENABLED
-	ci.draw_texture_rect(_dither_tex(color, level > 0.6), r, true)
+	ci.draw_texture_rect(_dither_tex(color, step), r, true)
+
+
+## Quebra por palavra em linhas de até `width` caracteres (Grimório, cutscenes, balões).
+static func wrap_words(text: String, width: int) -> PackedStringArray:
+	var lines := PackedStringArray()
+	var line: String = ""
+	for word: String in text.split(" ", false):
+		if line == "":
+			line = word
+		elif line.length() + 1 + word.length() <= width:
+			line += " " + word
+		else:
+			lines.append(line)
+			line = word
+	if line != "":
+		lines.append(line)
+	return lines
+
+
+## Nível do dither em quartos (1 = 25%, 2 = 50%, 3 = 75%) para quem desenha em degraus.
+static func dither_quarters(progress: float) -> int:
+	return clampi(floori(progress * 4.0), 0, 4)
 
 
 static var _dither_cache: Dictionary = {}
 
 
-static func _dither_tex(color: Color, dense: bool) -> ImageTexture:
-	var key: String = "%s/%s" % [color.to_html(), dense]
+static func _dither_tex(color: Color, quarters: int) -> ImageTexture:
+	var key: String = "%s/%d" % [color.to_html(), quarters]
 	if not _dither_cache.has(key):
-		var img := Image.create(2, 2, false, Image.FORMAT_RGBA8)
+		var img := Image.create(4, 4, false, Image.FORMAT_RGBA8)
 		img.fill(Color(0, 0, 0, 0))
-		img.set_pixel(0, 0, color)
-		img.set_pixel(1, 1, color)
-		if dense:
-			img.set_pixel(1, 0, color)
+		for y: int in 4:
+			for x: int in 4:
+				var on: bool
+				match quarters:
+					1:
+						on = (x + 2 * y) % 4 == 0
+					2:
+						on = (x + y) % 2 == 0
+					_:
+						on = (x + y) % 2 == 0 or y % 2 == 0
+				if on:
+					img.set_pixel(x, y, color)
 		_dither_cache[key] = ImageTexture.create_from_image(img)
 	return _dither_cache[key]

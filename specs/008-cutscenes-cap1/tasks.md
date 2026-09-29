@@ -10,12 +10,12 @@
 **Checkpoint 008-A:** ✅ um roteiro de teste vira `Animation` no quadro certo (estático e quadro a quadro); 11 tipos de roteiro inválido recusados (2026-09-29, GUT 358/358).
 
 ## Fase 2 — Palco
-- **T810** Visual e tempos: parecer do design-agent (faixa de diálogo, closes 128×128 placeholders de Anselmo e do Abade, subsolo com a arca, fantasma, riscos de rasura, raios, silhueta de traça, **carregamento subindo** do pular) e do animation-agent (tempos das 4 cenas dentro dos tetos, texto letra a letra, corte C1-01 → C1-02).
-- **T811** `src/cutscenes/cutscene_player.tscn/.gd`: camadas, faixa de diálogo (FSM Hidden/Typing/Complete), legenda, FSM do player, Espaço/Enter/clique adianta, **segurar Esc 3 s** pula com a animação subindo, entrada presa na cena, `cutscene_*` no EventBus, fim sempre emitido (fail-open).
-- **T812** `AudioManager`: vozes que tocam com o jogo parado; voz da fala por idioma (`assets/audio/voice/<idioma>/<id>.mp3`, FR-814) e do latim ao conjurar (`assets/audio/voice/latin/`, FR-816); silêncio se não existir.
-- **T813** [TEST] `tests/unit/test_cutscene_player.gd`: adiantar (1º completa, 2º pula a fala), pular em vários pontos = mesmo estado final e `cutscene_finished` por último, toque curto no Esc não faz nada, hit-stop não desacelera.
+- ✅ **T810** Visual e tempos: parecer do design-agent (faixa de diálogo, closes 128×128 placeholders de Anselmo e do Abade, subsolo com a arca, fantasma, riscos de rasura, raios, silhueta de traça, **carregamento subindo** do pular) e do animation-agent (tempos das 4 cenas dentro dos tetos, texto letra a letra, corte C1-01 → C1-02).
+- ✅ **T811** `src/cutscenes/cutscene_player.tscn/.gd`: camadas, faixa de diálogo (FSM Hidden/Typing/Complete), legenda, FSM do player, Espaço/Enter/clique adianta, **segurar Esc 3 s** pula com a animação subindo, entrada presa na cena, `cutscene_*` no EventBus, fim sempre emitido (fail-open).
+- ✅ **T812** `AudioManager`: vozes que tocam com o jogo parado; voz da fala por idioma (`assets/audio/voice/<idioma>/<id>.mp3`, FR-814) e do latim ao conjurar (`assets/audio/voice/latin/`, FR-816); silêncio se não existir.
+- ✅ **T813** [TEST] `tests/unit/test_cutscene_player.gd`: adiantar (1º completa, 2º pula a fala), pular em vários pontos = mesmo estado final e `cutscene_finished` por último, toque curto no Esc não faz nada, hit-stop não desacelera.
 
-**Checkpoint 008-B:** uma cena toca, adianta e pula com o estado certo.
+**Checkpoint 008-B:** ✅ uma cena toca, adianta e pula com o estado certo; faixa, closes, legenda e placa de pular desenhados (2026-09-29, GUT 366/366). D-073.
 
 ## Fase 3 — As quatro cenas no jogo
 - **T820** Roteiros `data/cutscenes/c1_01.json` … `c1_04.json` (tempos do animation-agent) e placeholders por script.

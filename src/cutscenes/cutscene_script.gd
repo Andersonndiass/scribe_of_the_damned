@@ -146,6 +146,8 @@ func _check_events() -> void:
 					_err("%s em t=%s: end inválido" % [type, t])
 				if not key_exists(str(e.get("key", ""))):
 					_err("%s em t=%s: chave %s sem PT-BR e EN" % [type, t, e.get("key", "")])
+				else:
+					_check_fits(e, type)
 				if type == "line":
 					_check_speaker(e)
 					for span: Array in line_spans:
@@ -187,6 +189,20 @@ func _check_key(e: Dictionary, key_frames: Dictionary, track_eases: Dictionary) 
 	# O valor antes da primeira chave vem do init (senão a trilha assume a primeira chave).
 	if not (actors[target].get("init", {}) as Dictionary).has(prop) and f > 0 and frames.size() == 1:
 		_err("%s precisa de valor inicial (init) ou de uma chave em t=0" % track)
+
+
+## Fala e legenda cabem em 2 linhas nos dois idiomas (ficha T810: 39 por linha na faixa, 48 do
+## narrador, 32 na legenda).
+func _check_fits(e: Dictionary, type: String) -> void:
+	for loc: String in LOCALES:
+		var text: String = PixelFont.normalize(String(TranslationServer.get_translation_object(loc).get_message(str(e["key"]))))
+		var lines: int
+		if type == "caption":
+			lines = CutsceneBand.caption_lines(text).size()
+		else:
+			lines = UiStyle.wrap_words(text, CutsceneBand.chars_for(str(e.get("speaker", "")))).size()
+		if lines > 2:
+			_err("%s %s em %s passa de 2 linhas" % [type, e["key"], loc])
 
 
 func _check_speaker(e: Dictionary) -> void:

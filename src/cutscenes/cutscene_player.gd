@@ -121,13 +121,13 @@ func _process(delta: float) -> void:
 		return
 	# Tempo real: o hit-stop (Engine.time_scale) não desacelera a cena.
 	var real: float = delta / maxf(Engine.time_scale, 0.001)
-	if Input.is_action_pressed(&"pause"):
-		skip_progress += real
-		if skip_progress >= tuning.skip_hold:
-			skip()
-			return
-	else:
-		skip_progress = 0.0
+	var holding: bool = Input.is_action_pressed(&"pause")
+	skip_progress = skip_progress + real if holding else 0.0
+	band.update_skip(real, holding, minf(skip_progress / tuning.skip_hold, 1.0), tuning.skip_show_after,
+		tuning.skip_hold, tuning.skip_drain)
+	if skip_progress >= tuning.skip_hold:
+		skip()
+		return
 	tick(real)
 
 

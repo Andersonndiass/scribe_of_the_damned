@@ -123,19 +123,7 @@ func _step_entry(dir: int) -> void:
 
 ## Quebra por palavra em linhas de até `width` caracteres.
 static func wrap_words(text: String, width: int) -> PackedStringArray:
-	var lines := PackedStringArray()
-	var line: String = ""
-	for word: String in text.split(" ", false):
-		if line == "":
-			line = word
-		elif line.length() + 1 + word.length() <= width:
-			line += " " + word
-		else:
-			lines.append(line)
-			line = word
-	if line != "":
-		lines.append(line)
-	return lines
+	return UiStyle.wrap_words(text, width)
 
 
 # --- Desenho ---------------------------------------------------------------------------------

@@ -411,6 +411,16 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
 
 ---
 
+### D-073 · 2026-09-29 · Palco das cutscenes (008 Fase 2)
+- **Tempos (animation-agent):** texto a 30 letras/s; `end` de cada fala = t + 1,0 + n/20 s; C1-01 15,65 s + C1-02 17,2 s (33 s até a partida, teto 40), C1-03 10,3 s (teto 12), C1-04 9,5 s (teto 15); corte seco C1-01 → C1-02 (a virada de página fica dentro da C1-01); espera de 0,4 s entre a morte do chefe e a C1-04; balão na partida 1,5–2,5 s, 4 s entre frases (as do Asmodeus têm prioridade).
+- **Visual (design-agent, ficha T810):** faixa INK embaixo com close 128×128 saindo por cima (Anselmo à esquerda, os outros à direita, narrador sem close); legenda em placa de pergaminho no canto de cima à esquerda; pular = placa no canto de cima à direita com um **tinteiro de vidro que enche de tinta de baixo para cima** (o "carregamento subindo" do autor). Closes desenhados ao vivo: Anselmo (3 expressões), Abade = o Abade vivo com "filtro fantasma" (o catálogo só tinha `abade_vivo`), Asmodeus = o sprite em 2×. Dither de 25% novo no `UiStyle`.
+- **Divergências pequenas (do Claude):** linhas de texto a 16 px (a ficha pedia 14; com o glifo de 12 px as linhas colavam); a placa de pular só aparece depois de 100 ms segurando (tempo do animation-agent; a ficha a mostrava no primeiro quadro).
+- **Validação nova:** fala com mais de 2 linhas (39 caracteres; 48 do narrador; 32 na legenda) em qualquer idioma é erro no load.
+- **Achado do design-agent (pendente, fora da 008):** os PNGs provisórios de `assets/placeholders/` saem 1 abaixo do token em algum canal (ex.: INK 21,23,27 em vez de 21,23,28) porque o `palette.gd` guarda floats de 4 casas e o `set_pixel` trunca. Correção proposta: gerar a paleta a partir do hex e arredondar nos geradores, com um teste byte a byte. Invisível a olho; fica para uma tarefa própria.
+- **Status:** feito.
+
+---
+
 ## Conflitos abertos
 
 - **C-006 · Vida do Asmodeus (DECISÃO DO AUTOR, playtest).** 1500 (rules-agent) supõe uma palavra a cada ~5 s. A sonda não mede isso. No playtest (`index.html?boss`, ou jogando o capítulo), se a luta passar muito de 4 min, baixar `max_hp` em `data/bosses/asmodeus.tres` (ex.: 1000); se ficar abaixo de 2 min, subir.
