@@ -1,6 +1,6 @@
 # 008 — Cutscenes do Capítulo 1
 
-> Status: **Aprovada** (2026-09-29, "1A 2A 3A — pressionar por 3 segundos"; D-071).
+> Status: **Aprovada** (2026-09-29, "1A 2A 3A — pressionar por 3 segundos"; D-071). Emenda D-072: falas na partida e voz do latim.
 > Parecer (2026-09-29): game-design-agent **AJUSTAR** — tetos de tempo por cena, C1-02 mais curta e quatro correções de canon (aplicados abaixo). mechanics-agent: sistema proposto (seção "Arquitetura").
 > Depende de: 006 (entrada e morte do Asmodeus), 007 (telas, roteador, tradução, Vitória). Constituição IX (cutscenes in-engine, AnimationPlayer + builder JSON→Animation, nada de vídeo). Narrativa §5, §10 (falas âncora), §12 (beats C1-01…C1-04). Plano de etapas DV-10 (os roteiros nascem nesta spec) e R-04 (builder com tolerância de 1 quadro). Asset catalog §2 (closes 128×128).
 > **[P]** = proposta do Claude (fala ou regra inventada, o autor aprova ou reescreve). **[P?]** = decisão do autor.
@@ -86,6 +86,11 @@ Tetos assistindo sem adiantar **[P]** (pilar "curto e intenso"; números finais 
 - **FR-812** Toda fala e legenda em `i18n/ui.csv` (PT-BR e EN); troca de idioma vale na cena seguinte. O latim não aparece nas falas.
 - **FR-813** Sons por evento do `AudioManager` (fogo, corrente, virada de página, rasura, sino); com o áudio provisório da 009 enquanto os arquivos não chegam.
 - **FR-814** **Vozes [D-071]:** cada fala pode ter voz, uma por idioma, em `assets/audio/voice/<pt_BR|en>/<id>.mp3` (id = chave da fala em minúsculas). O jogo toca a do idioma atual; sem arquivo, a fala só aparece escrita. Todas as falas do jogo, em PT-BR e EN, com direção de voz por personagem: `docs/voice/VOICE-LINES.md` e `docs/voice/voice_lines.csv`. Quando as vozes chegarem, o `end` de cada fala se ajusta à duração do áudio (animation-agent), respeitando os tetos das cenas.
+
+### Falas na partida (emenda D-072)
+- **FR-815** **Frases curtas na partida** (balão de fala 160×28 do catálogo, ao lado de quem fala, ~2 s, no máximo 2 linhas; voz se o arquivo existir): Asmodeus ao entrar nas fases 2 e 3, quando a Rasura apaga uma letra e ao morrer; Anselmo depois de uma heresia, com a última vela e no fim de onda. Texto em `i18n/ui.csv` (chaves `BARK_*`), gatilhos e intervalo mínimo entre frases em `data/barks/barks.json` (nada no código); o balão fica fora da área central do HUD sempre que possível e nunca cobre o atril.
+- **FR-816** **Voz do latim:** ao conjurar, o jogo toca `assets/audio/voice/latin/<palavra>.mp3` (e `haeresis.mp3` na heresia) quando o arquivo existir; o mesmo áudio nos dois idiomas. Sem arquivo, só o efeito sonoro de hoje.
+- Lista completa das falas, com pronúncia do latim: `docs/voice/`.
 
 ## Arquitetura (mechanics-agent, resumo)
 

@@ -76,9 +76,9 @@ O jogador **pronuncia** cada palavra ao conjurar (narrativa §3.3). O latim nunc
 | `latin_requiem` | REQUIEM | combo | RE-kwi-em |
 | `latin_haeresis` | HÆRESIS! | heresia | E-re-sis — a voz de Anselmo distorcida, como se o vazio falasse por ele |
 
-## Durante o jogo — frases propostas **[P]** (ainda NÃO estão no jogo)
+## Durante o jogo — frases curtas (aprovadas, D-072; entram na 008)
 
-Hoje não há falas na partida fora das cutscenes. Estas são propostas do Claude no tom da narrativa; para entrarem, precisam da sua aprovação (balão de fala 160×28 do catálogo + voz). No máximo 2 linhas cada (game bible).
+Aparecem num balão de fala curto, com a voz se o arquivo existir. No máximo 2 linhas cada (game bible).
 
 | id | quem | quando | PT-BR | EN |
 |---|---|---|---|---|

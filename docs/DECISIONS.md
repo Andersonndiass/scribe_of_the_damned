@@ -403,6 +403,14 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
 
 ---
 
+### D-072 · 2026-09-29 · Falas na partida e voz do latim (emenda à 008)
+- **Pedido do autor:** "todas as frases durante o jogo também, frases que o jogador fala ou quando o boss entra". Até aqui não havia falas na partida fora das cutscenes.
+- **Decisão ("1a 2a 3a"):** entram as 7 frases propostas (Asmodeus nas fases 2 e 3, na Rasura e na morte; Anselmo depois da heresia, na última vela e no fim de onda), num balão de fala curto com voz opcional (FR-815); o jogo toca a voz do latim ao conjurar e o HÆRESIS! quando os arquivos existirem (FR-816).
+- **Arquivos:** `docs/voice/` (texto, pronúncia do latim, direção de voz); `data/barks/barks.json` na Fase 3.
+- **Status:** ✅ aprovado.
+
+---
+
 ## Conflitos abertos
 
 - **C-006 · Vida do Asmodeus (DECISÃO DO AUTOR, playtest).** 1500 (rules-agent) supõe uma palavra a cada ~5 s. A sonda não mede isso. No playtest (`index.html?boss`, ou jogando o capítulo), se a luta passar muito de 4 min, baixar `max_hp` em `data/bosses/asmodeus.tres` (ex.: 1000); se ficar abaixo de 2 min, subir.

@@ -213,3 +213,10 @@ CS_SPEAKER_ANSELMO,IRMÃO ANSELMO,BROTHER ANSELMO
 CS_SPEAKER_ABBOT,ABADE GERBRAND,ABBOT GERBRAND
 CS_SPEAKER_ASMODEUS,ASMODEUS,ASMODEUS
 CS_SKIP_HOLD,SEGURE {pause} PARA PULAR,HOLD {pause} TO SKIP
+BARK_ASMODEUS_PHASE_2,Cada erro teu me alimenta.,Every mistake of thine feeds me.
+BARK_ASMODEUS_PHASE_3,Eu sou tudo o que foi riscado.,I am all that was struck out.
+BARK_ASMODEUS_ERASURE,Apagado.,Erased.
+BARK_ASMODEUS_DEATH,Alguém... sempre... erra...,Someone... always... errs...
+BARK_ANSELMO_HERESY,...Isso não era latim.,...That was not Latin.
+BARK_ANSELMO_LAST_CANDLE,Só mais uma vela...,Just one more candle...
+BARK_ANSELMO_WAVE_CLEAR,Mais uma linha no lugar.,One more line back in place.
