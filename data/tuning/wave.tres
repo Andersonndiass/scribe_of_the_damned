@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="WaveTuning" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/data/wave_tuning.gd" id="1_wt"]
+
+[resource]
+script = ExtResource("1_wt")
+closing_warning = 10.0
+reveal_time = 0.4

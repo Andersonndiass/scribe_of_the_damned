@@ -72,6 +72,7 @@ func _ready() -> void:
 		# Debug (002 Fase 4): atril 7–8 para testar as Grandes Orações antes da loja (003).
 		letter_field.atril.set_capacity(int(atril_arg.get_string(1)))
 		letter_field.emit_atril()
+	($Arena as Arena).load_page(chapter.arena)
 	($World/Player as Player).auto_attack.projectiles = player_projectiles
 	shop.player = $World/Player
 	shop.letter_field = letter_field
@@ -121,10 +122,14 @@ func _ready() -> void:
 func start_wave(slot: int) -> void:
 	wave_slot = clampi(slot, 0, chapter.waves.size() - 1)
 	_shop_in = -1.0
+	# A página entra no estágio desta onda na hora (004 FR-401); o do fim da onda anterior já foi revelado.
+	EventBus.page_stage_changed.emit(chapter.stage_for_wave(wave_slot), chapter.stage_after(wave_slot), false)
 	wave_director.start(chapter.waves[wave_slot], wave_slot + 1)
 
 
 func _on_wave_ended(_index: int) -> void:
+	# A página piora no fim da onda, revelada por cima (004 FR-402); o próximo é o da ameaça seguinte.
+	EventBus.page_stage_changed.emit(chapter.stage_after(wave_slot), chapter.stage_after(wave_slot + 1), true)
 	# Dízimo (003 FR-312, D-058): tinta fixa por onda concluída, com o ×tinta da Bolsa.
 	var got: int = GameState.add_gold(shop.tuning.wave_clear_ink)
 	EventBus.gold_ink_collected.emit(got, GameState.gold_ink)
@@ -157,6 +162,8 @@ func start_boss() -> void:
 	wave_director.stop()
 	($World/EnemyManager as EnemyManager).dissolve_all()
 	boss.data = chapter.boss
+	EventBus.page_stage_changed.emit(chapter.boss_stage, chapter.boss_stage, false)
+	EventBus.arena_layout_changed.emit(true)
 	if boss_cutscene == null:
 		boss.start_fight()
 		return

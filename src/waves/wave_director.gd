@@ -10,6 +10,7 @@ const SPAWN_POINT_TRIES := 12
 @export var manager: EnemyManager
 @export var player: Node2D
 @export var telegraph_parent: Node2D
+@export var tuning: WaveTuning = preload("res://data/tuning/wave.tres")
 
 var running: bool = false
 var elapsed: float = 0.0
@@ -18,6 +19,8 @@ var _accum: PackedFloat32Array
 var _display_index: int = 1
 var _champions_spawned: int = 0
 var _pending: PackedInt32Array
+## O aviso de fim da onda já saiu (004 FR-404).
+var _closing_sent: bool = false
 
 
 func _ready() -> void:
@@ -35,6 +38,7 @@ func start(new_wave: WaveData = null, display_index: int = -1) -> void:
 	_pending = PackedInt32Array()
 	_pending.resize(wave.groups.size())
 	_champions_spawned = 0
+	_closing_sent = false
 	running = true
 	GameState.wave_index = _display_index
 	EventBus.wave_started.emit(_display_index, wave.duration)
@@ -51,6 +55,9 @@ func _physics_process(delta: float) -> void:
 	if elapsed >= wave.duration:
 		_end()
 		return
+	if not _closing_sent and elapsed >= wave.duration - tuning.closing_warning:
+		_closing_sent = true
+		EventBus.wave_closing.emit(_display_index, wave.duration - elapsed)
 	_spawn_due_champions()
 	for g: int in wave.groups.size():
 		var group: SpawnGroup = wave.groups[g]

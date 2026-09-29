@@ -1,0 +1,48 @@
+[gd_resource type="Resource" script_class="ArenaData" load_steps=14 format=3]
+
+[ext_resource type="Script" path="res://src/data/arena_data.gd" id="1_ad"]
+[ext_resource type="Script" path="res://src/data/obstacle_data.gd" id="2_od"]
+[ext_resource type="Resource" path="res://data/arena/obstacle_types/hole.tres" id="t_hole"]
+[ext_resource type="Resource" path="res://data/arena/obstacle_types/bench.tres" id="t_bench"]
+[ext_resource type="Resource" path="res://data/arena/obstacle_types/window.tres" id="t_window"]
+[ext_resource type="Resource" path="res://data/arena/obstacle_types/altar.tres" id="t_altar"]
+
+[sub_resource type="Resource" id="o0"]
+script = ExtResource("2_od")
+type = ExtResource("t_hole")
+position = Vector2i(72, 72)
+
+[sub_resource type="Resource" id="o1"]
+script = ExtResource("2_od")
+type = ExtResource("t_hole")
+position = Vector2i(552, 72)
+
+[sub_resource type="Resource" id="o2"]
+script = ExtResource("2_od")
+type = ExtResource("t_hole")
+position = Vector2i(72, 272)
+
+[sub_resource type="Resource" id="o3"]
+script = ExtResource("2_od")
+type = ExtResource("t_hole")
+position = Vector2i(552, 272)
+
+[sub_resource type="Resource" id="o4"]
+script = ExtResource("2_od")
+type = ExtResource("t_window")
+position = Vector2i(24, 160)
+
+[sub_resource type="Resource" id="o5"]
+script = ExtResource("2_od")
+type = ExtResource("t_altar")
+position = Vector2i(290, 24)
+
+[sub_resource type="Resource" id="o6"]
+script = ExtResource("2_od")
+type = ExtResource("t_bench")
+position = Vector2i(304, 328)
+
+[resource]
+script = ExtResource("1_ad")
+chapter = 1
+obstacles = Array[ExtResource("2_od")]([SubResource("o0"), SubResource("o1"), SubResource("o2"), SubResource("o3"), SubResource("o4"), SubResource("o5"), SubResource("o6")])

@@ -87,6 +87,13 @@ signal codex_discovered(category: StringName, id: StringName)
 # Capítulo
 signal chapter_completed(chapter: int)
 
+# Página (004): a onda está nos últimos segundos; o estágio da página mudou (animado = fim de onda);
+# o estágio terminou de aparecer; o layout de obstáculos mudou (ondas ou chefe).
+signal wave_closing(index: int, seconds_left: float)
+signal page_stage_changed(stage: int, next_stage: int, animated: bool)
+signal page_degraded(stage: int)
+signal arena_layout_changed(boss_layout: bool)
+
 # Cutscenes (008): o fluxo do jogo escuta só o `cutscene_finished`, que sai sempre por último.
 signal cutscene_started(id: StringName)
 signal cutscene_mark_reached(id: StringName, mark: StringName)

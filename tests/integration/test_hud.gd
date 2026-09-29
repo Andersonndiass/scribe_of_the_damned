@@ -100,11 +100,34 @@ func test_candles_mirror_game_state() -> void:
 	assert_eq(candles._max, 3)
 
 
-func test_degradation_advances_each_wave_and_loops() -> void:
-	assert_eq(_arena.degradation_stage, 0)
-	for expected: int in [1, 2, 3, 0]:
-		EventBus.wave_ended.emit(9)
-		assert_eq(_arena.degradation_stage, expected)
+func test_degradation_follows_the_chapter_and_never_goes_back() -> void:
+	# SC-401: o estágio vem das ondas (0,0,1,1,2,2,3,3,3), é revelado no fim da onda e nunca volta.
+	var chapter: ChapterData = _main.chapter
+	assert_eq(_arena.degradation_stage, chapter.stage_for_wave(0))
+	var seen: Array[int] = []
+	for slot: int in chapter.waves.size():
+		_main.wave_slot = slot
+		EventBus.wave_ended.emit(slot + 1)
+		_arena.page.snap()
+		seen.append(_arena.degradation_stage)
+		assert_eq(_arena.degradation_stage, chapter.stage_after(slot))
+	for i: int in range(1, seen.size()):
+		assert_true(seen[i] >= seen[i - 1], "o estágio não volta (%s)" % [seen])
+	assert_eq(seen[-1], chapter.boss_stage)
+
+
+func test_closing_threatens_only_when_the_page_will_worsen() -> void:
+	# Onda 1 → 2: estágio 0 → 0, sem ameaça; onda 2 → 3: 0 → 1, ameaça.
+	EventBus.wave_closing.emit(1, 10.0)
+	assert_false(_arena.page.threatened())
+	_main.start_wave(1)
+	EventBus.wave_closing.emit(2, 10.0)
+	assert_true(_arena.page.threatened())
+
+
+func test_arena_registers_the_obstacle_map() -> void:
+	assert_not_null(ObstacleQuery.map)
+	assert_false(ObstacleQuery.is_free(Vector2(80, 80), 5.0), "o furo do Cap. 1 está na página")
 
 
 func test_enemy_death_leaves_a_permanent_stain() -> void:

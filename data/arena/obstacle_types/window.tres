@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="ObstacleTypeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/data/obstacle_type_data.gd" id="1_ot"]
+
+[resource]
+script = ExtResource("1_ot")
+id = &"window"
+footprint = Vector2i(20, 40)
+blocks = 9
+stops_dash = true

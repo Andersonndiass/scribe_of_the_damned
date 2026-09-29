@@ -46,8 +46,13 @@ var decal_viewport: SubViewport
 ## Quantos carimbos já foram acumulados na página (para testes e métricas).
 var stamp_count: int = 0
 var stamps_by_kind: Dictionary[StringName, int] = {}
-## Estágio de degradação 0..3 (FR-026, art bible §7.2). Avança 1 por onda, em loop no protótipo.
+## Estágio de degradação 0..3 visível (FR-026, art bible §7.2; 004: vem do `PageDegradation`).
 var degradation_stage: int = 0
+## Estado da página (004 FR-401..FR-404): o estágio só avança, com ameaça e revelação.
+var page := PageDegradation.new()
+var data: ArenaData
+var wave_tuning: WaveTuning = preload("res://data/tuning/wave.tres")
+var _map: ObstacleMap
 
 const DEGRADATION_STAGES := 4
 const WEAR_SEED := 1348
@@ -59,8 +64,42 @@ func _ready() -> void:
 	add_to_group(&"arena")
 	_build_walls()
 	_build_decal_layer()
-	EventBus.wave_ended.connect(func(_i: int) -> void: set_degradation((degradation_stage + 1) % DEGRADATION_STAGES))
+	page.degraded.connect(func(stage: int) -> void:
+		set_degradation(stage)
+		EventBus.page_degraded.emit(stage))
+	EventBus.page_stage_changed.connect(func(stage: int, next: int, animated: bool) -> void:
+		page.apply(stage, next, animated)
+		queue_redraw())
+	EventBus.wave_closing.connect(func(_i: int, _left: float) -> void:
+		page.on_closing()
+		queue_redraw())
+	# A loja pausa a árvore: a revelação termina antes (004 FR-402).
+	EventBus.shop_opened.connect(func(_w: int) -> void: page.snap())
+	EventBus.arena_layout_changed.connect(_on_layout_changed)
 	EventBus.enemy_killed.connect(func(_s: int, _d: EnemyData, p: Vector2) -> void: stamp(&"stain", p, 0.0))
+
+
+func _exit_tree() -> void:
+	if ObstacleQuery.map != null and ObstacleQuery.map == _map:
+		ObstacleQuery.map = null
+
+
+func _process(delta: float) -> void:
+	if page.state == PageDegradation.Phase.TRANSITIONING:
+		page.tick(delta, wave_tuning.reveal_time)
+		queue_redraw()
+
+
+## Monta a página do capítulo (004): o mapa de obstáculos das ondas passa a responder às consultas.
+func load_page(arena_data: ArenaData) -> void:
+	data = arena_data
+	_on_layout_changed(false)
+
+
+func _on_layout_changed(boss_layout: bool) -> void:
+	_map = ObstacleMap.from_arena(data, boss_layout)
+	ObstacleQuery.map = _map
+	queue_redraw()
 
 
 func set_degradation(stage: int) -> void:

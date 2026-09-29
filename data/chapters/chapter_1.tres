@@ -13,6 +13,8 @@
 [ext_resource type="Resource" path="res://data/waves/chapter_1/wave_08.tres" id="w8"]
 [ext_resource type="Resource" path="res://data/waves/chapter_1/wave_09.tres" id="w9"]
 
+[ext_resource type="Resource" path="res://data/arena/chapter_1.tres" id="a_arena"]
+
 [resource]
 script = ExtResource("1_cd")
 chapter = 1
@@ -21,3 +23,5 @@ boss = ExtResource("99_boss")
 intro_cutscenes = Array[StringName]([&"c1_01", &"c1_02"])
 boss_cutscene = &"c1_03"
 outro_cutscene = &"c1_04"
+arena = ExtResource("a_arena")
+boss_stage = 3
