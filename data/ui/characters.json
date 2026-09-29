@@ -1,0 +1,10 @@
+{
+	"_doc": "Seleção de personagem (007 FR-703; game bible §3.11). Nomes são próprios (não traduzem); passiva e desbloqueio são chaves de tradução. Só o Anselmo livre até a 010.",
+	"characters": [
+		{"id": "anselmo", "name": "IRMAO ANSELMO", "passive": "CHAR_ANSELMO_PASSIVE", "player": "res://data/player/anselmo.tres", "unlocked": true},
+		{"id": "hildegarda", "name": "IRMA HILDEGARDA", "passive": "CHAR_HILDEGARDA_PASSIVE", "player": "", "unlocked": false},
+		{"id": "tome", "name": "FREI TOME", "passive": "CHAR_TOME_PASSIVE", "player": "", "unlocked": false},
+		{"id": "iluminador", "name": "O ILUMINADOR", "passive": "CHAR_ILUMINADOR_PASSIVE", "player": "", "unlocked": false},
+		{"id": "beda", "name": "NOVICO BEDA", "passive": "CHAR_BEDA_PASSIVE", "player": "", "unlocked": false}
+	]
+}

@@ -9,12 +9,12 @@
 **Checkpoint 007-A:** ✅ configurações, tradução e Grimório funcionam por teste; o jogo abre pelo roteador (2026-09-29, GUT 320/320). Os testes não gravam no save real do Grimório.
 
 ## Fase 2 — Telas
-- **T710** Visual e tempos: parecer do design-agent (fichas 27, 29, 30; alto contraste) e do animation-agent; placeholders por script (sino, livro, medalhões, cadeado, selo, pena-cursor).
-- **T711** Splash, Menu, Personagem (Anselmo; demais com cadeado), Capítulo (Cap. 1; demais acorrentados).
-- **T712** Pausa (Continuar · Grimório · Opções · Abandonar), Game Over (estatísticas, 3,5 s até os botões) e Vitória (estatísticas, entradas novas do Grimório, Cap. 2 selado). Substituem os overlays mínimos.
-- **T713** Créditos (página de texto rolando).
+- ✅ **T710** Visual e tempos: parecer do design-agent (fichas 27, 29, 30; alto contraste) e do animation-agent; placeholders por script (sino, livro, medalhões, cadeado, selo, pena-cursor).
+- ✅ **T711** Splash, Menu, Personagem (Anselmo; demais com cadeado), Capítulo (Cap. 1; demais acorrentados).
+- ✅ **T712** Pausa (Continuar · Grimório · Opções · Abandonar), Game Over (estatísticas, 3,5 s até os botões) e Vitória (estatísticas, entradas novas do Grimório, Cap. 2 selado). Substituem os overlays mínimos.
+- ✅ **T713** Créditos (página de texto rolando).
 
-**Checkpoint 007-B:** do splash à vitória só com teclado.
+**Checkpoint 007-B:** ✅ do splash à vitória só com teclado (2026-09-29, GUT 333/333; fluxo conferido no Chrome: Splash → Menu → Personagem → Capítulo → Jogo → Pausa → Abandonar → Menu; Game Over e Vitória renderizados; `?boss` segue pulando os menus). D-068.
 
 ## Fase 3 — Opções e Grimório
 - **T720** Opções: sliders de volume, shake, idioma (troca na hora, SC-705), alto contraste, remap (esperar tecla, conflito = troca).

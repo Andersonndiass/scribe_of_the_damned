@@ -364,6 +364,15 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
 
 ---
 
+### D-068 · 2026-09-29 · Telas da 007 (Fase 2, Checkpoint 007-B)
+- **O que entrou:** Splash → Menu → Personagem → Capítulo → Jogo pelo `ScreenRouter` (transição Bayer INK por shader: 100+100 ms entre menus, 200+200 ms entrando/saindo do jogo, entrada travada); Créditos; Pausa, Game Over e Vitória em `GameOverlays` (substituem os overlays mínimos da 001). Estatísticas por `GameState.run_record()`; entradas novas por `Codex.new_this_run()`.
+- **Dados:** personagens, capítulos e créditos em `data/ui/*.json`; todo texto por chave em `i18n/ui.csv` (PT e EN).
+- **Divergências pequenas das fichas (do Claude):** (1) fitas do Menu com 100 px e do Game Over com 112 px (a ficha pede 128), para caber na página do livro e não encostarem; (2) toda fita tem contorno (INK_SOFT em repouso, GOLD no foco) — sem isso, fita de pergaminho some sobre a página de pergaminho; (3) a pena-cursor dos menus é a da mira espelhada (ponta para a fita); (4) títulos e dicas da Pausa/Game Over ficam sobre uma faixa lisa para ler por cima do jogo escurecido; (5) Game Over e Vitória pausam a árvore (a 001 deixava o jogo rodando atrás); (6) os botões do Game Over saem 3,5 s depois da morte, como a spec (o parecer de tempos falava em 2,5 s).
+- **Pendências:** Grimório e Opções aparecem desabilitados no Menu e na Pausa até a Fase 3; o personagem escolhido só vale na 010 (só o Anselmo é livre); **nome do autor nos créditos** (`data/ui/credits.json`) — pus o usuário do GitHub, o autor troca.
+- **Status:** feito; aguardando o autor ver no build.
+
+---
+
 ## Conflitos abertos
 
 - **C-006 · Vida do Asmodeus (DECISÃO DO AUTOR, playtest).** 1500 (rules-agent) supõe uma palavra a cada ~5 s. A sonda não mede isso. No playtest (`index.html?boss`, ou jogando o capítulo), se a luta passar muito de 4 min, baixar `max_hp` em `data/bosses/asmodeus.tres` (ex.: 1000); se ficar abaixo de 2 min, subir.

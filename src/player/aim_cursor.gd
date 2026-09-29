@@ -5,10 +5,7 @@ extends Node2D
 ## aparece e a mira é a direção do escriba. Visível enquanto a mira pelo mouse vale (divergência
 ## da ficha: some só sem mouse, para não mirar num ponto invisível).
 
-## Pixels da pena a partir da ponta (0,0): bico e haste em INK; barbas INK_SOFT em xadrez.
-const NIB: Array[Vector2i] = [Vector2i(0, 0), Vector2i(1, -1), Vector2i(2, -2)]
-const SHAFT_FROM := 3
-const SHAFT_TO := 10
+## O desenho da pena é o mesmo da pena-cursor dos menus (UiStyle.draw_quill).
 
 var _hidden_os: bool = false
 
@@ -43,25 +40,4 @@ func _exit_tree() -> void:
 
 
 func _draw() -> void:
-	var pts: Array[Vector2i] = []
-	pts.append_array(NIB)
-	for i: int in range(SHAFT_FROM, SHAFT_TO + 1):
-		pts.append(Vector2i(i, -i))
-	var barbs: Array[Vector2i] = []
-	for i: int in range(SHAFT_FROM, SHAFT_TO - 1):
-		for w: int in [1, 2]:
-			barbs.append(Vector2i(i, -i - w - 1))
-	# Contorno CHALK nos 8 vizinhos.
-	var filled := {}
-	for p: Vector2i in pts + barbs:
-		filled[p] = true
-	for p: Vector2i in filled:
-		for dy: int in [-1, 0, 1]:
-			for dx: int in [-1, 0, 1]:
-				var q := Vector2i(p.x + dx, p.y + dy)
-				if not filled.has(q):
-					draw_rect(Rect2(q, Vector2.ONE), Palette.CHALK)
-	for p: Vector2i in barbs:
-		draw_rect(Rect2(p, Vector2.ONE), Palette.INK_SOFT if (p.x + p.y) % 2 == 0 else Palette.PARCHMENT_OLD)
-	for p: Vector2i in pts:
-		draw_rect(Rect2(p, Vector2.ONE), Palette.INK)
+	UiStyle.draw_quill(self, Vector2.ZERO)

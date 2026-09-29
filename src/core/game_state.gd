@@ -22,6 +22,49 @@ var aim_with_mouse: bool = true
 var aim_point: Vector2 = Vector2.INF
 ## Alto contraste (007, D-066): quem desenha consulta; variação dentro da paleta travada.
 var high_contrast: bool = false
+## Escolhas das telas de Personagem e Capítulo (007); vazio = o padrão da cena do jogo.
+var picked_character: StringName = &""
+var picked_chapter: ChapterData = null
+
+
+## Registro da partida (007: Game Over e Vitória).
+var _rec_wave: int = 0
+var _rec_time: float = 0.0
+var _rec_words: int = 0
+var _rec_kills: int = 0
+var _rec_ink: int = 0
+var _rec_boss_start: float = -1.0
+var _rec_boss_time: float = 0.0
+
+
+func _ready() -> void:
+	EventBus.wave_started.connect(func(i: int, _d: float) -> void: _rec_wave = maxi(_rec_wave, i))
+	EventBus.word_cast.connect(func(_w: WordData, _p: float, _o: Vector2, _d: Vector2) -> void: _rec_words += 1)
+	EventBus.enemy_killed.connect(func(_s: int, _d: EnemyData, _p: Vector2) -> void: _rec_kills += 1)
+	EventBus.gold_ink_collected.connect(func(a: int, _t: int) -> void: _rec_ink += a)
+	EventBus.boss_spawned.connect(func(_b: BossData) -> void: _rec_boss_start = _rec_time)
+	EventBus.boss_defeated.connect(func(_b: BossData) -> void:
+		if _rec_boss_start >= 0.0:
+			_rec_boss_time = _rec_time - _rec_boss_start
+			_rec_boss_start = -1.0)
+
+
+func _process(delta: float) -> void:
+	tick_run(delta)
+
+
+## Soma tempo de partida (a árvore pausada não conta: GameState pausa junto).
+func tick_run(delta: float) -> void:
+	_rec_time += delta
+
+
+## Estatísticas da partida: wave, time (s), words, kills, ink, boss_time (s).
+func run_record() -> Dictionary:
+	var boss_time: float = _rec_boss_time
+	if _rec_boss_start >= 0.0:
+		boss_time = _rec_time - _rec_boss_start
+	return {"wave": _rec_wave, "time": _rec_time, "words": _rec_words, "kills": _rec_kills,
+		"ink": _rec_ink, "boss_time": boss_time}
 
 
 ## Reinicia a partida a partir dos dados do personagem.
@@ -33,6 +76,13 @@ func start_run(player: PlayerData, seed_value: int = -1) -> void:
 	wave_index = 0
 	gold_ink = 0
 	gold_fraction = 0.0
+	_rec_wave = 0
+	_rec_time = 0.0
+	_rec_words = 0
+	_rec_kills = 0
+	_rec_ink = 0
+	_rec_boss_start = -1.0
+	_rec_boss_time = 0.0
 	run_stats = RunStats.new(player)
 	var codex: Node = get_node_or_null(^"/root/Codex")
 	if codex != null:

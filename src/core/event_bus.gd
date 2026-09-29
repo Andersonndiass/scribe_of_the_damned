@@ -77,6 +77,8 @@ signal settings_applied()
 ## Telas (007): o roteador trocou de tela; a partida pediu para recomeçar.
 signal screen_changed(screen: StringName)
 signal game_restart_requested()
+## Uma tela pediu outra (o roteador faz a transição).
+signal screen_requested(screen: StringName)
 ## Grimório: entrada nova (categoria: words, combos, enemies, bosses).
 signal codex_discovered(category: StringName, id: StringName)
 

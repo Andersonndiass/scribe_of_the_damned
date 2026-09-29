@@ -9,7 +9,7 @@ var _player: Player
 var _field: LetterField
 var _caster: Caster
 var _hud: CanvasLayer
-var _overlays: MinimalOverlays
+var _overlays: GameOverlays
 var _arena: Arena
 
 
@@ -116,7 +116,7 @@ func test_enemy_death_leaves_a_permanent_stain() -> void:
 func test_pause_toggles_tree() -> void:
 	_overlays.toggle_pause()
 	assert_true(get_tree().paused)
-	assert_eq(_overlays.mode, MinimalOverlays.Mode.PAUSED)
+	assert_eq(_overlays.mode, GameOverlays.Mode.PAUSED)
 	_overlays.toggle_pause()
 	assert_false(get_tree().paused)
 
@@ -127,12 +127,59 @@ func test_game_over_appears_after_death_and_offers_restart() -> void:
 		_player.vitals.iframes_left = 0.0
 		_player.take_hit(1)
 	assert_eq(_player.machine.current.name, &"Dead")
-	await wait_seconds(0.8)
-	assert_eq(_overlays.mode, MinimalOverlays.Mode.GAME_OVER)
+	await get_tree().create_timer(0.8, true).timeout
+	assert_eq(_overlays.mode, GameOverlays.Mode.GAME_OVER)
 	_overlays.toggle_pause()
-	assert_eq(_overlays.mode, MinimalOverlays.Mode.GAME_OVER, "não dá para pausar o Game Over")
+	assert_eq(_overlays.mode, GameOverlays.Mode.GAME_OVER, "não dá para pausar o Game Over")
 	_overlays.restart()
 	assert_signal_emitted(_overlays, "restart_requested")
+
+
+# --- 007 T712: pausa, Game Over e Vitória ----------------------------------------------------
+
+func _press(action: StringName) -> void:
+	var ev := InputEventAction.new()
+	ev.action = action
+	ev.pressed = true
+	_overlays._unhandled_input(ev)
+
+
+func test_pause_menu_resumes_and_skips_disabled_entries() -> void:
+	_press(&"pause")
+	assert_eq(_overlays.mode, GameOverlays.Mode.PAUSED)
+	assert_eq(_overlays.menu.focused_id(), &"resume")
+	_press(&"move_down")
+	assert_eq(_overlays.menu.focused_id(), &"abandon", "Grimório e Opções ficam para a Fase 3")
+	_press(&"move_up")
+	_press(&"cast")
+	assert_eq(_overlays.mode, GameOverlays.Mode.NONE)
+	assert_false(get_tree().paused)
+
+
+func test_game_over_shows_stats_and_buttons_later() -> void:
+	EventBus.word_cast.emit(load("res://data/words/lux.tres"), 1.0, Vector2.ZERO, Vector2.RIGHT)
+	_overlays._set_mode(GameOverlays.Mode.GAME_OVER)
+	assert_false(_overlays.buttons_shown, "os botões esperam 3,5 s")
+	assert_eq(_overlays._record["words"], 1)
+	_press(&"cast")
+	assert_false(_overlays.buttons_shown, "antes de 400 ms a tecla não adianta")
+	_overlays.age = GameOverlays.SKIP_AFTER
+	_press(&"cast")
+	assert_true(_overlays.buttons_shown)
+	assert_eq(_overlays.menu.focused_id(), &"retry")
+	watch_signals(_overlays)
+	_press(&"cast")
+	assert_signal_emitted(_overlays, "restart_requested")
+
+
+func test_victory_lists_new_codex_entries() -> void:
+	Codex.reset()
+	Codex.begin_run()
+	EventBus.boss_spawned.emit(load("res://data/bosses/asmodeus.tres"))
+	_overlays.show_victory()
+	assert_eq(_overlays.mode, GameOverlays.Mode.VICTORY)
+	assert_true(get_tree().paused)
+	assert_has(_overlays._entries, tr(&"BOSS_ASMODEUS"))
 
 
 # --- 002 T214: janela de combo ---------------------------------------------------------------

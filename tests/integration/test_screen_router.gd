@@ -16,7 +16,21 @@ func after_each() -> void:
 	get_tree().paused = false
 
 
+func test_starts_on_the_splash() -> void:
+	assert_eq(_app.current_name, ScreenRouter.FIRST_SCREEN)
+	assert_eq(_app.current_name, &"splash")
+
+
+func test_request_fades_to_the_screen_and_locks_input() -> void:
+	EventBus.screen_requested.emit(&"menu")
+	assert_true(_app.transitioning, "entrada travada durante a transição")
+	await get_tree().create_timer(ScreenRouter.FADE_MENU * 2 + 0.1, true).timeout
+	assert_false(_app.transitioning)
+	assert_eq(_app.current_name, &"menu")
+
+
 func test_opens_the_game_marked_as_real() -> void:
+	_app.goto(&"game")
 	assert_eq(_app.current_name, &"game")
 	assert_true(_app.current.has_meta(&"app"))
 	assert_true(_app.current.call(&"is_real_game"))
@@ -24,8 +38,9 @@ func test_opens_the_game_marked_as_real() -> void:
 
 
 func test_restart_request_recreates_the_game() -> void:
+	_app.goto(&"game")
 	var first: Node = _app.current
 	EventBus.game_restart_requested.emit()
-	await wait_physics_frames(2)
+	await get_tree().create_timer(ScreenRouter.FADE_GAME * 2 + 0.1, true).timeout
 	assert_ne(_app.current, first, "partida nova")
 	assert_false(is_instance_valid(first) and first.is_inside_tree(), "a antiga saiu")

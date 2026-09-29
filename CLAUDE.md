@@ -87,9 +87,9 @@ Ordem padrão: game-design → rules → mechanics → design + animation → co
 
 ## Estado atual
 
-- **Etapa:** Etapa 3 — features **001, 005, 002, 003 e 006 Complete** (Capítulo 1 completo, do começo ao chefe); 009 Fases 1–2 ✅ (áudio com sons provisórios). GUT 320/320. Paleta C (D-048). Chrome: SC-001 87–91 / p95 67–70.
-- **Feature atual:** 007 telas e menus (spec aprovada, D-066). Emenda de controles com mouse feita (D-067). 009 espera os arquivos do autor.
-- **Próximo:** 007 Fase 2 (telas, T710–T713), depois Fase 3 (Opções, Grimório), 008 e 004. Autoloads novos: `Settings` (user://settings.cfg), `Codex` (user://codex.save). Texto de interface: `tr()` + `i18n/ui.csv` (PT-BR e EN); teclas na tela: `Settings.key_label(action)`. Main scene: `src/app/app.tscn` (ScreenRouter). Aberto: C-006 (vida do chefe, playtest). Luta direto: `index.html?boss&unlock=all&atril=8`. Dano no chefe: `DamageSource` (marca em `Miracle.dmg()`/`begin_hit()`), `EnemyManager.boss_target`. Loja direto: `index.html?shop`. Sonda do capítulo com loja: `balance_probe -- cast god chapter buy`. Números do escriba: `RunStats.of(data)` (nunca `PlayerData` direto). Playtest: `index.html?unlock=all&atril=8`. Aberto: C-004 (playtest do autor); C-005 adiada para a 011 (D-050).
+- **Etapa:** Etapa 3 — features **001, 002, 003, 005, 006 Complete**; 007 Fases 1–2 ✅ (Checkpoint 007-B); 009 Fases 1–2 ✅. GUT 333/333. Paleta C (D-048).
+- **Feature atual:** 007 telas e menus (Fase 2 ✅: Splash, Menu, Personagem, Capítulo, Créditos, Pausa, Game Over, Vitória — D-068). Depois: 008 (cutscenes) → 004 (degradação).
+- **Próximo:** 007 Fase 3 (T720 Opções, T721 Grimório, T722 `test_screens_flow`). Telas em `src/ui/screens/` (base `UiScreen`, fita e pena em `UiStyle`); o jogo abre pelo `src/app/app.tscn` (Splash). Números do escriba: `RunStats.of(data)`. Playtest: `index.html?unlock=all&atril=8` (pula os menus). Aberto: C-004, C-006 (playtest do autor); C-005 adiada para a 011 (D-050).
 - **Combos:** `ComboData` estende `WordData`; `power` só no dano (D-051); detalhes em D-052.
 - **Áudio:** `AudioManager` (autoload) + `data/audio/`. Regerar os `.tres`: `godot --headless --path . -s tools/gen_audio_data.gd`; sons provisórios: `-s tools/gen_placeholder_sfx.gd`; lista do que gravar: `-s tools/audio_report.gd` → `docs/AUDIO-LIST.md`.
 - **Se o auto mode falhar** (classificador sem veredito): sair do auto mode (Shift+Tab) ou o autor roda os comandos com `!` no chat.

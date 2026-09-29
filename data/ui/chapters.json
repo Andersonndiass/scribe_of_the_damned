@@ -1,0 +1,10 @@
+{
+	"_doc": "Seleção de capítulo (007 FR-703; narrativa §6). Título é chave de tradução. Só o Cap. 1 aberto.",
+	"chapters": [
+		{"number": 1, "numeral": "I", "title": "CHAPTER_1_TITLE", "data": "res://data/chapters/chapter_1.tres", "unlocked": true},
+		{"number": 2, "numeral": "II", "title": "CHAPTER_2_TITLE", "data": "", "unlocked": false},
+		{"number": 3, "numeral": "III", "title": "CHAPTER_3_TITLE", "data": "", "unlocked": false},
+		{"number": 4, "numeral": "IV", "title": "CHAPTER_4_TITLE", "data": "", "unlocked": false},
+		{"number": 5, "numeral": "V", "title": "CHAPTER_5_TITLE", "data": "", "unlocked": false}
+	]
+}

@@ -33,7 +33,7 @@ const ROSTER_SCENE := "res://src/debug/roster_scene.tscn"
 @onready var wave_director: WaveDirector = $WaveDirector
 @onready var letter_field: LetterField = $World/LetterField
 @onready var miracle_layer: Node2D = $MiracleLayer
-@onready var overlays: MinimalOverlays = $Overlays
+@onready var overlays: GameOverlays = $Overlays
 @onready var shop: Shop = $Shop
 @onready var boss: Boss = $World/Boss
 
@@ -50,6 +50,9 @@ func _ready() -> void:
 	if debug_scene != "":
 		get_tree().change_scene_to_file.call_deferred(debug_scene)
 		return
+	# Capítulo escolhido na tela (007). O personagem escolhido entra na 010 (só o Anselmo é livre).
+	if has_meta(&"app") and GameState.picked_chapter != null:
+		chapter = GameState.picked_chapter
 	GameState.start_run(player_data)
 	# Fora do jogo de verdade (testes, sonda, stress) a loja não pausa a árvore: abre e fecha
 	# sozinha. O teste da tela da loja liga a loja de verdade com a meta "shop_manual".
@@ -89,6 +92,9 @@ func _ready() -> void:
 	EventBus.wave_ended.connect(_on_wave_ended)
 	EventBus.player_died.connect(func() -> void: _shop_in = -1.0)
 	overlays.restart_requested.connect(_restart)
+	EventBus.chapter_completed.connect(func(_c: int) -> void:
+		if is_real_game():
+			overlays.show_victory())
 	start_wave(0)
 	if args.contains("boss"):
 		# Debug (006 FR-615): direto na luta (combina com ?unlock=all&atril=8).

@@ -1,0 +1,36 @@
+{
+	"_doc": "Créditos (007 T713). Cada seção: título (chave de tradução) e linhas (nomes próprios, não traduzem). O autor revisa os nomes.",
+	"sections": [
+		{
+			"title": "CREDITS_GAME",
+			"lines": [
+				"SCRIBE OF THE DAMNED"
+			]
+		},
+		{
+			"title": "CREDITS_AUTHOR",
+			"lines": [
+				"ANDERSONNDIASS"
+			]
+		},
+		{
+			"title": "CREDITS_PLAYTEST",
+			"lines": [
+				"FRANCISCO"
+			]
+		},
+		{
+			"title": "CREDITS_ENGINE",
+			"lines": [
+				"GODOT ENGINE - MIT",
+				"GUT - MIT"
+			]
+		},
+		{
+			"title": "CREDITS_THANKS",
+			"lines": [
+				"CREDITS_THANKS_LINE"
+			]
+		}
+	]
+}
