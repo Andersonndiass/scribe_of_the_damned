@@ -342,9 +342,17 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
 - **Decisão:** o repositório local passa a ter `origin` = https://github.com/Andersonndiass/scribe_of_the_damned.git (público), com tudo o que está no Git (código, testes, specs, fichas de design, docs). O commit inicial do GitHub (`README.md`) foi juntado ao histórico local, sem force push. CI e itch continuam fora por enquanto.
 - **Status:** ✅ pedido do autor ("se conecte com esse repositório", opção "1" = subir tudo).
 
+### D-065 · 2026-09-29 · Fechamento da 006 (T620–T622)
+- **Shake (T620):** `ShakeCamera` na cena principal (px inteiros, o mais forte substitui, tempo real, `GameState.shake_enabled`); morte de campeão = shake fraco 1 px/200 ms (pendência da 005 resolvida; números no `ChampionTuning`).
+- **Sonda (T621):** `balance_probe -- cast god boss [unlock=all atril=8]` roda a luta em tempo quase real. Em 3 min o bot tirou ~376 de 1500 (≈2 de dano/s; 6 palavras na base, 3 com tudo liberado): projeção de ~12 min. O rules-agent calculou 3–4 min supondo 1 palavra a cada ~5 s. O bot monta palavras muito devagar (mesma limitação da C-004), então **não calibra a vida** → C-006.
+- **Stress (T622):** `?stress=boss` (fase 3 forçada, Summon, 150 letras, 200 projéteis): Chrome 157–189 FPS, p95 120–149 (SC-607 ✅). SC-001 na mesma sessão: 87–97 / p95 62–71.
+- **Status:** ✅ feature 006 Complete; vida do chefe pendente de playtest.
+
 ---
 
 ## Conflitos abertos
+
+- **C-006 · Vida do Asmodeus (DECISÃO DO AUTOR, playtest).** 1500 (rules-agent) supõe uma palavra a cada ~5 s. A sonda não mede isso. No playtest (`index.html?boss`, ou jogando o capítulo), se a luta passar muito de 4 min, baixar `max_hp` em `data/bosses/asmodeus.tres` (ex.: 1000); se ficar abaixo de 2 min, subir.
 
 - ~~C-001 · VERBUM usa B~~ → resolvido pela D-015.
 - **C-004 · Ritmo de palavras por onda (DECISÃO DO AUTOR).** *Atualização 2026-09-26:* a sonda antiga conjurava em todo frame (heresia constante), então os dados de palavras do T069 e do T533 subestimavam. Com a sonda corrigida e invencível (`docs/reviews/T533-curva-cap1.md` §6): ~25 letras caídas/min, ~6 úteis/min, **mediana ~0,7 palavra/min** nas 9 ondas, 0 heresias. O gargalo é a ordem das letras úteis, não a quantidade. Continua esperando o playtest do autor. *Atualização T069:* HP 2 aplicado (D-030); com as 7 palavras e o purge, a sonda automática deixou de ser confiável (laços de purge, ímã puxando letras inúteis). Próximo passo: **playtest humano** no build web; alavancas listadas em `docs/reviews/T069-rules-parecer.md` §4. Dados originais: Sonda na onda 1 (2 execuções por cenário; bot que foge, busca só letras úteis e conjura):

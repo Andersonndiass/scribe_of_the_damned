@@ -14,6 +14,8 @@ var rng := RandomNumberGenerator.new()
 var run_stats: RunStats = null
 ## Fração de tinta acumulada pelo ×tinta da Bolsa do Esmoler (a gota é inteira).
 var gold_fraction: float = 0.0
+## Screen shake ligado (D-047 6B; a tela de Opções, 007, muda). Vale entre partidas.
+var shake_enabled: bool = true
 
 
 ## Reinicia a partida a partir dos dados do personagem.

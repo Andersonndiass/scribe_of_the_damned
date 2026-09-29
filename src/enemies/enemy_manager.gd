@@ -352,6 +352,7 @@ func kill(i: int) -> void:
 		EventBus.champion_killed.emit(d, pos)
 		if champion_tuning != null:
 			EventBus.hitstop_requested.emit(champion_tuning.death_hitstop_ms)
+			EventBus.shake_requested.emit(champion_tuning.death_shake, champion_tuning.death_shake_time)
 	var b: EnemyBehavior = d.behavior if d.behavior != null else _default_behavior
 	b.on_death(self, i)
 	_spawn_dissolve(d, pos)

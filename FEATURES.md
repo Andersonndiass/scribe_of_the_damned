@@ -1,6 +1,6 @@
 # Roadmap de Features
 
-> ⚠️ **Status real (2026-09-28):** `000` aprovada; **`001`, `005`, `002` e `003` Complete**; `009` com a Fase 1 pronta (áudio em silêncio). As demais features **não têm arquivos no repo**, apesar do "Tasked" abaixo; serão escritas just-in-time. Ver `docs/PLANO-ETAPAS.md`.
+> ⚠️ **Status real (2026-09-28):** `000` aprovada; **`001`, `005`, `002`, `003` e `006` Complete**; `009` com a Fase 1 pronta (áudio em silêncio). As demais features **não têm arquivos no repo**, apesar do "Tasked" abaixo; serão escritas just-in-time. Ver `docs/PLANO-ETAPAS.md`.
 
 | # | Feature | Depende de | Status |
 |---|---|---|---|
@@ -11,7 +11,7 @@
 | 003 | shop-scriptorium | 001 | **Complete** ✅ (2026-09-28) |
 | 004 | arena-degradation | 001 | Tasked ✅ |
 | 005 | enemies-roster (+ ondas Cap. 1) | 001 | **Complete ✅** (2026-09-25 · shake da morte do campeão pendente) |
-| 006 | boss-asmodeus (Cap. 1) | 002, 005 | Tasked ✅ |
+| 006 | boss-asmodeus (Cap. 1) | 002, 005 | **Complete** ✅ (2026-09-29 · vida do chefe a confirmar no playtest) |
 | 007 | ui-screens-menus | 001 | Tasked ✅ |
 | 008 | cutscenes-cap1 (**in-engine**, AnimationPlayer + roteiros) | 007 | Tasked ✅ (v2) |
 | 009 | audio | 001 | Tasked ✅ |

@@ -3,6 +3,8 @@ extends Node
 ##   modo "sc001" (padrão): 300 Diabretes + 150 letras + 200 projéteis do jogador (SC-001).
 ##   modo "wave9": o mesmo, mas os 300 inimigos são a MISTURA da onda 9 com os comportamentos
 ##                 ativos, mais 60 projéteis inimigos e 20 poças mantidos no ar/chão (SC-503).
+##   modo "boss": a luta contra o chefe do capítulo com o Summon ativo, 150 letras e 200 projéteis
+##                do jogador; o chefe tem vida enorme e o escriba é invulnerável (006 SC-607).
 ##   modo "sweep": a carga do SC-001 e, a cada SWEEP_CYCLE s, uma varredura de tela (sweep_word:
 ##                 PURGO, DOMINUS ou MISERERE; vazio = controle, não conjura). Registra os frames nos
 ##                 SWEEP_WINDOW s seguintes e repõe os inimigos (002 SC-202).
@@ -76,7 +78,19 @@ func setup(p_main: Node2D, p_mode: StringName = &"sc001") -> void:
 	_manager.player = _target
 	_manager.dissolve_all()
 
-	if mode == &"wave9":
+	if mode == &"boss":
+		# O chefe de verdade, com vida enorme; o alvo do EnemyManager continua sendo o escriba
+		# (os Diabretes do Summon o perseguem) e o escriba fica no meio, invulnerável.
+		_manager.player = _player
+		_player.global_position = Vector2(320, 240)
+		var ch: ChapterData = main.get("chapter")
+		var tough_boss: BossData = ch.boss.duplicate()
+		tough_boss.max_hp = STRESS_HP
+		ch = ch.duplicate()
+		ch.boss = tough_boss
+		main.set("chapter", ch)
+		main.call("start_boss")
+	elif mode == &"wave9":
 		for entry: Array in WAVE9_MIX:
 			var d: EnemyData = _tough(load(entry[0]))
 			for i: int in entry[1]:
@@ -107,6 +121,11 @@ func _physics_process(delta: float) -> void:
 	_time += delta
 	_target.global_position = Vector2(320, 180) + Vector2.RIGHT.rotated(_time * ORBIT_SPEED) * ORBIT_RADIUS
 	_player.vitals.iframes_left = 1.0
+	if mode == &"boss":
+		# Fase 3 (Cruz giratória + Summon): o pior caso da luta.
+		var boss: Boss = main.get_node("World/Boss")
+		if boss.filter != null and boss.filter.phase_index < boss.data.phases.size() - 1:
+			boss.filter.phase_index = boss.data.phases.size() - 1
 	while _projectiles.count < PROJECTILES:
 		var dir := Vector2.RIGHT.rotated(_rng.randf() * TAU)
 		_projectiles.fire(_random_point(), dir, 220.0, 1, PROJECTILE_RANGE)

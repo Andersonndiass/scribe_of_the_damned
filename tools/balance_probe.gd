@@ -7,6 +7,8 @@ extends SceneTree
 ##         bot sobreviver. Imprime uma linha FLOW com letras/min, letras-alvo/min, comidas, coletadas,
 ##         palavras e heresias.
 ##   chapter = joga as 9 ondas seguidas, com a loja no meio (fecha sozinha), até o fim do capítulo.
+##   boss = luta direto contra o chefe do capítulo (o Main lê o mesmo argumento); com god mede o
+##          tempo até matar (006 T621, SC-608). Linha BOSS. Combina com unlock=all e atril=N.
 ##   buy = em cada loja o bot compra as cartas mais baratas que couberem na tinta (003 T320, SC-306).
 ##         Imprime uma linha SHOP com compras, tinta ganha e o que comprou.
 
@@ -43,6 +45,10 @@ var _shop_bot: bool = false
 var _bought: PackedStringArray = []
 var _ink_earned: int = 0
 var _visits: int = 0
+var _boss_mode: bool = false
+var _boss_done: float = -1.0
+var _boss_hp: int = -1
+var _boss_phase: int = 0
 
 
 func _initialize() -> void:
@@ -51,6 +57,7 @@ func _initialize() -> void:
 	_god = OS.get_cmdline_user_args().has("god")
 	_chapter = OS.get_cmdline_user_args().has("chapter")
 	_shop_bot = OS.get_cmdline_user_args().has("buy")
+	_boss_mode = OS.get_cmdline_user_args().has("boss")
 	# Overrides só em memória, para simular propostas sem tocar nos .tres: hp=N drop=F
 	var imp: Resource = load("res://data/enemies/imp.tres")
 	for arg: String in OS.get_cmdline_user_args():
@@ -80,6 +87,13 @@ func _initialize() -> void:
 	bus.chapter_completed.connect(func(_c: int) -> void: _chapter_done = true)
 	bus.gold_ink_collected.connect(func(a: int, _t: int) -> void: _ink_earned += a)
 	bus.shop_opened.connect(func(_w: int) -> void: _on_shop_opened())
+	bus.boss_damaged.connect(func(hp: int, _m: int) -> void: _boss_hp = hp)
+	bus.boss_phase_changed.connect(func(i: int) -> void:
+		_boss_phase = i
+		print("BOSS fase %d aos %.2f min" % [i + 1, _time / 60.0]))
+	bus.boss_defeated.connect(func(_b: Resource) -> void: _boss_done = _time)
+	if _boss_mode:
+		_limit = 12.0 * 60.0
 	if _chapter:
 		_limit = 20.0 * 60.0
 		bus.wave_started.connect(func(i: int, _d: float) -> void:
@@ -121,9 +135,20 @@ func _physics_process(delta: float) -> bool:
 		var atril: RefCounted = _field.get("atril")
 		var st: int = atril.call("state", _field.get("lexicon"))
 		if st == 3:  # Atril.Status.VALID
+			var boss: Node2D = _main.get_node_or_null("World/Boss")
+			if boss != null and bool(boss.get("fighting")):
+				# Palavras direcionais (LUX, FLAMMA…) saem para onde o escriba olha: mira o chefe.
+				_player.set("facing", (boss.global_position - _player.global_position).normalized())
 			_caster.call("cast")
 		elif st in [1, 4]:  # FILL / FULL_REJECT: beco sem saída → purge
 			_caster.call("purge")
+	if _boss_mode and int(_time) % 30 == 0 and int(_time - delta) % 30 != 0:
+		var b: Node = _main.get_node_or_null("World/Boss")
+		print("BOSS t=%.0fs hp=%d estado=%s pausado=%s palavras=%s" % [_time, _boss_hp, b.call("state_name") if b != null else "-", paused, _casts])
+	if _boss_mode and (_boss_done >= 0.0 or _died_at >= 0.0 or _time > _limit):
+		print("BOSS resultado venceu=%s tempo=%.2fmin hp_restante=%d fase=%d conjurações=%s" % [
+			_boss_done >= 0.0, (_boss_done if _boss_done >= 0.0 else _time) / 60.0, _boss_hp, _boss_phase + 1, _casts])
+		return true
 	if _ended or _chapter_done or _died_at >= 0.0 or _time > _limit:
 		if _chapter:
 			print("SHOP visitas=%d compras=%d tinta_ganha=%d tinta_sobrando=%d capítulo_completo=%s tempo=%.1fmin compradas=%s" % [

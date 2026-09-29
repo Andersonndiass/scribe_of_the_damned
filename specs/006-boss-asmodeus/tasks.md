@@ -19,6 +19,6 @@
 **Checkpoint 006-B:** ✅ Asmodeus jogável do começo ao fim (2026-09-29; `?boss`; conferido no Chrome).
 
 ## Fase 3 — Sensação e fechamento
-- **T620** Câmera + `ScreenShake` (golpe forte do chefe, troca de fase, morte do chefe e do campeão); `GameState.shake_enabled`.
-- **T621** Sonda: o bot enfrenta o chefe (SC-608, 3–4 min); calibrar o HP com o rules-agent.
-- **T622** Stress `?stress=boss` no Chrome (SC-607); GUT, export, `FEATURES.md`, `CLAUDE.md`, `docs/DECISIONS.md`.
+- ✅ **T620** Câmera + `ScreenShake` (golpe forte do chefe, troca de fase, morte do chefe e do campeão); `GameState.shake_enabled`.
+- ⚠️ **T621** Sonda: o bot enfrenta o chefe (SC-608). Feita, mas o bot conjura 1 palavra a cada 30–60 s (C-004) e não mede o ritmo real: vida 1500 fica até o playtest do autor (C-006).
+- ✅ **T622** Stress `?stress=boss` no Chrome (SC-607); GUT, export, `FEATURES.md`, `CLAUDE.md`, `docs/DECISIONS.md`.

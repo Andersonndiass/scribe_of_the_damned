@@ -10,3 +10,6 @@ extends Resource
 @export var gold_drops_max: int = 5
 @export var heal_candles: int = 1
 @export var death_hitstop_ms: int = 40
+## Shake fraco na morte do campeão (animation-agent, 006): px e s.
+@export var death_shake: float = 1.0
+@export var death_shake_time: float = 0.2
