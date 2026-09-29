@@ -1,6 +1,6 @@
 # Roadmap de Features
 
-> ⚠️ **Status real (2026-09-28):** `000` aprovada; **`001`, `005` e `002` Complete**; `009` com a Fase 1 pronta (áudio em silêncio). As demais features **não têm arquivos no repo**, apesar do "Tasked" abaixo; serão escritas just-in-time. Ver `docs/PLANO-ETAPAS.md`.
+> ⚠️ **Status real (2026-09-28):** `000` aprovada; **`001`, `005`, `002` e `003` Complete**; `009` com a Fase 1 pronta (áudio em silêncio). As demais features **não têm arquivos no repo**, apesar do "Tasked" abaixo; serão escritas just-in-time. Ver `docs/PLANO-ETAPAS.md`.
 
 | # | Feature | Depende de | Status |
 |---|---|---|---|
@@ -8,7 +8,7 @@
 | 00A | agents-setup (AGENTS.md + rules-agent + design-agent) | 000 | Coberto por T000–T002 da 001 ✅ |
 | 001 | core-loop | 000 | **Complete ✅** (2026-09-25 · Firefox a medir pelo autor) |
 | 002 | vocabulary-combos | 001 | **Complete** ✅ (2026-09-28) |
-| 003 | shop-scriptorium | 001 | Tasked ✅ |
+| 003 | shop-scriptorium | 001 | **Complete** ✅ (2026-09-28) |
 | 004 | arena-degradation | 001 | Tasked ✅ |
 | 005 | enemies-roster (+ ondas Cap. 1) | 001 | **Complete ✅** (2026-09-25 · shake da morte do campeão pendente) |
 | 006 | boss-asmodeus (Cap. 1) | 002, 005 | Tasked ✅ |

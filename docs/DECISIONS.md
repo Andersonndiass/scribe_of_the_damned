@@ -314,6 +314,12 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
 - **Testes:** com a árvore pausada, esperar com `get_tree().create_timer(t, true)` (o `wait_seconds` do GUT pausa junto).
 - **Status:** ✅ dentro do plano aprovado ("pode").
 
+### D-060 · 2026-09-28 · Fechamento da 003 (T320–T321)
+- **SC-306 (sonda):** `balance_probe -- cast god chapter buy` joga as 9 ondas com a loja; o bot compra sempre as cartas mais baratas que cabem. Resultado: **6 compras**, 40 de tinta ganha (36 do dízimo; o bot foge e quase não mata campeão), capítulo completo. Um jogador que mata os 7 campeões ganha ~28 a mais.
+- **SC-307:** A/B no Chrome contra o fim da 002 (`5ec49f4`): SC-001 88–101 → 87–91 FPS (p95 66–79 → 67–70); SC-503 87–93 → 87–88 (p95 68–75 → 68–70). Sem regressão; SC-001 ✅ de novo no Chrome (a máquina voltou ao normal).
+- **Sonda:** o modo de compra se chama `buy` (não `shop`, que colide com o `?shop` de debug do jogo).
+- **Status:** ✅ feature 003 Complete.
+
 ---
 
 ## Conflitos abertos

@@ -6,6 +6,9 @@ extends SceneTree
 ##   god = jogador invencível (2B, D-047): mede o FLUXO DE LETRAS da onda inteira, sem depender de o
 ##         bot sobreviver. Imprime uma linha FLOW com letras/min, letras-alvo/min, comidas, coletadas,
 ##         palavras e heresias.
+##   chapter = joga as 9 ondas seguidas, com a loja no meio (fecha sozinha), até o fim do capítulo.
+##   buy = em cada loja o bot compra as cartas mais baratas que couberem na tinta (003 T320, SC-306).
+##         Imprime uma linha SHOP com compras, tinta ganha e o que comprou.
 
 const MAIN := "res://src/main/main.tscn"
 const TIME_SCALE := 4.0
@@ -34,12 +37,20 @@ var _targets: int = 0
 var _eaten: int = 0
 var _heresies: int = 0
 var _purges: int = 0
+var _chapter: bool = false
+var _chapter_done: bool = false
+var _shop_bot: bool = false
+var _bought: PackedStringArray = []
+var _ink_earned: int = 0
+var _visits: int = 0
 
 
 func _initialize() -> void:
 	_still = OS.get_cmdline_user_args().has("still")
 	_cast_mode = OS.get_cmdline_user_args().has("cast")
 	_god = OS.get_cmdline_user_args().has("god")
+	_chapter = OS.get_cmdline_user_args().has("chapter")
+	_shop_bot = OS.get_cmdline_user_args().has("buy")
 	# Overrides só em memória, para simular propostas sem tocar nos .tres: hp=N drop=F
 	var imp: Resource = load("res://data/enemies/imp.tres")
 	for arg: String in OS.get_cmdline_user_args():
@@ -65,7 +76,14 @@ func _initialize() -> void:
 	bus.enemy_killed.connect(func(_s: int, _d: Resource, _p: Vector2) -> void: _kills += 1)
 	bus.player_damaged.connect(func(_a: int, _c: int) -> void: _hits += 1)
 	bus.player_died.connect(func() -> void: _died_at = _time)
-	bus.wave_ended.connect(func(_i: int) -> void: _ended = true)
+	bus.wave_ended.connect(func(_i: int) -> void: _ended = not _chapter)
+	bus.chapter_completed.connect(func(_c: int) -> void: _chapter_done = true)
+	bus.gold_ink_collected.connect(func(a: int, _t: int) -> void: _ink_earned += a)
+	bus.shop_opened.connect(func(_w: int) -> void: _on_shop_opened())
+	if _chapter:
+		_limit = 20.0 * 60.0
+		bus.wave_started.connect(func(i: int, _d: float) -> void:
+			print("CHAPTER onda %d começou (t=%.1fmin, tinta=%d)" % [i, _time / 60.0, int(root.get_node("GameState").get("gold_ink"))]))
 	bus.letter_dropped.connect(func(_l: String, _r: bool, t: bool, _p: Vector2) -> void:
 		_dropped += 1
 		if t:
@@ -106,7 +124,11 @@ func _physics_process(delta: float) -> bool:
 			_caster.call("cast")
 		elif st in [1, 4]:  # FILL / FULL_REJECT: beco sem saída → purge
 			_caster.call("purge")
-	if _ended or _died_at >= 0.0 or _time > _limit:
+	if _ended or _chapter_done or _died_at >= 0.0 or _time > _limit:
+		if _chapter:
+			print("SHOP visitas=%d compras=%d tinta_ganha=%d tinta_sobrando=%d capítulo_completo=%s tempo=%.1fmin compradas=%s" % [
+				_visits, _bought.size(), _ink_earned, int(root.get_node("GameState").get("gold_ink")), _chapter_done,
+				_time / 60.0, ", ".join(_bought)])
 		print("PROBE onda=%d still=%s tempo=%.1fs mortes=%d golpes_sofridos=%d morreu_em=%s max_vivos=%d onda_terminou=%s tiros=%d conjurações=%s letras_caídas=%d coletadas=%s" % [
 			GameState_wave(), _still, _time, _kills, _hits, ("%.1fs" % _died_at) if _died_at >= 0.0 else "não", _max_alive, _ended, _shots, _casts, _dropped, _collected])
 		if _god:
@@ -119,6 +141,25 @@ func _physics_process(delta: float) -> bool:
 				_collected.length() / minutes, words, words / minutes, _heresies, _purges, _kills / minutes])
 		return true
 	return false
+
+
+## Loja (003 T320): compra, a cada visita, as cartas mais baratas que couberem na tinta.
+func _on_shop_opened() -> void:
+	_visits += 1
+	if not _shop_bot:
+		return
+	var shop: Node = _main.get_node("Shop")
+	var offer: RefCounted = shop.get("offer")
+	while true:
+		var best: int = -1
+		var prices: PackedInt32Array = offer.get("prices")
+		var cards: Array = offer.get("cards")
+		for i: int in cards.size():
+			if bool(shop.call("can_afford", i)) and (best < 0 or prices[i] < prices[best]):
+				best = i
+		if best < 0 or not bool(shop.call("buy", best)):
+			return
+		_bought.append(String((cards[best] as Resource).get("id")))
 
 
 func GameState_wave() -> int:

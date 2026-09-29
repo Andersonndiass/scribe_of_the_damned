@@ -1,6 +1,6 @@
 # 003 — Loja: Scriptorium Noturno
 
-> Status: **Aprovada** (2026-09-28, "1a 2a 3a 4a"; D-058). Fases 1–2 ✅ (Checkpoints 003-A e 003-B).
+> Status: **Aprovada** (2026-09-28, "1a 2a 3a 4a"; D-058). **Complete** (2026-09-28). Fechamento: D-060.
 > Pareceres (2026-09-28): game-design-agent **AJUSTAR** e rules-agent **VÁLIDO COM RESSALVAS**. Os ajustes estão aplicados (marcados **[P]**).
 > Depende de: 001, 002, 005 (Complete). Game bible §3.9 (D-017, D-018). Ficha 28 (tela da loja) e ficha 31 (ícones dos itens). Ressalvas da D-057.
 > Legenda: **[INICIAL]** = número proposto, a validar pelo rules-agent; tudo fica nos `.tres`.

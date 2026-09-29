@@ -17,5 +17,5 @@
 **Checkpoint 003-B:** ✅ a loja jogável entre as ondas (2026-09-28, GUT 250/250; conferida no Chrome com `index.html?shop`).
 
 ## Fase 3 — Fechamento
-- **T320** Sonda de balanceamento: o bot compra na loja; ~5 cartas no Cap. 1 (SC-306).
-- **T321** GUT, export web, SC-001/SC-503 (SC-307), `FEATURES.md`, `CLAUDE.md`, `docs/DECISIONS.md`.
+- ✅ **T320** Sonda de balanceamento: o bot compra na loja; ~5 cartas no Cap. 1 (SC-306).
+- ✅ **T321** GUT, export web, SC-001/SC-503 (SC-307), `FEATURES.md`, `CLAUDE.md`, `docs/DECISIONS.md`.
