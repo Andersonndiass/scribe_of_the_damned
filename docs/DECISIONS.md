@@ -452,6 +452,16 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
 
 ---
 
+### D-077 · 2026-09-29 · Fechamento da 008 (cutscenes do Cap. 1)
+- **Resultado:** as 4 cenas in-engine (roteiro JSON → builder → AnimationPlayer), cada elemento em camada própria (`src/cutscenes/fx/`, `CutsceneFx`); C1-01 e C1-02 entre o Capítulo e a onda 1 só na primeira vez (gravado no Grimório ao terminar ou pular), C1-03 no lugar da entrada do chefe (o fim da cena solta o chefe já lutando), C1-04 entre o fim do capítulo e a Vitória; `?cutscene=c1_0N` toca uma cena e volta ao Menu. Frases na partida (7, balão de fala, voz opcional, intervalos 4 s / 20 s / 15 s, prioridade do Asmodeus).
+- **Pular:** segurar Esc 3 s com o tinteiro enchendo (D-071); Espaço/Enter/clique adianta; o Esc não abre a Pausa durante a cena.
+- **Bug achado no teste:** um tocador carregado e parado prendia a entrada (o Menu do Game Over não respondia) — agora só prende enquanto toca.
+- **Sons:** ids `cs_*` com provisórios gerados; as vozes entram quando o autor gravar (`docs/voice/`).
+- **Desempenho:** SC-001 no Chrome 75–79 FPS, p95 57–62; os custos subiram por igual também em sistemas que a 008 não tocou (máquina mais lenta nesta medição). A remedir na 011 (C-005).
+- **Status:** ✅ 008 Complete.
+
+---
+
 ## Conflitos abertos
 
 - **C-006 · Vida do Asmodeus (DECISÃO DO AUTOR, playtest).** 1500 (rules-agent) supõe uma palavra a cada ~5 s. A sonda não mede isso. No playtest (`index.html?boss`, ou jogando o capítulo), se a luta passar muito de 4 min, baixar `max_hp` em `data/bosses/asmodeus.tres` (ex.: 1000); se ficar abaixo de 2 min, subir.

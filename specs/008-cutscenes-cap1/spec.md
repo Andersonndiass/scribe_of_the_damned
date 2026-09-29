@@ -1,6 +1,6 @@
 # 008 — Cutscenes do Capítulo 1
 
-> Status: **Aprovada** (2026-09-29, "1A 2A 3A — pressionar por 3 segundos"; D-071). Emenda D-072: falas na partida e voz do latim.
+> Status: **Complete** (2026-09-29; aprovada pela D-071, emenda D-072, fechada pela D-077).
 > Parecer (2026-09-29): game-design-agent **AJUSTAR** — tetos de tempo por cena, C1-02 mais curta e quatro correções de canon (aplicados abaixo). mechanics-agent: sistema proposto (seção "Arquitetura").
 > Depende de: 006 (entrada e morte do Asmodeus), 007 (telas, roteador, tradução, Vitória). Constituição IX (cutscenes in-engine, AnimationPlayer + builder JSON→Animation, nada de vídeo). Narrativa §5, §10 (falas âncora), §12 (beats C1-01…C1-04). Plano de etapas DV-10 (os roteiros nascem nesta spec) e R-04 (builder com tolerância de 1 quadro). Asset catalog §2 (closes 128×128).
 > **[P]** = proposta do Claude (fala ou regra inventada, o autor aprova ou reescreve). **[P?]** = decisão do autor.

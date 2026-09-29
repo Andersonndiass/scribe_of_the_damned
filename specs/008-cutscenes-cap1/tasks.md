@@ -18,14 +18,16 @@
 **Checkpoint 008-B:** ✅ uma cena toca, adianta e pula com o estado certo; faixa, closes, legenda e placa de pular desenhados (2026-09-29, GUT 366/366). D-073.
 
 ## Fase 3 — As quatro cenas no jogo
-- **T820** Roteiros `data/cutscenes/c1_01.json` … `c1_04.json` (tempos do animation-agent) e placeholders por script.
-- **T821** Rota `cutscene` no roteador (C1-01 → C1-02 → jogo), "já vista" no Codex (1A), `?cutscene=c1_0N`.
-- **T822** C1-03 no lugar da entrada do chefe (árvore parada; o fim da cena solta o Asmodeus já lutando).
-- **T823** C1-04 entre a morte do chefe e a Vitória.
-- **T825** Frases na partida (FR-815): `data/barks/barks.json` (gatilho, falante, chave, intervalo), balão de fala (visual do design-agent no T810), voz opcional; teste: cada gatilho mostra a frase uma vez e respeita o intervalo.
-- **T824** [TEST] `tests/integration/test_cutscene_flow.gd` (SC-802, SC-805): Capítulo → C1-01 → C1-02 → onda 1 (na 2ª vez, direto); C1-03 pulada → chefe lutando, `boss_spawned` uma vez; C1-04 pulada → Vitória; Esc na cena não abre a Pausa. Estender o `test_screens_flow` da 007.
+- ✅ **T820** Roteiros `data/cutscenes/c1_01.json` … `c1_04.json` (tempos do animation-agent) e placeholders por script.
+- ✅ **T821** Rota `cutscene` no roteador (C1-01 → C1-02 → jogo), "já vista" no Codex (1A), `?cutscene=c1_0N`.
+- ✅ **T822** C1-03 no lugar da entrada do chefe (árvore parada; o fim da cena solta o Asmodeus já lutando).
+- ✅ **T823** C1-04 entre a morte do chefe e a Vitória.
+- ✅ **T825** Frases na partida (FR-815): `data/barks/barks.json` (gatilho, falante, chave, intervalo), balão de fala (visual do design-agent no T810), voz opcional; teste: cada gatilho mostra a frase uma vez e respeita o intervalo.
+- ✅ **T824** [TEST] `tests/integration/test_cutscene_flow.gd` (SC-802, SC-805): Capítulo → C1-01 → C1-02 → onda 1 (na 2ª vez, direto); C1-03 pulada → chefe lutando, `boss_spawned` uma vez; C1-04 pulada → Vitória; Esc na cena não abre a Pausa. Estender o `test_screens_flow` da 007.
 
-**Checkpoint 008-C:** do Capítulo à Vitória com as quatro cenas, só com teclado.
+**Checkpoint 008-C:** ✅ do Capítulo à Vitória com as quatro cenas (teste do fluxo); frases na partida com intervalos e prioridade (2026-09-29, GUT 382/382).
 
 ## Fase 4 — Fechamento
-- **T830** GUT, export web, SC-001 e 60 FPS numa cena no Chrome (SC-806), `FEATURES.md`, `CLAUDE.md`, `docs/DECISIONS.md`, push.
+- ✅ **T830** GUT, export web, SC-001 e 60 FPS numa cena no Chrome (SC-806), `FEATURES.md`, `CLAUDE.md`, `docs/DECISIONS.md`, push.
+
+**008 Complete** (2026-09-29): GUT 382/382; export web ok; `?cutscene=c1_0N` no Chrome sem erros; SC-001 no Chrome 75–79 FPS (p95 57–62) — os custos subiram ~50% por igual também em sistemas intocados (máquina mais lenta nesta medição), média acima de 60. D-077.

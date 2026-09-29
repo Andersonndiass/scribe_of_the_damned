@@ -1,0 +1,19 @@
+{
+	"_doc": "Frases curtas na partida (008 FR-815, D-072; tempos do animation-agent T810). trigger = evento do EventBus (com filtro opcional), speaker = anselmo | asmodeus, key = chave de tradução (e da voz), priority = corta a frase atual e ignora o intervalo global. Intervalos em segundos.",
+	"global_gap": 4.0,
+	"repeat_gap": 20.0,
+	"min_time": 1.5,
+	"max_time": 2.5,
+	"chars_per_second": 15.0,
+	"voice_extra": 0.3,
+	"voice_max": 3.0,
+	"barks": [
+		{"id": "asmodeus_phase_2", "trigger": "boss_phase_changed", "phase": 1, "speaker": "asmodeus", "key": "BARK_ASMODEUS_PHASE_2", "priority": true},
+		{"id": "asmodeus_phase_3", "trigger": "boss_phase_changed", "phase": 2, "speaker": "asmodeus", "key": "BARK_ASMODEUS_PHASE_3", "priority": true},
+		{"id": "asmodeus_erasure", "trigger": "letter_erased", "speaker": "asmodeus", "key": "BARK_ASMODEUS_ERASURE", "priority": false},
+		{"id": "asmodeus_death", "trigger": "boss_defeated", "speaker": "asmodeus", "key": "BARK_ASMODEUS_DEATH", "priority": true},
+		{"id": "anselmo_heresy", "trigger": "heresy_committed", "speaker": "anselmo", "key": "BARK_ANSELMO_HERESY", "priority": false, "repeat_gap": 15.0},
+		{"id": "anselmo_last_candle", "trigger": "player_damaged", "candles": 1, "speaker": "anselmo", "key": "BARK_ANSELMO_LAST_CANDLE", "priority": false},
+		{"id": "anselmo_wave_clear", "trigger": "wave_ended", "speaker": "anselmo", "key": "BARK_ANSELMO_WAVE_CLEAR", "priority": false}
+	]
+}

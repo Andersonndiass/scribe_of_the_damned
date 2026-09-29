@@ -90,9 +90,9 @@ Ordem padrão: game-design → rules → mechanics → design + animation → co
 
 ## Estado atual
 
-- **Etapa:** Etapa 3 — features **001, 002, 003, 005, 006 e 007 Complete**; 009 Fases 1–2 ✅. GUT 348/348. Paleta C (D-048). Chrome: SC-001 102–105 / p95 76–80.
-- **Feature atual:** 008 cutscenes do Cap. 1 (in-engine, AnimationPlayer) — spec a escrever. Depois: 004 (degradação). Autor = Francisco (créditos).
-- **Próximo:** spec da 008 (C1-01..C1-04; narrativa §12). Telas em `src/ui/screens/` (base `UiScreen`; fita e pena em `UiStyle`; Opções/Grimório abrem embutidos pela Pausa); o jogo abre pelo `src/app/app.tscn` (Splash). Autoloads: `Settings` (user://settings.cfg; `commit()` aplica e salva), `Codex` (user://codex.save). Texto: `tr()` + `i18n/ui.csv` (PT-BR e EN); teclas na tela: `Settings.key_label(action)`. Dados das telas: `data/ui/*.json`, `data/codex/codex.json`. Luta direto: `index.html?boss&unlock=all&atril=8`; loja direto: `?shop` (os dois pulam os menus). Dano no chefe: `DamageSource`. Números do escriba: `RunStats.of(data)`. Aberto: C-004, C-006 (playtest do autor); verbetes que faltam (D-069); C-005 adiada para a 011 (D-050).
+- **Etapa:** Etapa 3 — features **001, 002, 003, 005, 006, 007 e 008 Complete**; 009 Fases 1–2 ✅. GUT 382/382. Paleta C (D-048) com valores exatos (D-076).
+- **Feature atual:** 004 degradação da arena — spec a escrever (ordem do autor: 007 → 008 → 004). Autor = Francisco.
+- **Próximo:** spec da 004. Arte: regras de pixel art (art bible §3, D-075/D-076) e sprites em camadas; converter arte do autor com `tools/import_art.gd`. Cutscenes: `data/cutscenes/*.json` + `src/cutscenes/` (debug `?cutscene=c1_01`); frases: `data/barks/barks.json`; falas para dublar: `docs/voice/`. Telas em `src/ui/screens/`; o jogo abre pelo `src/app/app.tscn`. Luta direto: `?boss&unlock=all&atril=8` (sem cutscene); loja: `?shop`. Aberto: C-004, C-006 (playtest do autor); verbetes que faltam (D-069); C-005 na 011.
 - **Combos:** `ComboData` estende `WordData`; `power` só no dano (D-051); detalhes em D-052.
 - **Áudio:** `AudioManager` (autoload) + `data/audio/`. Regerar os `.tres`: `godot --headless --path . -s tools/gen_audio_data.gd`; sons provisórios: `-s tools/gen_placeholder_sfx.gd`; lista do que gravar: `-s tools/audio_report.gd` → `docs/AUDIO-LIST.md`.
 - **Se o auto mode falhar** (classificador sem veredito): sair do auto mode (Shift+Tab) ou o autor roda os comandos com `!` no chat.

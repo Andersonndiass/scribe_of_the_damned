@@ -1,6 +1,6 @@
 # Roadmap de Features
 
-> ⚠️ **Status real (2026-09-29):** `000` aprovada; **`001`, `005`, `002`, `003`, `006` e `007` Complete**; `009` com as Fases 1–2 prontas (sons provisórios). As demais features **não têm arquivos no repo**, apesar do "Tasked" abaixo; serão escritas just-in-time. Ver `docs/PLANO-ETAPAS.md`.
+> ⚠️ **Status real (2026-09-29):** `000` aprovada; **`001`, `005`, `002`, `003`, `006`, `007` e `008` Complete**; `009` com as Fases 1–2 prontas (sons provisórios). As demais features **não têm arquivos no repo**, apesar do "Tasked" abaixo; serão escritas just-in-time. Ver `docs/PLANO-ETAPAS.md`.
 
 | # | Feature | Depende de | Status |
 |---|---|---|---|
@@ -13,7 +13,7 @@
 | 005 | enemies-roster (+ ondas Cap. 1) | 001 | **Complete ✅** (2026-09-25 · shake da morte do campeão pendente) |
 | 006 | boss-asmodeus (Cap. 1) | 002, 005 | **Complete** ✅ (2026-09-29 · vida do chefe a confirmar no playtest) |
 | 007 | ui-screens-menus | 001 | **Complete** ✅ (2026-09-29 · verbetes que faltam: autor, D-069) |
-| 008 | cutscenes-cap1 (**in-engine**, AnimationPlayer + roteiros) | 007 | Spec aprovada (2026-09-29, D-071) |
+| 008 | cutscenes-cap1 (**in-engine**, AnimationPlayer + roteiros) | 007 | **Complete** ✅ (2026-09-29 · vozes: autor, `docs/voice/`) |
 | 009 | audio | 001 | Tasked ✅ |
 | 010 | characters-unlocks | 003 | Tasked ✅ |
 | 011 | web-export-itch (demo) | 001–010 | Tasked ✅ |

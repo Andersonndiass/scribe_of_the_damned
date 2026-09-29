@@ -99,6 +99,12 @@ func _ready() -> void:
 		if is_real_game():
 			_play_outro())
 	_prepare_cutscenes(args)
+	# Frases curtas na partida (008 FR-815).
+	var barks := BarkDirector.new()
+	barks.name = "Barks"
+	barks.player = $World/Player
+	barks.boss = boss
+	add_child(barks)
 	start_wave(0)
 	if args.contains("boss"):
 		# Debug (006 FR-615): direto na luta (combina com ?unlock=all&atril=8).
