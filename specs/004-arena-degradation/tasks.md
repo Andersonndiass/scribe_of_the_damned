@@ -11,12 +11,12 @@
 **Checkpoint 004-A:** ✅ a página segue o capítulo por teste; o layout é válido e conexo (2026-09-29, GUT 396/396).
 
 ## Fase 2 — Colisão e nascimentos
-- **T410** Escriba: corpos de colisão dos obstáculos (criados no setup, nada na onda). Inimigos: `EnemyManager._constrain` (empurra para fora com deslize; voadores isentos); contato não atravessa o banco; Gárgula para o dash e a telegrafia mostra o caminho cortado; tiros do Monge param onde a tabela manda.
-- **T411** Nascimentos: spawn de inimigos e invocação do chefe nunca dentro (inflado pelo raio); letras, letra de segurança do chefe e tinta dourada empurradas para fora (6 px / 2 px, nunca descartadas).
-- **T412** [TEST] `tests/integration/test_obstacles.gd`: inimigo do outro lado de cada obstáculo chega ao escriba; nada nasce ou cai dentro (10 mil sorteios); contato através do banco não fere; dash para na borda.
-- **T413** Sonda: `balance_probe` com `obstacles=off`, `stage=N` e a métrica STUCK; comparação A/B (9 ondas, sem god, chefe) nas faixas do rules-agent (SC-407). Se sair da faixa, a alavanca é a posição dos obstáculos, não os números.
+- ✅ **T410** Escriba: corpos de colisão dos obstáculos (criados no setup, nada na onda). Inimigos: `EnemyManager._constrain` (empurra para fora com deslize; voadores isentos); contato não atravessa o banco; Gárgula para o dash e a telegrafia mostra o caminho cortado; tiros do Monge param onde a tabela manda.
+- ✅ **T411** Nascimentos: spawn de inimigos e invocação do chefe nunca dentro (inflado pelo raio); letras, letra de segurança do chefe e tinta dourada empurradas para fora (6 px / 2 px, nunca descartadas).
+- ✅ **T412** [TEST] `tests/integration/test_obstacles.gd`: inimigo do outro lado de cada obstáculo chega ao escriba; nada nasce ou cai dentro (10 mil sorteios); contato através do banco não fere; dash para na borda.
+- ✅ **T413** Sonda: `balance_probe` com `obstacles=off`, `stage=N` e a métrica STUCK; comparação A/B (9 ondas, sem god, chefe) nas faixas do rules-agent (SC-407). Se sair da faixa, a alavanca é a posição dos obstáculos, não os números.
 
-**Checkpoint 004-B:** obstáculos jogáveis e o balanceamento dentro das faixas.
+**Checkpoint 004-B:** ✅ obstáculos jogáveis e o balanceamento dentro das faixas (2026-09-29, GUT 405/405; SC-407 com ressalva, `docs/reviews/T413-rules-parecer.md`).
 
 ## Fase 3 — Visual em camadas
 - **T420** Pareceres: design-agent (formas de cada estágio no tema da rasura, cor das brasas sem BLOOD, texto-fantasma, ornamentos, sombra e borda dos obstáculos, **conferir o altar e os furos de cima sob o HUD** — se colidir, trocar altar e banco de lugar), animation-agent (revelação do estágio, ameaça dos 10 s, poeira e brasas).

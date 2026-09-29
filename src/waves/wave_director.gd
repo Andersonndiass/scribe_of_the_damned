@@ -72,7 +72,7 @@ func _physics_process(delta: float) -> void:
 func _telegraph(g: int, data: EnemyData) -> void:
 	var t := PoolManager.acquire(SpawnTelegraph.POOL_KEY) as SpawnTelegraph
 	_pending[g] += 1
-	t.start(data, _pick_spawn_point(), manager, func() -> bool:
+	t.start(data, _pick_spawn_point(data.radius), manager, func() -> bool:
 		_pending[g] = maxi(0, _pending[g] - 1)
 		return running)
 
@@ -86,14 +86,15 @@ func _spawn_due_champions() -> void:
 			continue
 		var data: EnemyData = wave.champion_pool[GameState.rng.randi_range(0, wave.champion_pool.size() - 1)]
 		var t := PoolManager.acquire(SpawnTelegraph.POOL_KEY) as SpawnTelegraph
-		t.start(data, _pick_spawn_point(), manager, func() -> bool: return running, true)
+		t.start(data, _pick_spawn_point(data.radius * manager.champion_tuning.radius_mul), manager, func() -> bool: return running, true)
 
 
 func champions_spawned() -> int:
 	return _champions_spawned
 
 
-func _pick_spawn_point() -> Vector2:
+## `radius`: raio do inimigo; o ponto nunca cai dentro de uma peça da página (004 FR-411).
+func _pick_spawn_point(radius: float) -> Vector2:
 	var rect: Rect2 = manager.world_rect
 	var min_d2: float = wave.min_spawn_distance * wave.min_spawn_distance
 	var p := Vector2.ZERO
@@ -101,6 +102,7 @@ func _pick_spawn_point() -> Vector2:
 		p = Vector2(
 			GameState.rng.randf_range(rect.position.x, rect.end.x),
 			GameState.rng.randf_range(rect.position.y, rect.end.y))
+		p = ObstacleQuery.spawn_point(p, radius)
 		if player == null or p.distance_squared_to(player.global_position) >= min_d2:
 			break
 	return p

@@ -56,6 +56,8 @@ func spawn_letter(letter: String, rare: bool, target: bool, pos: Vector2, lock_t
 	var l := PoolManager.try_acquire(Letter.POOL_KEY) as Letter
 	if l == null:
 		return null
+	# Letra que cairia numa peça da página vai para fora dela, nunca some (004 FR-411).
+	pos = ObstacleQuery.drop_point(pos)
 	l.start(letter, rare, target, pos, tuning.letter_lifetime, lock_time, loose)
 	_active.append(l)
 	EventBus.letter_dropped.emit(letter, rare, target, pos)

@@ -22,6 +22,11 @@ func desired_velocity(m: EnemyManager, i: int, target: Vector2, _dt: float) -> V
 		STATE_WINDUP:
 			return Vector2.ZERO
 		STATE_DASH:
+			# O dash para na borda da peça (004, rules-agent: todas param a Gárgula).
+			if ObstacleQuery.stops_dash_at(m.positions[i] + m.aim[i] * dash_speed * _dt, m.radius_of[i]):
+				m.state[i] = STATE_COOLDOWN
+				m.state_timer[i] = cooldown
+				return Vector2.ZERO
 			return m.aim[i] * dash_speed
 		STATE_COOLDOWN:
 			return ChaseBehavior.seek(m, i, target, cooldown_speed_mul)
@@ -55,7 +60,8 @@ func draw_telegraph(m: EnemyManager, i: int, canvas: CanvasItem) -> void:
 	if m.state[i] != STATE_WINDUP:
 		return
 	var from: Vector2 = m.positions[i].round()
-	var length: float = dash_speed * dash_time
+	# O caminho mostrado já vem cortado pela peça em que o dash vai parar.
+	var length: float = ObstacleQuery.clip_segment(from, m.aim[i], dash_speed * dash_time, m.radius_of[i])
 	var dash: float = 4.0
 	var t: float = 0.0
 	while t < length:

@@ -53,6 +53,7 @@ var page := PageDegradation.new()
 var data: ArenaData
 var wave_tuning: WaveTuning = preload("res://data/tuning/wave.tres")
 var _map: ObstacleMap
+var _obstacle_body: StaticBody2D
 
 const DEGRADATION_STAGES := 4
 const WEAR_SEED := 1348
@@ -99,7 +100,33 @@ func load_page(arena_data: ArenaData) -> void:
 func _on_layout_changed(boss_layout: bool) -> void:
 	_map = ObstacleMap.from_arena(data, boss_layout)
 	ObstacleQuery.map = _map
+	_sync_obstacle_bodies(boss_layout)
 	queue_redraw()
+
+
+## Paredes das peças para o escriba (004 FR-410): criadas uma vez ao montar a página; a troca de
+## layout (chefe) só liga e desliga as formas — nada é criado durante a onda.
+func _sync_obstacle_bodies(boss_layout: bool) -> void:
+	if data == null:
+		return
+	if _obstacle_body == null:
+		_obstacle_body = StaticBody2D.new()
+		_obstacle_body.name = "Obstacles"
+		_obstacle_body.collision_layer = 1
+		_obstacle_body.collision_mask = 0
+		add_child(_obstacle_body)
+		for o: ObstacleData in data.obstacles:
+			var shape := RectangleShape2D.new()
+			shape.size = Vector2(o.type.footprint)
+			var col := CollisionShape2D.new()
+			col.shape = shape
+			col.position = o.rect().get_center()
+			_obstacle_body.add_child(col)
+	for k: int in data.obstacles.size():
+		var o: ObstacleData = data.obstacles[k]
+		var blocks_walk: bool = o.type.blocks & ObstacleTypeData.Block.WALK != 0
+		var on: bool = blocks_walk and (o.in_boss if boss_layout else o.in_waves)
+		(_obstacle_body.get_child(k) as CollisionShape2D).set_deferred(&"disabled", not on)
 
 
 func set_degradation(stage: int) -> void:

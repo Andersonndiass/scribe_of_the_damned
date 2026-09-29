@@ -10,17 +10,28 @@ const ROWS := 23
 ## Distância em que uma célula conta como "perto" (maior raio de inimigo campeão + folga).
 const NEAR_PAD := 16.0
 const PAGE := Rect2(0, 0, 640, 360)
+## Distância à frente em que o inimigo "vê" a face da peça para deslizar.
+const SLIDE_LOOKAHEAD := 3.0
+## Abaixo desta fração da velocidade ao longo da face, o inimigo escolhe uma ponta para contornar.
+const SLIDE_MIN_TANGENT := 0.3
 
 var rects: Array[Rect2] = []
 var masks: PackedInt32Array = PackedInt32Array()
 var dash_stops: PackedByteArray = PackedByteArray()
 ## Célula → 1 se algum obstáculo está perto.
 var near := PackedByteArray()
+## Margens do ArenaData (rules-agent): queda de letra/tinta e nascimento de inimigo.
+var drop_margin: float = 0.0
+var drop_clearance: float = 0.0
+var spawn_clearance: float = 0.0
 
 
 static func from_arena(arena: ArenaData, boss_layout: bool) -> ObstacleMap:
 	var m := ObstacleMap.new()
 	if arena != null:
+		m.drop_margin = arena.drop_margin
+		m.drop_clearance = arena.drop_clearance
+		m.spawn_clearance = arena.spawn_clearance
 		for o: ObstacleData in arena.active(boss_layout):
 			m.rects.append(o.rect())
 			m.masks.append(o.type.blocks)
@@ -78,11 +89,15 @@ func constrain(p: Vector2, r: float, mask: int = ObstacleTypeData.Block.WALK) ->
 		var g: Rect2 = rects[i].grow(r)
 		if not g.has_point(q):
 			continue
-		var left: float = q.x - g.position.x
-		var right: float = g.end.x - q.x
-		var up: float = q.y - g.position.y
-		var down: float = g.end.y - q.y
+		# Lados que dão para fora da página (peça encostada na parede) não contam: sairia na margem.
+		var inner: Rect2 = ArenaData.PLAYABLE.grow(-r)
+		var left: float = q.x - g.position.x if g.position.x >= inner.position.x else INF
+		var right: float = g.end.x - q.x if g.end.x <= inner.end.x else INF
+		var up: float = q.y - g.position.y if g.position.y >= inner.position.y else INF
+		var down: float = g.end.y - q.y if g.end.y <= inner.end.y else INF
 		var m: float = minf(minf(left, right), minf(up, down))
+		if m == INF:
+			continue
 		if m == left:
 			q.x = g.position.x - 0.01
 		elif m == right:
@@ -108,6 +123,84 @@ func nearest_free(p: Vector2, r: float, bounds: Rect2 = ArenaData.PLAYABLE) -> V
 			if is_free(c, r):
 				return c
 	return p
+
+
+## Velocidade que contorna o obstáculo à frente: tira a parte que entra na face e, se quase não
+## sobra nada (alvo bem atrás da peça), segue pela face até a ponta mais perto que dá para a área livre.
+func slide(p: Vector2, v: Vector2, r: float, mask: int = ObstacleTypeData.Block.WALK) -> Vector2:
+	var speed: float = v.length()
+	if speed < 0.001 or not is_near(p):
+		return v
+	var probe: Vector2 = p + v / speed * SLIDE_LOOKAHEAD
+	for i: int in rects.size():
+		if not masks[i] & mask:
+			continue
+		var g: Rect2 = rects[i].grow(r)
+		if not g.has_point(probe):
+			continue
+		var n: Vector2 = _face_normal(p, g)
+		var into: float = v.dot(n)
+		if into >= 0.0:
+			continue
+		var t := Vector2(-n.y, n.x)
+		var along: float = v.dot(t)
+		if absf(along) >= speed * SLIDE_MIN_TANGENT:
+			var s: float = signf(along)
+			# Ponta que encosta na parede é beco: a multidão prensava o inimigo ali (sonda T413).
+			if _dead_end(p, g, t * s, r):
+				s = -s
+			return t * s * speed
+		return t * _corner_side(p, g, t, r) * speed
+	return v
+
+
+## Seguir a face na direção `dir` termina na margem da página (peça encostada na parede)?
+func _dead_end(p: Vector2, g: Rect2, dir: Vector2, r: float) -> bool:
+	var inner: Rect2 = ArenaData.PLAYABLE.grow(-r)
+	return not inner.has_point(_face_end(p, g, dir) + dir)
+
+
+## Ponta da face de `g` alcançada andando de `p` na direção `dir` (eixo x ou y).
+static func _face_end(p: Vector2, g: Rect2, dir: Vector2) -> Vector2:
+	if absf(dir.x) > 0.5:
+		return Vector2(g.end.x if dir.x > 0.0 else g.position.x, p.y)
+	return Vector2(p.x, g.end.y if dir.y > 0.0 else g.position.y)
+
+
+## Lado (+1/−1 em `t`) da ponta da face mais perto de `p`; a outra se essa encosta na parede.
+func _corner_side(p: Vector2, g: Rect2, t: Vector2, r: float) -> float:
+	var inner: Rect2 = ArenaData.PLAYABLE.grow(-r)
+	var lo: Vector2 = g.position if t.x + t.y > 0.0 else g.end
+	var hi: Vector2 = g.end if t.x + t.y > 0.0 else g.position
+	# Pontas ao longo de t: `lo` fica atrás (−t), `hi` à frente (+t).
+	var a: float = (p - lo).dot(t)
+	var b: float = (hi - p).dot(t)
+	var s: float = 1.0 if b <= a else -1.0
+	var end_pt: Vector2 = p + t * s * ((b if s > 0.0 else a) + 1.0)
+	if not inner.has_point(end_pt):
+		s = -s
+	return s
+
+
+static func _face_normal(p: Vector2, g: Rect2) -> Vector2:
+	var dx: float = maxf(g.position.x - p.x, p.x - g.end.x)
+	var dy: float = maxf(g.position.y - p.y, p.y - g.end.y)
+	if dx >= dy:
+		return Vector2.LEFT if p.x < g.get_center().x else Vector2.RIGHT
+	return Vector2.UP if p.y < g.get_center().y else Vector2.DOWN
+
+
+## Onde uma letra ou gota de tinta fica: a até `drop_margin` de uma peça, sai para margem + folga.
+func drop_point(p: Vector2) -> Vector2:
+	if is_free(p, drop_margin):
+		return p
+	return nearest_free(p, drop_margin + drop_clearance)
+
+
+## Onde um inimigo de raio `r` nasce: fora da peça inflada pelo raio + folga.
+func spawn_point(p: Vector2, r: float) -> Vector2:
+	var need: float = r + spawn_clearance
+	return p if is_free(p, need) else nearest_free(p, need)
 
 
 ## Até onde um segmento de `from` na direção `dir` anda antes de bater (para o dash e a telegrafia).

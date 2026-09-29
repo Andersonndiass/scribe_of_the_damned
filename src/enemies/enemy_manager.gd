@@ -176,6 +176,9 @@ func spawn(data: EnemyData, pos: Vector2, is_champion: bool = false) -> int:
 		hp[i] = max_hp_of[i]
 		speed_mul[i] = champion_tuning.speed_mul
 		radius_of[i] = data.radius * champion_tuning.radius_mul
+	# Nunca nasce dentro de uma peça da página (004 FR-411).
+	positions[i] = ObstacleQuery.spawn_point(positions[i], radius_of[i])
+	prev_positions[i] = positions[i]
 	carried[i] = ""
 	blind_left[i] = 0.0
 	guaranteed_drop[i] = 0
@@ -270,7 +273,7 @@ func _physics_process(delta: float) -> void:
 			p = positions[i]
 		if (i + last_tick) % STEER_STRIDE != 0:
 			# Não é a vez deste inimigo: só o contato com o jogador.
-			if can_hit_player and _drawn_position(i).distance_to(player_pos) <= radius_of[i] + player_hurt_radius:
+			if can_hit_player and _touches_player(i, player_pos):
 				player.call(&"take_hit", _contact_damage(i, d), &"contact")
 			continue
 		prev_positions[i] = p
@@ -317,10 +320,13 @@ func _physics_process(delta: float) -> void:
 						push += (away / dist) * ((sep_r - dist) / sep_r)
 		push = push.limit_length(SEPARATION_MAX)
 		var v: Vector2 = desired + push * _speed_of[i] * d.separation_weight
-		p = _clamp_to_world(p + v * step_dt)
+		if not d.flying:
+			# Contorna as peças da página (004 FR-410); a Traça voa por cima.
+			v = ObstacleQuery.slide(p, v, radius_of[i])
+		p = _place(i, p + v * step_dt)
 		positions[i] = p
 		velocities[i] = v
-		if can_hit_player and _drawn_position(i).distance_to(player_pos) <= radius_of[i] + player_hurt_radius:
+		if can_hit_player and _touches_player(i, player_pos):
 			player.call(&"take_hit", _contact_damage(i, d), &"contact")
 	Prof.stop(&"inimigos_mover_separar", t_move)
 
@@ -518,7 +524,7 @@ func stun_in_radius(center: Vector2, radius: float, stun: float, knockback: floa
 		var away: Vector2 = positions[i] - center
 		if away.is_zero_approx():
 			away = Vector2.RIGHT.rotated(float(i) * 2.399)
-		positions[i] = _clamp_to_world(positions[i] + away.normalized() * knockback)
+		positions[i] = _place(i, positions[i] + away.normalized() * knockback)
 		prev_positions[i] = positions[i]
 	_hash_dirty = true
 	return hits.size()
@@ -774,6 +780,22 @@ func _rebuild_hash() -> void:
 func _rebuild_hash_if_dirty() -> void:
 	if _hash_dirty:
 		_rebuild_hash()
+
+
+## Posição dentro da página e fora das peças que bloqueiam o andar (voadores só na página).
+func _place(i: int, p: Vector2) -> Vector2:
+	var q: Vector2 = _clamp_to_world(p)
+	if data_of[i].flying:
+		return q
+	return ObstacleQuery.constrain(q, radius_of[i])
+
+
+## Contato com o escriba: perto o bastante e sem peça no meio (o banco separa; 004 FR-410).
+func _touches_player(i: int, player_pos: Vector2) -> bool:
+	var at: Vector2 = _drawn_position(i)
+	if at.distance_to(player_pos) > radius_of[i] + player_hurt_radius:
+		return false
+	return not ObstacleQuery.blocks((at + player_pos) * 0.5, ObstacleTypeData.Block.WALK)
 
 
 func _clamp_to_world(p: Vector2) -> Vector2:

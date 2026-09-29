@@ -31,7 +31,7 @@ func spawn_drops(amount: int, pos: Vector2) -> void:
 		if g == null:
 			return
 		var offset := Vector2(_rng.randf_range(-SCATTER, SCATTER), _rng.randf_range(-SCATTER, SCATTER))
-		g.start(pos + offset)
+		g.start(ObstacleQuery.drop_point(pos + offset))
 		_active.append(g)
 
 

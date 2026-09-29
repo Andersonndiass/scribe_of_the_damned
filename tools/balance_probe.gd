@@ -9,6 +9,10 @@ extends SceneTree
 ##   chapter = joga as 9 ondas seguidas, com a loja no meio (fecha sozinha), até o fim do capítulo.
 ##   boss = luta direto contra o chefe do capítulo (o Main lê o mesmo argumento); com god mede o
 ##          tempo até matar (006 T621, SC-608). Linha BOSS. Combina com unlock=all e atril=N.
+##   obstacles=off = sem as peças da página (004 T413, comparação A/B). stage=N = página no estágio N
+##         desde o começo. Imprime uma linha ARENA com STUCK: % das amostras (a cada 0,5 s) em que um
+##         inimigo que anda QUER andar (velocidade ≥ 30% da dele), está encostado numa peça e não saiu
+##         do lugar (≤ 2 px). Monge parado atirando e Gárgula preparando o dash não contam.
 ##   buy = em cada loja o bot compra as cartas mais baratas que couberem na tinta (003 T320, SC-306).
 ##         Imprime uma linha SHOP com compras, tinta ganha e o que comprou.
 
@@ -49,6 +53,19 @@ var _boss_mode: bool = false
 var _boss_done: float = -1.0
 var _boss_hp: int = -1
 var _boss_phase: int = 0
+var _obstacles: bool = true
+var _stage: int = -1
+var _stuck: int = 0
+var _stuck_max: int = 0
+var _samples: int = 0
+var _sample_in: float = 0.0
+var _last_pos := PackedVector2Array()
+const STUCK_EVERY := 0.5
+const STUCK_MOVE := 2.0
+const STUCK_TOUCH := 1.5
+const STUCK_INTENT := 0.3
+## Raios do inimigo em volta do escriba que contam como "chegou".
+const STUCK_NEAR_PLAYER := 5.0
 
 
 func _initialize() -> void:
@@ -67,7 +84,14 @@ func _initialize() -> void:
 			(load("res://data/tuning/drop_tuning.tres") as Resource).set("selective_magnet", true)
 		elif arg.begins_with("drop="):
 			imp.set("letter_drop_chance", float(arg.substr(5)))
+		elif arg == "obstacles=off":
+			_obstacles = false
+		elif arg.begins_with("stage="):
+			_stage = int(arg.substr(6))
 	_main = (load(MAIN) as PackedScene).instantiate()
+	if not _obstacles:
+		# Só em memória: o capítulo fica sem a página de obstáculos (004 T413).
+		(_main.get("chapter") as Resource).set("arena", null)
 	_main.set("shop_auto_close", true)  # sem tela: a loja abre e fecha sozinha (003)
 	root.add_child(_main)
 	_player = _main.get_node("World/Player")
@@ -113,6 +137,10 @@ func _initialize() -> void:
 
 
 func _physics_process(delta: float) -> bool:
+	if _stage >= 0:
+		root.get_node("EventBus").emit_signal(&"page_stage_changed", _stage, _stage, false)
+		_stage = -1
+	_sample_stuck(delta)
 	if _wave_slot >= 0:
 		# Aplicado no 1º frame: no _initialize o Main ainda não rodou o _ready.
 		_manager.call("dissolve_all")
@@ -149,7 +177,10 @@ func _physics_process(delta: float) -> bool:
 		print("BOSS resultado venceu=%s tempo=%.2fmin hp_restante=%d fase=%d conjurações=%s" % [
 			_boss_done >= 0.0, (_boss_done if _boss_done >= 0.0 else _time) / 60.0, _boss_hp, _boss_phase + 1, _casts])
 		return true
+	if _boss_mode and (_boss_done >= 0.0 or _died_at >= 0.0 or _time > _limit):
+		_print_arena()
 	if _ended or _chapter_done or _died_at >= 0.0 or _time > _limit:
+		_print_arena()
 		if _chapter:
 			print("SHOP visitas=%d compras=%d tinta_ganha=%d tinta_sobrando=%d capítulo_completo=%s tempo=%.1fmin compradas=%s" % [
 				_visits, _bought.size(), _ink_earned, int(root.get_node("GameState").get("gold_ink")), _chapter_done,
@@ -230,3 +261,41 @@ func _steer() -> void:
 		Input.action_press(&"move_up")
 	elif flee.y > 2.0:
 		Input.action_press(&"move_down")
+
+
+## STUCK (004 T413): amostra a cada 0,5 s os inimigos que andam, encostados numa peça e parados.
+func _sample_stuck(delta: float) -> void:
+	_sample_in -= delta
+	if _sample_in > 0.0:
+		return
+	_sample_in = STUCK_EVERY
+	var n: int = int(_manager.get("count"))
+	var positions: PackedVector2Array = _manager.get("positions")
+	var radius_of: PackedFloat32Array = _manager.get("radius_of")
+	var stun_left: PackedFloat32Array = _manager.get("stun_left")
+	var velocities: PackedVector2Array = _manager.get("velocities")
+	var data_of: Array = _manager.get("data_of")
+	var now := 0
+	for i: int in n:
+		var d: Resource = data_of[i]
+		if i >= _last_pos.size() or bool(d.get("flying")) or stun_left[i] > 0.0:
+			continue
+		if velocities[i].length() < float(d.get("move_speed")) * STUCK_INTENT:
+			continue
+		# Colado no escriba não é travado: já chegou (amontoado em volta dele perto de uma peça).
+		if positions[i].distance_to(_player.global_position) <= radius_of[i] * STUCK_NEAR_PLAYER:
+			continue
+		_samples += 1
+		if ObstacleQuery.map != null and not ObstacleQuery.map.is_free(positions[i], radius_of[i] + STUCK_TOUCH) and positions[i].distance_to(_last_pos[i]) <= STUCK_MOVE:
+			now += 1
+			if OS.get_cmdline_user_args().has("stuck_log") and _stuck + now < 60:
+				print("STUCK_AT %s r=%.1f id=%s v=%s jogador=%s" % [positions[i].round(), radius_of[i], d.get("id"), velocities[i].round(), _player.global_position.round()])
+	_stuck += now
+	_stuck_max = maxi(_stuck_max, now)
+	_last_pos = positions.slice(0, n)
+
+
+func _print_arena() -> void:
+	print("ARENA obstáculos=%s estágio=%d STUCK=%.2f%% (%d de %d amostras, pico %d)" % [
+		"on" if _obstacles else "off", int((_main.get_node("Arena") as Node).get("degradation_stage")),
+		100.0 * _stuck / maxf(1.0, _samples), _stuck, _samples, _stuck_max])

@@ -68,7 +68,9 @@ func _physics_process(delta: float) -> void:
 		var p: Vector2 = _pos[i] + _vel[i] * delta
 		_pos[i] = p
 		_life[i] -= delta
-		var gone: bool = _life[i] <= 0.0 or not world_rect.has_point(p) or ProjectileBlockers.blocks(p)
+		# Tiros do Monge param no vitral e no altar (004, rules-agent).
+		var gone: bool = _life[i] <= 0.0 or not world_rect.has_point(p) or ProjectileBlockers.blocks(p) \
+				or ObstacleQuery.blocks(p, ObstacleTypeData.Block.ENEMY_SHOT)
 		if not gone and can_hit and p.distance_to(body) <= d.radius + player_hurt_radius:
 			player.call(&"take_hit", d.damage, &"projectile")
 			gone = true

@@ -14,7 +14,11 @@ func _on_begin() -> void:
 	var center: Vector2 = boss.hurt_center()
 	for i: int in attack.summon_count:
 		var p: Vector2 = center + Vector2.RIGHT.rotated(TAU * i / maxf(1.0, attack.summon_count)) * (attack.radius + boss.data.body_radius)
-		_points.append(p.clamp(Arena.PLAYABLE.position, Arena.PLAYABLE.end))
+		p = p.clamp(Arena.PLAYABLE.position, Arena.PLAYABLE.end)
+		if attack.summon_enemy != null:
+			# O anel mostra onde o Diabrete nasce de fato: fora das peças (004 FR-411).
+			p = ObstacleQuery.spawn_point(p, attack.summon_enemy.radius)
+		_points.append(p)
 
 
 func _on_activate() -> void:
