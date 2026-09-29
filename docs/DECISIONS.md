@@ -462,6 +462,15 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
 
 ---
 
+### D-078 · 2026-09-29 · Spec 004 (arena e degradação) aprovada
+- **Respostas do autor:** "1a 2a 3b".
+- **Estágios:** acumulados no capítulo (0, 0, 1, 1, 2, 2, 3, 3, 3; chefe no 3), aplicados no fim da onda anterior, antes da loja; tema do Cap. 1 = a rasura; sem BLOOD na degradação; legibilidade em toda a área jogável (parecer do game-design-agent).
+- **Ameaça:** sutil nos últimos 10 s, só na moldura, sem piscar no ritmo das telegrafias.
+- **Obstáculos já no Cap. 1 (contra a recomendação, decisão do autor):** furo, banco, vitral, altar em dados; quantidade, posições e o que bloqueiam pelo rules-agent; colisão pelo mechanics-agent (inimigos comuns sem física); a sonda de balanceamento confere que as 9 ondas e o chefe continuam nas faixas aprovadas.
+- **Status:** ✅ aprovada.
+
+---
+
 ## Conflitos abertos
 
 - **C-006 · Vida do Asmodeus (DECISÃO DO AUTOR, playtest).** 1500 (rules-agent) supõe uma palavra a cada ~5 s. A sonda não mede isso. No playtest (`index.html?boss`, ou jogando o capítulo), se a luta passar muito de 4 min, baixar `max_hp` em `data/bosses/asmodeus.tres` (ex.: 1000); se ficar abaixo de 2 min, subir.
