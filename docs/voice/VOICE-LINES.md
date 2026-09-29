@@ -44,3 +44,48 @@ A mesma lista está em `docs/voice/voice_lines.csv` (abre no Excel/Sheets).
 | `cs_c3_02_fallen_abbot_1` | C3-02 | Abade Caído | neutral | Obrigado, filho. Leve isto. | Thank you, son. Take this. |
 | `cs_c4_01_malachi_1` | C4-01 | Padre Malaquias, o Confessor | smile | Venha, filho. Confesse. | Come, son. Confess. |
 | `cs_c5_02_anselmo_1` | C5-02 | Irmão Anselmo | relieved | …Foi um sonho? | …Was it a dream? |
+
+## Durante o jogo — latim (já está no jogo)
+
+O jogador **pronuncia** cada palavra ao conjurar (narrativa §3.3). O latim nunca é traduzido: **um áudio só**, em `assets/audio/voice/latin/<palavra>.mp3`, vale para PT-BR e EN. Pronúncia eclesiástica (a da Igreja), sílaba forte em maiúsculas. Voz de Anselmo, firme e clara (é o único momento em que ele não hesita).
+
+| id | palavra | tipo | pronúncia |
+|---|---|---|---|
+| `latin_lux` | LUX | palavra | LUKS |
+| `latin_pax` | PAX | palavra | PAKS |
+| `latin_crux` | CRUX | palavra | KRUKS |
+| `latin_vita` | VITA | palavra | VI-ta |
+| `latin_aqua` | AQUA | palavra | A-kwa |
+| `latin_ignis` | IGNIS | palavra | I-nyis |
+| `latin_mortis` | MORTIS | palavra | MOR-tis |
+| `latin_fides` | FIDES | palavra | FI-des |
+| `latin_lumen` | LUMEN | palavra | LU-men |
+| `latin_purgo` | PURGO | palavra | PUR-go |
+| `latin_gloria` | GLORIA | palavra | GLO-ri-a |
+| `latin_verbum` | VERBUM | palavra | VER-bum |
+| `latin_angelus` | ANGELUS | palavra | AN-dje-lus |
+| `latin_dominus` | DOMINUS | palavra | DO-mi-nus |
+| `latin_miserere` | MISERERE | palavra | mi-se-RE-re |
+| `latin_salvator` | SALVATOR | palavra | sal-VA-tor |
+| `latin_sanctus` | SANCTUS | palavra | SANK-tus |
+| `latin_spiritus` | SPIRITUS | palavra | SPI-ri-tus |
+| `latin_vapor` | VAPOR | combo | VA-por |
+| `latin_flamma` | FLAMMA | combo | FLAM-ma |
+| `latin_caecitas` | CAECITAS | combo | TCHE-tchi-tas |
+| `latin_martyrium` | MARTYRIUM | combo | mar-TI-ri-um |
+| `latin_requiem` | REQUIEM | combo | RE-kwi-em |
+| `latin_haeresis` | HÆRESIS! | heresia | E-re-sis — a voz de Anselmo distorcida, como se o vazio falasse por ele |
+
+## Durante o jogo — frases propostas **[P]** (ainda NÃO estão no jogo)
+
+Hoje não há falas na partida fora das cutscenes. Estas são propostas do Claude no tom da narrativa; para entrarem, precisam da sua aprovação (balão de fala 160×28 do catálogo + voz). No máximo 2 linhas cada (game bible).
+
+| id | quem | quando | PT-BR | EN |
+|---|---|---|---|---|
+| `bark_asmodeus_phase_2` | Asmodeus, o Rasurador | Fase 2 do chefe | Cada erro teu me alimenta. | Every mistake of thine feeds me. |
+| `bark_asmodeus_phase_3` | Asmodeus, o Rasurador | Fase 3 do chefe | Eu sou tudo o que foi riscado. | I am all that was struck out. |
+| `bark_asmodeus_erasure` | Asmodeus, o Rasurador | A Rasura apaga uma letra do atril | Apagado. | Erased. |
+| `bark_asmodeus_death` | Asmodeus, o Rasurador | Morte do chefe (antes da C1-04) | Alguém… sempre… erra… | Someone… always… errs… |
+| `bark_anselmo_heresy` | Irmão Anselmo | Logo depois de uma heresia | …Isso não era latim. | …That was not Latin. |
+| `bark_anselmo_last_candle` | Irmão Anselmo | Sobra só uma vela | Só mais uma vela… | Just one more candle… |
+| `bark_anselmo_wave_clear` | Irmão Anselmo | Fim de onda | Mais uma linha no lugar. | One more line back in place. |
