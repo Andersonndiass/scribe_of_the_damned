@@ -14,6 +14,13 @@ const RATE := 22050
 ## layers (opcional: receitas somadas, cada uma com `delay` em s).
 ## Tempos e volumes revisados pelo animation-agent (2026-09-29, D-061).
 const RECIPES: Dictionary = {
+	# Cutscenes do Cap. 1 (008 FR-813): provisórios até o áudio do autor.
+	"cs_fire": {"wave": "noise", "freqs": [0.0], "dur": 0.9, "attack": 0.1, "lp": 0.1, "vol": 0.3},
+	"cs_chest": {"wave": "square", "freqs": [98.0], "dur": 0.5, "attack": 0.02, "slide": 1.3, "lp": 0.15, "vol": 0.3},
+	"cs_page": {"wave": "noise", "freqs": [0.0], "dur": 0.4, "attack": 0.05, "lp": 0.5, "vol": 0.3},
+	"cs_thud": {"wave": "noise", "freqs": [0.0], "dur": 0.2, "attack": 0.002, "lp": 0.08, "vol": 0.45},
+	"cs_erase": {"wave": "noise", "freqs": [0.0], "dur": 0.35, "attack": 0.01, "lp": 0.7, "vol": 0.3},
+	"cs_gnaw": {"wave": "noise", "freqs": [0.0], "dur": 0.08, "attack": 0.002, "lp": 0.9, "vol": 0.2},
 	# Ondas e capítulo: sinos.
 	"wave_started": {"wave": "bell", "freqs": [660.0], "dur": 0.7, "attack": 0.005, "vol": 0.5},
 	"wave_ended": {"wave": "bell", "freqs": [392.0, 523.0], "dur": 0.9, "attack": 0.005, "vol": 0.45},

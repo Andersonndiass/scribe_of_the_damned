@@ -1,11 +1,13 @@
 [gd_resource type="Resource" script_class="SoundData" format=3]
 
 [ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_epw86"]
+[ext_resource type="AudioStream" path="res://assets/audio/placeholders/sfx_cs_chest.tres" id="2_buybg"]
 
 [resource]
 script = ExtResource("1_epw86")
 id = &"cs_chest"
 event = &"cs_chest"
+stream = ExtResource("2_buybg")
 max_voices = 1
 cooldown_ms = 0
 priority = 2
