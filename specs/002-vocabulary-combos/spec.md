@@ -78,3 +78,7 @@ Ampliar o vocabulário: os 5 **apócrifos** (liberados pela loja na 003; aqui, a
 - **SC-204** O `power_budget` continua monotônico com o tamanho, agora com 18 palavras (`test_word_power`).
 - **SC-205** Os SC-001 e SC-503 se mantêm.
 - **SC-206** **[P]** Nenhum efeito deixa o jogador totalmente intocável por mais de 1 s (o risco é pilar); a heresia nunca é anulada por invulnerabilidade.
+
+## Emenda 2026-09-29 — mira com o mouse (D-067, playtest)
+
+- **FR-215** As palavras e combos direcionais (LUX, FLAMMA, o ângulo inicial do MARTYRIUM e do ANGELUS) saem na direção do **cursor** quando `GameState.aim_with_mouse` (ligado por padrão) e há mouse na sessão; sem mouse, na direção do escriba. O ataque automático não muda. A mira é uma pena de tinta (UI_CURSOR_QUILL) no lugar do cursor do sistema.

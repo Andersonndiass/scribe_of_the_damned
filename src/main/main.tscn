@@ -1,5 +1,6 @@
-[gd_scene load_steps=26 format=3]
+[gd_scene load_steps=27 format=3]
 
+[ext_resource type="Script" path="res://src/player/aim_cursor.gd" id="98_aim"]
 [ext_resource type="Script" path="res://src/core/shake_camera.gd" id="97_cam"]
 [ext_resource type="PackedScene" path="res://src/bosses/boss.tscn" id="95_boss"]
 [ext_resource type="Script" path="res://src/bosses/letters_burst.gd" id="96_burst"]
@@ -118,3 +119,6 @@ script = ExtResource("94_shopscreen")
 
 [node name="Camera" type="Camera2D" parent="."]
 script = ExtResource("97_cam")
+
+[node name="AimCursor" type="Node2D" parent="."]
+script = ExtResource("98_aim")

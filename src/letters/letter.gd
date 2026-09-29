@@ -4,6 +4,12 @@ extends Node2D
 ## LetterField, num único loop (Princípio V). Pooled em &"letter".
 
 const POOL_KEY := &"letter"
+## Letra marcada (design-agent): 4 cantos em L de INK (braços 3 px) numa caixa 16×16; no clique
+## aparece em 20×20 por 80 ms (corte seco). Sem pulso nem GOLD (≠ letra-alvo, ≠ vogal rara).
+const MARK_HALF := 8
+const MARK_POP_HALF := 10
+const MARK_ARM := 3
+const MARK_POP_TIME := 0.08
 const ATLAS := preload("res://assets/placeholders/ltr_atlas.tres")
 const ATLAS_ORDER := "ACDEFGILMNOPQRSTUVXB"
 const CELL := 10
@@ -25,6 +31,15 @@ var magnetized: bool = false
 ## Letra solta pelo purge: o ímã a ignora; só é recolhida andando por cima (D-031).
 var loose: bool = false
 var magnet_speed: float = 0.0
+## Marcada pelo clique (D-067): o ímã puxa só ela enquanto a marca existir.
+var marked: bool = false:
+	set(value):
+		marked = value
+		_mark_pop = MARK_POP_TIME if value else 0.0
+		queue_redraw()
+var _mark_pop: float = 0.0
+## Deixada de lado quando outra foi marcada (D-067): o ímã a ignora até ela sair do raio.
+var magnet_skip: bool = false
 ## > 0: uma Traça mira esta letra (marca BLOOD; 005 FR-504). Renovada pela Traça a cada passo.
 var moth_mark: float = 0.0
 
@@ -48,6 +63,8 @@ func start(p_letter: String, p_rare: bool, p_target: bool, pos: Vector2, lifetim
 	lock_left = lock_time
 	reject_cooldown = 0.0
 	magnetized = false
+	magnet_skip = false
+	marked = false
 	magnet_speed = 0.0
 	loose = p_loose
 	moth_mark = 0.0
@@ -60,6 +77,10 @@ func start(p_letter: String, p_rare: bool, p_target: bool, pos: Vector2, lifetim
 
 ## Chamado pelo LetterField a cada frame.
 func update_view(delta: float, blink_time: float) -> void:
+	if _mark_pop > 0.0:
+		_mark_pop -= delta
+		if _mark_pop <= 0.0:
+			queue_redraw()
 	if life <= blink_time:
 		var period: float = BLINK_FAST if life <= BLINK_FAST_WINDOW else BLINK_SLOW
 		modulate.a = 1.0 if int(life / period) % 2 == 0 else BLINK_ALPHA
@@ -77,6 +98,13 @@ func _draw() -> void:
 	if moth_mark > 0.0:
 		draw_rect(Rect2(-1, -8, 3, 1), Palette.BLOOD)
 		draw_rect(Rect2(0, -9, 1, 1), Palette.BLOOD)
+	if marked:
+		var h: int = MARK_POP_HALF if _mark_pop > 0.0 else MARK_HALF
+		for sx: int in [-1, 1]:
+			for sy: int in [-1, 1]:
+				var corner := Vector2(sx * h if sx < 0 else sx * h - 1, sy * h if sy < 0 else sy * h - 1)
+				draw_rect(Rect2(corner.x if sx < 0 else corner.x - MARK_ARM + 1, corner.y, MARK_ARM, 1), Palette.INK)
+				draw_rect(Rect2(corner.x, corner.y if sy < 0 else corner.y - MARK_ARM + 1, 1, MARK_ARM), Palette.INK)
 	if not target:
 		return
 	var phase: int = int(_pulse / TARGET_PULSE) % 2

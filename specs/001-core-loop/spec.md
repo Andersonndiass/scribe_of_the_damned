@@ -99,3 +99,7 @@ Uma onda completa jogável no navegador: o Irmão Anselmo anda pela página, o a
 - Personagem único: Irmão Anselmo, com os números de `data/player/anselmo.tres`.
 - Sprites são placeholders no tamanho exato do `ASSET-CATALOG.md` enquanto os `scribe-*.js` não chegam (D-022).
 - "Sem atacar" no FR-004 = sem conjurar e sem levar dano. O ataque automático não conta (D-011, a confirmar).
+
+## Emenda 2026-09-29 — controles com mouse (D-067, playtest)
+
+- **FR-028** **Marcar letra:** clicar numa letra do chão a marca (a mais próxima do clique, até 10 px); clicar de novo nela ou no chão vazio desmarca; só uma marca por vez. Com marca, o ímã (mesmo raio) puxa **só** a letra marcada; as outras que estavam perto ficam de lado até saírem do raio. A marca some quando a letra sai do chão (coletada, expirada, comida). Letras pisadas continuam sendo coletadas. Sem clique, nada muda.

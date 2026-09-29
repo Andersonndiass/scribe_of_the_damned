@@ -16,6 +16,10 @@ var run_stats: RunStats = null
 var gold_fraction: float = 0.0
 ## Screen shake ligado (D-047 6B; a tela de Opções, 007, muda). Vale entre partidas.
 var shake_enabled: bool = true
+## Mirar as palavras direcionais com o mouse (D-067; ligado por padrão; Opções na 007).
+var aim_with_mouse: bool = true
+## Onde está o cursor no mundo; Vector2.INF = sem mouse nesta sessão (mira = direção do escriba).
+var aim_point: Vector2 = Vector2.INF
 
 
 ## Reinicia a partida a partir dos dados do personagem.

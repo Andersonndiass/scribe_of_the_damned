@@ -10,11 +10,15 @@ const PICKUP_RADIUS := 6.0
 const DOUBLE_LETTER_OFFSET := Vector2(8, 0)
 ## Rasura (006): não apaga a letra pega há menos disso (s; o BossData manda o valor da luta).
 var erase_grace: float = 0.5
+## Letra marcada pelo clique (D-067): com marca, o ímã (mesmo raio) puxa só ela.
+var marked: Letter = null
 var _last_push_msec: int = -100000
 ## Aceleração do ímã (px/s²): a letra parte devagar e acelera (QUAD_IN, ficha 21).
 const MAGNET_ACCEL := 900.0
 ## Depois de recusada (atril cheio), a letra fica parada este tempo antes de tentar de novo.
 const REJECT_COOLDOWN := 0.6
+## Clique marca a letra mais próxima dentro deste raio (px; tolerância de mira, D-067).
+const MARK_PICK_RADIUS := 10.0
 const PLAYER_BODY_OFFSET := Vector2(0, -6)
 
 @export var player: Player
@@ -161,6 +165,40 @@ func _on_enemy_killed(slot: int, data: EnemyData, pos: Vector2) -> void:
 		spawn_letter(r2["letter"], r2["rare"], r2["target"], pos + DOUBLE_LETTER_OFFSET)
 
 
+## Clique do mouse (D-067): marca a letra mais próxima do ponto; clicar na marcada ou no chão
+## vazio desmarca. Retorna a letra marcada (ou null).
+func mark_at(pos: Vector2) -> Letter:
+	var best: Letter = null
+	var best_d: float = MARK_PICK_RADIUS
+	for l: Letter in _active:
+		var d: float = l.global_position.distance_to(pos)
+		if d <= best_d:
+			best_d = d
+			best = l
+	if best == marked:
+		best = null
+	if marked != null:
+		marked.marked = false
+	marked = best
+	if marked != null:
+		marked.marked = true
+		# As outras param e ficam de lado até sair do raio do ímã: só a marcada vem, e as
+		# indesejadas não vêm logo depois que ela é coletada.
+		for l: Letter in _active:
+			if l != marked:
+				l.magnetized = false
+				l.magnet_speed = 0.0
+				l.magnet_skip = true
+	return marked
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	var mb := event as InputEventMouseButton
+	if mb != null and mb.pressed and mb.button_index == MOUSE_BUTTON_LEFT:
+		mark_at(get_global_mouse_position())
+		get_viewport().set_input_as_handled()
+
+
 func _physics_process(delta: float) -> void:
 	if _active.is_empty():
 		return
@@ -185,7 +223,10 @@ func _physics_process(delta: float) -> void:
 				l.reject_cooldown = REJECT_COOLDOWN
 				l.magnetized = false
 				l.magnet_speed = 0.0
-			elif not l.loose and (l.magnetized or dist <= magnet_r) and _magnet_accepts(l):
+			elif l.magnet_skip and dist > magnet_r:
+				l.magnet_skip = false
+			elif not l.loose and not l.magnet_skip and (l.magnetized or dist <= magnet_r) and _magnet_accepts(l) \
+					and (marked == null or l == marked):
 				l.magnetized = true
 				l.magnet_speed += MAGNET_ACCEL * delta
 				l.global_position = l.global_position.move_toward(body, l.magnet_speed * delta)
@@ -201,6 +242,9 @@ func _magnet_accepts(l: Letter) -> bool:
 
 func _release(idx: int) -> void:
 	var l: Letter = _active[idx]
+	if l == marked:
+		l.marked = false
+		marked = null
 	_active[idx] = _active[_active.size() - 1]
 	_active.pop_back()
 	PoolManager.release(l)

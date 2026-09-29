@@ -72,7 +72,7 @@ func cast() -> bool:
 	var rare_mul: float = pow(letter_field.tuning.rare_power_bonus, taken["rare_count"])
 	var power: float = word.power_budget * rare_mul
 	var origin: Vector2 = player.global_position + PEN_OFFSET
-	var direction: Vector2 = player.facing
+	var direction: Vector2 = aim_direction(origin)
 	var was_open: bool = combo_book.is_open()
 	var combo: ComboData = combo_book.on_cast(word)
 	if word.group == &"base" or word.group == &"apocrypha":
@@ -104,7 +104,7 @@ func _cast_verbum() -> bool:
 		letter_field.emit_atril()
 		return false
 	var origin: Vector2 = player.global_position + PEN_OFFSET
-	var direction: Vector2 = player.facing
+	var direction: Vector2 = aim_direction(origin)
 	EventBus.verbum_echoed.emit(last_repeatable)
 	# O eco conta como a palavra repetida para quem lê as marcas (chefes, FR-202c).
 	EventBus.word_cast.emit(last_repeatable, last_repeatable_power, origin, direction)
@@ -121,6 +121,16 @@ func _on_heresy_absolved() -> void:
 	var em := EnemyQuery.provider as EnemyManager
 	if em != null:
 		em.clear_aggro()
+
+
+## Direção das palavras direcionais (D-067): o cursor, se a opção estiver ligada e houver mouse;
+## senão, para onde o escriba olha.
+func aim_direction(origin: Vector2) -> Vector2:
+	if GameState.aim_with_mouse and GameState.aim_point != Vector2.INF:
+		var d: Vector2 = GameState.aim_point - origin
+		if d.length() > 1.0:
+			return d.normalized()
+	return player.facing
 
 
 func _partner_latins() -> PackedStringArray:

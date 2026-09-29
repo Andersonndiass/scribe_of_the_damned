@@ -348,6 +348,20 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
 - **Stress (T622):** `?stress=boss` (fase 3 forçada, Summon, 150 letras, 200 projéteis): Chrome 157–189 FPS, p95 120–149 (SC-607 ✅). SC-001 na mesma sessão: 87–97 / p95 62–71.
 - **Status:** ✅ feature 006 Complete; vida do chefe pendente de playtest.
 
+### D-066 · 2026-09-29 · Spec 007 (telas e menus) aprovada
+- **Decisão:** 9 telas + Créditos simples (Splash, Menu, Personagem, Capítulo, Pausa, Game Over, Vitória, Opções, Grimório). **Remapear teclas e alto contraste entram agora** (1B). **PT-BR e EN completos agora**, com troca nas Opções (2B, "quero conseguir trocar de português e inglês nas configurações"). Loading HTML vai para a 011 (3A).
+- **Do parecer do game-design-agent:** Grimório sem bônus mecânico (D-018); chefe descoberto ao enfrentar; Vitória com um botão (Menu) e o Cap. 2 acorrentado. O corte de remap sugerido por ele partia da ideia de que as letras são digitadas; aqui são coletadas andando, então o remap é seguro.
+- **Status:** ✅ aprovada pelo autor ("1b2b … 3a").
+
+### D-067 · 2026-09-29 · Controles com mouse (feedback de playtest do Francisco)
+- **Pedido:** "marcar com o mouse qual letra quer pegar" e "mirar as habilidades com o mouse".
+- **Decisão do autor:** clicar numa letra faz o ímã trazer só ela (mesmo raio; sem clique, nada muda); as palavras direcionais miram no cursor, o ataque automático não muda; sem mouse, mira = direção do escriba; opção ligada por padrão; feito antes da 007 (respostas "1… 2a 3a 4a 5a").
+- **Regra que o Claude acrescentou:** ao marcar, as outras letras perto ficam de lado até saírem do raio — senão, coletada a marcada, as indesejadas viriam logo em seguida.
+- **Visual (design-agent):** mira = pena de tinta 11×11 (ponta = ponto quente, contorno CHALK) no lugar do cursor do sistema; letra marcada = 4 cantos em L de INK (16×16, pop de 80 ms), sem GOLD nem pulso. Divergência: a pena fica visível enquanto a mira pelo mouse vale (a ficha a escondia após 2 s parada).
+- **Pareceres:** game-design-agent aprovou a forma (1c: raio não aumenta; mira só nas direcionais); sem números novos (rules-agent não precisou).
+- **Limitação:** sem mouse não há como marcar letra (o ímã funciona como antes).
+- **Status:** ✅ aprovado pelo autor ("pode").
+
 ---
 
 ## Conflitos abertos
