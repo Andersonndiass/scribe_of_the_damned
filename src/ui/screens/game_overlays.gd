@@ -242,7 +242,7 @@ func _on_draw() -> void:
 
 
 func _draw_dim() -> void:
-	UiStyle.dither(_canvas, Rect2(0, 0, 640, 360), Palette.INK, UiStyle.dim_level())
+	UiStyle.dim_screen(_canvas, UiStyle.dim_level())
 
 
 func _draw_pause() -> void:
@@ -307,7 +307,7 @@ func _draw_stats(box: Rect2, with_boss: bool) -> void:
 
 
 func _draw_game_over() -> void:
-	UiStyle.dither(_canvas, Rect2(0, 0, 640, 360), Palette.INK, 0.75)
+	UiStyle.dim_screen(_canvas, 0.75)
 	_draw_plate_text(tr(&"GAMEOVER_TITLE"), GO_TITLE_Y, Palette.BLOOD if not UiStyle.high() else Palette.CHALK, 2, Palette.PARCHMENT)
 	_canvas.draw_rect(BURNT, Palette.PARCHMENT)
 	# Borda queimada: dentes BLOOD_DARK/INK irregulares.
@@ -348,7 +348,8 @@ func _draw_victory() -> void:
 	_canvas.draw_rect(VIC_SEAL, Palette.PARCHMENT_OLD)
 	PixelFont.draw_centered(_canvas, _next_numeral, VIC_SEAL.get_center().x, VIC_SEAL.position.y + 10, Palette.INK, 2)
 	_canvas.draw_rect(Rect2(VIC_SEAL.position.x, VIC_SEAL.get_center().y - 1, VIC_SEAL.size.x, 3), Palette.INK_SOFT)
-	_canvas.draw_circle(VIC_SEAL.get_center() + Vector2(0, 12), 7, Palette.BLOOD)
+	UiStyle.disc(_canvas, VIC_SEAL.get_center() + Vector2(0, 12), 8, Palette.INK)
+	UiStyle.disc(_canvas, VIC_SEAL.get_center() + Vector2(0, 12), 7, Palette.BLOOD)
 	PixelFont.draw_centered(_canvas, tr(&"COMING_SOON"), VIC_SEAL.get_center().x, VIC_SEAL.end.y + 6, UiStyle.text_on_light(true))
 	if buttons_shown:
 		UiStyle.draw_ribbon(_canvas, Vector2(320, VIC_BUTTON_Y), tr(menu.items[0]["label"]), &"focus")

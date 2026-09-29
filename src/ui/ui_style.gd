@@ -9,7 +9,7 @@ const RIBBON_MIN_W := 128
 const RIBBON_PAD := 24
 const RIBBON_FOCUS_SHIFT := 4
 const QUILL_GAP := 4
-## Pena (a mesma da mira): bico e haste INK; barbas INK_SOFT/PARCHMENT_OLD em xadrez; contorno CHALK.
+## Pena (a mesma da mira): bico e haste INK; barbas PARCHMENT_OLD lisas (D-076); contorno CHALK.
 const QUILL_NIB: Array[Vector2i] = [Vector2i(0, 0), Vector2i(1, -1), Vector2i(2, -2)]
 const QUILL_SHAFT_FROM := 3
 const QUILL_SHAFT_TO := 10
@@ -57,6 +57,46 @@ static func draw_tag(ci: CanvasItem, text: String, center_x: float, y: float) ->
 	PixelFont.draw_centered(ci, text, center_x, y, Palette.INK)
 
 
+## Disco cheio pixel a pixel (linhas pelo ponto médio: borda limpa, sem antialiasing).
+static func disc(ci: CanvasItem, center: Vector2, r: int, c: Color) -> void:
+	var cx: int = roundi(center.x)
+	var cy: int = roundi(center.y)
+	for dy: int in range(-r, r + 1):
+		var half: int = floori(sqrt(float(r * r - dy * dy) + float(r) * 0.8))
+		half = mini(half, r)
+		ci.draw_rect(Rect2(cx - half, cy + dy, half * 2 + 1, 1), c)
+
+
+## Anel de `t` px (a diferença de dois discos, sem buracos).
+static func ring(ci: CanvasItem, center: Vector2, r: int, c: Color, t: int = 1) -> void:
+	var cx: int = roundi(center.x)
+	var cy: int = roundi(center.y)
+	var inner: int = r - t
+	for dy: int in range(-r, r + 1):
+		var half: int = mini(floori(sqrt(float(r * r - dy * dy) + float(r) * 0.8)), r)
+		var ih: int = -1
+		if absi(dy) <= inner:
+			ih = mini(floori(sqrt(float(inner * inner - dy * dy) + float(inner) * 0.8)), inner)
+		if ih < 0:
+			ci.draw_rect(Rect2(cx - half, cy + dy, half * 2 + 1, 1), c)
+		else:
+			ci.draw_rect(Rect2(cx - half, cy + dy, half - ih, 1), c)
+			ci.draw_rect(Rect2(cx + ih + 1, cy + dy, half - ih, 1), c)
+
+
+## Moldura de 1 px feita de retângulos cheios (a linha do draw_rect vazado cai no meio pixel).
+static func frame(ci: CanvasItem, r: Rect2, c: Color, t: float = 1.0) -> void:
+	ci.draw_rect(Rect2(r.position, Vector2(r.size.x, t)), c)
+	ci.draw_rect(Rect2(r.position.x, r.end.y - t, r.size.x, t), c)
+	ci.draw_rect(Rect2(r.position, Vector2(t, r.size.y)), c)
+	ci.draw_rect(Rect2(r.end.x - t, r.position.y, t, r.size.y), c)
+
+
+## Escurece a tela inteira (o único xadrez de UI permitido pela D-076, com o dos fantasmas).
+static func dim_screen(ci: CanvasItem, level: float) -> void:
+	dither(ci, Rect2(0, 0, 640, 360), Palette.INK, level)
+
+
 ## Largura de uma fita para `text` (escala 1); `min_w` encolhe a fita onde o espaço é curto.
 static func ribbon_width(text: String, min_w: float = RIBBON_MIN_W) -> float:
 	return maxf(min_w, PixelFont.width(text) + RIBBON_PAD)
@@ -78,7 +118,7 @@ static func draw_ribbon(ci: CanvasItem, center: Vector2, text: String, state: St
 	var edge: Color = Palette.GOLD if focused else Palette.INK_SOFT
 	var edge_w: float = outline_w()
 	if focused:
-		edge_w += 1.0
+		edge_w = 2.0
 		if high():
 			ci.draw_rect(whole.grow(edge_w + 1.0), Palette.CHALK)
 	ci.draw_rect(whole.grow(edge_w), edge)
@@ -86,18 +126,15 @@ static func draw_ribbon(ci: CanvasItem, center: Vector2, text: String, state: St
 	# Rabos de andorinha: recorte em V nas pontas.
 	for notch_x: float in [whole.position.x - edge_w, whole.end.x - 3 + edge_w]:
 		ci.draw_rect(Rect2(notch_x, pos.y + 5, 3, 6), Palette.INK)
-	if disabled and not high():
-		dither(ci, Rect2(whole.position.x, pos.y, RIBBON_TAIL, RIBBON_H), Palette.INK_SOFT)
-		dither(ci, Rect2(body.end.x, pos.y, RIBBON_TAIL, RIBBON_H), Palette.INK_SOFT)
 	ci.draw_rect(Rect2(pos.x, pos.y, 1, RIBBON_H), Palette.PARCHMENT_OLD)
 	ci.draw_rect(Rect2(body.end.x - 1, pos.y, 1, RIBBON_H), Palette.PARCHMENT_OLD)
 	var color: Color = Palette.INK
 	if disabled and not high():
 		color = Palette.INK_SOFT
 	PixelFont.draw_centered(ci, text, pos.x + w / 2.0, pos.y + 5, color)
-	if disabled and high():
+	if disabled:
 		var tw: float = PixelFont.width(text)
-		ci.draw_rect(Rect2(pos.x + w / 2.0 - tw / 2.0, pos.y + 8, tw, 1), Palette.INK)
+		ci.draw_rect(Rect2(pos.x + w / 2.0 - tw / 2.0, pos.y + 8, tw, 1), Palette.INK if high() else Palette.INK_SOFT)
 	if focused:
 		var bob: float = -1.0 if int(Time.get_ticks_msec() / 400) % 2 == 0 else 0.0
 		draw_quill(ci, Vector2(whole.position.x - edge_w - QUILL_GAP, pos.y + RIBBON_H / 2.0 + bob), true)
@@ -126,7 +163,7 @@ static func draw_quill(ci: CanvasItem, tip: Vector2, mirrored: bool = false) -> 
 				if not filled.has(q):
 					ci.draw_rect(Rect2(o + Vector2i(q.x * sx, q.y), Vector2.ONE), Palette.CHALK)
 	for p: Vector2i in barbs:
-		ci.draw_rect(Rect2(o + Vector2i(p.x * sx, p.y), Vector2.ONE), Palette.INK_SOFT if (p.x + p.y) % 2 == 0 else Palette.PARCHMENT_OLD)
+		ci.draw_rect(Rect2(o + Vector2i(p.x * sx, p.y), Vector2.ONE), Palette.PARCHMENT_OLD)
 	for p: Vector2i in pts:
 		ci.draw_rect(Rect2(o + Vector2i(p.x * sx, p.y), Vector2.ONE), Palette.INK)
 

@@ -22,7 +22,7 @@ Os valores estão em `design-tokens.json`. **Nenhuma outra cor é permitida.**
 | `parchment_old` | Bordas gastas, dobras, asas das traças, lâminas |
 | `chalk` | Olhos, núcleo dos milagres, contorno dos fantasmas, números de dano normais |
 | `blood` | **Só** dano, telegrafia, projéteis inimigos, contorno e aura de campeão, heresia e UI crítica |
-| `blood_dark` | Boca de Hildegarda, cruz invertida do Abade, borda da sombra do campeão |
+| `blood_dark` | Boca de Hildegarda, cruz invertida do Abade, borda da sombra do campeão; na UI (D-076, autor "A"): fita da próxima onda, selo de cera ligado, capa do Grimório, borda queimada do Game Over |
 | `gold`, `gold_light` | **Só** milagres, UI, tinta dourada, vogais raras, letra-alvo e redenção dos chefes. Nos heróis, só na ponta da pena ou do pincel em CAST e VICTORY |
 
 ### 2.1 Exceções declaradas de BLOOD
@@ -38,7 +38,7 @@ Borda das chamas do IGNIS (é fogo) · olho de Asmodeus · estola de Malaquias �
 
 - Pixel art em 1×, filtro Nearest, sem sub-pixel. Respiro e flutuação andam sempre em pixel inteiro.
 - **Proibido:** degradê, blur, antialiasing, sombra difusa, canto arredondado e alpha desenhado.
-- Transparência visual se faz com **dithering**: vitral, eco do VERBUM, fantasmas, sombra do Semíhaza e texto-fantasma da arena (alpha máximo de 0.12).
+- Transparência visual se faz com **dithering** (só em área grande, D-076): vitral, fantasmas, sombra do Semíhaza e texto-fantasma da arena (alpha máximo de 0.12).
 - **Sombra (D-075, substitui a regra da hachura no rosto):** luz única da direita (nos itens, de cima para a direita).
   - **Pele e rosto: sombra em blocos lisos, nunca hachura nem xadrez.** Rampa: CHALK (luz) → PARCHMENT (base) → PARCHMENT_OLD (sombra) → INK_SOFT só em vincos fundos. A sombra é uma forma de borda definida que descreve a estrutura (órbita, lado do nariz, sob o lábio, sob o queixo), sem pillow shading.
   - **Hachura (45°) só em tecido, cenário e áreas grandes**, no máximo uma área por retrato; se em 100% parecer ruído, vira cor sólida.

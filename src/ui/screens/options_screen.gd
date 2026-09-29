@@ -212,13 +212,11 @@ func action_label(action: StringName) -> String:
 
 func _draw() -> void:
 	if embedded:
-		UiStyle.dither(self, Rect2(0, 0, 640, 360), Palette.INK, UiStyle.dim_level())
+		UiStyle.dim_screen(self, UiStyle.dim_level())
 	else:
 		draw_rect(Rect2(0, 0, 640, 360), Palette.INK)
 	_plate_title(tr(&"OPTIONS_TITLE"))
-	draw_rect(PANEL.grow(2), Palette.INK_SOFT)
-	draw_rect(PANEL, Palette.PARCHMENT)
-	draw_rect(PANEL.grow(-4), Palette.PARCHMENT_OLD, false, 1.0)
+	UiStyle.draw_panel(self, PANEL)
 	if in_keys:
 		_draw_keys()
 	else:
@@ -304,12 +302,9 @@ func _draw_slider(y: float, v: float, focused: bool) -> void:
 	if focused:
 		var left_c: Color = Palette.GOLD if flash and _step_dir < 0 else Palette.INK_SOFT
 		var right_c: Color = Palette.GOLD if flash and _step_dir > 0 else Palette.INK_SOFT
-		PixelFont.draw(self, tr(&"UI_PREV"), Vector2(VALUE_X - 8, y + 5), left_c)
-		PixelFont.draw(self, tr(&"UI_NEXT"), Vector2(VALUE_X + SLIDER_W + 5, y + 5), right_c)
-		if steps == 0:
-			UiStyle.dither(self, Rect2(VALUE_X - 8, y + 5, 6, 6), Palette.PARCHMENT_OLD)
-		if steps == 10:
-			UiStyle.dither(self, Rect2(VALUE_X + SLIDER_W + 5, y + 5, 6, 6), Palette.PARCHMENT_OLD)
+		# No limite, a seta fica apagada em PARCHMENT_OLD liso (D-076: sem xadrez).
+		PixelFont.draw(self, tr(&"UI_PREV"), Vector2(VALUE_X - 8, y + 5), Palette.PARCHMENT_OLD if steps == 0 else left_c)
+		PixelFont.draw(self, tr(&"UI_NEXT"), Vector2(VALUE_X + SLIDER_W + 5, y + 5), Palette.PARCHMENT_OLD if steps == 10 else right_c)
 	var pct: String = "%d%%" % (steps * 10)
 	PixelFont.draw(self, pct, Vector2(448 - PixelFont.width(pct), y + 5), Palette.INK)
 
@@ -334,8 +329,7 @@ func _draw_wax(y: float, row: StringName) -> void:
 		var ring: float = UiStyle.outline_w()
 		draw_rect(seal.grow_individual(-2, 0, -2, 0), Palette.INK_SOFT if not UiStyle.high() else Palette.INK)
 		draw_rect(seal.grow_individual(0, -2, 0, -2), Palette.INK_SOFT if not UiStyle.high() else Palette.INK)
-		draw_rect(seal.grow(-ring), Palette.PARCHMENT)
-		UiStyle.dither(self, seal.grow(-ring), Palette.PARCHMENT_OLD)
+		draw_rect(seal.grow(-ring), Palette.PARCHMENT_OLD)
 	PixelFont.draw(self, tr(&"OPT_ON") if on else tr(&"OPT_OFF"), Vector2(VALUE_X + 18, y + 5), Palette.INK)
 
 
@@ -367,7 +361,9 @@ func _draw_keys() -> void:
 		if focused:
 			_draw_focus_band(y)
 			if waiting_key:
-				UiStyle.dither(self, Rect2(ROW_X, y, ROW_W, ROW_H), Palette.INK_SOFT)
+				# Esperando tecla: faixa lisa com moldura GOLD de 2 px.
+				UiStyle.frame(self, Rect2(ROW_X, y, ROW_W, ROW_H).grow(2), Palette.GOLD, 2.0)
+				draw_rect(Rect2(ROW_X, y, ROW_W, ROW_H), Palette.PARCHMENT)
 		var label: String = action_label(action)
 		var shift: float = UiStyle.RIBBON_FOCUS_SHIFT if focused else 0.0
 		PixelFont.draw(self, label, Vector2(LABEL_X + shift, y + 5), Palette.INK if focused else UiStyle.text_on_light(true))

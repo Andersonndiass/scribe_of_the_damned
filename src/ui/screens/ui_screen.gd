@@ -89,11 +89,18 @@ static func is_back(event: InputEvent) -> bool:
 	return event.is_pressed() and not event.is_echo() and (event.is_action(&"pause") or event.is_action(&"ui_cancel"))
 
 
-## Cadeado placeholder 7×8 com o topo em `pos`.
-func draw_padlock(pos: Vector2, color: Color) -> void:
+## Cadeado 8×10 com o topo em `pos` (D-076; mapa do design-agent): alça INK de 2 px, corpo `body`
+## com o claro `light` no canto de cima à direita, buraco da chave INK.
+const PADLOCK: Array[String] = ["..KKKK..", ".KK..KK.", ".KK..KK.", ".KK..KK.", "KKKKKKKK",
+	"KXXXXxxK", "KXXKKXxK", "KXXKKXXK", "KXXXXXXK", "KKKKKKKK"]
+
+
+func draw_padlock(pos: Vector2, body: Color, light: Color = Palette.GOLD_LIGHT) -> void:
 	var p := pos.round()
-	draw_rect(Rect2(p.x + 1, p.y, 5, 1), color)
-	draw_rect(Rect2(p.x + 1, p.y, 1, 4), color)
-	draw_rect(Rect2(p.x + 5, p.y, 1, 4), color)
-	draw_rect(Rect2(p.x, p.y + 3, 7, 5), color)
-	draw_rect(Rect2(p.x + 3, p.y + 5, 1, 2), Palette.INK)
+	for y: int in PADLOCK.size():
+		for x: int in PADLOCK[y].length():
+			var ch: String = PADLOCK[y][x]
+			if ch == ".":
+				continue
+			var c: Color = Palette.INK if ch == "K" else (body if ch == "X" else light)
+			draw_rect(Rect2(p.x + x, p.y + y, 1, 1), c)

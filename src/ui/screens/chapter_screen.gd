@@ -60,18 +60,16 @@ func _draw_page(r: Rect2, ch: Dictionary, focused: bool) -> void:
 		draw_rect(r.grow(UiStyle.outline_w() + 1), Palette.CHALK if UiStyle.high() else Palette.GOLD)
 		draw_rect(r.grow(1), Palette.GOLD)
 	draw_rect(r, Palette.PARCHMENT if unlocked else Palette.PARCHMENT_OLD)
-	PixelFont.draw_centered(self, ch["numeral"], r.get_center().x, r.position.y + 16, Palette.INK, 2)
-	for i: int in 7:
-		draw_rect(Rect2(r.position.x + 10, r.position.y + 42 + i * 9, r.size.x - 20 - (i % 3) * 10, 1), Palette.INK_SOFT if unlocked else Palette.PARCHMENT)
+	# Bloqueada (D-076): página PARCHMENT_OLD lisa, numeral apagado, correntes e cadeado — sem xadrez.
+	PixelFont.draw_centered(self, ch["numeral"], r.get_center().x, r.position.y + 16, Palette.INK if unlocked else Palette.INK_SOFT, 2)
 	if unlocked:
+		for i: int in 7:
+			draw_rect(Rect2(r.position.x + 10, r.position.y + 42 + i * 9, r.size.x - 20 - (i % 3) * 10, 1), Palette.INK_SOFT)
 		return
-	if not UiStyle.high():
-		UiStyle.dither(self, r, Palette.INK)
 	# Correntes em X e cadeado no centro.
 	for t: int in int(r.size.x / 4):
 		var x: float = r.position.x + t * 4
 		var y1: float = r.position.y + t * 4 * r.size.y / r.size.x
 		draw_rect(Rect2(x, y1, 3, 2), Palette.INK_SOFT)
 		draw_rect(Rect2(x, r.end.y - (y1 - r.position.y) - 2, 3, 2), Palette.INK_SOFT)
-	draw_padlock(r.get_center() + Vector2(-3, -4), Palette.GOLD)
-	PixelFont.draw_centered(self, ch["numeral"], r.get_center().x, r.position.y + 16, Palette.PARCHMENT, 2)
+	draw_padlock(r.get_center() + Vector2(-4, -5), Palette.GOLD, Palette.GOLD_LIGHT)

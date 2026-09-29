@@ -1,32 +1,24 @@
 {
-	"_doc": "Falantes das cutscenes (008 FR-801). name_key = chave de tradução do nome; closes = expressão -> arte 192x192 (D-074; gerada com tools/import_art.gd). Se o arquivo não existir, o jogo usa o placeholder desenhado por script. Narrador sem close.",
+	"_doc": "Falantes das cutscenes (008 FR-801). name_key = chave de tradução do nome; closes = expressões que existem. Os closes são montados em CAMADAS (192x192, fundo transparente): em art_dir, base = fundo.png, roupa.png, cabeca.png, cabelo.png, contorno.png e, por expressão, olhos_<expr>.png, sobrancelhas_<expr>.png, boca_<expr>.png, detalhes_<expr>.png (gerados com tools/import_art.gd). A camada sem arquivo usa o placeholder por script. Asmodeus: corpo.png. Narrador sem close.",
 	"speakers": {
 		"anselmo": {
 			"name_key": "CS_SPEAKER_ANSELMO",
-			"closes": {
-				"scared": "res://assets/cutscenes/closes/anselmo_scared.png",
-				"relieved": "res://assets/cutscenes/closes/anselmo_relieved.png",
-				"determined": "res://assets/cutscenes/closes/anselmo_determined.png"
-			}
+			"art_dir": "res://assets/cutscenes/closes/anselmo/",
+			"closes": {"scared": "", "relieved": "", "determined": ""}
 		},
 		"abbot_ghost": {
 			"name_key": "CS_SPEAKER_ABBOT",
-			"closes": {
-				"neutral": "res://assets/cutscenes/closes/abbot_ghost_neutral.png",
-				"smiling": "res://assets/cutscenes/closes/abbot_ghost_smiling.png"
-			}
+			"art_dir": "res://assets/cutscenes/closes/abbot_ghost/",
+			"closes": {"neutral": "", "smiling": ""}
 		},
 		"asmodeus": {
 			"name_key": "CS_SPEAKER_ASMODEUS",
-			"closes": {
-				"neutral": "res://assets/cutscenes/closes/asmodeus_neutral.png"
-			}
+			"art_dir": "res://assets/cutscenes/closes/asmodeus/",
+			"closes": {"neutral": ""}
 		},
 		"narrator": {
 			"name_key": "",
-			"closes": {
-				"neutral": ""
-			}
+			"closes": {"neutral": ""}
 		}
 	}
 }

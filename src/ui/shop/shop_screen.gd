@@ -236,6 +236,11 @@ func _on_draw() -> void:
 		_draw_exit_dither()
 
 
+## Centro e raio da luz da vela na parede.
+const CANDLE_LIGHT := Vector2(140, 196)
+const CANDLE_LIGHT_R := 32.0
+
+
 func _draw_room() -> void:
 	var c := _canvas
 	c.draw_rect(Rect2(0, 0, 640, 360), Palette.INK)
@@ -249,14 +254,23 @@ func _draw_room() -> void:
 	c.draw_rect(WINDOW, Palette.INK_SOFT)
 	c.draw_rect(Rect2(WINDOW.position.x + WINDOW.size.x / 2, WINDOW.position.y, 1, WINDOW.size.y), Palette.INK)
 	c.draw_rect(Rect2(WINDOW.position.x, WINDOW.position.y + 36, WINDOW.size.x, 1), Palette.INK)
-	c.draw_circle(MOON, 6, Palette.CHALK)
+	UiStyle.disc(c, MOON, 6, Palette.CHALK)
+	# Estrelas em cruz 3×3 (pixel solto é ruído, D-076).
 	for p: Vector2 in [Vector2(40, 60), Vector2(70, 70), Vector2(44, 90)]:
-		c.draw_rect(Rect2(p, Vector2.ONE), Palette.CHALK)
-	# Luz da vela em xadrez PARCHMENT_OLD sobre a parede (sem alpha).
-	for y: int in range(164, int(WALL_BOTTOM), 2):
-		for x: int in range(108 + (y / 2) % 2, 172, 2):
-			if Vector2(x, y).distance_to(Vector2(140, 196)) <= 32.0 and (x + y) % 4 == 0:
+		c.draw_rect(Rect2(p.x - 1, p.y, 3, 1), Palette.CHALK)
+		c.draw_rect(Rect2(p.x, p.y - 1, 1, 3), Palette.CHALK)
+	# Luz da vela: a argamassa perto dela clareia (PARCHMENT_OLD) em vez de pontos soltos.
+	for row: int in int(WALL_BOTTOM / 16):
+		var y: float = row * 16.0
+		var off: float = 16.0 if row % 2 == 1 else 0.0
+		for x: int in range(108, 173):
+			if Vector2(x, y).distance_to(CANDLE_LIGHT) <= CANDLE_LIGHT_R:
 				c.draw_rect(Rect2(x, y, 1, 1), Palette.PARCHMENT_OLD)
+		for k: int in range(0, 640 / 32 + 1):
+			var jx: float = k * 32 + off
+			for yy: int in range(int(y), int(y) + 16):
+				if Vector2(jx, yy).distance_to(CANDLE_LIGHT) <= CANDLE_LIGHT_R:
+					c.draw_rect(Rect2(jx, yy, 1, 1), Palette.PARCHMENT_OLD)
 	c.draw_rect(TABLE, Palette.INK_SOFT)
 	c.draw_rect(Rect2(TABLE.position, Vector2(TABLE.size.x, 1)), Palette.PARCHMENT_OLD)
 
@@ -277,7 +291,7 @@ func _draw_scribe() -> void:
 	c.draw_line(hand, tips[frame], Palette.CHALK, 1.0)
 	if frame == 4:
 		for p: Vector2 in [Vector2(110, 216), Vector2(114, 215), Vector2(118, 216)]:
-			c.draw_rect(Rect2(p, Vector2.ONE), Palette.CHALK)
+			c.draw_rect(Rect2(p, Vector2(2, 1)), Palette.CHALK)
 
 
 func _draw_card(i: int) -> void:
@@ -321,14 +335,15 @@ func _draw_card(i: int) -> void:
 		return
 	var apo: bool = card.kind == &"apocrypha"
 	c.draw_rect(rect.grow(2 if is_sel else 1), Palette.GOLD if is_sel else Palette.INK)
-	c.draw_rect(rect, Palette.PARCHMENT_OLD if apo else Palette.PARCHMENT)
+	var dim: bool = state == &"no_money"
+	c.draw_rect(rect, Palette.PARCHMENT_OLD if (apo or dim) else Palette.PARCHMENT)
 	if apo:
 		for y: float in [rect.position.y - 3.0, rect.end.y - 3.0]:
 			c.draw_rect(Rect2(rect.position.x - 2, y, rect.size.x + 4, 6), Palette.PARCHMENT)
 			c.draw_rect(Rect2(rect.position.x - 2, y + 2, rect.size.x + 4, 1), Palette.INK)
 		PixelFont.draw_centered(c, tr(&"SHOP_APOCRYPHA"), rect.get_center().x, pos.y + 4, Palette.INK_SOFT)
 	else:
-		c.draw_rect(Rect2(rect.position + Vector2(2, 2), rect.size - Vector2(4, 4)), Palette.PARCHMENT_OLD, false, 1.0)
+		UiStyle.frame(c, Rect2(rect.position + Vector2(2, 2), rect.size - Vector2(4, 4)), Palette.INK_SOFT if dim else Palette.PARCHMENT_OLD)
 	if is_sel:
 		c.draw_rect(Rect2(pos + Vector2(CARD_SIZE.x / 2 - 3, -8), Vector2(7, 4)), Palette.GOLD)
 	if card.icon != null:
@@ -336,9 +351,13 @@ func _draw_card(i: int) -> void:
 	# Vendida: só o ícone apagado, o selo e "VENDIDO" (o texto da carta sai).
 	var sold_look: bool = state == &"sold" or (state == &"buy" and _anim_age(i) >= BUY_HIT)
 	if sold_look or state == &"buy":
-		_dither(Rect2(pos, CARD_SIZE), Palette.PARCHMENT_OLD)
+		# Vendida (D-076): carta lisa PARCHMENT_OLD com borda INK_SOFT, selo GOLD e "VENDIDO" (sem xadrez).
+		c.draw_rect(Rect2(pos, CARD_SIZE), Palette.INK_SOFT)
+		c.draw_rect(Rect2(pos + Vector2.ONE, CARD_SIZE - Vector2(2, 2)), Palette.PARCHMENT_OLD)
 		if sold_look:
-			c.draw_circle(pos + ICON_RECT.get_center(), 12, Palette.GOLD)
+			UiStyle.disc(c, pos + ICON_RECT.get_center(), 13, Palette.INK)
+			UiStyle.disc(c, pos + ICON_RECT.get_center(), 12, Palette.GOLD)
+			UiStyle.disc(c, pos + ICON_RECT.get_center() + Vector2(3, -3), 3, Palette.GOLD_LIGHT)
 			PixelFont.draw_centered(c, tr(&"SHOP_SOLD"), pos.x + CARD_SIZE.x / 2, pos.y + 84, Palette.INK)
 		elif _anim_age(i) < 0.034:
 			c.draw_rect(rect, Palette.CHALK)
@@ -346,13 +365,11 @@ func _draw_card(i: int) -> void:
 	var lines: PackedStringArray = _wrap(tr(card.display_name), NAME_CHARS)
 	var name_scale: int = 2 if apo and lines.size() == 1 and PixelFont.width(lines[0], 2) <= CARD_SIZE.x - 8 else 1
 	for k: int in mini(lines.size(), NAME_Y.size()):
-		PixelFont.draw_centered(c, lines[k], pos.x + CARD_SIZE.x / 2, pos.y + NAME_Y[k] - (3 if name_scale == 2 else 0), Palette.INK, name_scale)
+		PixelFont.draw_centered(c, lines[k], pos.x + CARD_SIZE.x / 2, pos.y + NAME_Y[k] - (3 if name_scale == 2 else 0), Palette.INK_SOFT if dim else Palette.INK, name_scale)
 	c.draw_rect(Rect2(pos + Vector2(8, 78), Vector2(84, 1)), Palette.PARCHMENT_OLD)
 	var desc: PackedStringArray = _wrap(tr(card.short_desc), NAME_CHARS)
 	for k: int in mini(desc.size(), DESC_Y.size()):
 		PixelFont.draw_centered(c, desc[k], pos.x + CARD_SIZE.x / 2, pos.y + DESC_Y[k], Palette.INK_SOFT)
-	if state == &"no_money":
-		_dither(Rect2(pos + Vector2(4, 8), Vector2(92, 100)), Palette.INK_SOFT)
 	_draw_price(i, pos, state)
 	if _shop.offer.locked_slot() == i:
 		c.draw_rect(Rect2(pos + Vector2(CARD_SIZE.x / 2 - 2, -2), Vector2(4, 4)), Palette.GOLD)
@@ -367,14 +384,15 @@ func _draw_price(i: int, pos: Vector2, state: StringName) -> void:
 	var x: float = roundf(pos.x + CARD_SIZE.x / 2 - w / 2)
 	_canvas.draw_texture(DROP_ICON, Vector2(x, pos.y + PRICE_Y - 1))
 	PixelFont.draw(_canvas, text, Vector2(x + 9, pos.y + PRICE_Y - 3), color, 2)
+	if state == &"no_money":
+		# Sem tinta: preço em alerta com um traço de 2 px (sem xadrez, D-076).
+		_canvas.draw_rect(Rect2(x + 9, pos.y + PRICE_Y + 2, PixelFont.width(text, 2), 2), Palette.INK_SOFT)
 
 
 func _draw_ui() -> void:
 	var c := _canvas
 	PixelFont.draw(c, tr(&"SHOP_TITLE"), Vector2(192, 22), Palette.PARCHMENT_OLD, 2)
-	var plate: Rect2 = INK_PLATE
-	c.draw_rect(plate.grow(1), Palette.INK_SOFT)
-	c.draw_rect(plate, Palette.PARCHMENT)
+	UiStyle.draw_panel(c, INK_PLATE)
 	var lift: float = -1.0 if _pop_left > 0.0 else 0.0
 	c.draw_texture(DROP_ICON, Vector2(528, 24))
 	var ink_text: String = str(roundi(_ink_shown))
@@ -383,8 +401,7 @@ func _draw_ui() -> void:
 			PixelFont.draw(c, ink_text, Vector2(540, 22 + lift) + o, Palette.GOLD, 2)
 	PixelFont.draw(c, ink_text, Vector2(540, 22 + lift), Palette.INK, 2)
 	# Reroll: dado de osso, custo; BLOOD só sem tinta.
-	c.draw_rect(REROLL_PLATE.grow(1), Palette.INK_SOFT)
-	c.draw_rect(REROLL_PLATE, Palette.PARCHMENT)
+	UiStyle.draw_panel(c, REROLL_PLATE)
 	var die := Rect2(REROLL_PLATE.position + Vector2(4, 5), Vector2(14, 14))
 	c.draw_rect(die, Palette.PARCHMENT_OLD)
 	for p: Vector2 in [Vector2(3, 3), Vector2(7, 7), Vector2(11, 11)]:
@@ -403,13 +420,6 @@ func _draw_ui() -> void:
 	PixelFont.draw(c, tr(&"SHOP_LEGEND").format({
 		"cast": Settings.key_label(&"cast"), "lock": Settings.key_label(&"shop_lock"),
 		"reroll": Settings.key_label(&"shop_reroll"), "next": Settings.key_label(&"shop_next")}), LEGEND_POS, Palette.PARCHMENT_OLD)
-
-
-## Xadrez de 50% por cima (o "desbotado" sem opacidade, Princípio VII).
-func _dither(r: Rect2, color: Color) -> void:
-	for y: int in int(r.size.y):
-		for x: int in range(y % 2, int(r.size.x), 2):
-			_canvas.draw_rect(Rect2(r.position + Vector2(x, y), Vector2.ONE), color)
 
 
 ## Saída: dithering Bayer em 4 passos cobrindo a tela da loja cada vez menos.

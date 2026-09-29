@@ -130,7 +130,7 @@ static func wrap_words(text: String, width: int) -> PackedStringArray:
 
 func _draw() -> void:
 	if embedded:
-		UiStyle.dither(self, Rect2(0, 0, 640, 360), Palette.INK, UiStyle.dim_level())
+		UiStyle.dim_screen(self, UiStyle.dim_level())
 		var tw: float = PixelFont.width(tr(&"CODEX_TITLE"), 2) + 12
 		draw_rect(Rect2(320 - tw / 2.0, TITLE_Y - 3, tw, PixelFont.height(2) + 6), Palette.INK)
 	else:
@@ -185,7 +185,7 @@ func _draw_left(e: Dictionary, known: bool) -> void:
 	var title: String = _entry_name(e) if known else tr(&"CODEX_UNKNOWN")
 	var scale: int = 2 if PixelFont.normalize(title).length() <= NAME_MAX_BIG else 1
 	PixelFont.draw_centered(self, title, LEFT_X, NAME_Y + (0 if scale == 2 else 3), Palette.INK if known else UiStyle.text_on_light(true), scale)
-	draw_rect(FRAME, Palette.INK_SOFT, false, 1.0)
+	UiStyle.frame(self, FRAME, Palette.INK_SOFT)
 	for c: Vector2 in [FRAME.position, Vector2(FRAME.end.x, FRAME.position.y), Vector2(FRAME.position.x, FRAME.end.y), FRAME.end]:
 		draw_rect(Rect2(c - Vector2(1, 1), Vector2(3, 3)), Palette.INK_SOFT)
 	if e.has("name"):
@@ -264,14 +264,15 @@ func _frames_of(e: Dictionary) -> SpriteFrames:
 	return data.get(&"sprite_frames") as SpriteFrames
 
 
-## Silhueta genérica: octógono INK_SOFT 40×40 com borda em dither e "?" no centro.
+## Silhueta genérica: octógono INK_SOFT 40×40 liso com contorno INK de 1 px e "?" no centro (D-076).
 func _draw_blob() -> void:
 	var c: Vector2 = FRAME.get_center()
+	for dy: int in range(-21, 21):
+		var cut: int = maxi(0, absi(dy) - 12)
+		draw_rect(Rect2(c.x - 21 + cut, c.y + dy, 42 - cut * 2, 1), Palette.INK)
 	for dy: int in range(-20, 20):
 		var cut: int = maxi(0, absi(dy) - 12)
 		draw_rect(Rect2(c.x - 20 + cut, c.y + dy, 40 - cut * 2, 1), Palette.INK_SOFT)
-	UiStyle.dither(self, Rect2(c.x - 20, c.y - 20, 40, 4), Palette.INK)
-	UiStyle.dither(self, Rect2(c.x - 20, c.y + 16, 40, 4), Palette.INK)
 	PixelFont.draw_centered(self, tr(&"CODEX_UNKNOWN").left(1), c.x, c.y - 6, Palette.PARCHMENT_OLD, 2)
 
 
@@ -290,8 +291,16 @@ func _draw_right(e: Dictionary, known: bool) -> void:
 		for i: int in mini(lines.size(), LORE_LINES):
 			PixelFont.draw(self, lines[i], Vector2(LORE_X, LORE_Y + i * LORE_STEP), Palette.INK if e["lore"] != "" else UiStyle.text_on_light(true))
 	else:
+		# Texto ilegível: blocos lisos de 2 px em segmentos (D-076: sem xadrez).
+		var widths: Array[int] = [30, 18, 24, 12, 26, 20, 16, 28, 14, 22]
 		for i: int in 3:
-			UiStyle.dither(self, Rect2(LORE_X, LORE_Y + 2 + i * LORE_STEP, 240 - i * 40, 2), Palette.INK_SOFT)
+			var x: float = LORE_X
+			var k: int = i * 3
+			while x < LORE_X + 240 - i * 40:
+				var w: float = minf(widths[k % widths.size()], LORE_X + 240 - i * 40 - x)
+				draw_rect(Rect2(x, LORE_Y + 2 + i * LORE_STEP, w, 2), Palette.INK_SOFT)
+				x += w + 4
+				k += 1
 	var y: int = GHOST_Y0
 	var k: int = 0
 	while y <= GHOST_Y1:
@@ -321,4 +330,5 @@ func _draw_flip() -> void:
 	draw_rect(Rect2(edge_x, sheet.position.y, 1, sheet.size.y), Palette.INK_SOFT)
 	if q >= 2 and q <= 6:
 		var shadow_x: float = sheet.end.x if on_right else sheet.position.x - 4
-		UiStyle.dither(self, Rect2(shadow_x, BOOK.position.y, 4, BOOK.size.y), Palette.INK_SOFT)
+		var solid_x: float = shadow_x if on_right else shadow_x + 2
+		draw_rect(Rect2(solid_x, BOOK.position.y, 2, BOOK.size.y), Palette.INK_SOFT)

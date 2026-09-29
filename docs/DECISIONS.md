@@ -439,6 +439,19 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
 
 ---
 
+### D-076 · 2026-09-29 · Regras de pixel art em itens, HUD e UI; closes em camadas
+- **Pedido do autor:** "de acordo com essa nova regra modifique os sprites dos itens, e todas as UI e HUDs"; "busque mais na internet e coloque regras"; "use o conceito de camada, crie os sprites separados e junte na cena"; "tudo o que aprendeu vá guardando em memória".
+- **Pesquisa e regras:** Derek Yu (erros comuns), Pixel Parmesan (anti-aliasing), Pixnote (UI/ícones), guias de ícone 16/24 px — regras novas no art bible §3 (ícones: silhueta em 1 cor, nada importante com 1 px, mesmo molde, 1 destaque, círculos por ponto médio; acabamento: sem banding, AA só em degrau interno; UI: 9-slice, contraste, desabilitado = tom apagado + traço, xadrez só em tela inteira e fantasmas).
+- **Paleta exata:** `palette.gd` agora grava n/255 (antes, 4 casas decimais faziam a Image gravar 1 abaixo); PNGs regenerados; teste byte a byte.
+- **Itens:** 14 ícones da loja e a gota dourada refeitos pelos mapas do design-agent (`tools/item_icon_maps.json`).
+- **HUD:** letra do atril sempre INK (rara/pronta = fundo GOLD_LIGHT; pronta com anel que pulsa), dicas em etiqueta, selo 7×7 com contorno, cruz de 2 px, eco do VERBUM sem xadrez, diagonal da Rasura em degraus, marcas de fase de 2 px, "Onda completa" em etiqueta, tinta em INK, lista de palavras em painel.
+- **UI:** `UiStyle.draw_panel/draw_tag/disc/ring/frame/dim_screen`; fitas desabilitadas lisas com traço; cadeado 8×10; medalhões e páginas bloqueadas lisos; Grimório (silhueta, texto ilegível em blocos, sombra da folha), Opções (painel, selo, setas, espera de tecla), loja (vendida com selo, sem tinta apagada + traço, estrelas, luz da vela na argamassa), placas da cutscene, sino com luz à direita.
+- **BLOOD_DARK na UI (autor: "A"):** liberado para fita da próxima onda, selo de cera, capa do Grimório e borda queimada (art bible §2).
+- **Closes em camadas:** fundo, roupa, cabeça, cabelo/barba, contorno + olhos, sobrancelhas, boca, detalhes por expressão; `CloseView` empilha as camadas na cena; arte importada por camada em `art_dir` do `speakers.json`.
+- **Status:** ✅ feito (GUT 373/373).
+
+---
+
 ## Conflitos abertos
 
 - **C-006 · Vida do Asmodeus (DECISÃO DO AUTOR, playtest).** 1500 (rules-agent) supõe uma palavra a cada ~5 s. A sonda não mede isso. No playtest (`index.html?boss`, ou jogando o capítulo), se a luta passar muito de 4 min, baixar `max_hp` em `data/bosses/asmodeus.tres` (ex.: 1000); se ficar abaixo de 2 min, subir.

@@ -55,6 +55,17 @@ var _age: float = 0.0
 var _drain_rate: float = 0.0
 
 
+## O close do falante, montado em camadas (CloseView); fica por cima da faixa.
+var close_view: CloseView
+
+
+func _ready() -> void:
+	close_view = CloseView.new()
+	close_view.name = "Close"
+	close_view.visible = false
+	add_child(close_view)
+
+
 static func chars_for(speaker: String) -> int:
 	return NARRATOR_CHARS if speaker == NARRATOR else LINE_CHARS
 
@@ -73,6 +84,14 @@ func show_line(p: Dictionary) -> void:
 	_lines = UiStyle.wrap_words(_text, chars_for(str(p.get("speaker", ""))))
 	shown = 0.0
 	line_state = LineState.TYPING
+	var who: String = str(p.get("speaker", ""))
+	if close_view != null:
+		if who == NARRATOR or who == "":
+			close_view.show_close("", "")
+		else:
+			var frame_pos: Vector2 = CLOSE_LEFT if LEFT_SPEAKERS.has(who) else CLOSE_RIGHT
+			close_view.position = frame_pos + Vector2(2, 2)
+			close_view.show_close(who, str(p.get("expr", "")))
 	queue_redraw()
 
 
@@ -88,6 +107,8 @@ func hide_line() -> void:
 	_text = ""
 	_lines.clear()
 	line_state = LineState.HIDDEN
+	if close_view != null:
+		close_view.show_close("", "")
 	queue_redraw()
 
 
@@ -162,7 +183,6 @@ func _draw_band() -> void:
 	var frame_pos: Vector2 = CLOSE_LEFT if left else CLOSE_RIGHT
 	draw_rect(Rect2(frame_pos, Vector2(CLOSE_FRAME, CLOSE_FRAME)), Palette.CHALK if UiStyle.high() else Palette.INK)
 	draw_rect(Rect2(frame_pos + Vector2.ONE, Vector2(CLOSE_FRAME - 2, CLOSE_FRAME - 2)), Palette.PARCHMENT_OLD)
-	CutsceneCloses.draw(self, frame_pos + Vector2(2, 2), who, str(line.get("expr", "")))
 	var area: Rect2 = TEXT_LEFT if left else TEXT_RIGHT
 	var name_key: String = _speaker_name_key(who)
 	if name_key != "":
@@ -204,8 +224,7 @@ func _draw_caption() -> void:
 	for l: String in _caption_lines:
 		w = maxf(w, PixelFont.width(l, TEXT_SCALE))
 	var plate := Rect2(CAPTION_ORIGIN, Vector2(w + 24, _caption_lines.size() * CAPTION_LINE_STEP - 2 + 12))
-	draw_rect(plate.grow(UiStyle.outline_w()), Palette.INK)
-	draw_rect(plate, Palette.PARCHMENT)
+	UiStyle.draw_panel(self, plate)
 	for side: float in [plate.position.x, plate.end.x - 4]:
 		draw_rect(Rect2(side, plate.position.y, 4, plate.size.y), Palette.PARCHMENT_OLD)
 		draw_rect(Rect2(side + 2, plate.position.y, 1, plate.size.y), Palette.INK)
@@ -218,17 +237,14 @@ func _draw_skip() -> void:
 	var text: String = tr(&"CS_SKIP_HOLD").format({"pause": Settings.key_label(&"pause")})
 	var w: float = 6 + INK_W + 6 + PixelFont.width(text) + 6
 	var plate := Rect2(SKIP_RIGHT - w, SKIP_TOP, w, SKIP_H)
-	draw_rect(plate.grow(UiStyle.outline_w()), Palette.INK)
-	draw_rect(plate, Palette.PARCHMENT)
+	UiStyle.draw_panel(self, plate)
 	PixelFont.draw(self, text, Vector2(plate.position.x + 6 + INK_W + 6, 19), Palette.INK)
 	var ink := Vector2(plate.position.x + 6, 12)
 	# Gargalo 6×4 e corpo 12×16 com contorno INK.
 	draw_rect(Rect2(ink + Vector2(3, 0), Vector2(6, 4)), Palette.INK)
 	draw_rect(Rect2(ink + Vector2(0, 4), Vector2(INK_W, 16)), Palette.INK)
 	var inside := Rect2(ink + Vector2(1, 5), Vector2(10, INK_FILL_ROWS))
-	draw_rect(inside, Palette.PARCHMENT)
-	if not UiStyle.high():
-		UiStyle.dither(self, inside, Palette.PARCHMENT_OLD)
+	draw_rect(inside, Palette.PARCHMENT_OLD)
 	var full: bool = skip_fill >= 1.0
 	var rows: int = floori(skip_fill * INK_FILL_ROWS)
 	if full:

@@ -70,20 +70,23 @@ func _draw() -> void:
 func _draw_medallion(center: Vector2, c: Dictionary, focused: bool) -> void:
 	var unlocked: bool = c["unlocked"]
 	var ring: Color = Palette.GOLD if unlocked else Palette.INK_SOFT
+	# Círculos pelo ponto médio (D-076); bloqueado = busto liso INK_SOFT sobre INK + cadeado (sem xadrez).
 	if focused:
-		draw_circle(center, MEDAL_R + 3, Palette.GOLD_LIGHT)
+		UiStyle.disc(self, center, MEDAL_R + 3, Palette.GOLD_LIGHT)
 		if UiStyle.high():
-			draw_circle(center, MEDAL_R + 4, Palette.CHALK, false, 1.0)
-	draw_circle(center, MEDAL_R, ring)
-	draw_circle(center, MEDAL_R - 3, Palette.PARCHMENT if unlocked else Palette.INK)
-	# Busto placeholder: capuz e cabeça.
-	var bust: Color = Palette.INK_SOFT if unlocked else Palette.INK_SOFT
-	draw_circle(center + Vector2(0, -4), 7, bust)
+			UiStyle.ring(self, center, MEDAL_R + 4, Palette.CHALK)
+	UiStyle.disc(self, center, MEDAL_R, Palette.INK)
+	UiStyle.disc(self, center, MEDAL_R - 1, ring)
+	UiStyle.disc(self, center, MEDAL_R - 3, Palette.PARCHMENT if unlocked else Palette.INK)
+	# Busto placeholder: capuz e cabeça, recortado pelo miolo do medalhão.
+	var bust: Color = Palette.INK_SOFT
+	UiStyle.disc(self, center + Vector2(0, -4), 7, bust)
 	draw_rect(Rect2(center.x - 11, center.y + 4, 22, 14), bust)
 	if not unlocked:
-		if not UiStyle.high():
-			UiStyle.dither(self, Rect2(center.x - 12, center.y - 12, 24, 24), Palette.INK)
-		draw_padlock(center + Vector2(-3, -4), Palette.PARCHMENT_OLD)
+		draw_padlock(center + Vector2(-4, -5), Palette.PARCHMENT_OLD, Palette.PARCHMENT)
 	if focused and _stamp_left > 0.0:
 		var frame: int = STAMP_FRAMES - int(ceilf(_stamp_left / STAMP_FRAME))
-		draw_circle(center + Vector2(MEDAL_R - 4, MEDAL_R - 4), 4 + (STAMP_FRAMES - frame), Palette.GOLD)
+		var seal_c: Vector2 = center + Vector2(MEDAL_R - 4, MEDAL_R - 4)
+		var seal_r: int = 4 + (STAMP_FRAMES - frame)
+		UiStyle.disc(self, seal_c, seal_r + 1, Palette.INK)
+		UiStyle.disc(self, seal_c, seal_r, Palette.GOLD)

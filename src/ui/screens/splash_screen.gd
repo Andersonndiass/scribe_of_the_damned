@@ -59,6 +59,7 @@ func _draw_bell(center: Vector2) -> void:
 	for row: int in range(3, BELL_SIZE - 4):
 		var half: int = 4 + (row * 7) / (BELL_SIZE - 4)
 		draw_rect(Rect2(top.x - half, top.y + row, half * 2 + 1, 1), Palette.GOLD)
-		draw_rect(Rect2(top.x - half, top.y + row, 2, 1), Palette.GOLD_LIGHT)
+		# Luz da direita (art bible §3): o brilho fica no lado direito do bronze.
+		draw_rect(Rect2(top.x + half - 2, top.y + row, 2, 1), Palette.GOLD_LIGHT)
 	draw_rect(Rect2(top.x - 12, top.y + BELL_SIZE - 4, 25, 2), Palette.GOLD)
 	draw_rect(Rect2(top.x - 1, top.y + BELL_SIZE - 2, 3, 2), Palette.INK_SOFT)
