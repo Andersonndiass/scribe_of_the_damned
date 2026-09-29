@@ -1,0 +1,245 @@
+{
+	"id": "c1_04",
+	"version": 1,
+	"duration": 9.5,
+	"play": "always",
+	"_doc": "C1-04 A página limpa (spec 008; tempos do animation-agent T810). Depois da morte do chefe, antes da Vitória.",
+	"actors": {
+		"cleanse": {
+			"layer": "bg",
+			"kind": "fx",
+			"src": "res://src/cutscenes/fx/page_cleanse.gd",
+			"init": {
+				"position": [
+					320,
+					110
+				],
+				"progress": 0.0
+			}
+		},
+		"rays": {
+			"layer": "bg",
+			"kind": "fx",
+			"src": "res://src/cutscenes/fx/light_rays.gd",
+			"init": {
+				"position": [
+					320,
+					110
+				],
+				"progress": 0.0
+			}
+		},
+		"unravel": {
+			"layer": "actors",
+			"kind": "fx",
+			"src": "res://src/cutscenes/fx/ink_unravel.gd",
+			"init": {
+				"position": [
+					320,
+					110
+				],
+				"progress": 0.0
+			}
+		},
+		"ghost": {
+			"layer": "actors",
+			"kind": "fx",
+			"src": "res://src/cutscenes/fx/ghost_abbot.gd",
+			"init": {
+				"position": [
+					380,
+					190
+				],
+				"progress": 0.0
+			}
+		},
+		"curl": {
+			"layer": "fx",
+			"kind": "fx",
+			"src": "res://src/cutscenes/fx/page_curl.gd",
+			"init": {
+				"position": [
+					640,
+					0
+				],
+				"progress": 0.0
+			}
+		},
+		"moth": {
+			"layer": "fx",
+			"kind": "fx",
+			"src": "res://src/cutscenes/fx/moth_gnaw.gd",
+			"init": {
+				"position": [
+					612,
+					30
+				],
+				"progress": 0.0
+			}
+		}
+	},
+	"events": [
+		{
+			"t": 5.75,
+			"type": "key",
+			"target": "moth",
+			"prop": "progress",
+			"value": 0.0,
+			"ease": "linear"
+		},
+		{
+			"t": 0.0,
+			"type": "key",
+			"target": "unravel",
+			"prop": "progress",
+			"value": 0.0,
+			"ease": "linear"
+		},
+		{
+			"t": 0.7,
+			"type": "key",
+			"target": "unravel",
+			"prop": "progress",
+			"value": 1.0,
+			"ease": "out"
+		},
+		{
+			"t": 0.4,
+			"type": "key",
+			"target": "cleanse",
+			"prop": "progress",
+			"value": 0.0,
+			"ease": "linear"
+		},
+		{
+			"t": 1.1,
+			"type": "key",
+			"target": "cleanse",
+			"prop": "progress",
+			"value": 1.0,
+			"ease": "linear"
+		},
+		{
+			"t": 0.6,
+			"type": "key",
+			"target": "rays",
+			"prop": "progress",
+			"value": 0.0,
+			"ease": "linear"
+		},
+		{
+			"t": 1.3,
+			"type": "key",
+			"target": "rays",
+			"prop": "progress",
+			"value": 1.0,
+			"ease": "out"
+		},
+		{
+			"t": 4.7,
+			"type": "key",
+			"target": "rays",
+			"prop": "progress",
+			"value": 1.0,
+			"ease": "linear"
+		},
+		{
+			"t": 5.1,
+			"type": "key",
+			"target": "rays",
+			"prop": "progress",
+			"value": 0.0,
+			"ease": "linear"
+		},
+		{
+			"t": 1.2,
+			"type": "key",
+			"target": "ghost",
+			"prop": "progress",
+			"value": 0.0,
+			"ease": "linear"
+		},
+		{
+			"t": 1.6,
+			"type": "key",
+			"target": "ghost",
+			"prop": "progress",
+			"value": 1.0,
+			"ease": "linear"
+		},
+		{
+			"t": 1.7,
+			"type": "line",
+			"speaker": "abbot_ghost",
+			"expr": "smiling",
+			"key": "CS_C1_04_ABBOT_1",
+			"end": 4.5
+		},
+		{
+			"t": 4.7,
+			"type": "key",
+			"target": "ghost",
+			"prop": "progress",
+			"value": 1.0,
+			"ease": "linear"
+		},
+		{
+			"t": 5.1,
+			"type": "key",
+			"target": "ghost",
+			"prop": "progress",
+			"value": 0.0,
+			"ease": "linear"
+		},
+		{
+			"t": 5.1,
+			"type": "sound",
+			"id": "cs_page"
+		},
+		{
+			"t": 5.1,
+			"type": "key",
+			"target": "curl",
+			"prop": "progress",
+			"value": 0.0,
+			"ease": "linear"
+		},
+		{
+			"t": 5.8,
+			"type": "key",
+			"target": "curl",
+			"prop": "progress",
+			"value": 1.0,
+			"ease": "in_out"
+		},
+		{
+			"t": 5.8,
+			"type": "sound",
+			"id": "cs_gnaw"
+		},
+		{
+			"t": 5.8,
+			"type": "key",
+			"target": "moth",
+			"prop": "progress",
+			"value": 0.05,
+			"ease": "linear"
+		},
+		{
+			"t": 9.05,
+			"type": "key",
+			"target": "moth",
+			"prop": "progress",
+			"value": 1.0,
+			"ease": "linear"
+		},
+		{
+			"t": 6.6,
+			"type": "line",
+			"speaker": "anselmo",
+			"expr": "relieved",
+			"key": "CS_C1_04_ANSELMO_1",
+			"end": 9.05
+		}
+	]
+}

@@ -25,6 +25,8 @@ const LOCALES: PackedStringArray = ["pt_BR", "en"]
 var id: StringName = &""
 var duration: float = 0.0
 var play_mode: StringName = &"always"
+## Escala do palco (a C1-01 é desenhada em 320×180 e mostrada em 2×).
+var stage_scale: int = 1
 var actors: Dictionary = {}
 var events: Array[Dictionary] = []
 var speakers: Dictionary = {}
@@ -95,6 +97,9 @@ func _read(d: Dictionary) -> void:
 	duration = float(d.get("duration", 0.0))
 	if duration <= 0.0:
 		_err("duração precisa ser maior que 0")
+	stage_scale = int(d.get("stage_scale", 1))
+	if stage_scale < 1 or stage_scale > 4:
+		_err("stage_scale entre 1 e 4")
 	play_mode = StringName(str(d.get("play", "always")))
 	if not PLAY_MODES.has(String(play_mode)):
 		_err("play precisa ser once ou always")

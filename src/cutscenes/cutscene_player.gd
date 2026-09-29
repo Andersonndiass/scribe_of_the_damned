@@ -80,6 +80,7 @@ func load_script(s: CutsceneScript, id: StringName = &"") -> bool:
 		state = Phase.READY
 		return false
 	build = CutsceneBuilder.build(s)
+	stage.scale = Vector2.ONE * s.stage_scale
 	_build_stage(s)
 	var lib := AnimationLibrary.new()
 	lib.add_animation(ANIM, build.animation)
@@ -270,7 +271,12 @@ func _make_actor(a: Dictionary) -> Node2D:
 			var an := AnimatedSprite2D.new()
 			var res: Resource = load(src)
 			an.sprite_frames = res if res is SpriteFrames else res.get(&"sprite_frames")
-			an.play()
+			var names: PackedStringArray = an.sprite_frames.get_animation_names()
+			if not names.is_empty():
+				an.play(names[0])
 			return an
-	var scene: PackedScene = load(src)
-	return scene.instantiate()
+	# "fx": uma cena (.tscn) ou um script de desenho (.gd, CutsceneFx).
+	var loaded: Resource = load(src)
+	if loaded is Script:
+		return (loaded as Script).new()
+	return (loaded as PackedScene).instantiate()

@@ -25,14 +25,14 @@ func _draw() -> void:
 	rect(0, FLOOR_Y, W, 1, Palette.PARCHMENT_OLD)
 	for k: int in range(0, W, 24):
 		rect(k, FLOOR_Y + 8 + (k / 24 % 2) * 12, 16, 1, Palette.INK)
-	# Paredes perdendo o desenho: a célula vira papel liso quando o progresso passa do limiar dela.
+	# Paredes perdendo o desenho: uma frente de papel liso desce de cima, em blocos de 8×8 com a
+	# borda irregular (só a borda varia; nada de blocos soltos no meio da parede).
 	if progress > 0.0:
-		for cy: int in FLOOR_Y / 4:
-			for cx: int in W / 4:
-				var i: int = cy * 80 + cx
-				var threshold: float = 0.7 * (cy * 4.0 / FLOOR_Y) + 0.3 * hash01(i)
-				if progress >= threshold:
-					rect(cx * 4, cy * 4, 4, 4, Palette.PARCHMENT)
+		for cx: int in W / 8:
+			var front: float = progress * FLOOR_Y * 1.6 - 8.0 * hash01(cx)
+			var rows: int = clampi(int(front / 8.0), 0, FLOOR_Y / 8)
+			if rows > 0:
+				rect(cx * 8, 0, 8, rows * 8, Palette.PARCHMENT)
 	# Facho de luz da grade até o chão (transparência de luz em área grande).
 	for y: int in range(20, FLOOR_Y):
 		var half: float = lerpf(24.0, 48.0, float(y - 20) / (FLOOR_Y - 20))

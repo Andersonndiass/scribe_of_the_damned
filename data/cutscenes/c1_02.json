@@ -1,0 +1,24 @@
+{
+	"id": "c1_02", "version": 1, "duration": 17.2, "play": "once",
+	"_doc": "C1-02 A regra do livro (spec 008; tempos do animation-agent T810). Anselmo cai no ponto onde a onda 1 começa.",
+	"actors": {
+		"page": {"layer": "bg", "kind": "fx", "src": "res://src/cutscenes/fx/blank_page.gd", "init": {}},
+		"anselmo": {"layer": "actors", "kind": "frames", "src": "res://assets/placeholders/chr_anselmo_frames.tres", "init": {"position": [320, -16], "scale": [1, 1]}},
+		"ghost": {"layer": "actors", "kind": "fx", "src": "res://src/cutscenes/fx/ghost_abbot.gd", "init": {"position": [362, 176], "progress": 0.0}}
+	},
+	"events": [
+		{"t": 0.2, "type": "key", "target": "anselmo", "prop": "position", "value": [320, -16], "ease": "linear"},
+		{"t": 0.6, "type": "key", "target": "anselmo", "prop": "position", "value": [320, 172], "ease": "in"},
+		{"t": 0.6, "type": "key", "target": "anselmo", "prop": "scale", "value": [1.2, 0.8], "ease": "step"},
+		{"t": 0.7, "type": "key", "target": "anselmo", "prop": "scale", "value": [1, 1], "ease": "step"},
+		{"t": 0.6, "type": "sound", "id": "cs_thud"},
+		{"t": 0.8, "type": "key", "target": "ghost", "prop": "progress", "value": 0.0, "ease": "linear"},
+		{"t": 1.5, "type": "key", "target": "ghost", "prop": "progress", "value": 1.0, "ease": "linear"},
+		{"t": 1.6, "type": "line", "speaker": "abbot_ghost", "expr": "smiling", "key": "CS_C1_02_ABBOT_1", "end": 5.2},
+		{"t": 5.4, "type": "line", "speaker": "abbot_ghost", "expr": "neutral", "key": "CS_C1_02_ABBOT_2", "end": 9.5},
+		{"t": 9.7, "type": "line", "speaker": "anselmo", "expr": "scared", "key": "CS_C1_02_ANSELMO_1", "end": 11.95},
+		{"t": 12.15, "type": "line", "speaker": "abbot_ghost", "expr": "neutral", "key": "CS_C1_02_ABBOT_3", "end": 16.1},
+		{"t": 16.3, "type": "key", "target": "ghost", "prop": "progress", "value": 1.0, "ease": "linear"},
+		{"t": 17.0, "type": "key", "target": "ghost", "prop": "progress", "value": 0.0, "ease": "linear"}
+	]
+}

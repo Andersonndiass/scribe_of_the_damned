@@ -1,0 +1,31 @@
+{
+	"id": "c1_03", "version": 1, "duration": 10.3, "play": "always",
+	"_doc": "C1-03 O Rasurador (spec 008; tempos do animation-agent T810). Roda por cima do jogo parado; o Asmodeus da cena fica na posição do chefe (Boss.HOME) e o fim da cena solta o chefe já lutando.",
+	"actors": {
+		"darken": {"layer": "bg", "kind": "fx", "src": "res://src/cutscenes/fx/page_darken.gd", "init": {"progress": 0.0}},
+		"strokes": {"layer": "bg", "kind": "fx", "src": "res://src/cutscenes/fx/erase_strokes.gd", "init": {"progress": 0.0}},
+		"asmodeus": {"layer": "actors", "kind": "fx", "src": "res://src/cutscenes/fx/rise_from_ink.gd", "init": {"position": [320, 110], "progress": 0.0}},
+		"atril": {"layer": "fx", "kind": "fx", "src": "res://src/cutscenes/fx/atril_strike.gd", "init": {"position": [299, 314], "progress": 0.0}}
+	},
+	"events": [
+		{"t": 0.0, "type": "key", "target": "darken", "prop": "progress", "value": 0.0, "ease": "linear"},
+		{"t": 0.8, "type": "key", "target": "darken", "prop": "progress", "value": 1.0, "ease": "out"},
+		{"t": 0.3, "type": "sound", "id": "cs_erase"},
+		{"t": 0.3, "type": "key", "target": "strokes", "prop": "progress", "value": 0.0, "ease": "linear"},
+		{"t": 1.3, "type": "key", "target": "strokes", "prop": "progress", "value": 1.0, "ease": "linear"},
+		{"t": 0.9, "type": "key", "target": "asmodeus", "prop": "progress", "value": 0.0, "ease": "linear"},
+		{"t": 2.1, "type": "key", "target": "asmodeus", "prop": "progress", "value": 1.0, "ease": "linear"},
+		{"t": 2.3, "type": "line", "speaker": "asmodeus", "expr": "neutral", "key": "CS_C1_03_ASMODEUS_1", "end": 4.75},
+		{"t": 4.95, "type": "sound", "id": "cs_erase"},
+		{"t": 4.95, "type": "key", "target": "atril", "prop": "progress", "value": 0.0, "ease": "linear"},
+		{"t": 5.41, "type": "key", "target": "atril", "prop": "progress", "value": 1.0, "ease": "linear"},
+		{"t": 5.6, "type": "line", "speaker": "anselmo", "expr": "scared", "key": "CS_C1_03_ANSELMO_1", "end": 9.7},
+		{"t": 9.9, "type": "key", "target": "darken", "prop": "progress", "value": 1.0, "ease": "linear"},
+		{"t": 10.3, "type": "key", "target": "darken", "prop": "progress", "value": 0.0, "ease": "in"},
+		{"t": 9.9, "type": "key", "target": "strokes", "prop": "progress", "value": 1.0, "ease": "linear"},
+		{"t": 10.3, "type": "key", "target": "strokes", "prop": "progress", "value": 0.0, "ease": "in"},
+		{"t": 9.9, "type": "key", "target": "atril", "prop": "progress", "value": 1.0, "ease": "linear"},
+		{"t": 10.3, "type": "key", "target": "atril", "prop": "progress", "value": 0.0, "ease": "in"},
+		{"t": 10.2, "type": "mark", "id": "boss_bar_shown"}
+	]
+}

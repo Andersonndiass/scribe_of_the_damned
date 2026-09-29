@@ -1,0 +1,29 @@
+{
+	"id": "c1_01", "version": 1, "duration": 15.65, "play": "once", "stage_scale": 2,
+	"_doc": "C1-01 O mosteiro arde (spec 008; tempos do animation-agent T810; palco 320x180 em 2x).",
+	"actors": {
+		"crypt": {"layer": "bg", "kind": "fx", "src": "res://src/cutscenes/fx/crypt.gd", "init": {"progress": 0.0}},
+		"chest": {"layer": "actors", "kind": "fx", "src": "res://src/cutscenes/fx/chest.gd", "init": {"position": [136, 96], "progress": 0.0}},
+		"anselmo": {"layer": "actors", "kind": "frames", "src": "res://assets/placeholders/chr_anselmo_frames.tres", "init": {"position": [112, 116]}},
+		"letters": {"layer": "fx", "kind": "fx", "src": "res://src/cutscenes/fx/letter_leak.gd", "init": {"position": [140, 100], "progress": 0.0}},
+		"flash": {"layer": "fx", "kind": "fx", "src": "res://src/cutscenes/fx/page_flash.gd", "init": {"progress": 0.0}}
+	},
+	"events": [
+		{"t": 0.0, "type": "sound", "id": "cs_fire"},
+		{"t": 0.7, "type": "key", "target": "crypt", "prop": "progress", "value": 0.0, "ease": "linear"},
+		{"t": 4.7, "type": "key", "target": "crypt", "prop": "progress", "value": 0.4, "ease": "linear"},
+		{"t": 0.8, "type": "caption", "key": "CS_C1_01_CAPTION_1", "end": 4.3},
+		{"t": 4.5, "type": "line", "speaker": "anselmo", "expr": "scared", "key": "CS_C1_01_ANSELMO_1", "end": 7.75},
+		{"t": 7.95, "type": "sound", "id": "cs_chest"},
+		{"t": 8.0, "type": "key", "target": "chest", "prop": "progress", "value": 0.34, "ease": "step"},
+		{"t": 8.0, "type": "key", "target": "letters", "prop": "progress", "value": 0.0, "ease": "linear"},
+		{"t": 9.4, "type": "key", "target": "letters", "prop": "progress", "value": 1.0, "ease": "out"},
+		{"t": 8.2, "type": "line", "speaker": "anselmo", "expr": "scared", "key": "CS_C1_01_ANSELMO_2", "end": 10.65},
+		{"t": 10.85, "type": "key", "target": "chest", "prop": "progress", "value": 1.0, "ease": "step"},
+		{"t": 11.25, "type": "key", "target": "flash", "prop": "progress", "value": 0.0, "ease": "linear"},
+		{"t": 11.65, "type": "key", "target": "flash", "prop": "progress", "value": 0.5, "ease": "in"},
+		{"t": 11.65, "type": "sound", "id": "cs_page"},
+		{"t": 12.05, "type": "key", "target": "flash", "prop": "progress", "value": 1.0, "ease": "in_out"},
+		{"t": 12.25, "type": "line", "speaker": "narrator", "expr": "neutral", "key": "CS_C1_01_NARRATOR_1", "end": 15.45}
+	]
+}
