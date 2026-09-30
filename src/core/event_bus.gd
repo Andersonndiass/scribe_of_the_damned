@@ -94,6 +94,17 @@ signal page_stage_changed(stage: int, next_stage: int, animated: bool)
 signal page_degraded(stage: int)
 signal arena_layout_changed(boss_layout: bool)
 
+# Graça (016): ganho (fonte &"kill", &"champion", &"word", &"combo"), barra, nível subido (com a fila),
+# selos abertos e fechados (sempre o último), bênção escolhida; a Pausa por cima dos selos; pingo de cera.
+signal grace_gained(amount: int, source: StringName, position: Vector2)
+signal grace_changed(progress: int, needed: int, level: int)
+signal grace_leveled(level: int, pending: int)
+signal seals_shown(blessings: Array[BlessingData], level: int)
+signal blessing_chosen(blessing: BlessingData, level: int)
+signal seals_hidden()
+signal pause_menu_toggled(open: bool)
+signal wax_drop_collected(position: Vector2)
+
 # Cutscenes (008): o fluxo do jogo escuta só o `cutscene_finished`, que sai sempre por último.
 signal cutscene_started(id: StringName)
 signal cutscene_mark_reached(id: StringName, mark: StringName)

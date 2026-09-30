@@ -50,6 +50,11 @@ func grant_iframes() -> void:
 	iframes_left = _data.iframes
 
 
+## Invulnerável por pelo menos `seconds` (016: depois de escolher o selo). Nunca encurta.
+func grant_iframes_for(seconds: float) -> void:
+	iframes_left = maxf(iframes_left, seconds)
+
+
 ## Acende velas até o máximo atual. Retorna quanto curou.
 func heal(amount: int) -> int:
 	if amount <= 0 or not is_alive():

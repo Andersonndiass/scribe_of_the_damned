@@ -53,6 +53,9 @@ var _canvas: Node2D
 ## Grimório ou Opções abertos por cima da Pausa.
 var subscreen: UiScreen = null
 var _death_left: float = -1.0
+## Selos da Graça abertos (016): a pausa é deles também.
+var _seals_open: bool = false
+var _pause_menu_open: bool = false
 var _record: Dictionary = {}
 var _entries: Array[String] = []
 var _entries_all: bool = false
@@ -69,6 +72,8 @@ func _ready() -> void:
 	menu.chosen.connect(_on_chosen)
 	menu.back.connect(_on_back)
 	EventBus.player_died.connect(func() -> void: _death_left = GAME_OVER_DELAY)
+	EventBus.seals_shown.connect(func(_b: Array[BlessingData], _l: int) -> void: _seals_open = true)
+	EventBus.seals_hidden.connect(func() -> void: _seals_open = false)
 	var chapters: Array = UiScreen.read_json(CHAPTERS_PATH).get("chapters", [])
 	if chapters.size() > 1:
 		_next_numeral = chapters[1]["numeral"]
@@ -146,7 +151,12 @@ func _set_mode(m: Mode) -> void:
 	menu = MenuList.new()
 	menu.chosen.connect(_on_chosen)
 	menu.back.connect(_on_back)
-	get_tree().paused = m != Mode.NONE
+	# Os selos da Graça (016) seguram a pausa: sair da Pausa por cima deles não despausa o jogo.
+	get_tree().paused = m != Mode.NONE or _seals_open
+	var paused_menu: bool = m == Mode.PAUSED
+	if paused_menu != _pause_menu_open:
+		_pause_menu_open = paused_menu
+		EventBus.pause_menu_toggled.emit(paused_menu)
 	match m:
 		Mode.PAUSED:
 			menu.add(&"resume", "PAUSE_RESUME")

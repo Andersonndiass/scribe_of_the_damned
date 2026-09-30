@@ -10,6 +10,8 @@ extends Resource
 @export var champion_mul: float = 5.0
 ## Multiplica toda a Graça durante a luta com o chefe (alavanca se houver pausa demais).
 @export var boss_grace_mul: float = 1.0
+## O eco do VERBUM vale as letras desta palavra (as 6 de VERBUM), não as da palavra repetida.
+@export var echo_word: WordData = preload("res://data/words/verbum.tres")
 
 @export_group("Curva")
 ## Subir do nível n para o n+1 custa level_base + level_step × (n − 1).

@@ -45,6 +45,8 @@ var _chapter_end_in: float = -1.0
 var wave_slot: int = 0
 ## Cutscenes do chefe e do fim (008 FR-808, FR-809), carregadas ao abrir — nada é criado na onda.
 var boss_cutscene: CutscenePlayer
+## Graça e subir de nível (016), criado no _ready (nada é criado durante a onda).
+var grace_flow: GraceFlow
 var outro_cutscene: CutscenePlayer
 
 
@@ -100,6 +102,16 @@ func _ready() -> void:
 		if is_real_game():
 			_play_outro())
 	_prepare_cutscenes(args)
+	# Graça (016): no jogo de verdade, sempre. Fora dele fica desligada, a não ser que peçam: a meta
+	# "grace_manual" liga a escolha de verdade (teste do fluxo) e "grace_auto" liga com escolha
+	# automática, sem pausar (sonda com `grace`, stress).
+	grace_flow = GraceFlow.new()
+	grace_flow.name = "GraceFlow"
+	grace_flow.player = $World/Player
+	grace_flow.letter_field = letter_field
+	grace_flow.auto_pick = not is_real_game() and not has_meta(&"grace_manual")
+	grace_flow.active = is_real_game() or has_meta(&"grace_manual") or has_meta(&"grace_auto")
+	add_child(grace_flow)
 	# Frases curtas na partida (008 FR-815).
 	var barks := BarkDirector.new()
 	barks.name = "Barks"

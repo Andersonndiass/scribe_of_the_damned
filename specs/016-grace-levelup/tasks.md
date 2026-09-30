@@ -18,13 +18,13 @@
 **Checkpoint 016-A:** ✅ números e sorteio testados; a loja nunca oferece os 7 (2026-09-30, GUT 431/431).
 
 ## Fase 2 — Fluxo e pausa
-- **T1610** Sinais: `grace_gained`, `grace_changed`, `grace_leveled`, `seals_shown`, `blessing_chosen`, `seals_hidden`, `pause_menu_toggled`, `wax_drop_collected`.
-- **T1611** `GraceFlow` (nó do Main, sempre ativo): FSM IDLE → ARMED → ANNOUNCING → CHOOSING → STAMPING, DEAD, SEALED; abre só no quadro seguinte ao ganho; relógio real (hit-stop não trava); `auto_pick` fora do jogo real.
-- **T1612** `PlayerVitals.grant_iframes_for(s)`.
-- **T1613** `GameOverlays`: não despausar com os selos abertos; `pause_menu_toggled`.
-- **T1614** [TEST] `test_grace_flow`: a pausa congela tudo; proteção; fila; espera loja/cutscene; morte no mesmo quadro; Pausa por cima; fim do chefe.
+- ✅ **T1610** Sinais: `grace_gained`, `grace_changed`, `grace_leveled`, `seals_shown`, `blessing_chosen`, `seals_hidden`, `pause_menu_toggled`, `wax_drop_collected`.
+- ✅ **T1611** `GraceFlow` (nó do Main, sempre ativo): FSM IDLE → ARMED → ANNOUNCING → CHOOSING → STAMPING, DEAD, SEALED; abre só no quadro seguinte ao ganho; relógio real (hit-stop não trava); `auto_pick` fora do jogo real.
+- ✅ **T1612** `PlayerVitals.grant_iframes_for(s)`.
+- ✅ **T1613** `GameOverlays`: não despausar com os selos abertos; `pause_menu_toggled`.
+- ✅ **T1614** [TEST] `test_grace_flow`: a pausa congela tudo; proteção; fila; espera loja/cutscene; morte no mesmo quadro; Pausa por cima; fim do chefe.
 
-**Checkpoint 016-B:** subir de nível pausa, escolhe e volta sem brigar com Pausa, loja, cutscene e Game Over.
+**Checkpoint 016-B:** ✅ subir de nível pausa, escolhe e volta sem brigar com Pausa, loja, cutscene e Game Over (2026-09-30, GUT 440/440).
 
 ## Fase 3 — Dano
 - **T1620** `Caster` compõe `damage_mul` = GLORIA × Tinta e `heal_mul` = só GLORIA; VITA e SALVATOR usam `heal_mul`; `test_miracle_damage` (cura igual com Tinta; D-051; filtro do chefe depois).
