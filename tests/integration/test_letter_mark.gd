@@ -84,3 +84,19 @@ func test_mark_clears_when_the_letter_leaves() -> void:
 	_field.mark_at(l.global_position)
 	_field.eat_letter_near(l.global_position, 4.0)
 	assert_null(_field.marked, "comida pela Traça: a marca some")
+
+
+func test_selective_magnet_skips_useless_letters_but_the_marked_one_comes() -> void:
+	# D-082 (autor "1a"): com o ímã seletivo, a letra que não continua palavra fica no chão —
+	# mas a marcada com o clique sempre vem.
+	var tuning: DropTuning = _field.tuning
+	var was: bool = tuning.selective_magnet
+	tuning.selective_magnet = true
+	var b: Vector2 = _body()
+	var useless: Letter = _field.spawn_letter("X", false, false, b + Vector2(18, 0))
+	await wait_physics_frames(60)
+	assert_eq(_field.atril.size(), 0, "a letra inútil não vem sozinha")
+	_field.mark_at(useless.global_position)
+	await wait_physics_frames(60)
+	assert_eq(_field.atril.text(), "X", "a marcada vem")
+	tuning.selective_magnet = was

@@ -236,8 +236,10 @@ func _physics_process(delta: float) -> void:
 	Prof.stop(&"letras", t0)
 
 
+## Ímã seletivo (D-082): só puxa a letra que continua uma palavra — menos a marcada com o clique,
+## que sempre vem (escolha do jogador, D-067; autor "1a").
 func _magnet_accepts(l: Letter) -> bool:
-	if not tuning.selective_magnet or l.magnetized:
+	if not tuning.selective_magnet or l.magnetized or l == marked:
 		return true
 	return lexicon.is_prefix(atril.text() + l.letter, atril.capacity)
 

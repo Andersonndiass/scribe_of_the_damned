@@ -110,10 +110,10 @@ Regra testada: `power_budget` estritamente maior para mais letras; empate permit
 | Campo | Tipo | Valor inicial |
 |---|---|---|
 | `base_weights` | Dictionary[String, float] | frequência do latim: E I A U T S R N O M C L = 1.0 · P D V G F Q X = 0.5 · B = 0.3 |
-| `target_bonus` | float | 10.0 (somado ao peso de cada letra-alvo; 6.0 não alcançava o SC-005 com uma única letra-alvo) |
+| `target_bonus` | float | 25.0 (D-082; era 10.0: letra-alvo no meio da palavra 43% → 64%) |
 | `rare_chance` | float | 0.05 (só vogais) |
 | `rare_power_bonus` | float | 1.5 |
-| `letter_lifetime` | float | 8.0 |
+| `letter_lifetime` | float | 12.0 (D-082; era 8.0) · `selective_magnet` = true (D-082) |
 | `blink_time` | float | 2.0 |
 | `purge_scatter_radius` | float | 20.0 |
 | `purge_pickup_lock` | float | 0.3 |

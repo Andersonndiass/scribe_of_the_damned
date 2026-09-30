@@ -13,6 +13,7 @@ extends SceneTree
 ##         desde o começo. Imprime uma linha ARENA com STUCK: % das amostras (a cada 0,5 s) em que um
 ##         inimigo que anda QUER andar (velocidade ≥ 30% da dele), está encostado numa peça e não saiu
 ##         do lugar (≤ 2 px). Monge parado atirando e Gárgula preparando o dash não contam.
+##   smart_magnet target=F life=F magnet=F dropall=F = números de letras em memória (D-082).
 ##   buy = em cada loja o bot compra as cartas mais baratas que couberem na tinta (003 T320, SC-306).
 ##         Imprime uma linha SHOP com compras, tinta ganha e o que comprou.
 
@@ -84,6 +85,19 @@ func _initialize() -> void:
 			(load("res://data/tuning/drop_tuning.tres") as Resource).set("selective_magnet", true)
 		elif arg.begins_with("drop="):
 			imp.set("letter_drop_chance", float(arg.substr(5)))
+		# D-082 (ritmo das palavras): target=F bônus da letra-alvo · life=F segundos da letra no
+		# chão · magnet=F raio do ímã · dropall=F multiplica o drop de letra de todos os inimigos.
+		elif arg.begins_with("target="):
+			(load("res://data/tuning/drop_tuning.tres") as Resource).set("target_bonus", float(arg.substr(7)))
+		elif arg.begins_with("life="):
+			(load("res://data/tuning/drop_tuning.tres") as Resource).set("letter_lifetime", float(arg.substr(5)))
+		elif arg.begins_with("magnet="):
+			(load("res://data/player/anselmo.tres") as Resource).set("magnet_radius", float(arg.substr(7)))
+		elif arg.begins_with("dropall="):
+			for f: String in DirAccess.get_files_at("res://data/enemies/"):
+				if f.ends_with(".tres"):
+					var e: Resource = load("res://data/enemies/" + f)
+					e.set("letter_drop_chance", minf(1.0, float(e.get("letter_drop_chance")) * float(arg.substr(8))))
 		elif arg == "obstacles=off":
 			_obstacles = false
 		elif arg.begins_with("stage="):

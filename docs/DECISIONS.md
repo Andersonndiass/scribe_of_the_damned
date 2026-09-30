@@ -492,7 +492,24 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
 - **Para o playtest do autor:** ondas 1, 5 e 7 com as peças; esquivar Cruz, Duplo e Swipe perto do vitral e do banco; letras empurradas perto das peças (T413 §6).
 - **Status:** ✅ 004 Complete.
 
+### D-082 · 2026-09-29 · "A gameplay tá meio chata": ritmo das palavras, Graça (XP), instrumentos
+- **Pedido do autor:** dropar vida; ganhar XP e subir de nível no meio da onda escolhendo dano/vida; loja com coisas mais importantes e armas novas.
+- **Diagnóstico (game-design-agent):** só ~0,7 palavra por minuto (1 milagre a cada ~90 s); o ataque automático faz o jogo e nada cresce dentro da onda. XP/armas sem corrigir isso só "mascaram".
+- **Respostas do autor:** "1a 2b e quando eu fecho uma palavra 3a e o jogo pausa 4a 5a 6b".
+  1. **Primeiro a correção de ritmo:** palavras bem mais frequentes (alvo 1 a cada 10–20 s), só ajuste de números em dados; o autor testa jogando. Números pelo rules-agent.
+  2. **XP ("Graça") vem de matar inimigos e de fechar palavras.**
+  3. **Escolha no level-up:** o jogo pausa e 3 selos aparecem desenhados na página; escolha por tecla (1, 2, 3) ou clique (C-007 → "a").
+  4. **Loja:** as melhorias pequenas (ímã, velocidade, vela…) viram escolhas do level-up; a loja fica com palavras, atril e instrumentos (emenda à 003).
+  5. **"Armas" = instrumentos do escriba** (penas, tintas), 1 equipado por vez, que mudam como as palavras funcionam; 3 na demo.
+  6. **Vida:** drop raro (pingo de cera), além das fontes atuais.
+- **Plano:** (1) correção de ritmo → (2) feature nova 016 "Graça" (XP + level-up; emenda à 003) → (3) instrumentos na loja. Tudo antes da 011 (demo).
+- **Correção de ritmo aplicada (item 1; rules-agent, autor "1a 2pode"):** `drop_tuning.tres` ímã seletivo **ligado**, `target_bonus` 10 → **25**, `letter_lifetime` 8 → **12**; `imp.tres` `letter_drop_chance` 0,6 → **0,8** (Pacote B, porque o A sozinho deu 2,25/min); Lentes do Copista +3/teto 9 → **+6/teto 18**. A letra marcada com o clique sempre vem, mesmo com o ímã seletivo (D-067; autor "1a").
+- **Sonda (cast god, 3 rodadas por onda, 2 Godot por vez):** mediana das 9 ondas **0 → 3,5 palavras/min** (1 a cada ~17 s); ondas 1–4 em 4–5,5/min, ondas 5–9 em 1,5–3,5/min (SC-506 em 55%: as últimas ondas ficam atrás); sem god, a onda 1 passou a ser vencida com 4 palavras e a onda 9 do zero continua derrota. Muitos purges: o bot pisa em letras inúteis ao correr atrás da útil (um jogador desvia) — veredito final é o playtest do autor. Se as últimas ondas ficarem lentas: letras de abertura (2) e garantia da letra-alvo depois de 3 inúteis (precisam de código; rules-agent). A/B dos obstáculos (D-079) a refazer com os números novos.
+- **Status:** ✅ direção aprovada; correção de ritmo aplicada; 016 e instrumentos a especificar.
+
 ## Conflitos abertos
+
+- ~~**C-007 · Escolha do level-up: "3 selos na página" + "o jogo pausa".**~~ Resolvido: autor respondeu "a" — o jogo pausa e os 3 selos aparecem desenhados na página; escolha por tecla (1, 2, 3) ou clique.
 
 - **C-006 · Vida do Asmodeus (DECISÃO DO AUTOR, playtest).** 1500 (rules-agent) supõe uma palavra a cada ~5 s. A sonda não mede isso. No playtest (`index.html?boss`, ou jogando o capítulo), se a luta passar muito de 4 min, baixar `max_hp` em `data/bosses/asmodeus.tres` (ex.: 1000); se ficar abaixo de 2 min, subir.
 
