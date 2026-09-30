@@ -7,8 +7,11 @@ var word: WordData
 var power: float = 1.0
 var origin: Vector2
 var direction: Vector2 = Vector2.RIGHT
-## GLORIA (002 FR-209): multiplica só o dano e a cura, nunca raio, stun, duração ou limiar.
+## GLORIA (002 FR-209) × Tinta Consagrada (016): multiplica só o dano, nunca raio, stun, duração ou
+## limiar.
 var damage_mul: float = 1.0
+## Só GLORIA: a cura (VITA, SALVATOR) não cresce com a Tinta Consagrada (016, rules-agent R1).
+var heal_mul: float = 1.0
 ## Origem para o chefe (006): conjuração e id da palavra/combo. O Caster preenche.
 var cast_id: int = 0
 var tag: StringName = &""

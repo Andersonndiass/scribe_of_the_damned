@@ -17,7 +17,7 @@ func _on_start() -> void:
 	global_position = origin
 	var player := get_tree().get_first_node_in_group(&"player") as Player
 	if player != null:
-		player.heal(roundi(word.heal_candles * damage_mul))
+		player.heal(roundi(word.heal_candles * heal_mul))
 	_crosses = PackedVector2Array()
 	var em := EnemyQuery.provider as EnemyManager
 	var shots: EnemyProjectileManager = em.get_projectiles() if em != null else null

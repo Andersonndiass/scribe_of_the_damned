@@ -69,3 +69,28 @@ func test_grace_full_lights_a_candle() -> void:
 	_player.vitals.candles = 1
 	_bless(&"grace_full")
 	assert_eq(_player.vitals.candles, 2)
+
+
+func _active_miracle(word_id: StringName) -> Miracle:
+	for layer: String in ["MiracleLayer", "FxLayer"]:
+		for n: Node in _main.get_node(layer).get_children():
+			var m := n as Miracle
+			if m != null and m.word != null and m.word.id == word_id and m.is_processing():
+				return m
+	return null
+
+
+func test_consecrated_ink_raises_word_damage_but_not_healing() -> void:
+	# T1620 (016 FR-1611; rules-agent R1): a Tinta entra só no dano; a VITA cura igual.
+	for i: int in 4:
+		_bless(&"consecrated_ink")
+	var caster: Caster = _main.get_node("Caster")
+	caster._start_miracle(load("res://data/words/lux.tres"), 1.0, _player.global_position, Vector2.RIGHT)
+	var lux: Miracle = _active_miracle(&"lux")
+	assert_not_null(lux)
+	assert_almost_eq(lux.damage_mul, 1.6, 0.001, "dano ×1,6")
+	assert_almost_eq(lux.heal_mul, 1.0, 0.001)
+	_player.vitals.candles = 1
+	var vita: WordData = load("res://data/words/vita.tres")
+	caster._start_miracle(vita, 1.0, _player.global_position, Vector2.RIGHT)
+	assert_eq(_player.vitals.candles, 1 + vita.heal_candles, "a VITA cura o mesmo com a Tinta")

@@ -27,7 +27,7 @@
 **Checkpoint 016-B:** ✅ subir de nível pausa, escolhe e volta sem brigar com Pausa, loja, cutscene e Game Over (2026-09-30, GUT 440/440).
 
 ## Fase 3 — Dano
-- **T1620** `Caster` compõe `damage_mul` = GLORIA × Tinta e `heal_mul` = só GLORIA; VITA e SALVATOR usam `heal_mul`; `test_miracle_damage` (cura igual com Tinta; D-051; filtro do chefe depois).
+- ✅ **T1620** `Caster` compõe `damage_mul` = GLORIA × Tinta e `heal_mul` = só GLORIA; VITA e SALVATOR usam `heal_mul`; `test_miracle_damage` (cura igual com Tinta; D-051; filtro do chefe depois).
 
 ## Fase 4 — Selos, barra e teclas
 - **T1630** Ações `grace_pick_1..3` (1/2/3 e teclado numérico) no InputMap, `Settings.REBINDABLE` e Opções.

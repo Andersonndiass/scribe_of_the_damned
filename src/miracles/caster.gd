@@ -148,7 +148,9 @@ func _partner_latins() -> PackedStringArray:
 func _start_miracle(word: WordData, power: float, origin: Vector2, direction: Vector2) -> void:
 	if word.miracle_scene != null and PoolManager.is_registered(word.id):
 		var miracle := PoolManager.acquire(word.id) as Miracle
-		miracle.damage_mul = player.buffs.damage_mul()
+		var gloria: float = player.buffs.damage_mul()
+		miracle.damage_mul = gloria * RunStats.of(player.data).value(&"word_damage_mul")
+		miracle.heal_mul = gloria
 		miracle.cast_id = _next_cast_id
 		miracle.tag = word.id
 		_next_cast_id += 1
