@@ -524,7 +524,32 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
 - **Respostas do autor (2º recado):** "1sim 2b 3a 4a" — mouse nos menus aprovado; **LUX dura 0,5 s** na tela; **MISERERE é ataque**; lista fechada: ataque = LUX, IGNIS, CRUX, MORTIS, PURGO, SANCTUS, ANGELUS, CAECITAS, VAPOR, FLAMMA, MARTYRIUM, REQUIEM, MISERERE; ferramenta = PAX, AQUA, VITA, SALVATOR, LUMEN, FIDES, GLORIA, DOMINUS, SPIRITUS (VERBUM herda a da palavra repetida).
 - **Status:** ✅ direção aprovada; ordem: medir a 016 → mouse nos menus → zonas letais (6 fases) → fechar a 016.
 
+### D-085 · 2026-09-30 · Arsenal sagrado: armas, poções e palavras como "ultimate" (emenda à game bible)
+- **Pedido do autor:** XP proporcional à força do inimigo; loja vende armas e poções; level-up melhora armas, status e poções; palavras viram "ultimate" (mais raras e bem mais fortes); inventário de 2 armas trocáveis na onda (ex.: Bíblia = laser mirado contínuo, Crucifixo = automático forte); 6 armas iniciais; 4 poções; itens atuais entram no sistema novo. Parecer: `docs/reviews/D085-game-design-arsenal.md` (AJUSTAR).
+- **Respostas do autor:** "1a 2a [+ menu de escolha da letra] 3a 4[teclas 1/2] 5a 6a 7a[teclas 3–6] 8a 9a 10a 11a 12a".
+  1. **Pilar 1:** "Escrever é o milagre. As armas seguram a linha; as palavras decidem a luta." Armas só em tinta (INK/INK_SOFT/CHALK); **dourado exclusivo das palavras**.
+  2. Palavras raras porque **caem menos letras**; e, novo: **quando uma letra cai, abre um menu de escolha com 3 opções e 2,5 s para escolher; 1 das opções completa a palavra** (detalhes: C-008).
+  3. Alvo ~**1 palavra/min** (1–2 por onda).
+  4. Inventário de 2 armas; **só a ativa ataca; as teclas 1 e 2 escolhem a arma**.
+  5. Anselmo começa com a **Pena**; o 2º espaço enche na 1ª loja.
+  6. Armas: **Pena do Copista, Bíblia, Crucifixo, Rosário, Turíbulo, Aspersório**.
+  7. **4 poções** em cargas compradas na loja, **teclas 3, 4, 5 e 6**, sem recarga: Óleo da Unção, Água Benta, Vinho do Fervor, Tinta Iluminada.
+  8. Loja: armas + poções + apócrifos.
+  9. Estante Nova e Tinteiro Duplo viram status do level-up.
+  10. A arma é **Rosário**; a bênção vira **Escapulário**.
+  11. Ordem: D-084 Fase 4 → fechar 016 → emenda da game bible → 017 "Arsenal sagrado" (fatia Bíblia + Crucifixo) → playtest → outras armas → 018 Poções → passada de ritmo.
+  12. Armas e poções antes da demo (011).
+- **Revoga/muda:** D-082 item 1 (3,5 palavras/min) e item 5 (instrumentos → armas); 016 FR-1602, FR-1613, FR-1614 (conteúdo dos selos e loja). Os selos usam 1/2/3 só com o jogo pausado — sem conflito com armas/poções.
+- **Status:** ✅ direção aprovada; C-008 aberto.
+
 ## Conflitos abertos
+
+- ~~**C-008 · Menu de escolha da letra (D-085 item 2).**~~ Resolvido: autor "1a 2b 3b e mouse clicando 4a" —
+  1. nos 2,5 s o jogo fica em **câmera lenta** (não pausa);
+  2. se o tempo acabar, **a letra é perdida**;
+  3. escolha por **setas + Espaço** ou **clique do mouse**;
+  4. **as letras não caem mais no chão**: cada letra que cairia abre o menu na hora (3 opções, 1 continua a palavra). O ímã de letras, a Traça comendo letras e o ímã seletivo (D-082) perdem o sentido.
+  - **Ímã reverso (pedido no mesmo recado):** o ímã vira um **poder passivo comprado na loja** que **empurra os inimigos** a cada X s; subindo de nível, **o intervalo diminui e o empurrão passa a dar dano** (números do rules-agent). A bênção Pedra-Ímã sai.
 
 - ~~**C-007 · Escolha do level-up: "3 selos na página" + "o jogo pausa".**~~ Resolvido: autor respondeu "a" — o jogo pausa e os 3 selos aparecem desenhados na página; escolha por tecla (1, 2, 3) ou clique.
 
