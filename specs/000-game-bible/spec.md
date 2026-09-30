@@ -3,28 +3,43 @@
 > Versão 1.0, **APROVADA** (Checkpoint 0, 2026-09-24). As decisões do autor estão em `docs/DECISIONS.md` (D-006 a D-022).
 > Legenda: **[D-xxx]** = decisão registrada · **[FICHA]** = consta numa ficha de arte · **[INICIAL]** = valor inicial proposto, ajustável pelo rules-agent em playtest · **[PENDENTE]** = aguardando material do autor.
 > Arte: `art-bible.md` · Números por asset: `docs/ASSET-CATALOG.md`.
+> **Emenda 1 (D-085, 2026-09-30, pedido do autor):** armas sagradas viram o ataque principal; as palavras viram o "ultimate" raro e fortíssimo. Mudam o pilar 1, a fantasia, o loop, os controles e as seções 3.1, 3.2 e 3.9 (detalhes nas specs 017 "Arsenal sagrado" e 018 "Poções"). Parecer: `docs/reviews/D085-game-design-arsenal.md`.
 
 ---
 
 ## 1. Visão
 
-**Gênero:** roguelite survivors-like em arena fechada, com combate por palavras em latim.
+**Gênero:** roguelite survivors-like em arena fechada: armas sagradas no dia a dia, palavras em latim como milagre final [D-085].
 **Plataforma:** Web (itch.io) primeiro. Godot 4.7.2.
-**Fantasia do jogador:** *sou um monge copista preso dentro de um códice amaldiçoado. Minha pena é minha arma, e as letras que arranco dos demônios viram milagres.*
+**Fantasia do jogador:** *sou um monge copista preso num códice amaldiçoado. Meus objetos sagrados me mantêm vivo; as letras que arranco dos demônios viram milagres que apagam a página.* [D-085]
 
 ### Pilares
-1. **Escrever é lutar.** O poder vem de montar palavras latinas reais. Escolher *qual* letra pegar, e em que ordem, é a decisão central.
+1. **Escrever é o milagre.** As armas seguram a linha; as palavras decidem a luta. Escolher *qual* letra pegar continua sendo a decisão central, porque cada letra é rara [D-085]. *(Antes: "Escrever é lutar".)*
 2. **Tudo é página.** Arena, inimigos, milagres e interface são tinta, pergaminho e iluminura.
 3. **Risco na caligrafia.** Conjurar errado é heresia. Quem monta palavras longas ganha milagres fortes; quem erra paga.
 4. **Curto e intenso.** Ondas curtas, loja entre ondas, um chefe por capítulo.
 
 ### O que torna o jogo único
-O jogador **soletra** o próprio poder em tempo real. A velocidade de montar palavras substitui a recarga: não existe cooldown, existe caligrafia [D-013].
+O jogador **soletra** o próprio milagre em tempo real. A raridade das letras substitui a recarga: não existe cooldown, existe caligrafia [D-013, D-085]. **Regra de leitura:** as armas são desenhadas só em tinta (INK, INK_SOFT, CHALK); **o dourado é exclusivo das palavras** [D-085].
 
 ---
 
 ## 2. Loop principal
 
+**Loop depois da Emenda 1 [D-085]:**
+```
+Onda começa → a ARMA ATIVA (1 de 2, teclas 1/2) mata inimigos → XP (Graça) pela força do inimigo
+   → subir de nível: pausa, 3 selos (nível de arma, status ou poção)
+   → às vezes um inimigo solta uma LETRA → MENU DE ESCOLHA: 3 letras, 2,5 s em câmera lenta,
+     1 continua a palavra → a escolhida entra no ATRIL (letra não escolhida se perde)
+   → atril forma palavra válida → Espaço → MILAGRE ("ultimate": mata tudo no alcance)
+   → conjurou sem palavra válida → HERESIA
+   → poções nas teclas 3–6 (cargas compradas na loja)
+Onda termina → página degrada → LOJA (armas, poções, apócrifos) → próxima onda
+Última onda → CHEFE → cutscene → próximo capítulo
+```
+
+**Loop original (v1.0), mantido como histórico:**
 ```
 Onda começa → ataque automático mata inimigos → inimigos soltam letras
    → jogador coleta (ímã) → letras entram no ATRIL, na ordem da coleta
@@ -45,6 +60,9 @@ Onda termina → página degrada → LOJA → próxima onda
 | Shift | Purge: joga as letras do atril no chão |
 | Tab (segurar) | Mostra a lista de palavras conhecidas |
 | Esc | Pausa |
+| 1 / 2 | Escolher a arma ativa do inventário [D-085] |
+| 3 · 4 · 5 · 6 | Usar a poção 1–4 [D-085] |
+| Setas + Espaço ou clique | Escolher a letra no menu de escolha (2,5 s) [D-085] |
 
 Gamepad fica para depois da demo.
 
@@ -53,6 +71,8 @@ Gamepad fica para depois da demo.
 ## 3. Sistemas
 
 ### 3.1 Jogador
+> **[D-085]** O ataque automático vira a arma **Pena do Copista** (inicial); o inventário tem 2 armas (Pena, Bíblia, Crucifixo, Rosário, Turíbulo, Aspersório) e só a ativa ataca — spec 017. Poções — spec 018.
+
 - Movimento de 8 direções a **90 px/s**, com colisão na margem de 24px.
 - **Ataque automático** a cada **0.8s** com `PRJ_INK_DROP` no inimigo mais próximo. Nunca para.
 - **Velas (vida):** começa com **3**, máximo de **8** por upgrades [D-010].
@@ -65,6 +85,8 @@ Gamepad fica para depois da demo.
   - conjurar **VITA**.
 
 ### 3.2 Letras
+> **[D-085]** As letras **não caem mais no chão**: cada letra solta abre o **menu de escolha** (3 opções, 1 continua a palavra, 2,5 s em câmera lenta, perdida se o tempo acabar). Ímã de letras, vida útil no chão e Traça comendo letras deixam de valer; o ímã vira o **ímã reverso** (passivo da loja que empurra inimigos). Alvo: ~1 palavra por minuto. Números: rules-agent (spec 017).
+
 - **Alfabeto:** A C D E F G I L M N O P Q R S T U V X, mais **B**, que só cai depois que VERBUM é desbloqueado na partida [D-015].
 - **Vogais raras** (A E I O U douradas): valem como letra comum, mas dão +50% de poder à palavra que as contém [INICIAL].
 - **Drop ponderado (FR-013):** favorece letras que continuam algum prefixo possível no atril. **Nunca mira palavra maior que a capacidade atual do atril** [D-007]. A letra-alvo tem indicador visual, ligado por padrão no Cap. 1.
@@ -148,6 +170,8 @@ GLORIA e PURGO não entram em combos. VERBUM não repete VERBUM. A Hildegarda te
 - Comportamentos são Resources stateless (feature 005).
 
 ### 3.9 Economia e loja [D-018]
+> **[D-085]** A loja vende **armas, cargas de poção e apócrifos**; o subir de nível (016) melhora **armas, status e poções** (os itens pequenos — Círio, Sandálias, Lentes, Escapulário (ex-Rosário), Bolsa, Pena de Ganso, Tinta Consagrada, Estante Nova, Tinteiro Duplo — viram status). Specs 017 e 018.
+
 - **Tinta dourada** só vale dentro da partida.
 - **Loja Scriptorium Noturno** entre ondas: cartas com preço, comprar, travar, reroll, itens únicos e cartas de apócrifo.
 - **Preços** sobem por onda. **Reroll:** 5 de tinta, +3 a cada reroll na mesma visita [INICIAL].
