@@ -542,6 +542,14 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
 - **Revoga/muda:** D-082 item 1 (3,5 palavras/min) e item 5 (instrumentos → armas); 016 FR-1602, FR-1613, FR-1614 (conteúdo dos selos e loja). Os selos usam 1/2/3 só com o jogo pausado — sem conflito com armas/poções.
 - **Status:** ✅ direção aprovada; C-008 aberto.
 
+### D-086 · 2026-09-30 · Fechamento da 016 (Graça) e da D-084 (zonas letais)
+- **016:** Graça (mortes e palavras), subir de nível com pausa e 3 selos (fila, trava de 0,4 s, 0,5 s de invulnerabilidade, Pausa por cima), barra no HUD, pingo de cera, 7 itens da loja viraram bênçãos, Tinta Consagrada só no dano. Mouse nos menus entrou no caminho (D-084).
+- **D-084:** as 13 palavras/combos de ataque abrem zonas letais (linha, círculo, cruz girada, pontos, tela com anel) aplicadas pelo EnemyManager; campeão leva 40% da vida por conjuração (`hp_mul` 6); chefe intocado pela zona.
+- **Medições:** SC-001 igual ao build de antes da 016 (alternado no Chrome). Sonda da Graça: nível 14 no capítulo, 44% da Graça de palavras — a meta (15–20; 2/3 de palavras) é revista na passada de ritmo da D-085, que torna as mortes a fonte principal.
+- **Sonda:** `only_waves` (termina na onda 9; "noboss" abria o chefe porque contém "boss") e o time_scale volta a 4× depois do hit-stop.
+- **Abertos:** playtest do autor (T1654, C-004, C-006); a sonda do chefe trava na fase 3 (D-081).
+- **Status:** ✅ 016 Complete; D-084 feita. Próximo: emenda da game bible (D-085) e spec da 017.
+
 ## Conflitos abertos
 
 - ~~**C-008 · Menu de escolha da letra (D-085 item 2).**~~ Resolvido: autor "1a 2b 3b e mouse clicando 4a" —

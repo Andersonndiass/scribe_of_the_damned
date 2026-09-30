@@ -3,7 +3,7 @@
 > Ordem do mechanics-agent (parecer 2026-09-30). Números: rules-agent (spec). Cada fase termina com GUT + export web + commit.
 
 ## Fase 0 — Pareceres de visual e tempo
-- **T1600** design-agent: selos (desenho sobre a página, 3 lado a lado, legíveis em 1×), barra de Graça no HUD (fora da área central), ícones das bênçãos (os 7 da loja + Tinta Consagrada + Graça plena), `ITM_` do pingo de cera; conferir a tela de Opções com as 3 ações novas. animation-agent: `announce_time`, `stamp_time`, brilho da barra, piscar do pingo.
+- ✅ **T1600** design-agent: selos (desenho sobre a página, 3 lado a lado, legíveis em 1×), barra de Graça no HUD (fora da área central), ícones das bênçãos (os 7 da loja + Tinta Consagrada + Graça plena), `ITM_` do pingo de cera; conferir a tela de Opções com as 3 ações novas. animation-agent: `announce_time`, `stamp_time`, brilho da barra, piscar do pingo.
 
 ## Fase 1 — Dados e lógica pura (teste primeiro)
 - ✅ **T1601** `StatUpgradeData` (id, nome/frase `tr`, ícone, stat, modo, valor, teto, `heal_candles`); `ShopItemData` passa a herdar dela (os `.tres` antigos continuam carregando).
@@ -42,8 +42,10 @@
 - ✅ **T1641** Placeholder do pingo no gerador.
 
 ## Fase 6 — Sonda e fechamento
-- **T1650** `balance_probe`: linha GRACE (níveis por onda, % de palavras, primeiro nível, escolhas).
-- **T1651** SC-1601 com o rules-agent (ajuste só de dados).
-- **T1652** SC-001 + A/B dos obstáculos (SC-1605), no máximo 2 Godot rodando.
-- **T1653** GUT, export web, emendas (003 FR-310/SC-306, game bible §3.9), `FEATURES.md`, `CLAUDE.md`, `DECISIONS.md`.
+- ✅ **T1650** `balance_probe`: linha GRACE (níveis por onda, % de palavras, primeiro nível, escolhas).
+- ✅ **T1651** SC-1601 com o rules-agent (ajuste só de dados).
+- ✅ **T1652** SC-001 + A/B dos obstáculos (SC-1605), no máximo 2 Godot rodando.
+- ✅ **T1653** GUT, export web, emendas (003 FR-310/SC-306, game bible §3.9), `FEATURES.md`, `CLAUDE.md`, `DECISIONS.md`.
 - **T1654** Playtest do autor (SC-1606).
+
+**Fechamento (2026-09-30, D-086):** GUT 479/479; export web ok. SC-001 no Chrome igual ao build de antes da 016 (49,6/54,7 contra 51,3/56,2 FPS, alternados). Sonda do capítulo com a Graça (`cast god chapter buy grace only_waves`): nível 14, 13 subidas (3·2·1·1·1·2·0·2·1), 44% da Graça de palavras, 1º nível aos 17 s, 5 compras. O conteúdo dos selos e a proporção da Graça mudam na 017 (D-085); a curva é revista na passada de ritmo. T1654 (playtest do autor) segue aberto.

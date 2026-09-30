@@ -1,6 +1,6 @@
 # Roadmap de Features
 
-> ⚠️ **Status real (2026-09-29):** `000` aprovada; **`001`, `005`, `002`, `003`, `006`, `007`, `008` e `004` Complete**; `009` com as Fases 1–2 prontas (sons provisórios). As demais features **não têm arquivos no repo**, apesar do "Tasked" abaixo; serão escritas just-in-time. Ver `docs/PLANO-ETAPAS.md`.
+> ⚠️ **Status real (2026-09-29):** `000` aprovada; **`001`, `005`, `002`, `003`, `006`, `007`, `008`, `004` e `016` Complete**; `009` com as Fases 1–2 prontas (sons provisórios). As demais features **não têm arquivos no repo**, apesar do "Tasked" abaixo; serão escritas just-in-time. Ver `docs/PLANO-ETAPAS.md`.
 
 | # | Feature | Depende de | Status |
 |---|---|---|---|
@@ -21,8 +21,9 @@
 | 013 | boss-abade-caido (Cap. 3) | 012 | Tasked ✅ |
 | 014 | boss-padre-malaquias (Cap. 4) | 013 | Tasked ✅ |
 | 015 | boss-semihaza (Cap. 5, final) | 014 | Tasked ✅ |
-| 016 | grace-levelup (XP "Graça" + subir de nível com 3 selos; bênçãos saem da loja; pingo de cera) | 003, D-082 | Spec aprovada (2026-09-30, D-083) |
-| 017 | instrumentos do escriba (penas e tintas na loja, 3 na demo) | 016 | A escrever (D-082) |
+| 016 | grace-levelup (XP "Graça" + subir de nível com 3 selos; pingo de cera) | 003, D-082 | **Complete** ✅ (2026-09-30, D-086) |
+| 017 | arsenal-sagrado (inventário de 2 armas trocáveis; Pena, Bíblia, Crucifixo, Rosário, Turíbulo, Aspersório; menu de escolha da letra; ímã reverso; selos melhoram armas/status) | 016, D-085 | A escrever (D-085) |
+| 018 | pocoes (Óleo da Unção, Água Benta, Vinho do Fervor, Tinta Iluminada; teclas 3–6) | 017 | A escrever (D-085) |
 
 **Ordem de execução sugerida:** 001 → (002, 003, 004, 005 em paralelo) → 006 → 007 → 008, 009, 010 → 011 (demo publicada) → 012 → 013 → 014 → 015.
 
