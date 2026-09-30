@@ -12,7 +12,19 @@ const SLOT := Vector2(12, 14)
 const SLOT_GAP := 2
 const TOP := 314.0
 const CENTER_X := 320.0
-const HINTS_GAP := 12
+const HINTS_GAP := 22
+## T1800: painel D (miolo) em volta dos espaços: 12 px de cada lado (cabe o selo), de y308 a y340
+## (a janela de combo fica dentro, em y335).
+const PLATE_SIDE := 12.0
+const PLATE_TOP := 308.0
+const PLATE_H := 32.0
+const HERESY_Y := 298.0
+## Painel das dicas: respiro de 4 px em volta do texto, 14 de altura.
+const HINTS_PAD := 4.0
+const HINTS_H := 14.0
+const HINTS_TEXT_Y := 318.0
+## Largura reservada às dicas nos retângulos do HUD.
+const HINTS_RESERVE := 120.0
 ## Duração das animações (escala de durações do art bible §14 / ficha 26: frames × ms).
 const ANIM_TIME: Dictionary[int, float] = {
 	Anim.CAST: 0.3, Anim.PURGE: 0.2, Anim.HERESY: 0.36, Anim.REJECT: 0.15, Anim.FIZZLE: 0.2,
@@ -108,7 +120,8 @@ func slots_rect() -> Rect2:
 
 func hud_rect() -> Rect2:
 	var s: Rect2 = slots_rect()
-	return Rect2(s.position - Vector2(0, 12), Vector2(s.size.x + HINTS_GAP + 120, s.size.y + 12))
+	var left: float = s.position.x - PLATE_SIDE - 1.0
+	return Rect2(left, PLATE_TOP - 1.0, s.end.x + HINTS_GAP + HINTS_RESERVE - left, PLATE_H + 3.0)
 
 
 func _on_atril_changed(p_letters: PackedStringArray, p_status: int, p_hints: PackedStringArray, p_rare: int) -> void:
@@ -156,6 +169,7 @@ func _process(delta: float) -> void:
 
 func _draw() -> void:
 	var rect: Rect2 = slots_rect()
+	UiStyle.draw_plate(self, Rect2(rect.position.x - PLATE_SIDE, PLATE_TOP, rect.size.x + PLATE_SIDE * 2.0, PLATE_H))
 	var shake: float = 0.0
 	if anim == Anim.HERESY:
 		shake = 1.0 if int(_anim_left / 0.06) % 2 == 0 else -1.0
@@ -201,7 +215,7 @@ func _draw() -> void:
 		_draw_frame(rect.grow(4.0), Palette.INK)
 		_draw_frame(rect.grow(3.0), Palette.GOLD)
 	if anim == Anim.HERESY:
-		PixelFont.draw_centered(self, HERESY_TEXT, CENTER_X, rect.position.y - 10, Palette.BLOOD)
+		PixelFont.draw_centered(self, HERESY_TEXT, CENTER_X, HERESY_Y, Palette.BLOOD)
 	_draw_hints(rect)
 
 
@@ -275,8 +289,14 @@ func _frame_color() -> Color:
 
 
 func _draw_hints(rect: Rect2) -> void:
+	if hints.is_empty():
+		return
 	var x: float = rect.end.x + HINTS_GAP
-	var y: float = rect.position.y + 4
+	var y: float = HINTS_TEXT_Y
+	var total: float = 0.0
+	for h: String in hints:
+		total += PixelFont.width(h) + 8
+	UiStyle.draw_plate(self, Rect2(x - HINTS_PAD, rect.position.y, total - 8 + HINTS_PAD * 2.0, HINTS_H))
 	for i: int in hints.size():
 		var first_valid: bool = status == Atril.Status.VALID and i == 0
 		var gold: bool = first_valid or combo_partners.has(hints[i])

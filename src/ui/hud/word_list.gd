@@ -24,7 +24,7 @@ func _process(_delta: float) -> void:
 
 
 func _draw() -> void:
-	UiStyle.draw_panel(self, PANEL)
+	UiStyle.draw_plate(self, PANEL)
 	PixelFont.draw(self, tr(&"HUD_WORDS"), PANEL.position + Vector2(PAD, PAD), Palette.INK_SOFT)
 	var field := get_tree().get_first_node_in_group(&"letter_field") as LetterField
 	if field == null:

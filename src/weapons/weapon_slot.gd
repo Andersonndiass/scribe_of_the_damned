@@ -4,6 +4,8 @@ extends RefCounted
 
 var weapon: WeaponData
 var level: int = 1
+## Recarga 0..1 para o HUD (T1800); o Arsenal escreve todo tick. Não vai para o save.
+var charge: float = 0.0
 
 
 func _init(p_weapon: WeaponData, p_level: int = 1) -> void:

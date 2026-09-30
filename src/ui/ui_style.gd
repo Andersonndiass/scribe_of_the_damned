@@ -13,6 +13,11 @@ const QUILL_GAP := 4
 const QUILL_NIB: Array[Vector2i] = [Vector2i(0, 0), Vector2i(1, -1), Vector2i(2, -2)]
 const QUILL_SHAFT_FROM := 3
 const QUILL_SHAFT_TO := 10
+## Grade do HUD (T1800, design-agent): margem da tela até a borda externa, espaço entre painéis,
+## respiro interno.
+const HUD_MARGIN := 6
+const HUD_GAP := 4
+const HUD_PAD := 3
 
 
 static func high() -> bool:
@@ -46,6 +51,42 @@ static func draw_panel(ci: CanvasItem, r: Rect2, fill: Color = Palette.PARCHMENT
 	ci.draw_rect(Rect2(outer.position.x, outer.position.y + 1, outer.size.x, outer.size.y - 2), Palette.INK)
 	ci.draw_rect(r, fill)
 	ci.draw_rect(Rect2(outer.position.x + 1, outer.end.y, outer.size.x - 2, 1), Palette.INK_SOFT)
+
+
+## Painel do HUD (T1800; 9-slice desenhado): o `draw_panel` com uma luz CHALK de 1 px em cima e à
+## direita, por dentro (a luz vem de cima à direita, como nos ícones). `r` é o miolo; ocupa
+## `plate_area(r)`. Sem sombra difusa, alpha nem xadrez.
+static func draw_plate(ci: CanvasItem, r: Rect2) -> void:
+	draw_panel(ci, r, Palette.PARCHMENT)
+	ci.draw_rect(Rect2(r.position.x, r.position.y, r.size.x, 1), Palette.CHALK)
+	ci.draw_rect(Rect2(r.end.x - 1, r.position.y, 1, r.size.y), Palette.CHALK)
+
+
+## Área que o painel de miolo `r` ocupa na tela (borda + assento).
+static func plate_area(r: Rect2) -> Rect2:
+	var w: float = outline_w()
+	return Rect2(r.position.x - w, r.position.y - w, r.size.x + 2.0 * w, r.size.y + 2.0 * w + 1.0)
+
+
+## Barra do HUD (T1800): moldura INK de 1 px em `outer`; trilho e preenchimento de valores opostos
+## (≥ 3:1); `hi` = linha de luz no topo do preenchimento; `seg` > 0 = separadores INK a cada `seg`
+## px (barras de recurso; as de tempo curto são contínuas). Devolve o miolo (para quem desenha por cima).
+static func draw_bar(ci: CanvasItem, outer: Rect2, frac: float, track: Color, fill: Color,
+		hi: Variant = null, seg: int = 0, frame: Color = Palette.INK) -> Rect2:
+	ci.draw_rect(outer, frame)
+	var inner: Rect2 = outer.grow(-1)
+	ci.draw_rect(inner, track)
+	var w: int = floori(inner.size.x * clampf(frac, 0.0, 1.0))
+	if w > 0:
+		ci.draw_rect(Rect2(inner.position, Vector2(w, inner.size.y)), fill)
+		if hi is Color:
+			ci.draw_rect(Rect2(inner.position, Vector2(w, 1)), hi)
+	if seg > 0:
+		var x: float = inner.position.x + seg - 1
+		while x < inner.end.x - 1:
+			ci.draw_rect(Rect2(x, inner.position.y, 1, inner.size.y), Palette.INK)
+			x += seg
+	return inner
 
 
 ## Etiqueta de destaque: texto INK sobre GOLD_LIGHT com borda INK (GOLD em texto não lê no pergaminho).

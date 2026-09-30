@@ -102,6 +102,22 @@ func _physics_process(delta: float) -> void:
 			_fire(slot)
 	if not beaming:
 		beam.release()
+	_update_charge(lo)
+
+
+## Recarga para o HUD (T1800): rajada = tempo/intervalo; raio e antecipação = pronta; a ativa no
+## saque não passa do quanto o saque andou.
+func _update_charge(lo: Loadout) -> void:
+	for i: int in lo.slots.size():
+		var slot: WeaponSlot = lo.slots[i]
+		if slot == null:
+			continue
+		var c: float = clampf(_timers[i] / interval_of(slot), 0.0, 1.0)
+		if slot.weapon.pattern == &"beam" or _windup[i] >= 0.0:
+			c = 1.0
+		if i == lo.active and _draw_left > 0.0 and tuning.swap_draw_time > 0.0:
+			c = minf(c, 1.0 - _draw_left / tuning.swap_draw_time)
+		slot.charge = c
 
 
 ## Arma com antecipação (Crucifixo): pronta e com alvo, começa a subir; o disparo sai no fim.

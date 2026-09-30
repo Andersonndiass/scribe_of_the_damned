@@ -575,6 +575,15 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
 - **Sistema:** `ZoneShape` (base do `KillZone`), `WeaponZone`/`WeaponZones` (não letal, no mesmo passe do `EnemyManager`), `SpatialHash.query_segment`, `Aim`, `BeamWeapon`, `EnemyManager.query_hit_pierce` + `freeze_left`.
 - **Status:** ✅ implementado; espera o playtest (SC-1705).
 
+### D-089 · 2026-09-30 · HUD novo (T1800)
+- **Pedido do autor:** "melhore este HUD, pesquise como construir um HUD da melhor forma… e aplique". Pesquisa + parecer: `docs/reviews/T1800-hud-parecer.md` (design-agent), maquetes em `docs/reviews/img/t1800_hud_*`.
+- **Sistema:** painel único `UiStyle.draw_plate` (borda INK, luz CHALK, assento INK_SOFT), barra `UiStyle.draw_bar` (trilho e preenchimento opostos ≥ 3:1), grade 6/4/3 px. Painéis: A vida + Graça (Graça em 10 segmentos sobre trilho INK_SOFT), B tempo, C tinta, D atril (+ dicas em painel), E armas.
+- **Muda a T1700:** o nível da arma vai para a etiqueta de baixo à direita (sem contas); a **recarga** aparece numa barra sob cada arma (`WeaponSlot.charge`).
+- **Muda a 006:** barra do chefe no topo (Y18), no lugar do tempo.
+- **Menu da letra (Fase 3):** limite de cima `My ≥ 44`.
+- **Arena:** capitular "I" removida dos ornamentos (game-design: aprovado). **Banco não mudou:** o game-design pediu ajuste (a posição proposta deixa fresta de ~15 px que prende no dash) — volta na 018, com rules-agent + sonda, antes do painel das poções cobrir o banco.
+- **Status:** ✅ aplicado; GUT 502/502.
+
 ## Conflitos abertos
 
 - ~~**C-008 · Menu de escolha da letra (D-085 item 2).**~~ Resolvido: autor "1a 2b 3b e mouse clicando 4a" —

@@ -2,8 +2,11 @@ class_name HudCandles
 extends Node2D
 ## Velas = vida (T071, ficha 26). Canto superior esquerdo. Acesas: cera CHALK e chama GOLD;
 ## apagadas: cera INK_SOFT. Com 1 vela, a chama alterna GOLD/BLOOD a cada 100ms (LAST_CANDLE).
+## T1800: desenha o painel A (vida + Graça); a barra de Graça fica dentro dele.
 
-const ORIGIN := Vector2(8, 8)
+## Miolo do painel A (vida + Graça).
+const PLATE := Rect2(7, 7, 84, 32)
+const ORIGIN := Vector2(11, 10)
 const SPACING := 9
 const WAX := Rect2(0, 5, 5, 10)
 const LAST_CANDLE_PULSE := 0.1
@@ -14,7 +17,7 @@ var _pulse: float = 0.0
 
 
 func hud_rect() -> Rect2:
-	return Rect2(ORIGIN, Vector2(SPACING * PlayerVitals.new().cap, 16))
+	return UiStyle.plate_area(PLATE)
 
 
 func _process(delta: float) -> void:
@@ -29,6 +32,7 @@ func _process(delta: float) -> void:
 
 
 func _draw() -> void:
+	UiStyle.draw_plate(self, PLATE)
 	for i: int in _max:
 		var base: Vector2 = ORIGIN + Vector2(i * SPACING, 0)
 		var lit: bool = i < _candles

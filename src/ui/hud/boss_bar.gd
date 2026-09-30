@@ -5,9 +5,10 @@ extends Node2D
 ## recente aparece em CHALK atrás e desce depois. Marcas das fases (66%/33%) viram BLOOD por 1 s
 ## quando a fase é cruzada. Nome em PixelFont centrado em Y35.
 
-const BAR := Rect2(120, 44, 400, 10)
-const NAME_Y := 35.0
-const MARK_TOP := 42.0
+## T1800: no topo, onde fica o tempo (que some na luta); termina em y35, acima do menu da letra.
+const BAR := Rect2(120, 18, 400, 10)
+const NAME_Y := 8.0
+const MARK_TOP := 16.0
 const MARK_H := 14.0
 const TRAIL_DELAY := 0.4
 const TRAIL_SPEED := 0.5
@@ -41,7 +42,7 @@ func _ready() -> void:
 
 
 func hud_rect() -> Rect2:
-	return Rect2(BAR.position.x, NAME_Y, BAR.size.x, MARK_TOP + MARK_H + 4 - NAME_Y)
+	return Rect2(119, 6, 402, 30)
 
 
 func _process(delta: float) -> void:

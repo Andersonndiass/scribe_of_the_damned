@@ -146,13 +146,7 @@ func _ornaments() -> Image:
 	_rect(img, 620, 2, 18, 2, k)
 	_rect(img, 636, 2, 2, 18, k)
 	_rect(img, 635, 2, 3, 3, O)
-	# Capitular 18×18 em (3,38): caixa, "I" de 2 px com serifas e brilho à direita.
-	_rect(img, 3, 38, 18, 18, k)
-	_rect(img, 4, 39, 16, 16, O)
-	_rect(img, 3 + 8, 38 + 4, 2, 10, K)
-	_rect(img, 3 + 5, 38 + 4, 8, 2, K)
-	_rect(img, 3 + 5, 38 + 12, 8, 2, K)
-	_rect(img, 3 + 10, 38 + 6, 1, 6, C)
+	# Sem capitular: a caixa com "I" em (3,38) parecia botão na coluna do HUD (T1800; game-design ok).
 	return img
 
 

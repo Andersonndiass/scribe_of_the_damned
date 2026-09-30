@@ -38,6 +38,25 @@ func test_hud_never_covers_the_central_area() -> void:
 		assert_false(r.intersects(SAFE_RECT), "%s %s invade X160–480 Y60–300" % [child.name, r])
 
 
+## T1800: todo painel a ≥ 6 px da borda da tela e sem cobrir outro (menos os que moram juntos).
+func test_hud_panels_keep_the_margin_and_do_not_overlap() -> void:
+	var together: Array = [["Candles", "GraceBar"], ["WaveTimer", "BossBar"], ["Atril", "ComboWindow"]]
+	var screen := Rect2(UiStyle.HUD_MARGIN, UiStyle.HUD_MARGIN, 640 - 2 * UiStyle.HUD_MARGIN, 360 - 2 * UiStyle.HUD_MARGIN)
+	var was_high: bool = GameState.high_contrast
+	GameState.high_contrast = false  # no alto contraste a borda tem 2 px (margem 5)
+	var kids: Array[Node] = _hud.get_children()
+	for a: Node in kids:
+		var ra: Rect2 = a.call(&"hud_rect")
+		assert_true(screen.encloses(ra), "%s %s fica a 6 px da borda" % [a.name, ra])
+		for b: Node in kids:
+			var pair: Array = [String(a.name), String(b.name)]
+			if a == b or together.has(pair) or together.has([pair[1], pair[0]]):
+				continue
+			var rb: Rect2 = b.call(&"hud_rect")
+			assert_false(ra.intersects(rb), "%s %s cobre %s %s" % [a.name, ra, b.name, rb])
+	GameState.high_contrast = was_high
+
+
 func test_atril_view_follows_atril_state_and_hints() -> void:
 	var view: HudAtril = _hud.get_node("Atril")
 	_field.collect("L", false)

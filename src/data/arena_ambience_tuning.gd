@@ -43,7 +43,7 @@ extends Resource
 @export var spawn_tries: int = 8
 ## HUD sobre a moldura: velas, cronômetro, tinta, lista de palavras, atril (design-agent).
 @export var hud_avoid: Array[Rect2] = [
-	Rect2(8, 6, 150, 28), Rect2(275, 6, 90, 26), Rect2(520, 6, 112, 24),
-	Rect2(8, 64, 140, 232), Rect2(146, 338, 348, 7),
+	Rect2(6, 6, 86, 35), Rect2(260, 6, 120, 28), Rect2(119, 6, 402, 30), Rect2(594, 6, 40, 15),
+	Rect2(150, 306, 374, 37), Rect2(6, 310, 163, 44), Rect2(8, 64, 140, 232),
 ]
 @export var rng_seed: int = 1348

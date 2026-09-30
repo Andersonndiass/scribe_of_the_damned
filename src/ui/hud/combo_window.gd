@@ -6,7 +6,7 @@ extends Node2D
 ##   Nome: latim em GOLD com contorno INK, fonte 5×6 em 2×, 16 px acima da cabeça do escriba,
 ##   por NAME_TIME s e corte seco (sem alpha).
 
-const BAR := Rect2(296, 332, 48, 3)
+const BAR := Rect2(296, 335, 48, 3)
 const STEPS := 12
 const NAME_TIME := 1.0
 const NAME_SCALE := 2

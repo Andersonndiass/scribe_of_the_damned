@@ -1,9 +1,14 @@
 class_name HudWaveTimer
 extends Node2D
 ## Tempo restante e "Onda N" no topo central (T075, ficha 26). Fica acima de Y 60.
+## T1800: painel B; com a etiqueta de fim de onda, o painel alarga até o texto + 8, centrado.
 
 const CENTER_X := 320.0
-const TOP := 6.0
+const PLATE := Rect2(292, 7, 56, 25)
+const WAVE_Y := 10.0
+const TIME_Y := 18.0
+const DONE_Y := 16.0
+const DONE_PAD := 8.0
 
 var remaining: float = 0.0
 var wave_index: int = 0
@@ -13,7 +18,7 @@ var _shown_seconds: int = -1
 
 
 func hud_rect() -> Rect2:
-	return Rect2(CENTER_X - 45, TOP, 90, 26)
+	return Rect2(260, 6, 120, 28)
 
 
 func _ready() -> void:
@@ -59,8 +64,12 @@ func _draw() -> void:
 	if wave_index == 0:
 		return
 	if not running:
-		UiStyle.draw_tag(self, tr(&"HUD_CHAPTER_COMPLETE") if chapter_done else tr(&"HUD_WAVE_COMPLETE"), CENTER_X, TOP + 4)
+		var done: String = tr(&"HUD_CHAPTER_COMPLETE") if chapter_done else tr(&"HUD_WAVE_COMPLETE")
+		var w: float = maxf(PLATE.size.x, PixelFont.width(done) + DONE_PAD)
+		UiStyle.draw_plate(self, Rect2(roundf(CENTER_X - w / 2.0), PLATE.position.y, w, PLATE.size.y))
+		PixelFont.draw_centered(self, done, CENTER_X, DONE_Y, Palette.INK)
 		return
-	PixelFont.draw_centered(self, tr(&"HUD_WAVE").format({"n": wave_index}), CENTER_X, TOP, Palette.INK_SOFT)
+	UiStyle.draw_plate(self, PLATE)
+	PixelFont.draw_centered(self, tr(&"HUD_WAVE").format({"n": wave_index}), CENTER_X, WAVE_Y, Palette.INK_SOFT)
 	var urgent: bool = remaining <= 10.0
-	PixelFont.draw_centered(self, time_text(), CENTER_X, TOP + 10, Palette.BLOOD if urgent else Palette.INK, 2)
+	PixelFont.draw_centered(self, time_text(), CENTER_X, TIME_Y, Palette.BLOOD if urgent else Palette.INK, 2)

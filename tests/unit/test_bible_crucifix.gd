@@ -140,3 +140,18 @@ func test_crucifix_projectile_pierces_the_line_once_each() -> void:
 	hp.sort()
 	assert_eq(hp, [95, 96, 96], "a cruz fere os 3 uma vez (4); a gota só o primeiro (1)")
 	PoolManager.clear_all()
+
+
+func test_charge_feeds_the_hud() -> void:
+	# T1800: rajada = tempo/intervalo; raio = pronta; a ativa no saque não passa do saque.
+	_arsenal.loadout = Loadout.new(2, PEN)
+	_arsenal.loadout.equip(BIBLE)
+	_run(0.4)
+	assert_almost_eq(_arsenal.loadout.slots[0].charge, 0.5, 0.03, "0,4 de 0,8 s")
+	assert_eq(_arsenal.loadout.slots[1].charge, 1.0, "o raio está sempre pronto")
+	_arsenal.switch_to(1)
+	_run(DT * 3)
+	assert_lt(_arsenal.loadout.slots[1].charge, 1.0, "no saque, ainda subindo")
+	_run(0.1)
+	assert_eq(_arsenal.loadout.slots[1].charge, 1.0)
+

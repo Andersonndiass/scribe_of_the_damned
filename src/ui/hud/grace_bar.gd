@@ -5,10 +5,13 @@ extends Node2D
 ## depois o GOLD avança sobre ele; subir de nível pisca CHALK/GOLD (relógio real: o jogo está
 ## pausado nessa hora).
 
-const RECT := Rect2(8, 28, 108, 10)
-const TAG_MIN_W := 17
-const BAR_W := 88
-const FILL_W := 86
+## T1800 (design-agent): dentro do painel A. Etiqueta do nível à esquerda; barra de moldura INK,
+## trilho INK_SOFT (3,4:1 contra o GOLD) e 10 segmentos de 5 px.
+const RECT := Rect2(10, 29, 78, 9)
+const TAG := Rect2(10, 29, 15, 9)
+const BAR := Rect2(27, 30, 61, 7)
+const SEG := 6
+const TEXT_Y := 31
 
 var level: int = 1
 var fraction: float = 0.0
@@ -58,32 +61,29 @@ func _draw() -> void:
 	var flash_age: float = float(now - _flash_ms) / 1000.0
 	var flashing: bool = flash_age >= 0.0 and flash_age < _tuning.bar_flash_time
 	# Etiqueta do nível (o número sobe 1 px no brilho).
-	var text: String = str(level)
-	var tag_w: float = maxf(TAG_MIN_W, PixelFont.width(text) + 6)
-	var tag := Rect2(RECT.position, Vector2(tag_w, RECT.size.y))
-	draw_rect(tag, Palette.INK)
-	draw_rect(tag.grow(-1), Palette.GOLD_LIGHT)
-	PixelFont.draw_centered(self, text, tag.get_center().x, 30 - (1 if flashing else 0), Palette.INK)
-	# Barra.
-	var bx: float = tag.end.x + 2
-	var border := Rect2(bx, 30, BAR_W, 6)
-	var inner := Rect2(bx + 1, 31, FILL_W, 4)
+	draw_rect(TAG, Palette.INK)
+	draw_rect(TAG.grow(-1), Palette.GOLD_LIGHT)
+	PixelFont.draw_centered(self, str(level), TAG.get_center().x, TEXT_Y - (1 if flashing else 0), Palette.INK)
+	# Barra: moldura (GOLD no pulso da palavra), trilho escuro, preenchimento GOLD e segmentos.
 	var word_age: float = float(now - _word_ms) / 1000.0
 	var word_pulse: bool = _word_from >= 0.0 and word_age < _tuning.bar_word_pulse
-	draw_rect(border, Palette.GOLD if word_pulse else Palette.INK)
-	draw_rect(inner, Palette.PARCHMENT_OLD)
-	draw_rect(Rect2(bx + 1, 36, FILL_W, 1), Palette.INK_SOFT)
+	var frame: Color = Palette.GOLD if word_pulse else Palette.INK
 	if flashing:
 		var step: int = int(flash_age / _tuning.bar_flash_step)
-		draw_rect(inner, Palette.CHALK if step % 2 == 0 else Palette.GOLD)
+		UiStyle.draw_bar(self, BAR, 1.0, Palette.INK_SOFT, Palette.CHALK if step % 2 == 0 else Palette.GOLD, null, SEG, frame)
 		return
-	var full: int = floori(FILL_W * fraction)
+	var inner: Rect2 = UiStyle.draw_bar(self, BAR, 0.0, Palette.INK_SOFT, Palette.GOLD, null, 0, frame)
+	var full: int = floori(inner.size.x * fraction)
 	var gold: int = full
 	if _word_from >= 0.0 and word_age < _tuning.bar_word_pulse + _tuning.bar_fill_time:
-		var from_px: int = floori(FILL_W * _word_from)
+		var from_px: int = floori(inner.size.x * _word_from)
 		var t: float = clampf((word_age - _tuning.bar_word_pulse) / _tuning.bar_fill_time, 0.0, 1.0)
 		gold = from_px + floori((full - from_px) * t)
-		draw_rect(Rect2(inner.position.x, inner.position.y, full, 4), Palette.CHALK)
+		draw_rect(Rect2(inner.position, Vector2(full, inner.size.y)), Palette.CHALK)
 	if gold > 0:
-		draw_rect(Rect2(inner.position.x, inner.position.y, gold, 4), Palette.GOLD)
-		draw_rect(Rect2(inner.position.x, inner.position.y, gold, 1), Palette.GOLD_LIGHT)
+		draw_rect(Rect2(inner.position, Vector2(gold, inner.size.y)), Palette.GOLD)
+		draw_rect(Rect2(inner.position, Vector2(gold, 1)), Palette.GOLD_LIGHT)
+	var x: float = inner.position.x + SEG - 1
+	while x < inner.end.x - 1:
+		draw_rect(Rect2(x, inner.position.y, 1, inner.size.y), Palette.INK)
+		x += SEG
