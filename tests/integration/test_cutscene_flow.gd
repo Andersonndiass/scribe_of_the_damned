@@ -24,7 +24,7 @@ func after_each() -> void:
 	Codex.reset()
 	Codex.load_saved()
 	get_tree().paused = false
-	Engine.time_scale = 1.0
+	TimeScale.reset()
 
 
 func _on_boss_spawned(_b: BossData) -> void:

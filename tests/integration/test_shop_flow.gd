@@ -25,7 +25,7 @@ func before_each() -> void:
 func after_each() -> void:
 	EventBus.wave_started.disconnect(_on_started)
 	get_tree().paused = false
-	Engine.time_scale = 1.0
+	TimeScale.reset()
 
 
 func _on_started(index: int, _d: float) -> void:

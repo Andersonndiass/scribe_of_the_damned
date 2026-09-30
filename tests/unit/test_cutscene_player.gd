@@ -40,7 +40,7 @@ func before_each() -> void:
 func after_each() -> void:
 	EventBus.cutscene_mark_reached.disconnect(_on_mark)
 	EventBus.cutscene_finished.disconnect(_on_finished)
-	Engine.time_scale = 1.0
+	TimeScale.reset()
 	Input.action_release(&"pause")
 
 

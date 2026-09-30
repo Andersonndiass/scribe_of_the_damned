@@ -22,7 +22,7 @@ func before_each() -> void:
 
 
 func after_each() -> void:
-	Engine.time_scale = 1.0
+	TimeScale.reset()
 
 
 func test_sc001_load_and_mass_kill_do_not_instantiate() -> void:

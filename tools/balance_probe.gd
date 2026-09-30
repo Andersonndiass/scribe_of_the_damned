@@ -14,6 +14,10 @@ extends SceneTree
 ##         inimigo que anda QUER andar (velocidade ≥ 30% da dele), está encostado numa peça e não saiu
 ##         do lugar (≤ 2 px). Monge parado atirando e Gárgula preparando o dash não contam.
 ##   smart_magnet target=F life=F magnet=F dropall=F = números de letras em memória (D-082).
+##   only_waves = no modo chapter, termina no fim da onda 9 (sem a luta do chefe; a sonda do chefe
+##         trava na fase 3, D-081; o nome não pode conter "boss": o Main abriria direto no chefe).
+##   grace = liga a Graça (016) com escolha automática, sem pausar. Imprime uma linha GRACE: níveis
+##         por onda, % da Graça vinda de palavras, 1º nível (s) e as bênçãos escolhidas.
 ##   buy = em cada loja o bot compra as cartas mais baratas que couberem na tinta (003 T320, SC-306).
 ##         Imprime uma linha SHOP com compras, tinta ganha e o que comprou.
 
@@ -65,6 +69,12 @@ const STUCK_EVERY := 0.5
 const STUCK_MOVE := 2.0
 const STUCK_TOUCH := 1.5
 const STUCK_INTENT := 0.3
+var _grace_on: bool = false
+var _g_word: int = 0
+var _g_kill: int = 0
+var _g_first_up: float = -1.0
+var _g_ups_by_wave: Dictionary = {}
+var _g_picks: PackedStringArray = []
 ## Raios do inimigo em volta do escriba que contam como "chegou".
 const STUCK_NEAR_PLAYER := 5.0
 
@@ -103,6 +113,9 @@ func _initialize() -> void:
 		elif arg.begins_with("stage="):
 			_stage = int(arg.substr(6))
 	_main = (load(MAIN) as PackedScene).instantiate()
+	_grace_on = OS.get_cmdline_user_args().has("grace")
+	if _grace_on:
+		_main.set_meta(&"grace_auto", true)
 	if not _obstacles:
 		# Só em memória: o capítulo fica sem a página de obstáculos (004 T413).
 		(_main.get("chapter") as Resource).set("arena", null)
@@ -121,9 +134,24 @@ func _initialize() -> void:
 	bus.enemy_killed.connect(func(_s: int, _d: Resource, _p: Vector2) -> void: _kills += 1)
 	bus.player_damaged.connect(func(_a: int, _c: int) -> void: _hits += 1)
 	bus.player_died.connect(func() -> void: _died_at = _time)
-	bus.wave_ended.connect(func(_i: int) -> void: _ended = not _chapter)
+	var only_waves: bool = OS.get_cmdline_user_args().has("only_waves")
+	bus.wave_ended.connect(func(i: int) -> void:
+		_ended = not _chapter
+		if _chapter and only_waves and i >= 9:
+			_chapter_done = true)
 	bus.chapter_completed.connect(func(_c: int) -> void: _chapter_done = true)
 	bus.gold_ink_collected.connect(func(a: int, _t: int) -> void: _ink_earned += a)
+	bus.grace_gained.connect(func(a: int, src: StringName, _p: Vector2) -> void:
+		if src == &"word" or src == &"combo":
+			_g_word += a
+		else:
+			_g_kill += a)
+	bus.grace_leveled.connect(func(_l: int, _q: int) -> void:
+		if _g_first_up < 0.0:
+			_g_first_up = _time
+		var w: int = GameState_wave()
+		_g_ups_by_wave[w] = int(_g_ups_by_wave.get(w, 0)) + 1)
+	bus.blessing_chosen.connect(func(b: Resource, _l: int) -> void: _g_picks.append(String(b.get("id"))))
 	bus.shop_opened.connect(func(_w: int) -> void: _on_shop_opened())
 	bus.boss_damaged.connect(func(hp: int, _m: int) -> void: _boss_hp = hp)
 	bus.boss_phase_changed.connect(func(i: int) -> void:
@@ -146,7 +174,7 @@ func _initialize() -> void:
 	bus.letter_collected.connect(func(l: String, _r: bool) -> void: _collected += l)
 	bus.word_cast.connect(func(w: Resource, _pw: float, _o: Vector2, _d: Vector2) -> void: _casts[w.get("latin")] = _casts.get(w.get("latin"), 0) + 1)
 	_player.get_node("AutoAttack").fired.connect(func(_t: Vector2) -> void: _shots += 1)
-	Engine.time_scale = TIME_SCALE
+	root.get_node("TimeScale").call("set_base", TIME_SCALE)
 	Engine.physics_ticks_per_second = 60
 
 
@@ -309,7 +337,22 @@ func _sample_stuck(delta: float) -> void:
 	_last_pos = positions.slice(0, n)
 
 
+func _print_grace() -> void:
+	if not _grace_on:
+		return
+	var total: int = maxi(1, _g_word + _g_kill)
+	var ups: PackedStringArray = []
+	for w: int in range(1, 10):
+		if _g_ups_by_wave.has(w):
+			ups.append("%d:%d" % [w, int(_g_ups_by_wave[w])])
+	var grace: RefCounted = root.get_node("GameState").get("grace")
+	print("GRACE nível=%d total=%d palavras=%.0f%% 1º_nível=%s subidas={%s} escolhas=%s" % [
+		int(grace.get("level")) if grace != null else 1, _g_word + _g_kill, 100.0 * _g_word / total,
+		("%.1fs" % _g_first_up) if _g_first_up >= 0.0 else "-", " ".join(ups), ",".join(_g_picks)])
+
+
 func _print_arena() -> void:
+	_print_grace()
 	print("ARENA obstáculos=%s estágio=%d STUCK=%.2f%% (%d de %d amostras, pico %d)" % [
 		"on" if _obstacles else "off", int((_main.get_node("Arena") as Node).get("degradation_stage")),
 		100.0 * _stuck / maxf(1.0, _samples), _stuck, _samples, _stuck_max])

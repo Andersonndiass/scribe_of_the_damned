@@ -80,3 +80,15 @@ func test_binding_reaches_the_input_map() -> void:
 func test_missing_file_keeps_defaults() -> void:
 	assert_ne(_s.load_from("user://does_not_exist.cfg"), OK)
 	assert_true(_s.shake_enabled)
+
+
+func test_contexts_let_1_and_2_serve_weapons_and_seals() -> void:
+	# 017 T1702: armas (jogo) e selos (pausa) dividem as teclas 1/2 sem se empurrar.
+	var s = _s
+	assert_eq(s.binding(&"weapon_1"), s.binding(&"grace_pick_1"), "mesma tecla nos dois contextos")
+	assert_eq(s.conflicts(&"weapon_1", s.binding(&"grace_pick_1")).size(), 0)
+	var w: int = s.binding(&"move_up")
+	s.set_binding(&"weapon_1", w)
+	assert_eq(s.binding(&"move_up"), KEY_1, "no mesmo contexto a tecla antiga vai para a outra ação")
+	assert_eq(s.binding(&"grace_pick_1"), KEY_1, "o selo não é afetado")
+	assert_true(Settings.same_context(&"pause", &"grace_pick_1"), "a Pausa conflita com todos")

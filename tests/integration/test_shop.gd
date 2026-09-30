@@ -24,7 +24,7 @@ func before_each() -> void:
 
 func after_each() -> void:
 	get_tree().paused = false
-	Engine.time_scale = 1.0
+	TimeScale.reset()
 
 
 func _card(id: StringName) -> ShopItemData:

@@ -45,7 +45,7 @@ func after_each() -> void:
 	EventBus.boss_defeated.disconnect(_on_defeated)
 	EventBus.chapter_completed.disconnect(_on_completed)
 	EventBus.player_died.disconnect(_on_player_died)
-	Engine.time_scale = 1.0
+	TimeScale.reset()
 
 
 func _on_phase(_i: int) -> void:

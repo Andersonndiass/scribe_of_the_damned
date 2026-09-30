@@ -31,7 +31,7 @@ func before_each() -> void:
 
 func after_each() -> void:
 	AudioManager.sound_played.disconnect(_on_played)
-	Engine.time_scale = 1.0
+	TimeScale.reset()
 
 
 func _on_played(id: StringName) -> void:

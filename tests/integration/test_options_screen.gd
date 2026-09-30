@@ -90,14 +90,15 @@ func test_remap_waits_for_key_and_swaps_on_conflict() -> void:
 
 
 func test_shared_default_key_swaps_every_owner() -> void:
-	# Reiniciar e Loja: trocar dividem o R de fábrica: pegar o R troca as duas e o aviso cita as duas.
+	# Reiniciar (jogo) e Loja: trocar (loja) dividem o R de fábrica. Desde os contextos (017), pegar
+	# o R para mover só empurra o Reiniciar (mesmo contexto); na loja o R continua valendo.
 	_focus(&"keys")
 	_press(&"cast")
 	_press(&"cast")
 	_key(KEY_R)
-	assert_eq(_screen.swapped_with.size(), 2)
+	assert_eq(_screen.swapped_with, [&"restart"] as Array[StringName])
 	assert_eq(Settings.binding(&"restart"), KEY_W)
-	assert_eq(Settings.binding(&"shop_reroll"), KEY_W)
+	assert_eq(Settings.binding(&"shop_reroll"), KEY_R, "outro contexto: não é empurrado")
 
 
 func test_escape_cancels_waiting_and_back_closes() -> void:

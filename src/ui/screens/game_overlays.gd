@@ -136,14 +136,14 @@ func show_victory() -> void:
 
 func restart() -> void:
 	get_tree().paused = false
-	Engine.time_scale = 1.0
+	TimeScale.reset()
 	restart_requested.emit()
 
 
 func _to_menu() -> void:
 	if get_parent() != null and get_parent().has_meta(&"app"):
 		get_tree().paused = false
-		Engine.time_scale = 1.0
+		TimeScale.reset()
 		EventBus.screen_requested.emit(&"menu")
 	else:
 		restart()

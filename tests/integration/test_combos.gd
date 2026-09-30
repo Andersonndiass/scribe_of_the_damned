@@ -39,7 +39,7 @@ func before_each() -> void:
 
 func after_each() -> void:
 	EventBus.combo_cast.disconnect(_on_combo)
-	Engine.time_scale = 1.0
+	TimeScale.reset()
 
 
 func _on_combo(combo: ComboData, _power: float) -> void:

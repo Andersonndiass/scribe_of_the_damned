@@ -38,7 +38,7 @@ func after_each() -> void:
 	EventBus.verbum_failed.disconnect(_on_fail)
 	EventBus.heresy_committed.disconnect(_on_heresy)
 	GameState.unlocked_words.clear()
-	Engine.time_scale = 1.0
+	TimeScale.reset()
 
 
 func _on_shield(_p: Vector2) -> void:

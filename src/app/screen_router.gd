@@ -81,7 +81,7 @@ func goto(screen: StringName) -> void:
 		remove_child(current)
 		current.queue_free()
 	get_tree().paused = false
-	Engine.time_scale = 1.0
+	TimeScale.reset()
 	var scene: PackedScene = load(SCREENS[screen])
 	current = scene.instantiate()
 	if screen == &"game":

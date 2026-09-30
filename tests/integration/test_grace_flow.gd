@@ -42,7 +42,7 @@ func after_each() -> void:
 	EventBus.seals_hidden.disconnect(_on_hidden)
 	EventBus.grace_gained.disconnect(_on_gain)
 	get_tree().paused = false
-	Engine.time_scale = 1.0
+	TimeScale.reset()
 
 
 func _on_shown(b: Array[BlessingData], _l: int) -> void:
@@ -191,7 +191,7 @@ func test_no_seal_after_the_boss_dies() -> void:
 
 func test_hitstop_does_not_freeze_the_announce() -> void:
 	await _level_up()
-	Engine.time_scale = 0.0
+	TimeScale.set_factor(&"hitstop", 0.0)
 	await _wait(_flow.tuning.announce_time + 0.1)
 	assert_eq(_flow.phase, GraceFlow.Phase.CHOOSING, "relógio real")
-	Engine.time_scale = 1.0
+	TimeScale.reset()

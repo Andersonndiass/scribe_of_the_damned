@@ -13,7 +13,7 @@ func _ready() -> void:
 func request(duration_ms: int) -> void:
 	var now: int = Time.get_ticks_msec()
 	_until_msec = maxi(_until_msec, now + duration_ms)
-	Engine.time_scale = 0.0
+	TimeScale.set_factor(&"hitstop", 0.0)
 
 
 func is_active() -> bool:
@@ -23,4 +23,4 @@ func is_active() -> bool:
 func _process(_delta: float) -> void:
 	if _until_msec > 0 and Time.get_ticks_msec() >= _until_msec:
 		_until_msec = 0
-		Engine.time_scale = 1.0
+		TimeScale.clear(&"hitstop")  # volta para a câmera lenta, se houver, e não para ×1

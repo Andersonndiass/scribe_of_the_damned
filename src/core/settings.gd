@@ -12,7 +12,16 @@ const REBINDABLE: Array[StringName] = [
 	&"move_up", &"move_down", &"move_left", &"move_right", &"cast", &"purge", &"word_list",
 	&"pause", &"restart", &"shop_lock", &"shop_reroll", &"shop_next",
 	&"grace_pick_1", &"grace_pick_2", &"grace_pick_3",
+	&"weapon_1", &"weapon_2",
 ]
+## Contexto de cada ação (017 T1702): a mesma tecla pode valer em contextos que nunca estão ativos
+## ao mesmo tempo (1/2 = arma no jogo e selo com o jogo pausado). Trocar tecla só empurra a antiga
+## para outra ação do mesmo contexto; &"global" (Pausa) conflita com todos. Sem entrada = &"play".
+const CONTEXT: Dictionary[StringName, StringName] = {
+	&"pause": &"global",
+	&"grace_pick_1": &"seals", &"grace_pick_2": &"seals", &"grace_pick_3": &"seals",
+	&"shop_lock": &"shop", &"shop_reroll": &"shop", &"shop_next": &"shop",
+}
 
 ## Rodando a suíte GUT, as telas não gravam no arquivo real do jogador.
 var persist: bool = not " ".join(OS.get_cmdline_args()).contains("gut_cmdln")
@@ -61,13 +70,34 @@ func binding(action: StringName) -> int:
 	return _bindings.get(action, KEY_NONE)
 
 
-## Troca a tecla principal de `action`; se outra ação usava essa tecla, ela recebe a antiga.
+static func context_of(action: StringName) -> StringName:
+	return CONTEXT.get(action, &"play")
+
+
+## Duas ações disputam a mesma tecla? (mesmo contexto, ou uma delas é global)
+static func same_context(a: StringName, b: StringName) -> bool:
+	var ca: StringName = context_of(a)
+	var cb: StringName = context_of(b)
+	return ca == cb or ca == &"global" or cb == &"global"
+
+
+## Troca a tecla principal de `action`; se outra ação do mesmo contexto usava essa tecla, ela
+## recebe a antiga.
 func set_binding(action: StringName, keycode: int) -> void:
 	var old: int = binding(action)
 	for other: StringName in _bindings:
-		if other != action and _bindings[other] == keycode:
+		if other != action and _bindings[other] == keycode and same_context(action, other):
 			_bindings[other] = old
 	_bindings[action] = keycode
+
+
+## Ações do mesmo contexto que usam `keycode` como tecla principal (menos `action`).
+func conflicts(action: StringName, keycode: int) -> Array[StringName]:
+	var out: Array[StringName] = []
+	for other: StringName in _bindings:
+		if other != action and _bindings[other] == keycode and same_context(action, other):
+			out.append(other)
+	return out
 
 
 ## Nome curto da tecla principal de `action` para mostrar na tela (traduzido quando há chave).
@@ -93,7 +123,7 @@ func apply() -> void:
 				InputMap.action_erase_event(action, ev)
 		_add_key(action, _bindings[action])
 		for extra: int in _extra_defaults.get(action, []):
-			if extra != _bindings[action] and not _bindings.values().has(extra):
+			if extra != _bindings[action] and conflicts(action, extra).is_empty():
 				_add_key(action, extra)
 	EventBus.settings_applied.emit()
 

@@ -31,7 +31,7 @@ func before_each() -> void:
 
 func after_each() -> void:
 	EventBus.heresy_committed.disconnect(_on_heresy)
-	Engine.time_scale = 1.0
+	TimeScale.reset()
 
 
 func _on_heresy(_p: Vector2) -> void:

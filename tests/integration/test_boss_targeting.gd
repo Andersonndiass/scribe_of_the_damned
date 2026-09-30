@@ -63,7 +63,7 @@ func before_each() -> void:
 
 func after_each() -> void:
 	GameState.unlocked_words.clear()
-	Engine.time_scale = 1.0
+	TimeScale.reset()
 
 
 func _cast(word: String) -> void:

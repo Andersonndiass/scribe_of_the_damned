@@ -29,7 +29,7 @@ func before_each() -> void:
 
 func after_each() -> void:
 	EventBus.word_cast.disconnect(_on_cast)
-	Engine.time_scale = 1.0
+	TimeScale.reset()
 
 
 func _on_cast(word: WordData, _power: float, _origin: Vector2, _dir: Vector2) -> void:

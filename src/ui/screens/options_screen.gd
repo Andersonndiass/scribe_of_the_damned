@@ -40,13 +40,13 @@ const BUTTONS_Y := 284
 const BUTTON_X: Array[int] = [248, 392]
 const BUTTON_W := 112
 const HINT_Y := 324
-## Subpágina de teclas: 15 linhas desde a 016 (as 3 teclas dos selos; design-agent T1600).
-const KEY_Y0 := 58
-const KEY_STEP := 14
-const KEY_ROW_H := 12
-const KEY_SUBTITLE_Y := 48
-const KEY_BACK := Vector2(320, 294)
-const NOTICE := Rect2(124, 272, 392, 12)
+## Subpágina de teclas: 17 linhas desde a 017 (+ armas 1 e 2; antes 15, design-agent T1600).
+const KEY_Y0 := 54
+const KEY_STEP := 13
+const KEY_ROW_H := 11
+const KEY_SUBTITLE_Y := 45
+const KEY_BACK := Vector2(320, 298)
+const NOTICE := Rect2(124, 276, 392, 12)
 const SLIDER_W := 101
 const LANG_X: Array[int] = [310, 358]
 
@@ -259,9 +259,7 @@ func _capture_key(event: InputEvent) -> bool:
 		return true
 	var action: StringName = Settings.REBINDABLE[key_focus]
 	swapped_with.clear()
-	for other: StringName in Settings.REBINDABLE:
-		if other != action and Settings.binding(other) == code:
-			swapped_with.append(other)
+	swapped_with.append_array(Settings.conflicts(action, code))  # só no mesmo contexto (017)
 	Settings.set_binding(action, code)
 	Settings.commit()
 	_swap_left = SWAP_NOTICE if not swapped_with.is_empty() else 0.0

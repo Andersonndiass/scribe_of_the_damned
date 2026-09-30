@@ -31,7 +31,7 @@ func before_each() -> void:
 func after_each() -> void:
 	EventBus.champion_killed.disconnect(_on_champion)
 	EventBus.hitstop_requested.disconnect(_on_hitstop)
-	Engine.time_scale = 1.0
+	TimeScale.reset()
 
 
 func _on_champion(_d: EnemyData, _p: Vector2) -> void:

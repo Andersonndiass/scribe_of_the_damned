@@ -26,7 +26,7 @@ func before_each() -> void:
 
 func after_each() -> void:
 	EventBus.letter_eaten.disconnect(_on_eaten)
-	Engine.time_scale = 1.0
+	TimeScale.reset()
 
 
 func _on_eaten(letter: String, _p: Vector2) -> void:
