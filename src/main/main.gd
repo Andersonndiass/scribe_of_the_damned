@@ -110,7 +110,8 @@ func _ready() -> void:
 	grace_flow.player = $World/Player
 	grace_flow.letter_field = letter_field
 	# Sem a tela dos selos na cena não há como escolher: escolhe sozinho, sem pausar.
-	grace_flow.auto_pick = has_meta(&"grace_auto") or (not has_meta(&"grace_manual") 		and (not is_real_game() or not has_node("GraceSeals")))
+	var no_seals_ui: bool = not is_real_game() or not has_node("GraceSeals")
+	grace_flow.auto_pick = has_meta(&"grace_auto") or (not has_meta(&"grace_manual") and no_seals_ui)
 	grace_flow.active = is_real_game() or has_meta(&"grace_manual") or has_meta(&"grace_auto")
 	add_child(grace_flow)
 	# Frases curtas na partida (008 FR-815).
