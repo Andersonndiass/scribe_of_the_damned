@@ -15,6 +15,13 @@ extends Resource
 ## false para GLORIA e PURGO (FR-204).
 @export var combo_eligible: bool = true
 @export var miracle_scene: PackedScene
+@export_group("Zona letal (D-084)")
+## Palavra de ataque: enquanto o milagre dura (`duration`), todo comum no alcance morre.
+@export var kill_zone: bool = false
+## Golpe no campeão como fração da vida (0 = o do ChampionTuning).
+@export var champion_hit: float = 0.0
+## Golpe fixo no campeão (PURGO: 10 literais × GLORIA/Tinta, sem power).
+@export var champion_hit_flat: float = 0.0
 @export_group("Parâmetros do milagre")
 @export var damage: float = 0.0
 @export var tick_interval: float = 0.0

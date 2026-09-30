@@ -4,7 +4,8 @@
 
 [resource]
 script = ExtResource("1_ct")
-hp_mul = 4.0
+hp_mul = 6.0
+champion_strike_frac = 0.4
 speed_mul = 1.1
 radius_mul = 1.5
 spawn_telegraph = 0.8

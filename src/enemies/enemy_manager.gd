@@ -38,8 +38,14 @@ const CROWN_POINTS := 3
 @export var player_hurt_radius: float = 5.0
 @export var world_rect: Rect2 = Arena.PLAYABLE
 @export var champion_tuning: ChampionTuning = preload("res://data/tuning/champion.tres")
+@export var kill_zone_tuning: KillZoneTuning = preload("res://data/tuning/kill_zone.tres")
 
 var count: int = 0
+## Identidade estável do inimigo (o slot muda na remoção por troca): zonas letais (D-084).
+var uid_of := PackedInt32Array()
+var _next_uid: int = 1
+## Carimbo por slot da última passada das zonas (um inimigo, um golpe por tick).
+var _zone_seen := PackedInt32Array()
 var positions := PackedVector2Array()
 ## Posição antes do último passo de steering de cada inimigo (para a interpolação do desenho).
 var prev_positions := PackedVector2Array()
@@ -128,6 +134,8 @@ func _init() -> void:
 	blind_left.resize(CAPACITY)
 	guaranteed_drop.resize(CAPACITY)
 	touch_ready.resize(CAPACITY)
+	uid_of.resize(CAPACITY)
+	_zone_seen.resize(CAPACITY)
 	## Célula ~ raio de separação: cada consulta toca poucas células com poucos inimigos.
 	_hash = SpatialHash.new(Rect2(Vector2.ZERO, Arena.PAGE_SIZE), HASH_CELL)
 
@@ -183,6 +191,9 @@ func spawn(data: EnemyData, pos: Vector2, is_champion: bool = false) -> int:
 	blind_left[i] = 0.0
 	guaranteed_drop[i] = 0
 	touch_ready[i] = 0.0
+	uid_of[i] = _next_uid
+	_next_uid += 1
+	_zone_seen[i] = -1
 	count += 1
 	_hash_dirty = true
 	EventBus.enemy_spawned.emit(i, data)
@@ -224,6 +235,7 @@ func _physics_process(delta: float) -> void:
 	clock += delta
 	last_tick += 1
 	if count == 0:
+		_apply_kill_zones(delta)  # as zonas contam o tempo mesmo com a tela vazia
 		return
 	var step_dt: float = delta * STEER_STRIDE
 	var t_hash: int = Prof.start()
@@ -329,6 +341,72 @@ func _physics_process(delta: float) -> void:
 		if can_hit_player and _touches_player(i, player_pos):
 			player.call(&"take_hit", _contact_damage(i, d), &"contact")
 	Prof.stop(&"inimigos_mover_separar", t_move)
+	_apply_kill_zones(delta)
+
+
+## Zonas letais (D-084): 1× por tick, depois do movimento. Comum dentro morre; campeão leva o golpe
+## da zona uma vez (uid); o chefe nunca é tocado aqui. Teto de mortes por tick: o resto morre no
+## tick seguinte (a zona continua lá). Zonas de tela drenam até não sobrar comum dentro.
+func _apply_kill_zones(delta: float) -> void:
+	var zones: Array[KillZone] = KillZones.active()
+	if zones.is_empty():
+		return
+	var t0: int = Prof.start()
+	if count > 0:
+		_rebuild_hash()
+	var slots := PackedInt32Array()
+	var dmg := PackedInt32Array()
+	var drop := PackedByteArray()
+	var cap: int = kill_zone_tuning.max_kills_per_tick if kill_zone_tuning != null else 30
+	for zone: KillZone in zones:
+		if not zone.is_live():
+			continue
+		var found: bool = false
+		var candidates: PackedInt32Array
+		if zone.shape == KillZone.Shape.SCREEN:
+			candidates = PackedInt32Array(range(count))
+		else:
+			candidates = _hash.query_rect(zone.bounds(MAX_ENEMY_RADIUS * 2.0))
+		for i: int in candidates:
+			if i >= count or not zone.contains(positions[i], radius_of[i]):
+				continue
+			if champion[i] == 1:
+				var uid: int = uid_of[i]
+				if zone.champions_hit.has(uid):
+					continue
+				zone.champions_hit.append(uid)
+				slots.append(i)
+				dmg.append(zone.champion_damage(max_hp_of[i]))
+				drop.append(0)
+			else:
+				found = true
+				if _zone_seen[i] == last_tick or slots.size() >= cap:
+					continue
+				_zone_seen[i] = last_tick
+				slots.append(i)
+				dmg.append(hp[i])
+				drop.append(1 if zone.drops_left > 0 else 0)
+				if zone.drops_left > 0:
+					zone.drops_left -= 1
+				zone.kills += 1
+		zone.tick(delta, found)
+	if slots.is_empty():
+		Prof.stop(&"inimigos_zonas", t0)
+		return
+	# Do maior slot para o menor: a remoção por troca não bagunça os que faltam.
+	var order: Array[int] = []
+	for k: int in slots.size():
+		order.append(k)
+	order.sort_custom(func(a: int, b: int) -> bool: return slots[a] > slots[b])
+	for k: int in order:
+		var i: int = slots[k]
+		if i >= count:
+			continue
+		if drop[k] == 1:
+			guaranteed_drop[i] = 1
+		damage_at(i, dmg[k])
+	_hash_dirty = true
+	Prof.stop(&"inimigos_zonas", t0)
 
 
 ## Dano de contato: forte durante o dash quando o tipo define dash_contact_damage (D-012).
@@ -757,6 +835,8 @@ func _remove(i: int) -> void:
 		blind_left[i] = blind_left[last]
 		guaranteed_drop[i] = guaranteed_drop[last]
 		touch_ready[i] = touch_ready[last]
+		uid_of[i] = uid_of[last]
+		_zone_seen[i] = _zone_seen[last]
 	data_of[last] = null
 	behavior_of[last] = null
 	count -= 1

@@ -15,6 +15,10 @@ var heal_mul: float = 1.0
 ## Origem para o chefe (006): conjuração e id da palavra/combo. O Caster preenche.
 var cast_id: int = 0
 var tag: StringName = &""
+## Zona letal (D-084): criada com o nó (o pool pré-aquece), aberta pelas palavras de ataque.
+var zone := KillZone.new()
+
+const CHAMPION_TUNING := preload("res://data/tuning/champion.tres")
 
 
 func start(p_word: WordData, p_power: float, p_origin: Vector2, p_direction: Vector2) -> void:
@@ -43,6 +47,26 @@ func _on_start() -> void:
 	pass
 
 
+## Abre a zona letal desta conjuração (D-084): comum no alcance morre enquanto ela durar; o
+## campeão leva um golpe (fração da vida × power × GLORIA × Tinta, ou o fixo da PURGO).
+func open_zone(shape: KillZone.Shape, life: float, drain: bool = false) -> KillZone:
+	zone.open(shape, life, drain)
+	zone.cast_id = cast_id
+	zone.tag = tag if tag != &"" else (word.id if word != null else &"miracle")
+	var own_frac: bool = word != null and word.champion_hit > 0.0
+	zone.champion_frac = word.champion_hit if own_frac else CHAMPION_TUNING.champion_strike_frac
+	zone.champion_mul = power * damage_mul
+	zone.champion_flat = roundi(word.champion_hit_flat * damage_mul) if word != null and word.champion_hit_flat > 0.0 else 0
+	KillZones.register(zone)
+	return zone
+
+
 ## Devolve o milagre ao pool.
 func finish() -> void:
+	KillZones.unregister(zone)
+	zone.close()
 	PoolManager.release(self)
+
+
+func _exit_tree() -> void:
+	KillZones.unregister(zone)

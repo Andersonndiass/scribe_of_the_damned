@@ -2,7 +2,10 @@ class_name ChampionTuning
 extends Resource
 ## Multiplicadores e recompensas do campeão (005 data-model §5, ficha 15, D-011).
 
-@export var hp_mul: float = 4.0
+@export var hp_mul: float = 6.0
+## D-084: golpe da zona letal no campeão = esta fração da vida máxima × power × GLORIA × Tinta,
+## uma vez por conjuração (morre em 2–3 acertos; rules-agent).
+@export var champion_strike_frac: float = 0.4
 @export var speed_mul: float = 1.1
 @export var radius_mul: float = 1.5
 @export var spawn_telegraph: float = 0.8

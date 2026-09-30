@@ -60,4 +60,5 @@ func _draw() -> void:
 
 ## Se a cena for destruída no meio da duração, não deixa bloqueador órfão.
 func _exit_tree() -> void:
+	super()
 	ProjectileBlockers.unregister(self)

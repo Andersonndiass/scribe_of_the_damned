@@ -52,6 +52,7 @@ var outro_cutscene: CutscenePlayer
 
 
 func _ready() -> void:
+	KillZones.clear()  # zona órfã de outra partida não vale nesta (D-084)
 	var debug_scene: String = _debug_scene_requested()
 	if debug_scene != "":
 		get_tree().change_scene_to_file.call_deferred(debug_scene)
@@ -291,3 +292,4 @@ func _restart() -> void:
 
 func _exit_tree() -> void:
 	PoolManager.clear_all()
+	KillZones.clear()

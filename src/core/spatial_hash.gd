@@ -89,6 +89,21 @@ func query_radius(center: Vector2, radius: float) -> PackedInt32Array:
 	return out
 
 
+## Todos os slots nas células que o retângulo `r` toca (sem teste fino: quem chama testa a forma).
+func query_rect(r: Rect2) -> PackedInt32Array:
+	var out := PackedInt32Array()
+	if _count == 0:
+		return out
+	var min_c: Vector2i = _cell_coords(r.position)
+	var max_c: Vector2i = _cell_coords(r.end)
+	for cy: int in range(min_c.y, max_c.y + 1):
+		for cx: int in range(min_c.x, max_c.x + 1):
+			var c: int = cy * _cols + cx
+			for k: int in range(_cell_start[c], _cell_start[c + 1]):
+				out.append(_sorted[k])
+	return out
+
+
 ## Slot mais próximo de `center` dentro de `max_radius`, ou -1.
 func nearest(center: Vector2, max_radius: float) -> int:
 	var best: int = -1
