@@ -18,7 +18,7 @@ const RISE := 2.0
 const CENTRAL := Rect2(160, 60, 320, 240)
 ## Áreas do HUD que o balão nunca cobre (velas, cronômetro, barra do chefe, tinta, atril e dicas).
 const HUD_RECTS: Array[Rect2] = [
-	Rect2(8, 6, 150, 28), Rect2(275, 6, 90, 26), Rect2(120, 35, 400, 26),
+	Rect2(8, 6, 150, 32), Rect2(275, 6, 90, 26), Rect2(120, 35, 400, 26),
 	Rect2(520, 6, 112, 24), Rect2(150, 300, 340, 40),
 ]
 ## Tamanho de cada falante na tela (o balão fica fora dele).

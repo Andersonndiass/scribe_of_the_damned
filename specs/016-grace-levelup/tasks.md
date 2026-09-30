@@ -30,12 +30,12 @@
 - ✅ **T1620** `Caster` compõe `damage_mul` = GLORIA × Tinta e `heal_mul` = só GLORIA; VITA e SALVATOR usam `heal_mul`; `test_miracle_damage` (cura igual com Tinta; D-051; filtro do chefe depois).
 
 ## Fase 4 — Selos, barra e teclas
-- **T1630** Ações `grace_pick_1..3` (1/2/3 e teclado numérico) no InputMap, `Settings.REBINDABLE` e Opções.
-- **T1631** `GraceSeals` (desenho em camadas, pelas regras de pixel art; clique, setas + confirmar).
-- **T1632** `GraceBar` no HUD.
-- **T1633** [TEST] `test_grace_input` + `test_hud`.
+- ✅ **T1630** Ações `grace_pick_1..3` (1/2/3 e teclado numérico) no InputMap, `Settings.REBINDABLE` e Opções.
+- ✅ **T1631** `GraceSeals` (desenho em camadas, pelas regras de pixel art; clique, setas + confirmar).
+- ✅ **T1632** `GraceBar` no HUD.
+- ✅ **T1633** [TEST] `test_grace_input` + `test_hud`.
 
-**Checkpoint 016-C:** jogável — o autor já pode testar.
+**Checkpoint 016-C:** ✅ jogável — o autor já pode testar (2026-09-30, GUT 448/448).
 
 ## Fase 5 — Pingo de cera
 - **T1640** `wax_drop.tres`, `WaxDrop` + `WaxDropField` em pool, registro no Main, testes.

@@ -1,11 +1,13 @@
-[gd_resource type="Resource" script_class="BlessingData" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="BlessingData" load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://src/data/blessing_data.gd" id="1_bl"]
+[ext_resource type="Texture2D" path="res://assets/placeholders/itm_consecrated_ink.tres" id="2_icon"]
 
 [resource]
 script = ExtResource("1_bl")
 id = &"consecrated_ink"
 display_name = "BLESSING_CONSECRATED_INK"
+icon = ExtResource("2_icon")
 short_desc = "BLESSING_CONSECRATED_INK_DESC"
 stat = &"word_damage_mul"
 mode = &"add"

@@ -224,3 +224,8 @@ BLESSING_CONSECRATED_INK,Tinta Consagrada,Consecrated Ink
 BLESSING_CONSECRATED_INK_DESC,Dano das palavras +15%,Word damage +15%
 BLESSING_GRACE_FULL,Graça Plena,Full Grace
 BLESSING_GRACE_FULL_DESC,Acende 1 vela,Lights 1 candle
+ACTION_GRACE_PICK_1,Graça: selo 1,Grace: seal 1
+ACTION_GRACE_PICK_2,Graça: selo 2,Grace: seal 2
+ACTION_GRACE_PICK_3,Graça: selo 3,Grace: seal 3
+GRACE_LEVELUP_TITLE,Graça - nível {n},Grace - level {n}
+GRACE_HINT,{p1} {p2} {p3} escolhe   {prev} {next} + {cast} confirma,{p1} {p2} {p3} choose   {prev} {next} + {cast} confirm

@@ -105,15 +105,22 @@ func _ready() -> void:
 	# Graça (016): no jogo de verdade, sempre. Fora dele fica desligada, a não ser que peçam: a meta
 	# "grace_manual" liga a escolha de verdade (teste do fluxo) e "grace_auto" liga com escolha
 	# automática, sem pausar (sonda com `grace`, stress).
+	# A tela dos selos fica antes das Overlays na árvore: com a Pausa aberta por cima, é ela que
+	# recebe a entrada primeiro (a entrada vai do último nó para o primeiro).
+	var seals := GraceSeals.new()
+	seals.name = "GraceSeals"
+	add_child(seals)
+	move_child(seals, overlays.get_index())
 	grace_flow = GraceFlow.new()
 	grace_flow.name = "GraceFlow"
 	grace_flow.player = $World/Player
 	grace_flow.letter_field = letter_field
-	# Sem a tela dos selos na cena não há como escolher: escolhe sozinho, sem pausar.
+	# Fora do jogo de verdade (testes, sonda, stress) escolhe sozinho, sem pausar.
 	var no_seals_ui: bool = not is_real_game() or not has_node("GraceSeals")
 	grace_flow.auto_pick = has_meta(&"grace_auto") or (not has_meta(&"grace_manual") and no_seals_ui)
 	grace_flow.active = is_real_game() or has_meta(&"grace_manual") or has_meta(&"grace_auto")
 	add_child(grace_flow)
+	seals.flow = grace_flow
 	# Frases curtas na partida (008 FR-815).
 	var barks := BarkDirector.new()
 	barks.name = "Barks"

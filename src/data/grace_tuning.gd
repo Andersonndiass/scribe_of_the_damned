@@ -29,6 +29,21 @@ extends Resource
 ## Tempos do animation-agent (s reais; docs/reviews/T1600-animation-parecer.md).
 @export var announce_time: float = 0.4
 @export var stamp_time: float = 0.4
+## Barra de Graça: brilho ao subir (degraus de bar_flash_step), pulso da palavra e enchimento.
+@export var bar_flash_time: float = 0.2
+@export var bar_flash_step: float = 0.05
+@export var bar_word_pulse: float = 0.1
+@export var bar_fill_time: float = 0.2
+## Selos: escurecimento em degraus, entrada em 4 degraus a partir de seal_enter_start com
+## seal_stagger entre eles, e as etapas do carimbo.
+@export var dim_step: float = 0.1
+@export var seal_enter_start: float = 0.1
+@export var seal_enter_step: float = 0.05
+@export var seal_stagger: float = 0.05
+@export var stamp_lift: float = 0.05
+@export var stamp_impact: float = 0.05
+@export var stamp_hold: float = 0.1
+@export var stamp_exit_step: float = 0.1
 ## Lista explícita (o build web não lista pastas).
 @export var blessings: Array[BlessingData] = []
 ## Reserva quando todas as bênçãos estão no teto.

@@ -11,6 +11,7 @@ const LANGUAGES: PackedStringArray = ["pt_BR", "en"]
 const REBINDABLE: Array[StringName] = [
 	&"move_up", &"move_down", &"move_left", &"move_right", &"cast", &"purge", &"word_list",
 	&"pause", &"restart", &"shop_lock", &"shop_reroll", &"shop_next",
+	&"grace_pick_1", &"grace_pick_2", &"grace_pick_3",
 ]
 
 ## Rodando a suíte GUT, as telas não gravam no arquivo real do jogador.
