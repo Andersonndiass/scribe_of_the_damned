@@ -67,19 +67,19 @@ func test_buying_the_shelf_grows_the_atril_up_to_8() -> void:
 func test_buying_without_ink_does_nothing() -> void:
 	GameState.gold_ink = 0
 	_shop.open(1)
-	_offer(&"sandals")
+	_offer(&"double_inkwell")
 	assert_false(_shop.buy(0))
-	assert_eq(GameState.run_stats.value(&"move_speed"), _player.data.move_speed)
+	assert_eq(GameState.run_stats.value(&"double_letter_chance"), 0.0)
 
 
 func test_buying_charges_the_price() -> void:
 	GameState.gold_ink = 20
 	_shop.open(3)
-	_offer(&"lodestone")
+	_offer(&"double_inkwell")
 	var price: int = _shop.offer.prices[0]
 	assert_true(_shop.buy(0))
 	assert_eq(GameState.gold_ink, 20 - price)
-	assert_almost_eq(GameState.run_stats.value(&"magnet_radius"), _player.data.magnet_radius * 1.3, 0.01)
+	assert_almost_eq(GameState.run_stats.value(&"double_letter_chance"), 0.1, 0.001)
 
 
 func test_apocrypha_card_unlocks_the_word_at_once() -> void:
@@ -99,48 +99,26 @@ func test_apocrypha_card_unlocks_the_word_at_once() -> void:
 	GameState.unlocked_words.clear()
 
 
-func test_candle_raises_max_and_heals_then_only_heals_at_cap() -> void:
-	GameState.gold_ink = 999
-	_shop.open(1)
-	var start_max: int = _player.vitals.max_candles
-	_player.vitals.candles = 1
-	_offer(&"blessed_candle")
-	assert_true(_shop.buy(0))
-	assert_eq(_player.vitals.max_candles, start_max + 1)
-	assert_eq(_player.vitals.candles, 2, "acende 1")
-	while GameState.run_stats.int_value(&"max_candles") < 8:
-		_offer(&"blessed_candle")
-		_shop.buy(0)
-	_player.vitals.candles = 3
-	_offer(&"blessed_candle")
-	assert_true(_shop.buy(0), "no teto continua à venda")
-	assert_eq(_player.vitals.max_candles, 8)
-	assert_eq(_player.vitals.candles, 4, "só acende 1")
-
-
-func test_rosary_halves_the_heresy_stun() -> void:
-	GameState.gold_ink = 999
-	_shop.open(1)
-	_offer(&"rosary")
-	assert_true(_shop.buy(0))
-	assert_eq(GameState.run_stats.value(&"heresy_stun_mul"), 0.5)
-
-
 func test_reroll_spends_ink() -> void:
+	# 016 (rules-agent): reroll 3, +2 a cada vez.
 	GameState.gold_ink = 7
 	_shop.open(1)
 	assert_true(_shop.reroll())
-	assert_eq(GameState.gold_ink, 2)
-	assert_false(_shop.reroll(), "o 2º custa 8")
+	assert_eq(GameState.gold_ink, 4)
+	assert_false(_shop.reroll(), "o 2º custa 5")
 
 
-func test_alms_purse_multiplies_ink() -> void:
-	GameState.gold_ink = 999
-	_shop.open(1)
-	_offer(&"alms_purse")
-	_shop.buy(0)
-	GameState.gold_ink = 0
-	GameState.gold_fraction = 0.0
-	for i: int in 5:
-		GameState.add_gold(1)
-	assert_eq(GameState.gold_ink, 6, "5 × 1,2 = 6")
+func test_blessings_never_show_up_in_the_shop() -> void:
+	# SC-1603 (016): os 7 itens pequenos viraram bênçãos do level-up.
+	var gone: Array[StringName] = [&"lodestone", &"sandals", &"blessed_candle", &"copyist_lenses",
+		&"rosary", &"alms_purse", &"fine_quill"]
+	for c: ShopItemData in _shop.tuning.deck:
+		assert_false(gone.has(c.id), "%s saiu do baralho" % c.id)
+	GameState.gold_ink = 9999
+	for w: int in range(1, 10):
+		_shop.open(w)
+		for r: int in 5:
+			for c: ShopItemData in _shop.offer.cards:
+				if c != null:
+					assert_false(gone.has(c.id), "%s na oferta" % c.id)
+			_shop.reroll()

@@ -36,13 +36,14 @@ func _ids() -> Array[StringName]:
 	return out
 
 
-func test_three_items_and_one_apocrypha() -> void:
+func test_two_items_and_one_apocrypha() -> void:
+	# 016 (rules-agent): 2 vagas de item — só sobraram Estante Nova e Tinteiro Duplo.
 	_offer.open_visit(1, _stats, _none, _rng)
-	assert_eq(_offer.cards.size(), 4)
+	assert_eq(_offer.cards.size(), 3)
 	var kinds: Array[StringName] = []
 	for c: ShopItemData in _offer.cards:
 		kinds.append(c.kind)
-	assert_eq(kinds.count(&"item"), 3)
+	assert_eq(kinds.count(&"item"), 2)
 	assert_eq(kinds.count(&"apocrypha"), 1)
 	var ids := _ids()
 	for id: StringName in ids:
@@ -66,7 +67,8 @@ func test_apocrypha_slot_becomes_an_item_when_all_are_unlocked() -> void:
 	var all: Array[StringName] = [&"purgo", &"fides", &"lumen", &"gloria", &"verbum"]
 	_offer.open_visit(2, _stats, all, _rng)
 	for c: ShopItemData in _offer.cards:
-		assert_eq(c.kind, &"item")
+		if c != null:
+			assert_eq(c.kind, &"item")
 
 
 func test_unlocked_apocrypha_is_never_offered() -> void:
@@ -105,15 +107,16 @@ func test_reroll_cost_grows_within_the_visit_and_keeps_sold() -> void:
 	_offer.open_visit(1, _stats, _none, _rng)
 	_offer.buy(0, 999)
 	var sold_id: StringName = _offer.cards[0].id
-	assert_eq(_offer.reroll_cost(), 5)
-	assert_eq(_offer.reroll(4, _stats, _none, _rng), -1, "sem tinta não rerola")
-	assert_eq(_offer.reroll(100, _stats, _none, _rng), 5)
+	# 016 (rules-agent): reroll 3, +2.
+	assert_eq(_offer.reroll_cost(), 3)
+	assert_eq(_offer.reroll(2, _stats, _none, _rng), -1, "sem tinta não rerola")
+	assert_eq(_offer.reroll(100, _stats, _none, _rng), 3)
 	assert_eq(_offer.cards[0].id, sold_id, "a vendida fica no lugar")
-	assert_eq(_offer.reroll_cost(), 8)
+	assert_eq(_offer.reroll_cost(), 5)
 	_offer.reroll(100, _stats, _none, _rng)
-	assert_eq(_offer.reroll_cost(), 11)
+	assert_eq(_offer.reroll_cost(), 7)
 	_offer.open_visit(2, _stats, _none, _rng)
-	assert_eq(_offer.reroll_cost(), 5, "zera na visita seguinte")
+	assert_eq(_offer.reroll_cost(), 3, "zera na visita seguinte")
 
 
 func test_lock_survives_reroll_and_next_visit_at_old_price() -> void:

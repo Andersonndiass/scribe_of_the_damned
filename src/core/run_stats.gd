@@ -25,6 +25,8 @@ func _init(p_base: PlayerData) -> void:
 		&"double_letter_chance": 0.0,
 		&"heresy_stun_mul": 1.0,
 		&"gold_mul": 1.0,
+		# 016: bênção Tinta Consagrada (só dano das palavras; a cura não usa).
+		&"word_damage_mul": 1.0,
 	}
 
 
@@ -36,6 +38,10 @@ static func of(data: PlayerData) -> RunStats:
 	if not _neutral.has(key):
 		_neutral[key] = RunStats.new(data)
 	return _neutral[key]
+
+
+func has_stat(stat: StringName) -> bool:
+	return _value.has(stat)
 
 
 func value(stat: StringName) -> float:
@@ -51,7 +57,7 @@ func buys_of(id: StringName) -> int:
 
 
 ## O campo do item já está no teto?
-func is_capped(item: ShopItemData) -> bool:
+func is_capped(item: StatUpgradeData) -> bool:
 	var v: float = value(item.stat)
 	if item.mode == &"mul" and item.amount < 1.0:
 		return v <= item.cap + 0.0001
@@ -67,9 +73,12 @@ func can_offer(item: ShopItemData) -> bool:
 	return not is_capped(item) or item.after_cap != &""
 
 
-## Aplica o item (respeitando o teto). Retorna true se o valor mudou.
-func apply(item: ShopItemData) -> bool:
+## Aplica a melhoria (respeitando o teto). Retorna true se o valor mudou. Sem stat (só cura),
+## só conta a vez.
+func apply(item: StatUpgradeData) -> bool:
 	_buys[item.id] = buys_of(item.id) + 1
+	if item.stat == &"":
+		return false
 	var before: float = value(item.stat)
 	var v: float = before
 	match item.mode:

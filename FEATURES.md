@@ -21,7 +21,7 @@
 | 013 | boss-abade-caido (Cap. 3) | 012 | Tasked ✅ |
 | 014 | boss-padre-malaquias (Cap. 4) | 013 | Tasked ✅ |
 | 015 | boss-semihaza (Cap. 5, final) | 014 | Tasked ✅ |
-| 016 | grace-levelup (XP "Graça" + subir de nível com 3 selos; bênçãos saem da loja; pingo de cera) | 003, D-082 | Spec em rascunho com pareceres (2026-09-30) |
+| 016 | grace-levelup (XP "Graça" + subir de nível com 3 selos; bênçãos saem da loja; pingo de cera) | 003, D-082 | Spec aprovada (2026-09-30, D-083) |
 | 017 | instrumentos do escriba (penas e tintas na loja, 3 na demo) | 016 | A escrever (D-082) |
 
 **Ordem de execução sugerida:** 001 → (002, 003, 004, 005 em paralelo) → 006 → 007 → 008, 009, 010 → 011 (demo publicada) → 012 → 013 → 014 → 015.

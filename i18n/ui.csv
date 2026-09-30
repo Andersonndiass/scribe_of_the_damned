@@ -220,3 +220,7 @@ BARK_ASMODEUS_DEATH,Alguém... sempre... erra...,Someone... always... errs...
 BARK_ANSELMO_HERESY,...Isso não era latim.,...That was not Latin.
 BARK_ANSELMO_LAST_CANDLE,Só mais uma vela...,Just one more candle...
 BARK_ANSELMO_WAVE_CLEAR,Mais uma linha no lugar.,One more line back in place.
+BLESSING_CONSECRATED_INK,Tinta Consagrada,Consecrated Ink
+BLESSING_CONSECRATED_INK_DESC,Dano das palavras +15%,Word damage +15%
+BLESSING_GRACE_FULL,Graça Plena,Full Grace
+BLESSING_GRACE_FULL_DESC,Acende 1 vela,Lights 1 candle

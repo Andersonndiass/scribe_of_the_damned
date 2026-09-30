@@ -6,16 +6,16 @@
 - **T1600** design-agent: selos (desenho sobre a página, 3 lado a lado, legíveis em 1×), barra de Graça no HUD (fora da área central), ícones das bênçãos (os 7 da loja + Tinta Consagrada + Graça plena), `ITM_` do pingo de cera; conferir a tela de Opções com as 3 ações novas. animation-agent: `announce_time`, `stamp_time`, brilho da barra, piscar do pingo.
 
 ## Fase 1 — Dados e lógica pura (teste primeiro)
-- **T1601** `StatUpgradeData` (id, nome/frase `tr`, ícone, stat, modo, valor, teto, `heal_candles`); `ShopItemData` passa a herdar dela (os `.tres` antigos continuam carregando).
-- **T1602** `BlessingData` + `GraceTuning` (`data/tuning/grace.tres`: por letra, ×combo, ×campeão, curva, `boss_grace_mul`, proteção 0,4 s, invulnerabilidade 0,5 s, lista explícita das bênçãos, reserva) com validação no load.
-- **T1603** `RunStats`: `word_damage_mul` (começa em 1) e `has_stat`.
-- **T1604** [TEST-FIRST] `GraceLedger` (em `GameState.grace`, recriado no `start_run`): ganho, limiar, fila de níveis, curva, não zera entre ondas/loja.
-- **T1605** [TEST-FIRST] `BlessingOffer`: 3 distintas abaixo do teto, menos de 3, reserva, sorteio próprio com semente (não consome o `GameState.rng`).
-- **T1606** Migrar os 7 itens para `data/blessings/` (tetos novos: Bolsa 1,4; Pena 0,56), criar `consecrated_ink` e `grace_full`; tirar do deck da loja; `shop_tuning` (2 vagas, dízimo 5, reroll 3+2); teste SC-1603.
-- **T1607** `RunUpgrade.apply` extraído de `Shop._apply` (cura em dados, stat vazio não grava), usado pela loja e pelo level-up.
-- **T1608** `EnemyData.grace` e `wax_drop_chance` nos 5 inimigos; textos em `i18n/ui.csv` (PT-BR e EN).
+- ✅ **T1601** `StatUpgradeData` (id, nome/frase `tr`, ícone, stat, modo, valor, teto, `heal_candles`); `ShopItemData` passa a herdar dela (os `.tres` antigos continuam carregando).
+- ✅ **T1602** `BlessingData` + `GraceTuning` (`data/tuning/grace.tres`: por letra, ×combo, ×campeão, curva, `boss_grace_mul`, proteção 0,4 s, invulnerabilidade 0,5 s, lista explícita das bênçãos, reserva) com validação no load.
+- ✅ **T1603** `RunStats`: `word_damage_mul` (começa em 1) e `has_stat`.
+- ✅ **T1604** [TEST-FIRST] `GraceLedger` (em `GameState.grace`, recriado no `start_run`): ganho, limiar, fila de níveis, curva, não zera entre ondas/loja.
+- ✅ **T1605** [TEST-FIRST] `BlessingOffer`: 3 distintas abaixo do teto, menos de 3, reserva, sorteio próprio com semente (não consome o `GameState.rng`).
+- ✅ **T1606** Migrar os 7 itens para `data/blessings/` (tetos novos: Bolsa 1,4; Pena 0,56), criar `consecrated_ink` e `grace_full`; tirar do deck da loja; `shop_tuning` (2 vagas, dízimo 5, reroll 3+2); teste SC-1603.
+- ✅ **T1607** `RunUpgrade.apply` extraído de `Shop._apply` (cura em dados, stat vazio não grava), usado pela loja e pelo level-up.
+- ✅ **T1608** `EnemyData.grace` e `wax_drop_chance` nos 5 inimigos; textos em `i18n/ui.csv` (PT-BR e EN).
 
-**Checkpoint 016-A:** números e sorteio testados; a loja nunca oferece os 7.
+**Checkpoint 016-A:** ✅ números e sorteio testados; a loja nunca oferece os 7 (2026-09-30, GUT 431/431).
 
 ## Fase 2 — Fluxo e pausa
 - **T1610** Sinais: `grace_gained`, `grace_changed`, `grace_leveled`, `seals_shown`, `blessing_chosen`, `seals_hidden`, `pause_menu_toggled`, `wax_drop_collected`.

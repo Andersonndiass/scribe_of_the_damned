@@ -17,6 +17,10 @@ extends Resource
 @export_range(0, 2) var dash_contact_damage: int = 0
 @export var telegraph_time: float = 0.5
 @export_range(0.0, 1.0) var letter_drop_chance: float = 0.5
+## Graça ao morrer (016 FR-1601; campeão × GraceTuning.champion_mul).
+@export var grace: int = 1
+## Chance de soltar um pingo de cera (016 FR-1615; campeões não soltam: já dão vela).
+@export_range(0.0, 1.0) var wax_drop_chance: float = 0.0
 @export var sprite_frames: SpriteFrames
 ## Pivot do sprite em pixels (base-centro), da ficha. Ex.: Diabrete (6,11).
 @export var sprite_pivot: Vector2 = Vector2(6, 11)

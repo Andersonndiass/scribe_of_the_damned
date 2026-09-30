@@ -92,3 +92,20 @@ func test_of_falls_back_to_a_neutral_stats_for_other_data() -> void:
 	var other := PlayerData.new()
 	other.move_speed = 70.0
 	assert_eq(RunStats.of(other).value(&"move_speed"), 70.0)
+
+
+func test_word_damage_starts_at_one_and_respects_its_cap() -> void:
+	# 016: Tinta Consagrada (+0,15 até 1,6).
+	assert_true(_stats.has_stat(&"word_damage_mul"))
+	assert_eq(_stats.value(&"word_damage_mul"), 1.0)
+	var ink: BlessingData = load("res://data/blessings/consecrated_ink.tres")
+	for i: int in 6:
+		_stats.apply(ink)
+	assert_almost_eq(_stats.value(&"word_damage_mul"), 1.6, 0.001, "teto de 4 escolhas")
+
+
+func test_upgrade_without_stat_only_counts() -> void:
+	var full: BlessingData = load("res://data/blessings/grace_full.tres")
+	assert_false(_stats.apply(full))
+	assert_false(_stats.has_stat(&""), "não grava na chave vazia")
+	assert_eq(_stats.buys_of(&"grace_full"), 1)

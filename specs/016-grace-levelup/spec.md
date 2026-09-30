@@ -1,6 +1,6 @@
 # 016 — Graça: XP e subir de nível no meio da onda
 
-> Status: **Rascunho com pareceres** (2026-09-30), aguardando o autor — pedido do autor (D-082: "a gameplay tá meio chata"; "ganhar XP e upar no meio da onda… escolhe se melhora o dano, vida").
+> Status: **Aprovada** (2026-09-30, "1a 2a 3a"; D-083) — pedido do autor (D-082: "a gameplay tá meio chata"; "ganhar XP e upar no meio da onda… escolhe se melhora o dano, vida").
 > Respostas do autor já dadas (D-082, C-007): XP de **matar inimigos e de fechar palavras** (2b + palavras); o jogo **pausa** e **3 selos** aparecem desenhados na página, escolha por tecla 1/2/3 ou clique (3a/C-007 "a"); as melhorias pequenas **saem da loja** e viram escolhas do level-up (4a); vida cai **rara** como pingo de cera (6b). Instrumentos (5a) ficam na **017**.
 > Parecer do game-design-agent (D-082): XP e level-up só ajudam se alimentarem as palavras; escolhas no tema ("bênçãos"); loja com as coisas grandes.
 > Depende de: 001 (vitals/velas, ataque automático), 002 (palavras, `Miracle.damage_mul`), 003 (loja, `RunStats`, `ShopItemData`), 005 (inimigos, campeões), 007 (telas, `tr()`, `Settings.key_label`), D-082 (ritmo das palavras).

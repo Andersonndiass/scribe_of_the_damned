@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="BlessingData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://src/data/blessing_data.gd" id="1_bl"]
+[ext_resource type="Texture2D" path="res://assets/placeholders/itm_sandals.tres" id="2_icon"]
+
+[resource]
+script = ExtResource("1_bl")
+id = &"sandals"
+display_name = "ITEM_SANDALS"
+short_desc = "ITEM_SANDALS_DESC"
+icon = ExtResource("2_icon")
+stat = &"move_speed"
+mode = &"percent"
+amount = 0.1
+cap = 135.0
+heal_candles = 0

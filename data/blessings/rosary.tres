@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="BlessingData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://src/data/blessing_data.gd" id="1_bl"]
+[ext_resource type="Texture2D" path="res://assets/placeholders/itm_rosary.tres" id="2_icon"]
+
+[resource]
+script = ExtResource("1_bl")
+id = &"rosary"
+display_name = "ITEM_ROSARY"
+short_desc = "ITEM_ROSARY_DESC"
+icon = ExtResource("2_icon")
+stat = &"heresy_stun_mul"
+mode = &"mul"
+amount = 0.5
+cap = 0.5
+heal_candles = 0

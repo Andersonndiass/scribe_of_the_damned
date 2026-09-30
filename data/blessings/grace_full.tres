@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="BlessingData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/data/blessing_data.gd" id="1_bl"]
+
+[resource]
+script = ExtResource("1_bl")
+id = &"grace_full"
+display_name = "BLESSING_GRACE_FULL"
+short_desc = "BLESSING_GRACE_FULL_DESC"
+heal_candles = 1

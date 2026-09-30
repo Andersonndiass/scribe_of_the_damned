@@ -74,13 +74,4 @@ func _apply(card: ShopItemData) -> void:
 		if player != null:
 			player.heal(tuning.heal_only_candles)
 		return
-	stats.apply(card)
-	match card.stat:
-		&"atril_capacity":
-			if letter_field != null:
-				letter_field.atril.set_capacity(stats.int_value(&"atril_capacity"))
-				letter_field.emit_atril()
-		&"max_candles":
-			if player != null:
-				player.vitals.max_candles = stats.int_value(&"max_candles")
-				player.heal(1)
+	RunUpgrade.apply(card, player, letter_field)

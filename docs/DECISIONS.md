@@ -507,6 +507,12 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
 - **Sonda (cast god, 3 rodadas por onda, 2 Godot por vez):** mediana das 9 ondas **0 → 3,5 palavras/min** (1 a cada ~17 s); ondas 1–4 em 4–5,5/min, ondas 5–9 em 1,5–3,5/min (SC-506 em 55%: as últimas ondas ficam atrás); sem god, a onda 1 passou a ser vencida com 4 palavras e a onda 9 do zero continua derrota. Muitos purges: o bot pisa em letras inúteis ao correr atrás da útil (um jogador desvia) — veredito final é o playtest do autor. Se as últimas ondas ficarem lentas: letras de abertura (2) e garantia da letra-alvo depois de 3 inúteis (precisam de código; rules-agent). A/B dos obstáculos (D-079) a refazer com os números novos.
 - **Status:** ✅ direção aprovada; correção de ritmo aplicada; 016 e instrumentos a especificar.
 
+### D-083 · 2026-09-30 · Spec 016 "Graça" aprovada
+- **Respostas do autor:** "1a 2A 3A" — ~17 níveis no capítulo (2–3 por onda no começo, 1–2 no fim); a XP se chama **Graça** no jogo; spec aprovada, começar pela Fase 0.
+- **Números (rules-agent):** 6 de Graça por letra (combo ×1,5), inimigos 1–2, campeão ×5; curva 30 + 6·(n−1); 8 bênçãos com teto (Tinta Consagrada +15% até +60%, só dano); loja com 2 vagas de item, dízimo 5, reroll 3+2; pingo de cera 1%, 12 s.
+- **Sistema (mechanics-agent):** `GraceLedger` (GameState), `BlessingOffer`, `GraceFlow` (FSM no Main, relógio real), `GraceSeals`, `GraceBar`, `RunUpgrade` comum à loja; `damage_mul` × `heal_mul` separados (a Tinta não aumenta a cura); a Pausa não despausa por baixo dos selos; sorteios próprios (não mexem nas letras).
+- **Status:** ✅ aprovada.
+
 ## Conflitos abertos
 
 - ~~**C-007 · Escolha do level-up: "3 selos na página" + "o jogo pausa".**~~ Resolvido: autor respondeu "a" — o jogo pausa e os 3 selos aparecem desenhados na página; escolha por tecla (1, 2, 3) ou clique.

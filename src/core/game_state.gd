@@ -10,8 +10,14 @@ var wave_index: int = 0
 var gold_ink: int = 0
 var unlocked_words: Array[StringName] = []
 var rng := RandomNumberGenerator.new()
+const GRACE_SEED_SALT := 0x5EA1
 ## Números do escriba com os itens da loja (003 FR-309). Recriado a cada partida.
 var run_stats: RunStats = null
+## Graça da partida (016): zera no start_run, continua entre as ondas e na loja.
+var grace_tuning: GraceTuning = preload("res://data/tuning/grace.tres")
+var grace: GraceLedger = null
+## Sorteios da 016 (selos, pingo de cera): separados do `rng` das letras para não mudar a sequência.
+var grace_rng := RandomNumberGenerator.new()
 ## Fração de tinta acumulada pelo ×tinta da Bolsa do Esmoler (a gota é inteira).
 var gold_fraction: float = 0.0
 ## Screen shake ligado (D-047 6B; a tela de Opções, 007, muda). Vale entre partidas.
@@ -95,6 +101,9 @@ func start_run(player: PlayerData, seed_value: int = -1) -> void:
 		rng.seed = seed_value
 	else:
 		rng.randomize()
+	grace = GraceLedger.new(grace_tuning)
+	# Derivado da semente sem consumir o `rng` (a sequência de letras continua a mesma).
+	grace_rng.seed = rng.seed ^ GRACE_SEED_SALT
 
 
 ## Soma tinta dourada com o ×tinta da partida (Bolsa do Esmoler, 003). Retorna quanto entrou.

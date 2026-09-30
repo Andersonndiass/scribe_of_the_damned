@@ -1,15 +1,8 @@
-[gd_resource type="Resource" script_class="ShopTuning" load_steps=17 format=3]
+[gd_resource type="Resource" script_class="ShopTuning" load_steps=10 format=3]
 
 [ext_resource type="Script" path="res://src/data/shop_tuning.gd" id="1_st"]
 [ext_resource type="Script" path="res://src/data/shop_item_data.gd" id="99_si"]
-[ext_resource type="Resource" path="res://data/shop/items/lodestone.tres" id="2_lodestone"]
-[ext_resource type="Resource" path="res://data/shop/items/rosary.tres" id="3_rosary"]
-[ext_resource type="Resource" path="res://data/shop/items/sandals.tres" id="4_sandals"]
-[ext_resource type="Resource" path="res://data/shop/items/alms_purse.tres" id="5_alms_purse"]
-[ext_resource type="Resource" path="res://data/shop/items/copyist_lenses.tres" id="6_copyist_lenses"]
 [ext_resource type="Resource" path="res://data/shop/items/double_inkwell.tres" id="7_double_inkwell"]
-[ext_resource type="Resource" path="res://data/shop/items/fine_quill.tres" id="8_fine_quill"]
-[ext_resource type="Resource" path="res://data/shop/items/blessed_candle.tres" id="9_blessed_candle"]
 [ext_resource type="Resource" path="res://data/shop/items/new_shelf.tres" id="10_new_shelf"]
 [ext_resource type="Resource" path="res://data/shop/items/apocrypha_purgo.tres" id="11_apocrypha_purgo"]
 [ext_resource type="Resource" path="res://data/shop/items/apocrypha_fides.tres" id="12_apocrypha_fides"]
@@ -19,13 +12,13 @@
 
 [resource]
 script = ExtResource("1_st")
-deck = Array[ExtResource("99_si")]([ExtResource("2_lodestone"), ExtResource("3_rosary"), ExtResource("4_sandals"), ExtResource("5_alms_purse"), ExtResource("6_copyist_lenses"), ExtResource("7_double_inkwell"), ExtResource("8_fine_quill"), ExtResource("9_blessed_candle"), ExtResource("10_new_shelf"), ExtResource("11_apocrypha_purgo"), ExtResource("12_apocrypha_fides"), ExtResource("13_apocrypha_lumen"), ExtResource("14_apocrypha_gloria"), ExtResource("15_apocrypha_verbum")])
-item_slots = 3
+deck = Array[ExtResource("99_si")]([ExtResource("7_double_inkwell"), ExtResource("10_new_shelf"), ExtResource("11_apocrypha_purgo"), ExtResource("12_apocrypha_fides"), ExtResource("13_apocrypha_lumen"), ExtResource("14_apocrypha_gloria"), ExtResource("15_apocrypha_verbum")])
+item_slots = 2
 apocrypha_slot = true
 price_growth = 0.1
-reroll_base = 5
-reroll_step = 3
+reroll_base = 3
+reroll_step = 2
 max_locks = 1
-wave_clear_ink = 4
+wave_clear_ink = 5
 open_delay = 1.0
 heal_only_candles = 1
