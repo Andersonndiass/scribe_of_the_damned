@@ -21,6 +21,11 @@ func _on_start() -> void:
 	_angle = direction.angle()
 	_player = get_tree().get_first_node_in_group(&"player") as Node2D
 	_follow()
+	if word.kill_zone:
+		# D-084: as penas dividem uma zona (o campeão leva 1 golpe forte por conjuração).
+		var z := open_zone(KillZone.Shape.POINTS, word.duration)
+		z.radius = word.width
+		_move_zone()
 	queue_redraw()
 
 
@@ -28,6 +33,7 @@ func _physics_process(delta: float) -> void:
 	_left -= delta
 	_angle += TAU * word.rotation_speed * delta
 	_follow()
+	_move_zone()
 	for k: int in word.orbit_count:
 		_flash[k] -= delta
 	var em := EnemyQuery.provider as EnemyManager
@@ -43,6 +49,14 @@ func _physics_process(delta: float) -> void:
 ## Centro da pena `k` no mundo.
 func feather_position(k: int) -> Vector2:
 	return global_position + BODY + Vector2.RIGHT.rotated(_angle + TAU * k / word.orbit_count) * word.radius
+
+
+func _move_zone() -> void:
+	if not zone.is_live():
+		return
+	zone.points.resize(word.orbit_count)
+	for k: int in word.orbit_count:
+		zone.points[k] = feather_position(k)
 
 
 func _follow() -> void:

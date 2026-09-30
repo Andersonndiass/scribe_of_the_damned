@@ -17,6 +17,7 @@ hit_cooldown = 0.25
 length = 160.0
 width = 5.0
 duration = 4.0
+kill_zone = true
 rotation_speed = 1.0
 word_a = ExtResource("3_a")
 word_b = ExtResource("4_b")

@@ -83,3 +83,22 @@ func test_tools_do_not_open_a_zone() -> void:
 	_caster._start_miracle(PAX, 1.0, o, Vector2.RIGHT)
 	await wait_physics_frames(3)
 	assert_eq(_killed, 0, "PAX empurra e atordoa, não mata")
+
+
+func test_angelus_feathers_and_martyrium_cross_kill_what_they_sweep() -> void:
+	# D-084 Fase 3: zonas que se movem com o escriba.
+	var ang: WordData = load("res://data/words/angelus.tres")
+	var mar: WordData = load("res://data/combos/martyrium.tres")
+	assert_true(ang.kill_zone and mar.kill_zone)
+	var body: Vector2 = _player.global_position
+	# Anel de inimigos na órbita das penas: elas passam por todos.
+	for k: int in 8:
+		_em.spawn(_tough, body + Vector2(0, -10) + Vector2.RIGHT.rotated(TAU * k / 8.0) * ang.radius)
+	_caster._start_miracle(ang, 1.0, body, Vector2.RIGHT)
+	await wait_seconds(1.5)
+	assert_eq(_em.count, 0, "as penas mataram todos os comuns da órbita")
+	for k: int in 6:
+		_em.spawn(_tough, _em.player_body() + Vector2.RIGHT.rotated(TAU * k / 6.0 + 0.3) * (mar.length * 0.6))
+	_caster._start_miracle(mar, 1.0, body, Vector2.RIGHT)
+	await wait_seconds(2.0)
+	assert_eq(_em.count, 0, "a cruz girando varreu todos")

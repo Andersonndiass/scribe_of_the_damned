@@ -5,7 +5,8 @@ extends RefCounted
 ## O milagre descreve a forma (e a move); o EnemyManager aplica 1× por tick de física.
 ## FSM: IDLE → ACTIVE → (DRAINING, só as de tela) → CLOSED; o milagre só termina em CLOSED.
 
-enum Shape { LINE, CIRCLE, CROSS, SCREEN }
+## POINTS: vários círculos de raio `radius` que se movem juntos (as penas do ANGELUS).
+enum Shape { LINE, CIRCLE, CROSS, SCREEN, POINTS }
 enum Phase { IDLE, ACTIVE, DRAINING, CLOSED }
 
 var shape: Shape = Shape.CIRCLE
@@ -19,6 +20,8 @@ var length: float = 0.0
 var width: float = 0.0
 ## CIRCLE: raio; SCREEN: raio do anel que cresce (0 = a tela toda).
 var radius: float = 0.0
+## POINTS: centros dos círculos (o milagre atualiza a cada tick).
+var points := PackedVector2Array()
 var life_left: float = 0.0
 ## Zonas de tela: ao acabar o tempo, continuam até não achar mais ninguém dentro.
 var drain: bool = false
@@ -72,6 +75,11 @@ func contains(p: Vector2, r: float) -> bool:
 			return along >= -r and along <= length + r and absf(rel.cross(dir)) <= width / 2.0 + r
 		Shape.CIRCLE:
 			return rel.length() <= radius + r
+		Shape.POINTS:
+			for c: Vector2 in points:
+				if c.distance_to(p) <= radius + r:
+					return true
+			return false
 		Shape.CROSS:
 			var q: Vector2 = rel.rotated(-angle)
 			var half: float = width / 2.0 + r
@@ -88,6 +96,13 @@ func bounds(pad: float) -> Rect2:
 			return Rect2(origin, Vector2.ZERO).expand(end).grow(width / 2.0 + pad)
 		Shape.CIRCLE:
 			return Rect2(origin - Vector2(radius, radius), Vector2(radius, radius) * 2.0).grow(pad)
+		Shape.POINTS:
+			if points.is_empty():
+				return Rect2()
+			var box := Rect2(points[0], Vector2.ZERO)
+			for c: Vector2 in points:
+				box = box.expand(c)
+			return box.grow(radius + pad)
 		Shape.CROSS:
 			var reach: float = (length + width) * 1.5
 			return Rect2(origin - Vector2(reach, reach), Vector2(reach, reach) * 2.0).grow(pad)

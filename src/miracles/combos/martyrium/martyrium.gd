@@ -16,6 +16,12 @@ func _on_start() -> void:
 	_tick = 0.0
 	_angle = direction.angle()
 	_follow()
+	if word.kill_zone:
+		# D-084: a cruz de laser mata o comum que ela varre, girando junto.
+		var z := open_zone(KillZone.Shape.CROSS, word.duration)
+		z.length = word.length
+		z.width = word.width
+		_move_zone()
 	queue_redraw()
 
 
@@ -24,6 +30,7 @@ func _physics_process(delta: float) -> void:
 	_tick -= delta
 	_angle += TAU * word.rotation_speed * delta
 	_follow()
+	_move_zone()
 	if _tick <= 0.0:
 		_tick += word.hit_cooldown
 		var em := EnemyQuery.provider as EnemyManager
@@ -34,6 +41,11 @@ func _physics_process(delta: float) -> void:
 	if _left <= 0.0:
 		visible = true
 		finish()
+
+
+func _move_zone() -> void:
+	zone.origin = global_position
+	zone.angle = _angle
 
 
 func _follow() -> void:
