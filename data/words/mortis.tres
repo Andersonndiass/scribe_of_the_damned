@@ -12,5 +12,7 @@ miracle_scene = ExtResource("2_scene")
 power_budget = 3.5
 kill_hp_threshold = 5
 damage = 20.0
+duration = 0.6
+kill_zone = true
 radius = 999.0
 vfx_prefix = &"VFX_MORTIS"

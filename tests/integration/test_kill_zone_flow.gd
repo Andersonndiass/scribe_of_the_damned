@@ -102,3 +102,18 @@ func test_angelus_feathers_and_martyrium_cross_kill_what_they_sweep() -> void:
 	_caster._start_miracle(mar, 1.0, body, Vector2.RIGHT)
 	await wait_seconds(2.0)
 	assert_eq(_em.count, 0, "a cruz girando varreu todos")
+
+
+func test_screen_sweeps_kill_every_common_the_ring_reaches() -> void:
+	# D-084 Fase 4: MORTIS, PURGO, REQUIEM e MISERERE — anel de tela que cresce pelo `duration`.
+	for id: String in ["mortis", "purgo", "miserere"]:
+		var w: WordData = load("res://data/words/%s.tres" % id)
+		assert_true(w.kill_zone, "%s é ataque" % id)
+		assert_almost_eq(w.duration, 0.6, 0.001, "o tempo da varredura mora nos dados")
+	assert_true((load("res://data/combos/requiem.tres") as WordData).kill_zone)
+	var o: Vector2 = _player.global_position
+	_em.spawn(_tough, Vector2(40, 40))
+	_em.spawn(_tough, Vector2(600, 320))
+	_caster._start_miracle(load("res://data/words/mortis.tres"), 1.0, o, Vector2.RIGHT)
+	await wait_seconds(0.8)
+	assert_eq(_em.count, 0, "vida 999 nos cantos: o anel alcançou e matou")

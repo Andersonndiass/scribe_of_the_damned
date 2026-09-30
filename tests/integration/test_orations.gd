@@ -151,11 +151,10 @@ func test_miserere_damages_absolves_and_forgives_once() -> void:
 	_caster.cast()
 	assert_true(_caster.heresy_pool.is_active())
 	_player.stun(0.0)
-	var i: int = _tough(Vector2(600, 320))
+	_tough(Vector2(600, 320))
 	assert_true(_cast("MISERERE"))
 	await wait_seconds(0.5)  # varredura + dissolução da poça (0.2 s) + hit-stop
-	var w: WordData = _word(&"miserere")
-	assert_eq(_manager.hp[i], 10_000 - roundi(w.damage * w.power_budget))
+	assert_eq(_manager.count, 0, "a varredura matou o comum resistente (D-084: MISERERE é ataque)")
 	assert_false(_caster.heresy_pool.is_active(), "poça de heresia apagada")
 	assert_false(_manager.is_aggro_active(), "e o aggro dela")
 	# A próxima heresia é perdoada: sem stun e as letras ficam.

@@ -4,7 +4,6 @@ extends Miracle
 ## Visual (design-agent): varredura de 0.6 s como a MORTIS, com as cores invertidas: anel CHALK
 ## de 4 px com borda INK de 1 px por fora, tracejado em 12 segmentos.
 
-const SWEEP_TIME := 0.6
 const SCREEN_REACH := 740.0
 const SEGMENTS := 12
 
@@ -19,11 +18,18 @@ func _on_start() -> void:
 	if em != null:
 		begin_hit()
 		em.hit_boss_sweep(maxi(1, roundi(word.damage * damage_mul)))  # 10 literais, como nos campeões
+	if word.kill_zone:
+		# D-084: o anel que varre a tela mata o comum que ele alcança (inclusive quem nasce nele).
+		var z := open_zone(KillZone.Shape.SCREEN, word.duration)
+		z.origin = origin
+		z.radius = 1.0
 	queue_redraw()
 
 
 func _physics_process(delta: float) -> void:
 	_t += delta
+	if zone.is_live():
+		zone.radius = maxf(1.0, SCREEN_REACH * clampf(_t / word.duration, 0.0, 1.0))
 	var em := EnemyQuery.provider as EnemyManager
 	if em != null and _cursor >= 0:
 		# "Dá 10 de dano" (FR-208): o power da palavra não entra; a GLORIA sim.
@@ -31,12 +37,12 @@ func _physics_process(delta: float) -> void:
 		begin_hit()
 		_cursor = em.purgo_step(_cursor, word.kill_batch_per_frame, elite)
 	queue_redraw()
-	if _t >= SWEEP_TIME and _cursor < 0:
+	if _t >= word.duration and _cursor < 0:
 		finish()
 
 
 func _draw() -> void:
-	var r: float = SCREEN_REACH * clampf(_t / SWEEP_TIME, 0.0, 1.0)
+	var r: float = SCREEN_REACH * clampf(_t / word.duration, 0.0, 1.0)
 	var step: float = TAU / SEGMENTS
 	for k: int in SEGMENTS:
 		var a0: float = step * k

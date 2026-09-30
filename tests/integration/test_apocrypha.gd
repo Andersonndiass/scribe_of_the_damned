@@ -138,7 +138,9 @@ func test_purgo_kills_commons_and_only_scratches_champions() -> void:
 	var purgo: WordData = _field.lexicon.word_for("PURGO")
 	await wait_physics_frames(15)
 	assert_eq(_manager.count, 1, "só o campeão sobrou")
-	assert_eq(_manager.hp[0], 500 - int(purgo.damage), "10 de dano, o power não entra")
+	# 10 literais da varredura + o golpe da zona letal (D-084); segue só arranhado.
+	assert_lt(_manager.hp[0], 500 - int(purgo.damage) + 1, "levou os 10 de dano")
+	assert_gt(_manager.hp[0], 450, "e só arranhou")
 	assert_eq(PoolManager.instantiate_count, before, "zero instantiate (SC-202)")
 
 
