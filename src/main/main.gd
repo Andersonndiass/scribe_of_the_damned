@@ -5,6 +5,7 @@ const TELEGRAPH_SCENE := preload("res://src/enemies/spawn_telegraph.tscn")
 const DISSOLVE_SCENE := preload("res://src/enemies/dissolve_fx.tscn")
 const LETTER_SCENE := preload("res://src/letters/letter.tscn")
 const GOLD_SCENE := preload("res://src/letters/gold_ink.tscn")
+const WAX_SCENE := preload("res://src/letters/wax_drop.tscn")
 ## Até ~8 campeões × 5 gotas no chão ao mesmo tempo (excedente some: D-037).
 const GOLD_PREWARM := 40
 const TELEGRAPH_PREWARM := 64
@@ -121,6 +122,14 @@ func _ready() -> void:
 	grace_flow.active = is_real_game() or has_meta(&"grace_manual") or has_meta(&"grace_auto")
 	add_child(grace_flow)
 	seals.flow = grace_flow
+	# Pingo de cera (016 FR-1615): ligado junto com a Graça.
+	var wax := WaxDropField.new()
+	wax.name = "WaxDropField"
+	wax.player = $World/Player
+	wax.manager = $World/EnemyManager
+	wax.active = grace_flow.active
+	$World.add_child(wax)
+	PoolManager.register(WaxDrop.POOL_KEY, WAX_SCENE, wax.tuning.pool_size, wax)
 	# Frases curtas na partida (008 FR-815).
 	var barks := BarkDirector.new()
 	barks.name = "Barks"

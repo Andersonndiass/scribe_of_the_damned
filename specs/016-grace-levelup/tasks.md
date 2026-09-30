@@ -38,8 +38,8 @@
 **Checkpoint 016-C:** ✅ jogável — o autor já pode testar (2026-09-30, GUT 448/448).
 
 ## Fase 5 — Pingo de cera
-- **T1640** `wax_drop.tres`, `WaxDrop` + `WaxDropField` em pool, registro no Main, testes.
-- **T1641** Placeholder do pingo no gerador.
+- ✅ **T1640** `wax_drop.tres`, `WaxDrop` + `WaxDropField` em pool, registro no Main, testes.
+- ✅ **T1641** Placeholder do pingo no gerador.
 
 ## Fase 6 — Sonda e fechamento
 - **T1650** `balance_probe`: linha GRACE (níveis por onda, % de palavras, primeiro nível, escolhas).
