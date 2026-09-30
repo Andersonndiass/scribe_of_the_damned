@@ -66,9 +66,19 @@ const REVEAL_SHADER := preload("res://src/arena/stage_reveal.gdshader")
 
 var _stamp: DecalStamp
 ## Pilha da página (FR-405): fundo, texto-fantasma, ornamentos, estágios 1..3 — texturas em cache.
-var _ghost: Sprite2D
-var _stages: Array[Sprite2D] = []
-var _ghost_textures: Array[Texture2D] = []
+## A página inteira num desenho só (SC-405): as camadas estáticas são montadas numa imagem fora do
+## combate (fim da onda, começo da onda); só o estágio sendo revelado fica por cima, com o shader.
+var _page_sprite: Sprite2D
+var _reveal_sprite: Sprite2D
+var _page_texture: ImageTexture
+var _page_image: Image
+## Estágio que está montado na textura da página (-1 = nenhum).
+var composed_stage: int = -1
+var _bg_image: Image
+var _ornaments_image: Image
+var _ghost_images: Array[Image] = []
+var _stage_images: Array[Image] = []
+var _stage_textures: Array[Texture2D] = []
 var _reveal_material := ShaderMaterial.new()
 var _obstacle_sprites: Array[Sprite2D] = []
 var ambience: FrameAmbience
@@ -159,44 +169,71 @@ func set_degradation(stage: int) -> void:
 	_update_layers()
 
 
-## Mostra os estágios até o visível; o que está sendo revelado aparece em degraus (shader).
+## A página montada no estágio visível; o estágio sendo revelado aparece por cima, em degraus.
 func _update_layers() -> void:
-	if _stages.is_empty():
+	if _page_sprite == null or _bg_image == null:
 		return
-	var revealing: bool = page.state == PageDegradation.Phase.TRANSITIONING
-	var steps: int = ambience_tuning.reveal_steps
-	_reveal_material.set_shader_parameter(&"level", clampi(ceili(page.reveal * steps), 0, steps))
-	for s: int in range(1, DEGRADATION_STAGES):
-		var sprite: Sprite2D = _stages[s - 1]
-		var fresh: bool = revealing and s > page.shown_stage and s <= page.stage
-		sprite.visible = s <= page.shown_stage or fresh
-		sprite.material = _reveal_material if fresh else null
-	_ghost.texture = _ghost_textures[clampi(page.shown_stage, 0, _ghost_textures.size() - 1)]
+	if composed_stage != page.shown_stage:
+		_compose(page.shown_stage)
+	var revealing: bool = page.state == PageDegradation.Phase.TRANSITIONING and page.stage > page.shown_stage
+	_reveal_sprite.visible = revealing
+	if revealing:
+		var steps: int = ambience_tuning.reveal_steps
+		_reveal_sprite.texture = _stage_textures[page.stage - 1]
+		_reveal_material.set_shader_parameter(&"level", clampi(ceili(page.reveal * steps), 0, steps))
+
+
+## Monta fundo + texto-fantasma do estágio + ornamentos + estágios até `stage` numa imagem só.
+## Roda só quando o estágio visível muda (fora do combate); atualiza a mesma textura, sem alocar.
+func _compose(stage: int) -> void:
+	var full := Rect2i(Vector2i.ZERO, Vector2i(PAGE_SIZE))
+	_page_image.copy_from(_bg_image)
+	_page_image.blend_rect(_ghost_images[clampi(stage, 0, _ghost_images.size() - 1)], full, Vector2i.ZERO)
+	_page_image.blend_rect(_ornaments_image, full, Vector2i.ZERO)
+	for s: int in range(1, stage + 1):
+		_page_image.blend_rect(_stage_images[s - 1], full, Vector2i.ZERO)
+	if _page_texture == null:
+		_page_texture = ImageTexture.create_from_image(_page_image)
+		_page_sprite.texture = _page_texture
+	else:
+		_page_texture.update(_page_image)
+	composed_stage = stage
 
 
 func _build_layers() -> void:
-	for layer: String in ["bg", "ghost", "ornaments", "stage_1", "stage_2", "stage_3"]:
-		var sprite := Sprite2D.new()
-		sprite.name = "Layer_" + layer
-		sprite.centered = false
-		add_child(sprite)
-		if layer == "ghost":
-			_ghost = sprite
-		elif layer.begins_with("stage_"):
-			_stages.append(sprite)
+	_page_sprite = Sprite2D.new()
+	_page_sprite.name = "Page"
+	_page_sprite.centered = false
+	add_child(_page_sprite)
+	_reveal_sprite = Sprite2D.new()
+	_reveal_sprite.name = "Reveal"
+	_reveal_sprite.centered = false
+	_reveal_sprite.material = _reveal_material
+	_reveal_sprite.visible = false
+	add_child(_reveal_sprite)
 	_load_layer_textures()
-	_update_layers()
 
 
 func _load_layer_textures() -> void:
-	(get_node("Layer_bg") as Sprite2D).texture = _layer_texture("bg")
-	(get_node("Layer_ornaments") as Sprite2D).texture = _layer_texture("ornaments")
-	_ghost_textures.clear()
+	_bg_image = _layer_image("bg")
+	_ornaments_image = _layer_image("ornaments")
+	_ghost_images.clear()
 	for s: int in DEGRADATION_STAGES:
-		_ghost_textures.append(_layer_texture("ghost_%d" % s))
+		_ghost_images.append(_layer_image("ghost_%d" % s))
+	_stage_images.clear()
+	_stage_textures.clear()
 	for s: int in range(1, DEGRADATION_STAGES):
-		_stages[s - 1].texture = _layer_texture("stage_%d" % s)
+		_stage_textures.append(_layer_texture("stage_%d" % s))
+		_stage_images.append(_layer_image("stage_%d" % s))
+	_page_image = Image.create(int(PAGE_SIZE.x), int(PAGE_SIZE.y), false, Image.FORMAT_RGBA8)
+	composed_stage = -1
 	_update_layers()
+
+
+func _layer_image(layer: String) -> Image:
+	var img: Image = _layer_texture(layer).get_image()
+	img.convert(Image.FORMAT_RGBA8)
+	return img
 
 
 ## Arte do autor da camada, se existir; senão, a gerada.

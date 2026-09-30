@@ -27,4 +27,4 @@
 **Checkpoint 004-C:** ✅ a página se gasta onda a onda, legível, com os obstáculos à vista (2026-09-29, GUT 412/412; D-080: altar e banco fora do HUD, SC-407 remedido e dentro das faixas).
 
 ## Fase 4 — Fechamento
-- **T430** GUT, export web, SC-001 no estágio 3 com os obstáculos (SC-405), `FEATURES.md`, `CLAUDE.md`, `docs/DECISIONS.md`, push.
+- ✅ **T430** GUT, export web, SC-001 no estágio 3 com os obstáculos (SC-405), `FEATURES.md`, `CLAUDE.md`, `docs/DECISIONS.md`, push.

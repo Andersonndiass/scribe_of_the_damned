@@ -96,27 +96,31 @@ func test_ghost_text_fades_word_by_word() -> void:
 		assert_lt(counts[s], counts[s - 1], "o texto-fantasma falha mais no estágio %d" % s)
 
 
-func test_arena_stacks_the_stages_it_has_reached() -> void:
+func test_arena_composes_the_page_in_one_texture() -> void:
 	EventBus.page_stage_changed.emit(2, 2, false)
-	assert_true(_arena._stages[0].visible)
-	assert_true(_arena._stages[1].visible)
-	assert_false(_arena._stages[2].visible, "o estágio 3 ainda não")
-	assert_eq(_arena._ghost.texture, _arena._ghost_textures[2])
+	assert_eq(_arena.composed_stage, 2, "a página montada no estágio 2")
+	assert_false(_arena._reveal_sprite.visible)
 	assert_eq(_arena._obstacle_sprites.size(), 7, "as 7 peças na página")
+	# Pixel do rasgo do estágio 2 na borda direita (639,155) aparece na página montada.
+	var page: Image = _arena._page_image
+	assert_true(_same(page.get_pixel(639, 155), Palette.INK), "rasgo do estágio 2 na página")
+	EventBus.page_stage_changed.emit(2, 2, false)
+	assert_eq(_arena.composed_stage, 2, "mesmo estágio: não monta de novo")
 
 
 func test_reveal_comes_in_steps_then_settles() -> void:
 	EventBus.page_stage_changed.emit(2, 3, false)
 	EventBus.page_stage_changed.emit(3, 3, true)
-	var stage3: Sprite2D = _arena._stages[2]
-	assert_true(stage3.visible, "o estágio novo aparece já no começo da revelação")
-	assert_eq(stage3.material, _arena._reveal_material, "em degraus, pelo shader")
+	var reveal: Sprite2D = _arena._reveal_sprite
+	assert_true(reveal.visible, "o estágio novo aparece por cima já no começo")
+	assert_eq(_arena.composed_stage, 2, "a página montada ainda é a do estágio anterior")
 	var levels: Array[int] = []
 	for t: int in 30:
 		_arena._process(DT)
-		if stage3.material != null:
+		if reveal.visible:
 			levels.append(int(_arena._reveal_material.get_shader_parameter(&"level")))
-	assert_eq(stage3.material, null, "terminou: sem shader")
+	assert_false(reveal.visible, "terminou: sem a camada por cima")
+	assert_eq(_arena.composed_stage, 3, "e a página montada já inclui o estágio 3")
 	assert_eq(_arena.degradation_stage, 3)
 	for i: int in range(1, levels.size()):
 		assert_true(levels[i] >= levels[i - 1], "os degraus só sobem")

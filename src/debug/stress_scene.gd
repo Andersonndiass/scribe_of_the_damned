@@ -1,7 +1,7 @@
 extends Node
 ## DEBUG (T080): cena de stress = cena principal real + StressDriver + FpsProbe.
 ## Desktop: godot --path . res://src/debug/stress_scene.tscn [-- quit]
-## Web: index.html?stress (SC-001) · ?stress=wave9 (SC-503) · ?stress=boss (006 SC-607) · ?stress=purgo|dominus|miserere e o
+## Web: index.html?stress (SC-001; &stage=3 = 004 SC-405) · ?stress=wave9 (SC-503) · ?stress=boss (006 SC-607) · ?stress=purgo|dominus|miserere e o
 ## controle ?stress=ctl (002 SC-202: frames acima de 33 ms depois da varredura).
 
 const MAIN_SCENE := preload("res://src/main/main.tscn")
@@ -32,6 +32,11 @@ func _ready() -> void:
 				mode = &"sweep"
 				_driver.set(&"sweep_word", StringName(w))
 	_driver.call(&"setup", _main, mode)
+	# 004 SC-405: &stage=3 mede com a página no estágio pedido (as peças já vêm do capítulo).
+	var stage_arg: RegExMatch = RegEx.create_from_string("stage=([0-3])").search(asked)
+	if stage_arg != null:
+		var stage: int = int(stage_arg.get_string(1))
+		EventBus.page_stage_changed.emit(stage, stage, false)
 	_probe = FpsProbe.new()
 	_probe.counts_provider = _counts
 	add_child(_probe)

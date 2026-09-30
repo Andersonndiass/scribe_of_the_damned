@@ -484,6 +484,14 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
 - **Tempo e movimento (animation-agent):** revelação em 4 degraus de 100 ms (dissolve em blocos 2×2, shader), sem hit-stop nem tremor; ameaça, poeira e brasas até 6 de cada, só na moldura, fora do HUD, números em `data/tuning/arena_ambience.tres`.
 - **Status:** ✅ aceita. O SC-407 é medido de novo com o layout novo.
 
+### D-081 · 2026-09-29 · Fechamento da 004 (arena e degradação)
+- **Resultado:** a página segue o capítulo (estágios 0,0,1,1,2,2,3,3,3; chefe no 3), só piora no fim da onda (revelação em 4 degraus) e ameaça nos últimos 10 s; 7 peças jogáveis (colisão do escriba, inimigos contornando, Traça por cima, dash e tiro do Monge param, nada nasce ou cai dentro); página em camadas geradas por script (rasura na moldura, sem BLOOD), com a arte do autor por camada em `assets/arena/chapter_1/`.
+- **SC-407:** dentro das faixas da D-079 com o layout da D-080 (`docs/reviews/T413-rules-parecer.md` §7).
+- **SC-405 (desempenho):** 6 camadas de tela cheia custavam 4–7 FPS no estágio 3 → as camadas estáticas agora são montadas numa textura só fora do combate (estágio 3 = estágio 0). Build de antes da 004 e o atual, alternados na mesma sessão: iguais (68,5 × 67,2; 41,3 × 44,1 FPS). O p95 abaixo de 55 veio desta máquina hoje, também no build antigo → remedir na 011 (C-005).
+- **Achados:** as sondas do chefe (`balance_probe boss`) travam no meio da fase 3 e ficam rodando; já acontecia antes da 004. Pendente para a próxima vez que a sonda do chefe for usada. Com mais de 2 Godot rodando, os números da sonda mudam 2–3×: medir com no máximo 2.
+- **Para o playtest do autor:** ondas 1, 5 e 7 com as peças; esquivar Cruz, Duplo e Swipe perto do vitral e do banco; letras empurradas perto das peças (T413 §6).
+- **Status:** ✅ 004 Complete.
+
 ## Conflitos abertos
 
 - **C-006 · Vida do Asmodeus (DECISÃO DO AUTOR, playtest).** 1500 (rules-agent) supõe uma palavra a cada ~5 s. A sonda não mede isso. No playtest (`index.html?boss`, ou jogando o capítulo), se a luta passar muito de 4 min, baixar `max_hp` em `data/bosses/asmodeus.tres` (ex.: 1000); se ficar abaixo de 2 min, subir.

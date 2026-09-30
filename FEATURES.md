@@ -1,6 +1,6 @@
 # Roadmap de Features
 
-> ⚠️ **Status real (2026-09-29):** `000` aprovada; **`001`, `005`, `002`, `003`, `006`, `007` e `008` Complete**; `009` com as Fases 1–2 prontas (sons provisórios). As demais features **não têm arquivos no repo**, apesar do "Tasked" abaixo; serão escritas just-in-time. Ver `docs/PLANO-ETAPAS.md`.
+> ⚠️ **Status real (2026-09-29):** `000` aprovada; **`001`, `005`, `002`, `003`, `006`, `007`, `008` e `004` Complete**; `009` com as Fases 1–2 prontas (sons provisórios). As demais features **não têm arquivos no repo**, apesar do "Tasked" abaixo; serão escritas just-in-time. Ver `docs/PLANO-ETAPAS.md`.
 
 | # | Feature | Depende de | Status |
 |---|---|---|---|
@@ -9,7 +9,7 @@
 | 001 | core-loop | 000 | **Complete ✅** (2026-09-25 · Firefox a medir pelo autor) |
 | 002 | vocabulary-combos | 001 | **Complete** ✅ (2026-09-28) |
 | 003 | shop-scriptorium | 001 | **Complete** ✅ (2026-09-28) |
-| 004 | arena-degradation | 001 | Spec aprovada (2026-09-29, D-078) |
+| 004 | arena-degradation | 001 | **Complete** ✅ (2026-09-29, D-081 · arte por camada: autor, `assets/arena/chapter_1/`) |
 | 005 | enemies-roster (+ ondas Cap. 1) | 001 | **Complete ✅** (2026-09-25 · shake da morte do campeão pendente) |
 | 006 | boss-asmodeus (Cap. 1) | 002, 005 | **Complete** ✅ (2026-09-29 · vida do chefe a confirmar no playtest) |
 | 007 | ui-screens-menus | 001 | **Complete** ✅ (2026-09-29 · verbetes que faltam: autor, D-069) |
