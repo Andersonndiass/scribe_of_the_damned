@@ -28,7 +28,12 @@ func handle_input(event: InputEvent) -> bool:
 	if step >= 0:
 		index = step
 		return true
-	if is_confirm(event):
+	var over: int = pointer_at(event, _page_rects())
+	if over >= 0:
+		index = over
+		if not clicked:
+			return false
+	if is_confirm(event) or (over >= 0 and clicked):
 		var ch: Dictionary = chapters[index]
 		if ch["unlocked"] and ch["data"] != "":
 			var data: ChapterData = load(ch["data"])
@@ -45,6 +50,13 @@ func handle_input(event: InputEvent) -> bool:
 		request(&"character")
 		return true
 	return false
+
+
+func _page_rects() -> Array[Rect2]:
+	var out: Array[Rect2] = []
+	for i: int in chapters.size():
+		out.append(Rect2(Vector2(PAGE_X0 + i * PAGE_STEP, PAGE_Y - FOCUS_LIFT), PAGE_SIZE + Vector2(0, FOCUS_LIFT)))
+	return out
 
 
 func _draw() -> void:

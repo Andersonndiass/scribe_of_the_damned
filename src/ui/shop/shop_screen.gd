@@ -104,6 +104,8 @@ func _unhandled_input(event: InputEvent) -> void:
 
 ## Trata uma tecla da loja. Retorna true se era da loja (e consome a entrada).
 func handle_input(event: InputEvent) -> bool:
+	if event is InputEventMouse:
+		return _mouse_input(_canvas.make_input_local(event) as InputEventMouse)
 	if not event.is_pressed() or event.is_echo():
 		return false
 	var n: int = _shop.offer.cards.size()
@@ -131,6 +133,45 @@ func handle_input(event: InputEvent) -> bool:
 		return false
 	_canvas.queue_redraw()
 	return true
+
+
+## Mouse (D-084): passar sobre a carta seleciona; clique compra, clique direito trava; clique em
+## Rerolar e em Próxima onda faz o mesmo que as teclas.
+func _mouse_input(m: InputEventMouse) -> bool:
+	var b := m as InputEventMouseButton
+	var p: Vector2 = m.position
+	var over: int = -1
+	for i: int in _shop.offer.cards.size():
+		if i < CARD_X.size() and Rect2(CARD_X[i], CARD_Y - HOVER_LIFT, CARD_SIZE.x, CARD_SIZE.y + HOVER_LIFT).has_point(p):
+			over = i
+	if b == null:
+		if over >= 0 and over != selected:
+			selected = over
+			_canvas.queue_redraw()
+		return false
+	if not b.pressed:
+		return false
+	if over >= 0:
+		_finish_entry()
+		selected = over
+		if b.button_index == MOUSE_BUTTON_LEFT:
+			_try_buy(over)
+		elif b.button_index == MOUSE_BUTTON_RIGHT:
+			if _shop.toggle_lock(over) or _shop.offer.locked_slot() == -1:
+				_start_anim(over, &"lock", 0.0)
+		_canvas.queue_redraw()
+		return true
+	if b.button_index != MOUSE_BUTTON_LEFT:
+		return false
+	if REROLL_PLATE.has_point(p):
+		_finish_entry()
+		_try_reroll()
+		_canvas.queue_redraw()
+		return true
+	if RIBBON.has_point(p):
+		_shop.close()
+		return true
+	return false
 
 
 ## Estado visível da carta `i` (testes e desenho).

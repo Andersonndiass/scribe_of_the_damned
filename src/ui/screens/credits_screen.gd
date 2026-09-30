@@ -42,7 +42,8 @@ func _process(delta: float) -> void:
 
 
 func handle_input(event: InputEvent) -> bool:
-	if is_back(event):
+	var click := event as InputEventMouseButton
+	if is_back(event) or (click != null and click.pressed and click.button_index == MOUSE_BUTTON_LEFT):
 		_done = true
 		request(&"menu")
 		return true

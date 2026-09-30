@@ -55,7 +55,12 @@ func handle_input(event: InputEvent) -> bool:
 	if step >= 0:
 		index = step
 		return true
-	if is_confirm(event):
+	var over: int = pointer_at(event, _medal_rects())
+	if over >= 0:
+		index = over
+		if not clicked:
+			return false
+	if is_confirm(event) or (over >= 0 and clicked):
 		if characters[index]["unlocked"]:
 			GameState.picked_character = StringName(characters[index]["id"])
 			_stamp_left = STAMP_FRAMES * STAMP_FRAME
@@ -64,6 +69,13 @@ func handle_input(event: InputEvent) -> bool:
 		request(&"menu")
 		return true
 	return false
+
+
+func _medal_rects() -> Array[Rect2]:
+	var out: Array[Rect2] = []
+	for i: int in mini(characters.size(), MEDAL_X.size()):
+		out.append(Rect2(MEDAL_X[i] - MEDAL_R, MEDAL_Y - MEDAL_R - FOCUS_LIFT, MEDAL_R * 2, MEDAL_R * 2 + FOCUS_LIFT))
+	return out
 
 
 func _draw() -> void:

@@ -82,6 +82,8 @@ func _process(delta: float) -> void:
 func handle_input(event: InputEvent) -> bool:
 	if waiting_key:
 		return _capture_key(event)
+	if event is InputEventMouse:
+		return _mouse_input(local(event) as InputEventMouse)
 	if not event.is_pressed() or event.is_echo():
 		return false
 	if in_keys:
@@ -108,6 +110,62 @@ func handle_input(event: InputEvent) -> bool:
 		leave()
 	else:
 		return false
+	return true
+
+
+## Mouse (D-084): passar por cima foca a linha/botão; o clique faz o que o Confirmar faria (volume:
+## vai para o ponto clicado na barra; sim/não e idioma alternam); clique direito volta.
+func _mouse_input(m: InputEventMouse) -> bool:
+	var b := m as InputEventMouseButton
+	if b != null and not b.pressed:
+		return false
+	if b != null and b.button_index == MOUSE_BUTTON_RIGHT:
+		if in_keys:
+			in_keys = false
+		else:
+			leave()
+		return true
+	var click: bool = b != null and b.button_index == MOUSE_BUTTON_LEFT
+	if b != null and not click:
+		return false
+	var p: Vector2 = m.position
+	if in_keys:
+		if UiStyle.ribbon_rect(KEY_BACK, tr(&"OPT_BACK"), BUTTON_W).has_point(p):
+			if click:
+				in_keys = false
+			return click
+		for i: int in Settings.REBINDABLE.size():
+			if Rect2(ROW_X, KEY_Y0 + i * KEY_STEP, ROW_W, KEY_ROW_H).has_point(p):
+				key_focus = i
+				if click:
+					waiting_key = true
+					swapped_with.clear()
+				return click
+		return false
+	var hit: int = -1
+	for i: int in LIST_ROWS:
+		if Rect2(ROW_X, ROW_Y0 + i * ROW_STEP, ROW_W, ROW_H).has_point(p):
+			hit = i
+	for k: int in 2:
+		var idx: int = LIST_ROWS + k
+		if UiStyle.ribbon_rect(Vector2(BUTTON_X[k], BUTTONS_Y), tr(LABELS[rows[idx]]), BUTTON_W).has_point(p):
+			hit = idx
+	if hit < 0:
+		return false
+	if hit != focus:
+		focus = hit
+		confirm_reset = false
+	if not click:
+		return false
+	var row: StringName = focused_row()
+	if BUS_OF.has(row):
+		if p.x >= VALUE_X - 4 and p.x <= VALUE_X + SLIDER_W + 4:
+			Settings.set_volume(BUS_OF[row], clampf(roundf((p.x - VALUE_X) / 10.0) / 10.0, 0.0, 1.0))
+			Settings.commit()
+	elif row in TOGGLES or row == &"language":
+		_toggle(row)
+	else:
+		_activate()
 	return true
 
 
@@ -188,6 +246,10 @@ func _keys_input(event: InputEvent) -> bool:
 
 ## Esperando tecla: a próxima tecla vira a da ação; Esc cancela (e não é remapeável).
 func _capture_key(event: InputEvent) -> bool:
+	var mb := event as InputEventMouseButton
+	if mb != null and mb.pressed and mb.button_index == MOUSE_BUTTON_RIGHT:
+		waiting_key = false  # clique direito cancela, como o Esc
+		return true
 	if not event is InputEventKey or not event.is_pressed() or event.is_echo():
 		return true
 	var key: InputEventKey = event

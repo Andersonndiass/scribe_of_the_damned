@@ -8,6 +8,8 @@ extends Node2D
 signal closed()
 
 var menu := MenuList.new()
+## O último `pointer_at` foi um clique (e não só o mouse passando por cima).
+var clicked: bool = false
 var embedded: bool = false
 var accepting: bool = true
 var age: float = 0.0
@@ -31,9 +33,15 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 
 
-## Entrada da tela (as telas podem sobrescrever). Retorna true se consumiu.
+## Entrada da tela (as telas podem sobrescrever). Retorna true se consumiu. O mouse chega nas
+## coordenadas da tela (as áreas dos itens são as do desenho).
 func handle_input(event: InputEvent) -> bool:
-	return menu.handle_input(event)
+	return menu.handle_input(local(event))
+
+
+## O evento do mouse nas coordenadas desta tela (os outros passam como estão).
+func local(event: InputEvent) -> InputEvent:
+	return make_input_local(event) if event is InputEventMouse else event
 
 
 func request(screen: StringName) -> void:
@@ -53,7 +61,9 @@ func draw_menu(center_x: float, top: float, step: float = 22.0, min_w: float = U
 	for i: int in menu.items.size():
 		var it: Dictionary = menu.items[i]
 		var state: StringName = &"focus" if i == menu.focus else (&"idle" if it["enabled"] else &"disabled")
-		UiStyle.draw_ribbon(self, Vector2(center_x, top + i * step), tr(it["label"]), state, min_w)
+		var center := Vector2(center_x, top + i * step)
+		UiStyle.draw_ribbon(self, center, tr(it["label"]), state, min_w)
+		menu.set_rect(i, UiStyle.ribbon_rect(center, tr(it["label"]), min_w))
 
 
 func _on_chosen(_id: StringName) -> void:
@@ -86,7 +96,27 @@ static func is_confirm(event: InputEvent) -> bool:
 
 
 static func is_back(event: InputEvent) -> bool:
+	var mb := event as InputEventMouseButton
+	if mb != null:
+		return mb.pressed and mb.button_index == MOUSE_BUTTON_RIGHT  # clique direito volta
 	return event.is_pressed() and not event.is_echo() and (event.is_action(&"pause") or event.is_action(&"ui_cancel"))
+
+
+## Mouse sobre uma fileira de áreas (coordenadas da tela): o índice sob o ponteiro ao passar por cima
+## ou no clique esquerdo (aí `clicked` fica true); -1 se não há mouse ou área.
+func pointer_at(event: InputEvent, rects: Array[Rect2]) -> int:
+	clicked = false
+	var m := local(event) as InputEventMouse
+	if m == null:
+		return -1
+	var b := m as InputEventMouseButton
+	if b != null and not (b.pressed and b.button_index == MOUSE_BUTTON_LEFT):
+		return -1
+	for i: int in rects.size():
+		if rects[i].has_point(m.position):
+			clicked = b != null
+			return i
+	return -1
 
 
 ## Cadeado 8×10 com o topo em `pos` (D-076; mapa do design-agent): alça INK de 2 px, corpo `body`

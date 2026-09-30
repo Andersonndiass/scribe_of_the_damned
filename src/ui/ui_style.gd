@@ -102,6 +102,13 @@ static func ribbon_width(text: String, min_w: float = RIBBON_MIN_W) -> float:
 	return maxf(min_w, PixelFont.width(text) + RIBBON_PAD)
 
 
+## Área clicável da fita centrada em `center` (corpo + rabos; o mouse nos menus, D-084).
+static func ribbon_rect(center: Vector2, text: String, min_w: float = RIBBON_MIN_W) -> Rect2:
+	var w: float = ribbon_width(text, min_w)
+	return Rect2(roundf(center.x - w / 2.0) - RIBBON_TAIL, roundf(center.y - RIBBON_H / 2.0),
+		w + RIBBON_TAIL * 2, RIBBON_H)
+
+
 ## Fita (item de menu). `state`: &"idle", &"focus", &"disabled". `center` = centro da fita.
 ## Contorno em toda a forma (corpo e rabos): INK_SOFT em repouso, GOLD no foco (+CHALK no alto
 ## contraste); a pena-cursor aponta para a fita pela esquerda.

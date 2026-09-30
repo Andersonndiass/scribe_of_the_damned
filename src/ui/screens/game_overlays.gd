@@ -94,7 +94,13 @@ func _process(delta: float) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if subscreen != null or not event.is_pressed() or event.is_echo():
+	if subscreen != null:
+		return
+	if event is InputEventMouse:
+		if mode != Mode.NONE and _mouse_input(_canvas.make_input_local(event) as InputEventMouse):
+			get_viewport().set_input_as_handled()
+		return
+	if not event.is_pressed() or event.is_echo():
 		return
 	var handled: bool = true
 	if mode == Mode.NONE:
@@ -197,6 +203,16 @@ func _show_buttons() -> void:
 	_entries_all = true
 
 
+## Mouse (D-084): as fitas registram a área ao desenhar; antes dos botões, um clique os mostra.
+func _mouse_input(m: InputEventMouse) -> bool:
+	var b := m as InputEventMouseButton
+	if b != null and b.pressed and not buttons_shown and mode != Mode.PAUSED:
+		if age >= SKIP_AFTER:
+			_show_buttons()
+		return true
+	return menu.handle_input(m)
+
+
 ## Game Over: dois botões lado a lado (←/→ e ↑/↓ trocam).
 func _row_input(event: InputEvent) -> bool:
 	if event.is_action(&"move_left") or event.is_action(&"move_right"):
@@ -290,6 +306,7 @@ func _draw_menu_column(center_x: float, top: float) -> void:
 		var it: Dictionary = menu.items[i]
 		var state: StringName = &"focus" if i == menu.focus else (&"idle" if it["enabled"] else &"disabled")
 		UiStyle.draw_ribbon(_canvas, Vector2(center_x, top + i * 22), tr(it["label"]), state)
+		menu.set_rect(i, UiStyle.ribbon_rect(Vector2(center_x, top + i * 22), tr(it["label"])))
 
 
 func _stat_lines(with_boss: bool) -> Array[Array]:
@@ -331,6 +348,7 @@ func _draw_game_over() -> void:
 	for i: int in menu.items.size():
 		var state: StringName = &"focus" if i == menu.focus else &"idle"
 		UiStyle.draw_ribbon(_canvas, Vector2(GO_BUTTON_X[i], GO_BUTTONS_Y), tr(menu.items[i]["label"]), state, GO_BUTTON_W)
+		menu.set_rect(i, UiStyle.ribbon_rect(Vector2(GO_BUTTON_X[i], GO_BUTTONS_Y), tr(menu.items[i]["label"]), GO_BUTTON_W))
 	_draw_plate_text(tr(&"GAMEOVER_HINT").format({"restart": Settings.key_label(&"restart")}), 300, Palette.CHALK)
 
 
@@ -363,3 +381,4 @@ func _draw_victory() -> void:
 	PixelFont.draw_centered(_canvas, tr(&"COMING_SOON"), VIC_SEAL.get_center().x, VIC_SEAL.end.y + 6, UiStyle.text_on_light(true))
 	if buttons_shown:
 		UiStyle.draw_ribbon(_canvas, Vector2(320, VIC_BUTTON_Y), tr(menu.items[0]["label"]), &"focus")
+		menu.set_rect(0, UiStyle.ribbon_rect(Vector2(320, VIC_BUTTON_Y), tr(menu.items[0]["label"])))

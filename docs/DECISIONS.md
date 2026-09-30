@@ -513,6 +513,17 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
 - **Sistema (mechanics-agent):** `GraceLedger` (GameState), `BlessingOffer`, `GraceFlow` (FSM no Main, relógio real), `GraceSeals`, `GraceBar`, `RunUpgrade` comum à loja; `damage_mul` × `heal_mul` separados (a Tinta não aumenta a cura); a Pausa não despausa por baixo dos selos; sorteios próprios (não mexem nas letras).
 - **Status:** ✅ aprovada.
 
+### D-084 · 2026-09-30 · Palavras de ataque matam quem estiver no alcance (pedido do autor)
+- **Pedido do autor:** "quero que todos os inimigos que entrem no range do LUX morram, e que sirva para todas as outras palavras". Hoje o dano sai só no instante da conjuração (o raio visível não fere quem entra depois) e os ataques que ficam na tela batem em intervalos.
+- **Respostas do autor:** "1a 2a 3a" —
+  1. **Inimigo comum morre na hora**, qualquer que seja a vida, enquanto o ataque estiver na tela (quem já está e quem entra); **campeão** leva dano forte (morre em 2–3 acertos); **chefe** leva o dano normal com o filtro que já existe.
+  2. Vale só para as **palavras de ataque** (e combos de ataque); as de ferramenta (PAX, AQUA, VITA, SPIRITUS, DOMINUS…) continuam como são.
+  3. O jogo fica mais fácil: **medir com a sonda** e o rules-agent reequilibra em dados (sem desfazer o pedido).
+- **Mouse nos menus:** pedido no mesmo recado ("quero que seja possível mexer com o mouse no menu, clicar nos botões") — plano a aprovar.
+- **Pareceres:** `docs/reviews/D084-rules-parecer.md` (campeão: golpe de 40% da vida por conjuração, `hp_mul` 4 → 6; janela letal = `duration` em dados) e `docs/reviews/D084-mechanics-parecer.md` (`KillZone` + `KillZones`, aplicadas pelo EnemyManager com a SpatialHash; o chefe nunca é tocado pela zona).
+- **Respostas do autor (2º recado):** "1sim 2b 3a 4a" — mouse nos menus aprovado; **LUX dura 0,5 s** na tela; **MISERERE é ataque**; lista fechada: ataque = LUX, IGNIS, CRUX, MORTIS, PURGO, SANCTUS, ANGELUS, CAECITAS, VAPOR, FLAMMA, MARTYRIUM, REQUIEM, MISERERE; ferramenta = PAX, AQUA, VITA, SALVATOR, LUMEN, FIDES, GLORIA, DOMINUS, SPIRITUS (VERBUM herda a da palavra repetida).
+- **Status:** ✅ direção aprovada; ordem: medir a 016 → mouse nos menus → zonas letais (6 fases) → fechar a 016.
+
 ## Conflitos abertos
 
 - ~~**C-007 · Escolha do level-up: "3 selos na página" + "o jogo pausa".**~~ Resolvido: autor respondeu "a" — o jogo pausa e os 3 selos aparecem desenhados na página; escolha por tecla (1, 2, 3) ou clique.

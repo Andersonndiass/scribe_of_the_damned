@@ -87,6 +87,24 @@ func _process(delta: float) -> void:
 func handle_input(event: InputEvent) -> bool:
 	if tabs.is_empty() or not event.is_pressed() or event.is_echo():
 		return false
+	# Mouse (D-084): clique na aba troca a aba; na página esquerda volta, na direita avança.
+	var tab_hit: int = pointer_at(event, _tab_rects())
+	if tab_hit >= 0 and clicked:
+		if tab_hit != tab:
+			_flip_dir = 1 if tab_hit > tab else -1
+			tab = tab_hit
+			index = 0
+			_flip_left = FLIP_FRAMES * FLIP_FRAME
+		return true
+	var page_hit: int = pointer_at(event, [Rect2(BOOK.position, Vector2(PAGE_W, BOOK.size.y)),
+		Rect2(Vector2(SPINE.end.x, BOOK.position.y), Vector2(PAGE_W, BOOK.size.y))] as Array[Rect2])
+	if page_hit >= 0 and clicked:
+		var dir: int = -1 if page_hit == 0 else 1
+		if _flip_left > 0.0:
+			_queued = dir
+		else:
+			_step_entry(dir)
+		return true
 	if event.is_action(&"move_right") or event.is_action(&"move_left"):
 		var dir: int = 1 if event.is_action(&"move_right") else -1
 		if _flip_left > 0.0:
@@ -155,6 +173,13 @@ func _draw() -> void:
 		var hw: float = PixelFont.width(hint) + 12
 		draw_rect(Rect2(320 - hw / 2.0, HINT_Y - 3, hw, PixelFont.height() + 6), Palette.INK)
 	PixelFont.draw_centered(self, hint, 320, HINT_Y, UiStyle.text_on_dark(true))
+
+
+func _tab_rects() -> Array[Rect2]:
+	var out: Array[Rect2] = []
+	for i: int in tabs.size():
+		out.append(Rect2(TAB_X0 + i * TAB_STEP, 36, TAB_W, 20))
+	return out
 
 
 func _draw_tabs() -> void:
