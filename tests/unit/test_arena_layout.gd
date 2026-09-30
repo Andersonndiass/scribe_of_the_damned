@@ -88,24 +88,24 @@ func test_constrain_pushes_out_and_nearest_free_finds_room() -> void:
 	var out: Vector2 = m.constrain(inside, 5.0)
 	assert_true(m.is_free(out, 5.0), "empurrado para fora")
 	assert_lt(out.distance_to(inside), 14.0, "pelo lado mais curto")
-	var drop: Vector2 = m.nearest_free(Vector2(320, 30), 3.0)
+	var drop: Vector2 = m.nearest_free(Vector2(586, 180), 3.0)
 	assert_true(m.is_free(drop, 3.0), "letra que cairia no altar vai para fora")
 	assert_true(ArenaData.PLAYABLE.has_point(drop))
 
 
 func test_constrain_never_pushes_into_the_margin() -> void:
-	# Bug da sonda (004 T413): inimigo no alto do altar era empurrado para y=19, entre a peça e a parede.
+	# Bug da sonda (004 T413): inimigo junto de peça encostada na parede era empurrado para a margem.
 	var m := ObstacleMap.from_arena(_arena(), false)
-	var inner: Rect2 = ArenaData.PLAYABLE.grow(-5.0)
-	for p: Vector2 in [Vector2(320, 26), Vector2(26, 180), Vector2(320, 334), Vector2(291, 30)]:
+	# O centro do inimigo pode ir até a borda da área jogável (EnemyManager.world_rect), não além.
+	for p: Vector2 in [Vector2(614, 180), Vector2(26, 180), Vector2(120, 334), Vector2(557, 174)]:
 		var q: Vector2 = m.constrain(p, 5.0)
-		assert_true(inner.grow(0.1).has_point(q), "%s → %s fica na página" % [p, q])
+		assert_true(ArenaData.PLAYABLE.grow(0.1).has_point(q), "%s → %s fica na página" % [p, q])
 		assert_true(m.is_free(q, 5.0), "%s → %s fora da peça" % [p, q])
 
 
 func test_slide_never_heads_into_the_wall_corner() -> void:
-	# Bug da sonda (T413): ao lado do altar, empurrado para cima pela multidão, o inimigo deslizava
+	# Bug da sonda (T413): em cima do altar, empurrado para a parede pela multidão, o inimigo deslizava
 	# para o canto entre a peça e a parede e ficava preso.
 	var m := ObstacleMap.from_arena(_arena(), false)
-	var v: Vector2 = m.slide(Vector2(355, 26), Vector2(-26, -51), 5.0)
-	assert_gt(v.y, 0.0, "desce, para longe da parede")
+	var v: Vector2 = m.slide(Vector2(605, 166), Vector2(51, 26), 5.0)
+	assert_lt(v.x, 0.0, "volta para longe da parede")

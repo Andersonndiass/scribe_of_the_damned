@@ -56,3 +56,15 @@
   - Se encurralar, tirar do layout do chefe só a peça culpada. Não mexer nos números dos ataques.
 - c) Letras empurradas 6 px perto das peças: continuam legíveis e fáceis de pegar?
 - d) C-006: medir a duração da luta já com os obstáculos.
+
+## 7. Nova medição com o layout da D-080 (altar 556,172 · banco 104,328)
+
+- **Condições:** 2026-09-29, só 2 Godot rodando por vez. Nas medições anteriores havia 3 sondas do chefe travadas ocupando a CPU, então aqueles números vieram com carga extra.
+- **Rodadas:** 8 por lado nas ondas 1, 5 e 7; 4 por lado nas outras.
+- **Números (com obstáculos / sem):**
+  - Letras/min, média: **36,7 / 32,9** (+12%).
+  - Mortes/min, média: **31,8 / 31,7**.
+  - Pior onda: a 2, com 74% das letras sem obstáculos (limite 50%).
+  - STUCK, pior rodada: **2,07%** (teto 5%).
+  - Palavras/min: 0,68 / 0,95. Não serve de conclusão, porque dá cerca de 1 palavra por rodada (C-004).
+- **Veredito:** passa nas faixas da D-079 (a, b, c). Sem alavanca.

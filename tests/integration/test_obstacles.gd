@@ -51,8 +51,8 @@ func test_enemy_goes_around_every_obstacle() -> void:
 		[Vector2(80, 44), Vector2(80, 124)],     # o mesmo furo, na vertical
 		[Vector2(600, 280), Vector2(520, 284)],  # furo de baixo à direita
 		[Vector2(34, 140), Vector2(34, 224)],    # vitral encostado na parede esquerda
-		[Vector2(270, 32), Vector2(370, 36)],    # altar encostado no alto
-		[Vector2(290, 330), Vector2(350, 334)],  # banco encostado embaixo
+		[Vector2(586, 150), Vector2(586, 214)],  # altar encostado na parede direita
+		[Vector2(90, 330), Vector2(150, 334)],   # banco encostado embaixo
 	]
 	for c: Array in cases:
 		_m.dissolve_all()

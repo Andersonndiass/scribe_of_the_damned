@@ -19,12 +19,12 @@
 **Checkpoint 004-B:** ✅ obstáculos jogáveis e o balanceamento dentro das faixas (2026-09-29, GUT 405/405; SC-407 com ressalva, `docs/reviews/T413-rules-parecer.md`).
 
 ## Fase 3 — Visual em camadas
-- **T420** Pareceres: design-agent (formas de cada estágio no tema da rasura, cor das brasas sem BLOOD, texto-fantasma, ornamentos, sombra e borda dos obstáculos, **conferir o altar e os furos de cima sob o HUD** — se colidir, trocar altar e banco de lugar), animation-agent (revelação do estágio, ameaça dos 10 s, poeira e brasas).
-- **T421** `tools/gen_arena_placeholders.gd` → camadas 640×360 (fundo, texto-fantasma, ornamentos, estágio 1, 2, 3) e os obstáculos por tipo, pelas regras de pixel art (D-075/D-076), no teste de paleta byte a byte; arte do autor por camada em `assets/arena/chapter_1/`.
-- **T422** `Arena` montado em camadas (Sprite2D em cache, decals mantidos), `StageReveal` (revelação em degraus) e ambientes (poeira no estágio ≥ 2, brasas no 3, ameaça na moldura).
-- **T423** [TEST] SC-403 (nada na área central; só tons baixos na área jogável; sem BLOOD) e SC-404 (paleta).
+- ✅ **T420** Pareceres: design-agent (formas de cada estágio no tema da rasura, cor das brasas sem BLOOD, texto-fantasma, ornamentos, sombra e borda dos obstáculos, **conferir o altar e os furos de cima sob o HUD** — se colidir, trocar altar e banco de lugar), animation-agent (revelação do estágio, ameaça dos 10 s, poeira e brasas).
+- ✅ **T421** `tools/gen_arena_placeholders.gd` → camadas 640×360 (fundo, texto-fantasma, ornamentos, estágio 1, 2, 3) e os obstáculos por tipo, pelas regras de pixel art (D-075/D-076), no teste de paleta byte a byte; arte do autor por camada em `assets/arena/chapter_1/`.
+- ✅ **T422** `Arena` montado em camadas (Sprite2D em cache, decals mantidos), `StageReveal` (revelação em degraus) e ambientes (poeira no estágio ≥ 2, brasas no 3, ameaça na moldura).
+- ✅ **T423** [TEST] SC-403 (nada na área central; só tons baixos na área jogável; sem BLOOD) e SC-404 (paleta).
 
-**Checkpoint 004-C:** a página se gasta onda a onda, legível, com os obstáculos à vista.
+**Checkpoint 004-C:** ✅ a página se gasta onda a onda, legível, com os obstáculos à vista (2026-09-29, GUT 412/412; D-080: altar e banco fora do HUD, SC-407 remedido e dentro das faixas).
 
 ## Fase 4 — Fechamento
 - **T430** GUT, export web, SC-001 no estágio 3 com os obstáculos (SC-405), `FEATURES.md`, `CLAUDE.md`, `docs/DECISIONS.md`, push.

@@ -56,26 +56,47 @@ var _map: ObstacleMap
 var _obstacle_body: StaticBody2D
 
 const DEGRADATION_STAGES := 4
-const WEAR_SEED := 1348
+## Camadas geradas (tools/gen_arena_placeholders.gd); a arte do autor em `ArenaData.layer_dir`
+## com o mesmo nome da camada (bg.png, ghost_0.png…) substitui cada uma (FR-407).
+const PLACEHOLDER_PAGE := "res://assets/placeholders/env_page_c1_%s.png"
+const PLACEHOLDER_OBSTACLE := "res://assets/placeholders/env_obs_%s%s.png"
+const DEFAULT_LAYER_DIR := "res://assets/arena/chapter_1/"
+const SHADOW_OFFSET := Vector2(-2, 2)
+const REVEAL_SHADER := preload("res://src/arena/stage_reveal.gdshader")
 
 var _stamp: DecalStamp
+## Pilha da página (FR-405): fundo, texto-fantasma, ornamentos, estágios 1..3 — texturas em cache.
+var _ghost: Sprite2D
+var _stages: Array[Sprite2D] = []
+var _ghost_textures: Array[Texture2D] = []
+var _reveal_material := ShaderMaterial.new()
+var _obstacle_sprites: Array[Sprite2D] = []
+var ambience: FrameAmbience
+var ambience_tuning: ArenaAmbienceTuning = preload("res://data/tuning/arena_ambience.tres")
 
 
 func _ready() -> void:
 	add_to_group(&"arena")
+	_reveal_material.shader = REVEAL_SHADER
+	_build_layers()
 	_build_walls()
 	_build_decal_layer()
+	ambience = FrameAmbience.new()
+	ambience.name = "FrameAmbience"
+	ambience.tuning = ambience_tuning
+	ambience.page = page
+	add_child(ambience)
 	page.degraded.connect(func(stage: int) -> void:
 		set_degradation(stage)
 		EventBus.page_degraded.emit(stage))
 	EventBus.page_stage_changed.connect(func(stage: int, next: int, animated: bool) -> void:
 		page.apply(stage, next, animated)
-		queue_redraw())
-	EventBus.wave_closing.connect(func(_i: int, _left: float) -> void:
-		page.on_closing()
-		queue_redraw())
+		_update_layers())
+	EventBus.wave_closing.connect(func(_i: int, _left: float) -> void: page.on_closing())
 	# A loja pausa a árvore: a revelação termina antes (004 FR-402).
-	EventBus.shop_opened.connect(func(_w: int) -> void: page.snap())
+	EventBus.shop_opened.connect(func(_w: int) -> void:
+		page.snap()
+		_update_layers())
 	EventBus.arena_layout_changed.connect(_on_layout_changed)
 	EventBus.enemy_killed.connect(func(_s: int, _d: EnemyData, p: Vector2) -> void: stamp(&"stain", p, 0.0))
 
@@ -88,12 +109,14 @@ func _exit_tree() -> void:
 func _process(delta: float) -> void:
 	if page.state == PageDegradation.Phase.TRANSITIONING:
 		page.tick(delta, wave_tuning.reveal_time)
-		queue_redraw()
+		_update_layers()
 
 
 ## Monta a página do capítulo (004): o mapa de obstáculos das ondas passa a responder às consultas.
 func load_page(arena_data: ArenaData) -> void:
 	data = arena_data
+	_load_layer_textures()
+	_build_obstacle_sprites()
 	_on_layout_changed(false)
 
 
@@ -101,7 +124,9 @@ func _on_layout_changed(boss_layout: bool) -> void:
 	_map = ObstacleMap.from_arena(data, boss_layout)
 	ObstacleQuery.map = _map
 	_sync_obstacle_bodies(boss_layout)
-	queue_redraw()
+	for k: int in _obstacle_sprites.size():
+		var o: ObstacleData = data.obstacles[k]
+		_obstacle_sprites[k].visible = o.in_boss if boss_layout else o.in_waves
 
 
 ## Paredes das peças para o escriba (004 FR-410): criadas uma vez ao montar a página; a troca de
@@ -131,7 +156,89 @@ func _sync_obstacle_bodies(boss_layout: bool) -> void:
 
 func set_degradation(stage: int) -> void:
 	degradation_stage = clampi(stage, 0, DEGRADATION_STAGES - 1)
-	queue_redraw()
+	_update_layers()
+
+
+## Mostra os estágios até o visível; o que está sendo revelado aparece em degraus (shader).
+func _update_layers() -> void:
+	if _stages.is_empty():
+		return
+	var revealing: bool = page.state == PageDegradation.Phase.TRANSITIONING
+	var steps: int = ambience_tuning.reveal_steps
+	_reveal_material.set_shader_parameter(&"level", clampi(ceili(page.reveal * steps), 0, steps))
+	for s: int in range(1, DEGRADATION_STAGES):
+		var sprite: Sprite2D = _stages[s - 1]
+		var fresh: bool = revealing and s > page.shown_stage and s <= page.stage
+		sprite.visible = s <= page.shown_stage or fresh
+		sprite.material = _reveal_material if fresh else null
+	_ghost.texture = _ghost_textures[clampi(page.shown_stage, 0, _ghost_textures.size() - 1)]
+
+
+func _build_layers() -> void:
+	for layer: String in ["bg", "ghost", "ornaments", "stage_1", "stage_2", "stage_3"]:
+		var sprite := Sprite2D.new()
+		sprite.name = "Layer_" + layer
+		sprite.centered = false
+		add_child(sprite)
+		if layer == "ghost":
+			_ghost = sprite
+		elif layer.begins_with("stage_"):
+			_stages.append(sprite)
+	_load_layer_textures()
+	_update_layers()
+
+
+func _load_layer_textures() -> void:
+	(get_node("Layer_bg") as Sprite2D).texture = _layer_texture("bg")
+	(get_node("Layer_ornaments") as Sprite2D).texture = _layer_texture("ornaments")
+	_ghost_textures.clear()
+	for s: int in DEGRADATION_STAGES:
+		_ghost_textures.append(_layer_texture("ghost_%d" % s))
+	for s: int in range(1, DEGRADATION_STAGES):
+		_stages[s - 1].texture = _layer_texture("stage_%d" % s)
+	_update_layers()
+
+
+## Arte do autor da camada, se existir; senão, a gerada.
+func _layer_texture(layer: String) -> Texture2D:
+	var dir: String = data.layer_dir if data != null else DEFAULT_LAYER_DIR
+	var author: String = dir + layer + ".png"
+	if ResourceLoader.exists(author):
+		return load(author)
+	return load(PLACEHOLDER_PAGE % layer)
+
+
+## Peças e sombras (FR-412), acima dos decals: criadas uma vez ao montar a página.
+func _build_obstacle_sprites() -> void:
+	for sprite: Sprite2D in _obstacle_sprites:
+		sprite.queue_free()
+	_obstacle_sprites.clear()
+	if data == null:
+		return
+	for o: ObstacleData in data.obstacles:
+		var holder := Sprite2D.new()
+		holder.name = "Obstacle_%s" % o.type.id
+		holder.centered = false
+		holder.position = Vector2(o.position)
+		holder.texture = o.type.texture if o.type.texture != null else _obstacle_texture(o.type.id, "")
+		var shadow_tex: Texture2D = _obstacle_texture(o.type.id, "_shadow")
+		if shadow_tex != null:
+			var shadow := Sprite2D.new()
+			shadow.name = "Shadow"
+			shadow.centered = false
+			shadow.texture = shadow_tex
+			shadow.position = SHADOW_OFFSET
+			shadow.show_behind_parent = true
+			holder.add_child(shadow)
+		add_child(holder)
+		_obstacle_sprites.append(holder)
+	# O ambiente da moldura fica por cima de tudo.
+	move_child(ambience, -1)
+
+
+func _obstacle_texture(id: StringName, suffix: String) -> Texture2D:
+	var path: String = PLACEHOLDER_OBSTACLE % [id, suffix]
+	return load(path) if ResourceLoader.exists(path) else null
 
 
 ## Carimba um decal permanente na página (queimado do IGNIS; mais tipos no T076).
@@ -148,44 +255,6 @@ func stamp(kind: StringName, pos: Vector2, radius: float) -> void:
 func _flush_stamps() -> void:
 	_stamp.pending.clear()
 	_stamp.queue_redraw()
-
-
-func _draw() -> void:
-	draw_rect(Rect2(Vector2.ZERO, PAGE_SIZE), Palette.PARCHMENT)
-	draw_rect(PLAYABLE, Palette.PARCHMENT_OLD, false, 1.0)
-	_draw_wear()
-
-
-## Desgaste da página por estágio, determinístico (mesma seed = mesma página). Só dithering.
-## 1: pontos de tinta perto das bordas · 2: + furos na margem · 3: + bordas queimadas e vinheta.
-func _draw_wear() -> void:
-	if degradation_stage == 0:
-		return
-	var rng := RandomNumberGenerator.new()
-	rng.seed = WEAR_SEED
-	for i: int in 90 * degradation_stage:
-		var edge: int = i % 4
-		var along: float = rng.randf()
-		var depth: float = rng.randf_range(0.0, 36.0)
-		var p: Vector2
-		match edge:
-			0: p = Vector2(along * PAGE_SIZE.x, depth)
-			1: p = Vector2(along * PAGE_SIZE.x, PAGE_SIZE.y - 1 - depth)
-			2: p = Vector2(depth, along * PAGE_SIZE.y)
-			_: p = Vector2(PAGE_SIZE.x - 1 - depth, along * PAGE_SIZE.y)
-		draw_rect(Rect2(p.round(), Vector2.ONE), Palette.INK_SOFT)
-	if degradation_stage >= 2:
-		for h: Vector2 in [Vector2(60, 11), Vector2(590, 348), Vector2(12, 300), Vector2(628, 70)]:
-			draw_circle(h, 5.0, Palette.INK_SOFT)
-			draw_circle(h, 3.0, Palette.INK)
-	if degradation_stage >= 3:
-		for y: int in range(0, int(PAGE_SIZE.y), 2):
-			for x: int in range(0, 6, 2):
-				draw_rect(Rect2(x + (y / 2) % 2, y, 1, 1), Palette.PARCHMENT_OLD)
-				draw_rect(Rect2(PAGE_SIZE.x - 1 - x - (y / 2) % 2, y, 1, 1), Palette.PARCHMENT_OLD)
-		for c: Vector2 in [Vector2(2, 2), Vector2(PAGE_SIZE.x - 3, 2), Vector2(2, PAGE_SIZE.y - 3), Vector2(PAGE_SIZE.x - 3, PAGE_SIZE.y - 3)]:
-			for k: int in 6:
-				draw_rect(Rect2(c + Vector2((k % 3) * 2 * signf(PAGE_SIZE.x / 2 - c.x), (k / 3) * 2 * signf(PAGE_SIZE.y / 2 - c.y)), Vector2.ONE), Palette.BLOOD)
 
 
 func _build_walls() -> void:

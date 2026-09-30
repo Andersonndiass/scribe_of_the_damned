@@ -471,6 +471,19 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
 
 ---
 
+### D-079 · 2026-09-29 · Faixas do A/B dos obstáculos (SC-407)
+- **Resposta do autor:** "1a" — aceitas as faixas propostas pelo rules-agent no T413 (a 005/006 não tinham faixa numérica).
+- **Faixas:** (a) média das 9 ondas, letras/min e mortes/min em ±20% do jogo sem obstáculos; (b) nenhuma onda abaixo de 50% das letras/min sem obstáculos (8+ rodadas); (c) STUCK ≤ 5% na pior rodada; (d) SC-506 julgado pela forma da curva com × sem obstáculos.
+- **Resultado:** passa com ressalva (onda 5 em 56%). Parecer: `docs/reviews/T413-rules-parecer.md`. Alavanca guardada: afastar os 4 furos 8 px para os cantos, só se o playtest confirmar ondas lentas.
+- **Status:** ✅ aceita.
+
+### D-080 · 2026-09-29 · Altar e banco saem de baixo do HUD; página sem dourado (T420)
+- **Resposta do autor:** "1a2a".
+- **Layout:** o design-agent viu o altar (290,24) sob o cronômetro e a barra do chefe, e o banco (304,328) sob a janela de combo e colado no atril; trocar os dois de lugar não resolvia. Novas posições: **altar (556,172)**, encostado na parede direita, espelhando o vitral; **banco (104,328)**, encostado embaixo à esquerda. Folgas 0 ou ≥ 40 px mantidas (T402).
+- **Cores:** ornamentos e degradação só em tinta e pergaminho (INK, INK_SOFT, PARCHMENT_OLD, CHALK); sem GOLD no cenário (art bible §2). Brasa = anel INK_SOFT com miolo CHALK, sem BLOOD.
+- **Tempo e movimento (animation-agent):** revelação em 4 degraus de 100 ms (dissolve em blocos 2×2, shader), sem hit-stop nem tremor; ameaça, poeira e brasas até 6 de cada, só na moldura, fora do HUD, números em `data/tuning/arena_ambience.tres`.
+- **Status:** ✅ aceita. O SC-407 é medido de novo com o layout novo.
+
 ## Conflitos abertos
 
 - **C-006 · Vida do Asmodeus (DECISÃO DO AUTOR, playtest).** 1500 (rules-agent) supõe uma palavra a cada ~5 s. A sonda não mede isso. No playtest (`index.html?boss`, ou jogando o capítulo), se a luta passar muito de 4 min, baixar `max_hp` em `data/bosses/asmodeus.tres` (ex.: 1000); se ficar abaixo de 2 min, subir.
