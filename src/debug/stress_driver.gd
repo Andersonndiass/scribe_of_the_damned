@@ -72,7 +72,7 @@ func setup(p_main: Node2D, p_mode: StringName = &"sc001") -> void:
 	_hazards = main.get_node("HazardField")
 	_puddle = load("res://data/hazards/puddle_ink.tres")
 	_shot = load("res://data/projectiles/prj_page.tres")
-	_player.auto_attack.enabled = false
+	_player.arsenal.enabled = false
 	_player.global_position = Vector2(40, 40)
 	main.add_child(_target)
 	_manager.player = _target

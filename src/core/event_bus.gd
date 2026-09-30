@@ -105,6 +105,11 @@ signal seals_hidden()
 signal pause_menu_toggled(open: bool)
 signal wax_drop_collected(position: Vector2)
 
+# Armas (017): arma posta num espaço, troca da ativa (1/2), nível subido.
+signal weapon_equipped(slot: int, weapon: WeaponData, level: int)
+signal weapon_switched(slot: int, weapon: WeaponData)
+signal weapon_leveled(slot: int, weapon: WeaponData, level: int)
+
 # Cutscenes (008): o fluxo do jogo escuta só o `cutscene_finished`, que sai sempre por último.
 signal cutscene_started(id: StringName)
 signal cutscene_mark_reached(id: StringName, mark: StringName)

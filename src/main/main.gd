@@ -71,13 +71,14 @@ func _ready() -> void:
 	var args: String = _debug_args()
 	if args.contains("unlock=all"):
 		_unlock_all_words()
+	_debug_weapons(args)
 	var atril_arg: RegExMatch = RegEx.create_from_string("atril=([0-9])").search(args)
 	if atril_arg != null:
 		# Debug (002 Fase 4): atril 7–8 para testar as Grandes Orações antes da loja (003).
 		letter_field.atril.set_capacity(int(atril_arg.get_string(1)))
 		letter_field.emit_atril()
 	($Arena as Arena).load_page(chapter.arena)
-	($World/Player as Player).auto_attack.projectiles = player_projectiles
+	($World/Player as Player).arsenal.projectiles = player_projectiles
 	shop.player = $World/Player
 	shop.letter_field = letter_field
 	boss.player = $World/Player
@@ -275,6 +276,26 @@ func _unlock_all_words() -> void:
 	for word: WordData in letter_field.lexicon_data.words:
 		if word.requires_unlock:
 			GameState.unlock_word(word)
+
+
+## Debug (017): `?weapons=pen,bible` põe essas armas nos espaços; `?wlevel=N` sobe todas ao nível N.
+func _debug_weapons(args: String) -> void:
+	var lo: Loadout = GameState.loadout
+	if lo == null:
+		return
+	var m: RegExMatch = RegEx.create_from_string("weapons=([a-z_,]+)").search(args)
+	if m != null:
+		var tuning: ArsenalTuning = ($World/Player as Player).arsenal.tuning
+		var ids: PackedStringArray = m.get_string(1).split(",", false)
+		for i: int in mini(ids.size(), lo.slots.size()):
+			for w: WeaponData in tuning.weapons:
+				if w.id == StringName(ids[i]):
+					lo.slots[i] = WeaponSlot.new(w)
+	var lv: RegExMatch = RegEx.create_from_string("wlevel=([1-9])").search(args)
+	if lv != null:
+		for s: WeaponSlot in lo.slots:
+			if s != null:
+				s.level = mini(int(lv.get_string(1)), s.weapon.max_level())
 
 
 ## É a partida de verdade (hospedada pelo roteador ou aberta como cena), não um teste/sonda/stress.

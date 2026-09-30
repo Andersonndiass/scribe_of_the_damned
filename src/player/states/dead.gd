@@ -4,7 +4,7 @@ extends PlayerState
 
 func enter(_msg: Dictionary = {}) -> void:
 	player.velocity = Vector2.ZERO
-	player.auto_attack.enabled = false
+	player.arsenal.enabled = false
 	player.sprite.stop()
 	EventBus.player_died.emit()
 

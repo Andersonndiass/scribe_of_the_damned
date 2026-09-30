@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="PlayerData" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="PlayerData" load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://src/data/player_data.gd" id="1_pd"]
+[ext_resource type="Resource" path="res://data/weapons/pen.tres" id="w_pen"]
 
 [resource]
 script = ExtResource("1_pd")
@@ -18,3 +19,4 @@ idle_regen_interval = 3.0
 magnet_radius = 40.0
 atril_capacity = 5
 hurtbox_radius = 5.0
+start_weapon = ExtResource("w_pen")

@@ -476,6 +476,27 @@ func query_nearest(pos: Vector2, radius: float) -> Vector2:
 	return boss_pos
 
 
+## Os `n` alvos mais próximos a até `radius` (o chefe entra como alvo), do mais perto ao mais longe.
+func query_nearest_list(pos: Vector2, radius: float, n: int) -> PackedVector2Array:
+	if n <= 1:
+		var one: Vector2 = query_nearest(pos, radius)
+		return PackedVector2Array() if one == Vector2.INF else PackedVector2Array([one])
+	var cand: Array[Vector2] = []
+	if _boss_live() and boss_target.hurt_center().distance_to(pos) <= radius + boss_target.hurt_radius():
+		cand.append(boss_target.hurt_center())
+	if count > 0:
+		_rebuild_hash_if_dirty()
+		var r2: float = radius * radius
+		for j: int in _hash.query_radius(pos, radius + QUERY_PAD):
+			if j < count and positions[j].distance_squared_to(pos) <= r2:
+				cand.append(positions[j])
+	cand.sort_custom(func(a: Vector2, b: Vector2) -> bool: return a.distance_squared_to(pos) < b.distance_squared_to(pos))
+	var out := PackedVector2Array()
+	for k: int in mini(n, cand.size()):
+		out.append(cand[k])
+	return out
+
+
 func query_hit(pos: Vector2, radius: float, damage: int) -> bool:
 	if _boss_live() and _boss_in_circle(pos, radius):
 		_hit_boss(damage)

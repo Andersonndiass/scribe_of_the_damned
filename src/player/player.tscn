@@ -5,7 +5,7 @@
 [ext_resource type="SpriteFrames" path="res://assets/placeholders/chr_anselmo_frames.tres" id="3_frames"]
 [ext_resource type="Script" path="res://src/components/flash.gd" id="4_flash"]
 [ext_resource type="Script" path="res://src/components/hurtbox.gd" id="5_hurtbox"]
-[ext_resource type="Script" path="res://src/player/auto_attack.gd" id="6_attack"]
+[ext_resource type="Script" path="res://src/weapons/arsenal.gd" id="6_attack"]
 [ext_resource type="Script" path="res://src/core/state_machine.gd" id="7_sm"]
 [ext_resource type="Script" path="res://src/player/states/idle.gd" id="8_idle"]
 [ext_resource type="Script" path="res://src/player/states/run.gd" id="9_run"]
@@ -47,7 +47,7 @@ script = ExtResource("5_hurtbox")
 position = Vector2(0, -6)
 shape = SubResource("Circle_body")
 
-[node name="AutoAttack" type="Node" parent="."]
+[node name="Arsenal" type="Node" parent="."]
 script = ExtResource("6_attack")
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]

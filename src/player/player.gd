@@ -23,7 +23,11 @@ var facing: Vector2 = Vector2.RIGHT
 @onready var sprite: AnimatedSprite2D = $Sprite
 @onready var flash: Flash = $Sprite/Flash
 @onready var hurtbox: Hurtbox = $Hurtbox
-@onready var auto_attack: AutoAttack = $AutoAttack
+@onready var arsenal: Arsenal = $Arsenal
+## Nome antigo (antes da 017) para o arsenal: `enabled`, `projectiles` e `fired` continuam.
+var auto_attack: Arsenal:
+	get:
+		return arsenal
 @onready var machine: StateMachine = $StateMachine
 
 var _squash_tween: Tween
@@ -34,7 +38,7 @@ var _hazards: HazardField
 func _ready() -> void:
 	add_to_group(&"player")
 	vitals.setup(data)
-	auto_attack.data = data
+	arsenal.data = data
 	_sync_state()
 	hurtbox.hit.connect(take_hit)
 	EventBus.wave_ended.connect(func(_i: int) -> void: buffs.on_wave_ended())

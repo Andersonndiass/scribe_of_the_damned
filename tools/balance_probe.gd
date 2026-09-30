@@ -173,7 +173,7 @@ func _initialize() -> void:
 	bus.atril_purged.connect(func(_l: PackedStringArray, _p: Vector2) -> void: _purges += 1)
 	bus.letter_collected.connect(func(l: String, _r: bool) -> void: _collected += l)
 	bus.word_cast.connect(func(w: Resource, _pw: float, _o: Vector2, _d: Vector2) -> void: _casts[w.get("latin")] = _casts.get(w.get("latin"), 0) + 1)
-	_player.get_node("AutoAttack").fired.connect(func(_t: Vector2) -> void: _shots += 1)
+	_player.get_node("Arsenal").fired.connect(func(_t: Vector2) -> void: _shots += 1)
 	root.get_node("TimeScale").call("set_base", TIME_SCALE)
 	Engine.physics_ticks_per_second = 60
 

@@ -231,3 +231,5 @@ GRACE_LEVELUP_TITLE,Graça - nível {n},Grace - level {n}
 GRACE_HINT,{p1} {p2} {p3} escolhe   {prev} {next} + {cast} confirma,{p1} {p2} {p3} choose   {prev} {next} + {cast} confirm
 ACTION_WEAPON_1,Arma 1,Weapon 1
 ACTION_WEAPON_2,Arma 2,Weapon 2
+WPN_PEN,Pena do Copista,Copyist's Quill
+WPN_PEN_DESC,Gota de tinta no mais próximo,Ink drop at the nearest foe

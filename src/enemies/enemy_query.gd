@@ -24,6 +24,15 @@ static func nearest(pos: Vector2, radius: float) -> Vector2:
 	return provider.call(&"query_nearest", pos, radius)
 
 
+## Os `n` alvos mais próximos (inimigos e chefe), do mais perto ao mais longe (017: Pena com várias
+## gotas). Provider sem a consulta de lista: só o mais próximo.
+static func nearest_list(pos: Vector2, radius: float, n: int) -> PackedVector2Array:
+	if _manager != null:
+		return _manager.query_nearest_list(pos, radius, n)
+	var one: Vector2 = nearest(pos, radius)
+	return PackedVector2Array() if one == Vector2.INF else PackedVector2Array([one])
+
+
 static func hit(pos: Vector2, radius: float, damage: int) -> bool:
 	if _manager != null:
 		return _manager.query_hit(pos, radius, damage)

@@ -7,6 +7,8 @@ extends Resource
 @export_group("Movimento")
 @export var move_speed: float = 90.0
 @export_group("Ataque automático")
+## Arma inicial (017; o ataque automático antigo virou a Pena do Copista em dados).
+@export var start_weapon: WeaponData
 @export var attack_interval: float = 0.8
 @export var attack_range: float = 160.0
 @export var projectile_speed: float = 220.0

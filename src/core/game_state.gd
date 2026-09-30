@@ -16,6 +16,8 @@ var run_stats: RunStats = null
 ## Graça da partida (016): zera no start_run, continua entre as ondas e na loja.
 var grace_tuning: GraceTuning = preload("res://data/tuning/grace.tres")
 var grace: GraceLedger = null
+## Inventário de armas da partida (017), zerado no start_run.
+var loadout: Loadout = null
 ## Sorteios da 016 (selos, pingo de cera): separados do `rng` das letras para não mudar a sequência.
 var grace_rng := RandomNumberGenerator.new()
 ## Fração de tinta acumulada pelo ×tinta da Bolsa do Esmoler (a gota é inteira).
@@ -102,6 +104,7 @@ func start_run(player: PlayerData, seed_value: int = -1) -> void:
 	else:
 		rng.randomize()
 	grace = GraceLedger.new(grace_tuning)
+	loadout = Loadout.new(2, player.start_weapon)
 	# Derivado da semente sem consumir o `rng` (a sequência de letras continua a mesma).
 	grace_rng.seed = rng.seed ^ GRACE_SEED_SALT
 

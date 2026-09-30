@@ -3,17 +3,17 @@
 > Ordem do mechanics-agent (T1700). Números: `docs/reviews/T1700-rules-parecer.md`; arte: `T1700-design-parecer.md`; tempo: `T1700-animation-parecer.md`. Cada fase termina com GUT + export web + commit. Agentes: tarefas simples com Sonnet, difíceis com Opus.
 
 ## Fase 1 — Inventário e Pena (sem mudar o que se sente)
-- **T1701** Autoload `TimeScale` (base × fatores por dono; só ele escreve `Engine.time_scale`); `Hitstop` migrado; `reset()` nas Overlays, no ScreenRouter, na sonda e nos testes.
-- **T1702** Contextos de tecla no `Settings` (`play`, `seals`, `letter_menu`, `shop`); ações `weapon_1`, `weapon_2`.
-- **T1703** `WeaponData` / `WeaponLevelData` / `ArsenalTuning` + validação.
-- **T1704** `Loadout` / `WeaponSlot` em `GameState` (zera no `start_run`).
-- **T1705** `Arsenal` + `BurstWeapon` substituem o AutoAttack; `pen.tres` (nível 1 = ataque de hoje); `PlayerData.start_weapon`.
-- **T1706** `weapon_interval_mul` (Pena de Ganso em todas as armas).
-- **T1707** `WeaponBar` no HUD (canto de baixo à esquerda).
-- **T1708** Troca mecânica nos testes (`auto_attack` → `arsenal`) + debug `?weapons=`.
-- **T1709** Sonda: paridade da Pena com a mesma seed.
+- ✅ **T1701** Autoload `TimeScale` (base × fatores por dono; só ele escreve `Engine.time_scale`); `Hitstop` migrado; `reset()` nas Overlays, no ScreenRouter, na sonda e nos testes.
+- ✅ **T1702** Contextos de tecla no `Settings` (`play`, `seals`, `letter_menu`, `shop`); ações `weapon_1`, `weapon_2`.
+- ✅ **T1703** `WeaponData` / `WeaponLevelData` / `ArsenalTuning` + validação.
+- ✅ **T1704** `Loadout` / `WeaponSlot` em `GameState` (zera no `start_run`).
+- ✅ **T1705** `Arsenal` + `BurstWeapon` substituem o AutoAttack; `pen.tres` (nível 1 = ataque de hoje); `PlayerData.start_weapon`.
+- ✅ **T1706** `weapon_interval_mul` (Pena de Ganso em todas as armas).
+- ✅ **T1707** `WeaponBar` no HUD (canto de baixo à esquerda).
+- ✅ **T1708** Troca mecânica nos testes (`auto_attack` → `arsenal`) + debug `?weapons=`.
+- ✅ **T1709** Sonda: paridade da Pena com a mesma seed.
 
-**Checkpoint 017-A:** o jogo se sente igual, agora com o inventário.
+**Checkpoint 017-A:** o jogo se sente igual, agora com o inventário. ✅ (2026-09-30; GUT 486/486; T1709: paridade da Pena provada em `test_burst_weapon` — mesma cadência, alvo e dano do AutoAttack; a sonda não tem seed, então a paridade dela é informal)
 
 ## Fase 2 — Bíblia e Crucifixo
 - **T1710** `ZoneShape` extraída de `KillZone`.

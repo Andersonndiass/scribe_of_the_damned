@@ -27,6 +27,8 @@ func _init(p_base: PlayerData) -> void:
 		&"gold_mul": 1.0,
 		# 016: bênção Tinta Consagrada (só dano das palavras; a cura não usa).
 		&"word_damage_mul": 1.0,
+		# 017: Pena de Ganso — cadência de todas as armas (intervalo × isto).
+		&"weapon_interval_mul": 1.0,
 	}
 
 

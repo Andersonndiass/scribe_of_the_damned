@@ -59,10 +59,11 @@ func test_alms_purse_caps_at_40_percent() -> void:
 	assert_eq(GameState.gold_ink, 7, "5 × 1,4 = 7")
 
 
-func test_fine_quill_stops_at_056() -> void:
+func test_fine_quill_speeds_every_weapon_down_to_070() -> void:
+	# 017: a Pena de Ganso vale para todas as armas (intervalo × 0,88, teto 0,70; rules-agent T1700).
 	for i: int in 6:
 		_bless(&"fine_quill")
-	assert_almost_eq(GameState.run_stats.value(&"attack_interval"), 0.56, 0.001, "a cadência não passa das palavras")
+	assert_almost_eq(GameState.run_stats.value(&"weapon_interval_mul"), 0.7, 0.001)
 
 
 func test_grace_full_lights_a_candle() -> void:

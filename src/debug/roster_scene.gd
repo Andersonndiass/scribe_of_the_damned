@@ -18,7 +18,7 @@ func _ready() -> void:
 	(_main.get_node("WaveDirector") as WaveDirector).stop()
 	var player: Player = _main.get_node("World/Player")
 	player.global_position = Vector2(320, 190)
-	player.auto_attack.enabled = false
+	player.arsenal.enabled = false
 	player.vitals.iframes_left = 1.0e6
 	var m: EnemyManager = _main.get_node("World/EnemyManager")
 	m.dissolve_all()
