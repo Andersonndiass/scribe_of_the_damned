@@ -550,6 +550,22 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
 - **Abertos:** playtest do autor (T1654, C-004, C-006); a sonda do chefe trava na fase 3 (D-081).
 - **Status:** ✅ 016 Complete; D-084 feita. Próximo: emenda da game bible (D-085) e spec da 017.
 
+### D-087 · 2026-09-30 · Spec 017 "Arsenal sagrado" aprovada
+- **Pareceres:** `docs/reviews/T1700-{rules,mechanics,design,animation}-parecer.md` (+ `T1700-design-maps.json`).
+- **Respostas do autor:** "1a 2a 3a 4b 5a 6a 7a 8a 9a 10a 11a" —
+  1. **Shift** esvazia o atril sem heresia (as letras se perdem).
+  2. **Traça** rouba a última letra do atril ao encostar no escriba e a devolve ao morrer.
+  3. Durante o menu da letra o **escriba fica parado** (setas e Espaço são do menu).
+  4. **Sem marca** nas letras úteis do menu: o jogador lê o atril e decide.
+  5. **Bíblia** sempre ligada quando ativa.
+  6. Bíblia **×1,5** contra campeão e chefe (`precision_mul`).
+  7. **Lentes do Copista:** +0,5 s no menu (teto +1 s).
+  8. **LUMEN:** chance de letra ×2 por 10 s.
+  9. Comprar arma com os 2 espaços cheios **substitui a ativa** com confirmação.
+  10. Fila de letras: **1**; o excedente se perde.
+  11. Spec aprovada; começar pela Fase 1.
+- **Status:** ✅ aprovada.
+
 ## Conflitos abertos
 
 - ~~**C-008 · Menu de escolha da letra (D-085 item 2).**~~ Resolvido: autor "1a 2b 3b e mouse clicando 4a" —

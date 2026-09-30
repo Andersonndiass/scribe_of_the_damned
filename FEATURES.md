@@ -22,7 +22,7 @@
 | 014 | boss-padre-malaquias (Cap. 4) | 013 | Tasked ✅ |
 | 015 | boss-semihaza (Cap. 5, final) | 014 | Tasked ✅ |
 | 016 | grace-levelup (XP "Graça" + subir de nível com 3 selos; pingo de cera) | 003, D-082 | **Complete** ✅ (2026-09-30, D-086) |
-| 017 | arsenal-sagrado (inventário de 2 armas trocáveis; Pena, Bíblia, Crucifixo, Rosário, Turíbulo, Aspersório; menu de escolha da letra; ímã reverso; selos melhoram armas/status) | 016, D-085 | A escrever (D-085) |
+| 017 | arsenal-sagrado (inventário de 2 armas trocáveis; Pena, Bíblia, Crucifixo, Rosário, Turíbulo, Aspersório; menu de escolha da letra; ímã reverso; selos melhoram armas/status) | 016, D-085 | Spec aprovada (2026-09-30, D-087) |
 | 018 | pocoes (Óleo da Unção, Água Benta, Vinho do Fervor, Tinta Iluminada; teclas 3–6) | 017 | A escrever (D-085) |
 
 **Ordem de execução sugerida:** 001 → (002, 003, 004, 005 em paralelo) → 006 → 007 → 008, 009, 010 → 011 (demo publicada) → 012 → 013 → 014 → 015.
