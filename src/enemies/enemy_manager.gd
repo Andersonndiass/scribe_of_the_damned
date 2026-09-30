@@ -55,6 +55,8 @@ var velocities := PackedVector2Array()
 var hp := PackedInt32Array()
 var flash_left := PackedFloat32Array()
 var stun_left := PackedFloat32Array()
+## Congelamento curto do golpe do Crucifixo (017; animation-agent: 50 ms), só em quem foi atingido.
+var freeze_left := PackedFloat32Array()
 var slow_factor := PackedFloat32Array()
 var slow_left := PackedFloat32Array()
 var anim_phase := PackedFloat32Array()
@@ -115,6 +117,7 @@ func _init() -> void:
 	hp.resize(CAPACITY)
 	flash_left.resize(CAPACITY)
 	stun_left.resize(CAPACITY)
+	freeze_left.resize(CAPACITY)
 	slow_factor.resize(CAPACITY)
 	slow_left.resize(CAPACITY)
 	anim_phase.resize(CAPACITY)
@@ -162,6 +165,7 @@ func spawn(data: EnemyData, pos: Vector2, is_champion: bool = false) -> int:
 	hp[i] = data.max_hp
 	flash_left[i] = 0.0
 	stun_left[i] = 0.0
+	freeze_left[i] = 0.0
 	slow_factor[i] = 1.0
 	slow_left[i] = 0.0
 	anim_phase[i] = GameState.rng.randf()
@@ -236,6 +240,7 @@ func _physics_process(delta: float) -> void:
 	last_tick += 1
 	if count == 0:
 		_apply_kill_zones(delta)  # as zonas contam o tempo mesmo com a tela vazia
+		_apply_weapon_zones()  # o chefe sozinho ainda leva o raio
 		return
 	var step_dt: float = delta * STEER_STRIDE
 	var t_hash: int = Prof.start()
@@ -266,8 +271,9 @@ func _physics_process(delta: float) -> void:
 			slow_left[i] -= delta
 			if slow_left[i] <= 0.0:
 				slow_factor[i] = 1.0
-		if stun_left[i] > 0.0:
-			stun_left[i] -= delta
+		if stun_left[i] > 0.0 or freeze_left[i] > 0.0:
+			stun_left[i] = maxf(0.0, stun_left[i] - delta)
+			freeze_left[i] = maxf(0.0, freeze_left[i] - delta)
 			velocities[i] = Vector2.ZERO
 			prev_positions[i] = positions[i]
 			continue
@@ -342,6 +348,7 @@ func _physics_process(delta: float) -> void:
 			player.call(&"take_hit", _contact_damage(i, d), &"contact")
 	Prof.stop(&"inimigos_mover_separar", t_move)
 	_apply_kill_zones(delta)
+	_apply_weapon_zones()
 
 
 ## Zonas letais (D-084): 1× por tick, depois do movimento. Comum dentro morre; campeão leva o golpe
@@ -407,6 +414,96 @@ func _apply_kill_zones(delta: float) -> void:
 		damage_at(i, dmg[k])
 	_hash_dirty = true
 	Prof.stop(&"inimigos_zonas", t0)
+
+
+## Zonas de arma (017 T1711): depois das letais, no mesmo tick. Não matam na hora: dão o dano da
+## arma a quem está dentro e com o relógio vencido. Com `max_targets`, só os N mais próximos da
+## origem contam (o chefe disputa a vaga); quem está dentro mas no relógio ainda ocupa a vaga (o
+## raio "bate" nele).
+func _apply_weapon_zones() -> void:
+	var zones: Array[WeaponZone] = WeaponZones.active()
+	if zones.is_empty():
+		return
+	var t0: int = Prof.start()
+	_rebuild_hash_if_dirty()
+	var boss_on: bool = _boss_live()
+	for zone: WeaponZone in zones:
+		if not zone.live:
+			continue
+		var candidates: PackedInt32Array
+		if count == 0:
+			candidates = PackedInt32Array()
+		elif zone.shape == ZoneShape.Shape.LINE:
+			var pad: float = zone.width / 2.0 + MAX_ENEMY_RADIUS * 2.0
+			candidates = _hash.query_segment(zone.origin, zone.origin + zone.dir * zone.length, pad)
+		else:
+			candidates = _hash.query_rect(zone.bounds(MAX_ENEMY_RADIUS * 2.0))
+		# Dentro da forma: slot (≥ 0) ou o chefe (-1), com a distância até a origem.
+		var inside := PackedInt32Array()
+		var dist := PackedFloat32Array()
+		for i: int in candidates:
+			if i < count and zone.contains(positions[i], radius_of[i]):
+				inside.append(i)
+				dist.append(zone.along(positions[i]) if zone.shape == ZoneShape.Shape.LINE else zone.origin.distance_to(positions[i]))
+		if boss_on and zone.contains(boss_target.hurt_center(), boss_target.hurt_radius()):
+			inside.append(-1)
+			var bc: Vector2 = boss_target.hurt_center()
+			dist.append(zone.along(bc) if zone.shape == ZoneShape.Shape.LINE else zone.origin.distance_to(bc))
+		if inside.is_empty():
+			continue
+		var order: Array[int] = []
+		for k: int in inside.size():
+			order.append(k)
+		if zone.max_targets > 0 and order.size() > zone.max_targets:
+			order.sort_custom(func(a: int, b: int) -> bool: return dist[a] < dist[b])
+			order.resize(zone.max_targets)
+		# Do maior slot para o menor: a remoção por troca não bagunça os que faltam.
+		order.sort_custom(func(a: int, b: int) -> bool: return inside[a] > inside[b])
+		for k: int in order:
+			var i: int = inside[k]
+			if i == -1:
+				if zone.ready_for(WeaponZone.BOSS_KEY, clock):
+					boss_target.take(zone.take_hit(WeaponZone.BOSS_KEY, clock, true), zone.tag, 0)
+				continue
+			if i >= count:
+				continue
+			var uid: int = uid_of[i]
+			if zone.ready_for(uid, clock):
+				var amount: int = zone.take_hit(uid, clock, champion[i] == 1)
+				if amount > 0:
+					damage_at(i, amount)
+	Prof.stop(&"inimigos_zonas_arma", t0)
+
+
+## Acerto que atravessa (017 Crucifixo): fere todos os que o círculo toca e ainda não estão em
+## `already` (uids; -1 = chefe), congela cada um `freeze` s e devolve os uids novos. O projétil
+## guarda a lista para não ferir o mesmo inimigo duas vezes.
+func query_hit_pierce(pos: Vector2, radius: float, damage: int, already: PackedInt32Array, freeze: float, max_new: int) -> PackedInt32Array:
+	var got := PackedInt32Array()
+	if max_new <= 0:
+		return got
+	if _boss_live() and not already.has(WeaponZone.BOSS_KEY) and _boss_in_circle(pos, radius):
+		_hit_boss(damage)
+		got.append(WeaponZone.BOSS_KEY)
+	if count == 0 or got.size() >= max_new:
+		return got
+	_rebuild_hash_if_dirty()
+	var hits := PackedInt32Array()
+	for i: int in _hash.query_radius(pos, radius + MAX_ENEMY_RADIUS):
+		if i >= count or already.has(uid_of[i]):
+			continue
+		var r: float = radius + radius_of[i]
+		if positions[i].distance_squared_to(pos) <= r * r:
+			hits.append(i)
+			if got.size() + hits.size() >= max_new:
+				break
+	hits.sort()
+	for k: int in range(hits.size() - 1, -1, -1):
+		var i: int = hits[k]
+		got.append(uid_of[i])
+		freeze_left[i] = maxf(freeze_left[i], freeze)
+		damage_at(i, damage)
+	return got
 
 
 ## Dano de contato: forte durante o dash quando o tipo define dash_contact_damage (D-012).
@@ -837,6 +934,7 @@ func _remove(i: int) -> void:
 		hp[i] = hp[last]
 		flash_left[i] = flash_left[last]
 		stun_left[i] = stun_left[last]
+		freeze_left[i] = freeze_left[last]
 		slow_factor[i] = slow_factor[last]
 		slow_left[i] = slow_left[last]
 		anim_phase[i] = anim_phase[last]

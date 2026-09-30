@@ -2,7 +2,7 @@ extends Node
 ## DEBUG (T080): cena de stress = cena principal real + StressDriver + FpsProbe.
 ## Desktop: godot --path . res://src/debug/stress_scene.tscn [-- quit]
 ## Web: index.html?stress (SC-001; &stage=3 = 004 SC-405) · ?stress=wave9 (SC-503) · ?stress=boss (006 SC-607) · ?stress=purgo|dominus|miserere e o
-## controle ?stress=ctl (002 SC-202: frames acima de 33 ms depois da varredura).
+## controle ?stress=ctl (002 SC-202: frames acima de 33 ms depois da varredura) · ?stress=bible (017 SC-1703).
 
 const MAIN_SCENE := preload("res://src/main/main.tscn")
 const StressDriver := preload("res://src/debug/stress_driver.gd")
@@ -24,6 +24,8 @@ func _ready() -> void:
 		mode = &"wave9"
 	elif asked.contains("stress=boss"):
 		mode = &"boss"
+	elif asked.contains("stress=bible"):
+		mode = &"bible"  # 017 SC-1703: SC-001 com a Bíblia ligada
 	elif asked.contains("stress=ctl"):
 		mode = &"sweep"  # controle: mesmo ciclo e janela, sem conjurar
 	else:

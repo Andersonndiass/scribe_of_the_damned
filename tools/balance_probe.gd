@@ -75,6 +75,15 @@ var _g_kill: int = 0
 var _g_first_up: float = -1.0
 var _g_ups_by_wave: Dictionary = {}
 var _g_picks: PackedStringArray = []
+## 017 T1716: `weapons=bible,crucifix` põe as armas nos espaços, `wlevel=N` o nível; `swap` troca
+## de arma a cada SWAP_EVERY s. A Bíblia mira sozinha no inimigo mais próximo (mira "de mouse").
+var _weapons_arg: String = ""
+var _wlevel: int = 0
+var _swap: bool = false
+var _swap_in: float = 0.0
+var _swaps: int = 0
+var _weapons_set: bool = false
+const SWAP_EVERY := 5.0
 ## Raios do inimigo em volta do escriba que contam como "chegou".
 const STUCK_NEAR_PLAYER := 5.0
 
@@ -130,6 +139,12 @@ func _initialize() -> void:
 	for arg: String in OS.get_cmdline_user_args():
 		if arg.begins_with("wave="):
 			_wave_slot = int(arg.substr(5)) - 1
+		elif arg.begins_with("weapons="):
+			_weapons_arg = arg.substr(8)
+		elif arg.begins_with("wlevel="):
+			_wlevel = int(arg.substr(7))
+		elif arg == "swap":
+			_swap = true
 	var bus: Node = root.get_node("EventBus")
 	bus.enemy_killed.connect(func(_s: int, _d: Resource, _p: Vector2) -> void: _kills += 1)
 	bus.player_damaged.connect(func(_a: int, _c: int) -> void: _hits += 1)
@@ -193,6 +208,7 @@ func _physics_process(delta: float) -> bool:
 		_time = 0.0
 		return false
 	_time += delta
+	_drive_weapons(delta)
 	if _god:
 		(_player.get("vitals") as RefCounted).set("iframes_left", 1.0e6)
 	_max_alive = maxi(_max_alive, _manager.get("count"))
@@ -229,6 +245,7 @@ func _physics_process(delta: float) -> bool:
 				_time / 60.0, ", ".join(_bought)])
 		print("PROBE onda=%d still=%s tempo=%.1fs mortes=%d golpes_sofridos=%d morreu_em=%s max_vivos=%d onda_terminou=%s tiros=%d conjurações=%s letras_caídas=%d coletadas=%s" % [
 			GameState_wave(), _still, _time, _kills, _hits, ("%.1fs" % _died_at) if _died_at >= 0.0 else "não", _max_alive, _ended, _shots, _casts, _dropped, _collected])
+		_print_weapons()
 		if _god:
 			var minutes: float = maxf(_time / 60.0, 0.001)
 			var words: int = 0
@@ -356,3 +373,50 @@ func _print_arena() -> void:
 	print("ARENA obstáculos=%s estágio=%d STUCK=%.2f%% (%d de %d amostras, pico %d)" % [
 		"on" if _obstacles else "off", int((_main.get_node("Arena") as Node).get("degradation_stage")),
 		100.0 * _stuck / maxf(1.0, _samples), _stuck, _samples, _stuck_max])
+
+
+## 017 T1716: armas da linha de comando, troca periódica e a mira da Bíblia no mais próximo.
+func _drive_weapons(delta: float) -> void:
+	var gs: Node = root.get_node("GameState")
+	var lo: RefCounted = gs.get("loadout")
+	if lo == null:
+		return
+	var arsenal: Node = _player.get_node("Arsenal")
+	if not _weapons_set:
+		_weapons_set = true
+		var slots: Array = lo.get("slots")
+		var ids: PackedStringArray = _weapons_arg.split(",", false)
+		for i: int in mini(ids.size(), slots.size()):
+			for w: Resource in (arsenal.get("tuning") as Resource).get("weapons"):
+				if String(w.get("id")) == ids[i]:
+					slots[i] = load("res://src/weapons/weapon_slot.gd").new(w)
+		if _wlevel > 0:
+			for slot: RefCounted in slots:
+				if slot != null:
+					slot.set("level", clampi(_wlevel, 1, int((slot.get("weapon") as Resource).call("max_level"))))
+	if _swap:
+		_swap_in -= delta
+		if _swap_in <= 0.0:
+			_swap_in = SWAP_EVERY
+			if arsenal.call("switch_to", 1 - int(lo.get("active"))):
+				_swaps += 1
+	if _weapons_arg == "":
+		return  # sem armas pedidas, a sonda mira como sempre (direção do escriba)
+	# A Bíblia é mirada: o bot aponta o "mouse" para o inimigo mais próximo do escriba.
+	var near: Vector2 = _manager.call("query_nearest", _player.global_position, 400.0)
+	gs.set("aim_with_mouse", true)
+	gs.set("aim_point", near if near != Vector2.INF else Vector2.INF)
+
+
+func _print_weapons() -> void:
+	var lo: RefCounted = root.get_node("GameState").get("loadout")
+	if lo == null:
+		return
+	var names: PackedStringArray = []
+	for slot: RefCounted in lo.get("slots"):
+		if slot != null:
+			names.append("%s:%d" % [String((slot.get("weapon") as Resource).get("id")), int(slot.get("level"))])
+	var beam: Object = _player.get_node("Arsenal").get("beam")
+	var beam_hits: int = int((beam.get("zone") as RefCounted).get("hits")) if beam != null else 0
+	print("WEAPONS armas=%s trocas=%d tiros=%d toques_do_raio=%d mortes/min=%.1f" % [
+		",".join(names), _swaps, _shots, beam_hits, _kills / maxf(_time / 60.0, 0.001)])

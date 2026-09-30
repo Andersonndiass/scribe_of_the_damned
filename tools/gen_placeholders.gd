@@ -228,6 +228,7 @@ func _init() -> void:
 	ok = _font() and ok
 	ok = _enemies_ch1() and ok
 	ok = _shop_icons() and ok
+	ok = _world_sprites() and ok
 	ok = _asmodeus() and ok
 	quit(0 if ok else 1)
 
@@ -493,6 +494,23 @@ func _shop_icons() -> bool:
 		img.save_png(OUT + "itm_%s.png" % id)
 		ok = _save(ImageTexture.create_from_image(img), "itm_%s.tres" % id) and ok
 	return ok
+
+
+## Sprites do mundo das armas (017; mapas do design-agent em T1700-design-maps.json): só PNG,
+## importado pelo Godot (sem textura embutida no .tres: pck menor).
+func _world_sprites() -> bool:
+	var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(ICON_MAPS))
+	if not parsed is Dictionary or not (parsed as Dictionary).has("world"):
+		push_error("gen_placeholders: sem a seção world em %s" % ICON_MAPS)
+		return false
+	var world: Dictionary = (parsed as Dictionary)["world"]
+	for id: String in world:
+		var img: Image = _image(world[id])
+		if img == null:
+			return false
+		img.save_png(OUT + "%s.png" % id)
+		print("gen_placeholders: %s.png" % id)
+	return true
 
 
 func _px(img: Image, x: int, y: int, c: Color) -> void:

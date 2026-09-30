@@ -566,6 +566,15 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
   11. Spec aprovada; começar pela Fase 1.
 - **Status:** ✅ aprovada.
 
+### D-088 · 2026-09-30 · 017 Fase 2: Crucifixo projétil, Bíblia nos 2 mais próximos
+- **Respostas do autor:** "1b 2a 3a" —
+  1. **Crucifixo é projétil de verdade** que atravessa (pode errar quem se mexe), não linha instantânea.
+  2. **Bíblia** fere os **2 mais próximos** ao longo do raio (o chefe e o campeão disputam a vaga).
+  3. **Congelamento de 50 ms** em quem a cruz acerta, já nesta fase.
+- **Números (rules-agent, 2026-09-30):** Crucifixo 360 px/s, alcance 140/180 (× `travel_mul` 1,25), raio de acerto = largura/2 (4/6), atravessa até 8, cada inimigo 1× por cruz; antecipação 0,2 s **dentro** do intervalo. Bíblia: o "tick" é o relógio de cada inimigo, checado todo frame (0,33 s vale 0,33 s); `precision_mul` 1,5 com a fração guardada por alvo (1, 2, 1, 2…).
+- **Sistema:** `ZoneShape` (base do `KillZone`), `WeaponZone`/`WeaponZones` (não letal, no mesmo passe do `EnemyManager`), `SpatialHash.query_segment`, `Aim`, `BeamWeapon`, `EnemyManager.query_hit_pierce` + `freeze_left`.
+- **Status:** ✅ implementado; espera o playtest (SC-1705).
+
 ## Conflitos abertos
 
 - ~~**C-008 · Menu de escolha da letra (D-085 item 2).**~~ Resolvido: autor "1a 2b 3b e mouse clicando 4a" —

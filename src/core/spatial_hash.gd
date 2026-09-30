@@ -104,6 +104,31 @@ func query_rect(r: Rect2) -> PackedInt32Array:
 	return out
 
 
+## Slots nas células que o segmento a→b toca, alargado por `pad` para os lados (017 T1712: o raio
+## da Bíblia). Anda célula a célula ao longo do segmento (DDA) e marca a vizinhança que o `pad`
+## cobre; sem teste fino (quem chama testa a forma). Cada slot sai uma vez só.
+func query_segment(a: Vector2, b: Vector2, pad: float) -> PackedInt32Array:
+	var out := PackedInt32Array()
+	if _count == 0:
+		return out
+	var reach: int = ceili(pad / _cell)
+	var seen := PackedByteArray()
+	seen.resize(_cols * _rows)
+	var length: float = a.distance_to(b)
+	var steps: int = maxi(1, ceili(length / (_cell * 0.5)))
+	for s: int in steps + 1:
+		var cc: Vector2i = _cell_coords(a.lerp(b, float(s) / float(steps)))
+		for cy: int in range(maxi(cc.y - reach, 0), mini(cc.y + reach, _rows - 1) + 1):
+			for cx: int in range(maxi(cc.x - reach, 0), mini(cc.x + reach, _cols - 1) + 1):
+				var c: int = cy * _cols + cx
+				if seen[c] == 1:
+					continue
+				seen[c] = 1
+				for k: int in range(_cell_start[c], _cell_start[c + 1]):
+					out.append(_sorted[k])
+	return out
+
+
 ## Slot mais próximo de `center` dentro de `max_radius`, ou -1.
 func nearest(center: Vector2, max_radius: float) -> int:
 	var best: int = -1

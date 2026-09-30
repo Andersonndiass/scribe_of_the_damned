@@ -233,3 +233,7 @@ ACTION_WEAPON_1,Arma 1,Weapon 1
 ACTION_WEAPON_2,Arma 2,Weapon 2
 WPN_PEN,Pena do Copista,Copyist's Quill
 WPN_PEN_DESC,Gota de tinta no mais próximo,Ink drop at the nearest foe
+WPN_BIBLE,Bíblia,Bible
+WPN_BIBLE_DESC,Raio de luz contínuo para onde você mira,Steady beam of light where you aim
+WPN_CRUCIFIX,Crucifixo,Crucifix
+WPN_CRUCIFIX_DESC,Cruz pesada que atravessa a fila,Heavy cross that pierces the line

@@ -12,9 +12,10 @@ extends Resource
 @export var speed: float = 220.0
 ## Quantos projéteis por disparo (Pena: nos N mais próximos) ou contas (Rosário).
 @export var count: int = 1
-## Quantos inimigos o projétil/raio atravessa (0 = para no primeiro).
+## Quantos inimigos um projétil ou o raio fere no máximo (0 ou 1 = só o primeiro). Bíblia: os 2
+## mais próximos; Crucifixo: até 8 (rules-agent, 2026-09-30).
 @export var pierce: int = 0
-## Raio/linha: largura (px).
+## Raio: largura (px). Projétil: diâmetro do acerto (0 = o da gota de tinta).
 @export var width: float = 0.0
 @export var spread_deg: float = 0.0
 @export var orbit_radius: float = 0.0

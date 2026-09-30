@@ -8,6 +8,8 @@ extends Node
 ##   modo "sweep": a carga do SC-001 e, a cada SWEEP_CYCLE s, uma varredura de tela (sweep_word:
 ##                 PURGO, DOMINUS ou MISERERE; vazio = controle, não conjura). Registra os frames nos
 ##                 SWEEP_WINDOW s seguintes e repõe os inimigos (002 SC-202).
+##   modo "bible": a carga do SC-001 e a Bíblia no nível 5 ligada, girando a mira pelo meio da
+##                 multidão (017 SC-1703).
 ## Inimigos com HP enorme (não morrem) perseguem um alvo que gira no centro; o jogador fica num
 ## canto, sem ataque automático, invulnerável. Nada de gameplay é alterado nos .tres.
 
@@ -25,6 +27,9 @@ const SWEEP_CAST_AT := 1.0
 const SWEEP_WINDOW := 0.8
 const SWEEP_CYCLES := 8
 const SLOW_FRAME_MS := 33.0
+## Modo bible: onde fica o escriba e a volta da mira (s).
+const BIBLE_PLAYER_AT := Vector2(220, 180)
+const BIBLE_AIM_PERIOD := 4.0
 ## Proporção da onda 9 (max_alive de wave_09.tres: 110/16/15/12/12), escalada para 300.
 const WAVE9_MIX: Array = [
 	["res://data/enemies/imp.tres", 200],
@@ -74,6 +79,14 @@ func setup(p_main: Node2D, p_mode: StringName = &"sc001") -> void:
 	_shot = load("res://data/projectiles/prj_page.tres")
 	_player.arsenal.enabled = false
 	_player.global_position = Vector2(40, 40)
+	if mode == &"bible":
+		var bible: WeaponData = load("res://data/weapons/bible.tres")
+		var slot := WeaponSlot.new(bible)
+		slot.level = bible.max_level()
+		GameState.loadout.slots[0] = slot
+		GameState.loadout.set_active(0)
+		_player.arsenal.enabled = true
+		_player.global_position = BIBLE_PLAYER_AT
 	main.add_child(_target)
 	_manager.player = _target
 	_manager.dissolve_all()
@@ -121,6 +134,10 @@ func _physics_process(delta: float) -> void:
 	_time += delta
 	_target.global_position = Vector2(320, 180) + Vector2.RIGHT.rotated(_time * ORBIT_SPEED) * ORBIT_RADIUS
 	_player.vitals.iframes_left = 1.0
+	if mode == &"bible":
+		_player.global_position = BIBLE_PLAYER_AT
+		GameState.aim_with_mouse = true
+		GameState.aim_point = BIBLE_PLAYER_AT + Vector2.RIGHT.rotated(_time * TAU / BIBLE_AIM_PERIOD) * 100.0
 	if mode == &"boss":
 		# Fase 3 (Cruz giratória + Summon): o pior caso da luta.
 		var boss: Boss = main.get_node("World/Boss")

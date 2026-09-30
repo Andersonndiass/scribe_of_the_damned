@@ -670,5 +670,58 @@
 			"........kkkkkkkk........",
 			"........................"
 		]
+	},
+	"world": {
+		"prj_crucifix": [
+			"..KKKK..",
+			"..KCCK..",
+			"..KCCK..",
+			"KKKCCKKK",
+			"KCCCCCCK",
+			"KKKCCKKK",
+			"..KCCK..",
+			"..KCCK..",
+			"..KCCK..",
+			"..KKKK.."
+		],
+		"prj_bible_book": [
+			"KKKK..KKKK",
+			"KCCCKKCCCK",
+			"KkkCKKkkCK",
+			"KCCCKKCCCK",
+			"KkkCKKkkCK",
+			"KKKKKKKKKK",
+			".kkkkkkkk."
+		],
+		"vfx_bible_tip_0": [
+			"...K...",
+			"..KCK..",
+			".KCCCK.",
+			"KCCCCCK",
+			".KCCCK.",
+			"..KCK..",
+			"...K..."
+		],
+		"vfx_bible_tip_1": [
+			".......",
+			"...K...",
+			"..KCK..",
+			".KCCCK.",
+			"..KCK..",
+			"...K...",
+			"......."
+		],
+		"prj_crucifix_trail": [
+			"..kkkk..",
+			"..kkkk..",
+			"..kkkk..",
+			"kkkkkkkk",
+			"kkkkkkkk",
+			"kkkkkkkk",
+			"..kkkk..",
+			"..kkkk..",
+			"..kkkk..",
+			"..kkkk.."
+		]
 	}
 }

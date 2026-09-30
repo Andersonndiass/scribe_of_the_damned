@@ -1,0 +1,67 @@
+[gd_resource type="Resource" script_class="WeaponData" load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://src/data/weapon_data.gd" id="1_wd"]
+[ext_resource type="Script" path="res://src/data/weapon_level_data.gd" id="2_lv"]
+[ext_resource type="Texture2D" path="res://assets/placeholders/itm_weapon_bible.tres" id="3_icon"]
+
+[sub_resource type="Resource" id="lv1"]
+script = ExtResource("2_lv")
+damage = 1
+interval = 0.6
+range = 200.0
+speed = 0.0
+count = 1
+pierce = 2
+width = 6.0
+
+[sub_resource type="Resource" id="lv2"]
+script = ExtResource("2_lv")
+damage = 1
+interval = 0.5
+range = 200.0
+speed = 0.0
+count = 1
+pierce = 2
+width = 6.0
+
+[sub_resource type="Resource" id="lv3"]
+script = ExtResource("2_lv")
+damage = 1
+interval = 0.5
+range = 260.0
+speed = 0.0
+count = 1
+pierce = 2
+width = 10.0
+
+[sub_resource type="Resource" id="lv4"]
+script = ExtResource("2_lv")
+damage = 1
+interval = 0.4
+range = 260.0
+speed = 0.0
+count = 1
+pierce = 2
+width = 10.0
+
+[sub_resource type="Resource" id="lv5"]
+script = ExtResource("2_lv")
+damage = 1
+interval = 0.33
+range = 260.0
+speed = 0.0
+count = 1
+pierce = 2
+width = 10.0
+
+[resource]
+script = ExtResource("1_wd")
+id = &"bible"
+display_name = "WPN_BIBLE"
+short_desc = "WPN_BIBLE_DESC"
+mode = &"aimed"
+pattern = &"beam"
+precision_mul = 1.5
+aim_steps = 32
+icon = ExtResource("3_icon")
+levels = Array[ExtResource("2_lv")]([SubResource("lv1"), SubResource("lv2"), SubResource("lv3"), SubResource("lv4"), SubResource("lv5")])

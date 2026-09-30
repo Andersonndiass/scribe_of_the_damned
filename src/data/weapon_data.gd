@@ -21,6 +21,18 @@ extends Resource
 @export var travel_mul: float = 1.25
 ## Marca do dano no chefe: "auto" = sem teto por conjuração, não conta como palavra.
 @export var boss_tag: StringName = &"auto"
+## Dano × isto contra campeão e chefe (Bíblia 1,5; D-087). A fração fica guardada por alvo.
+@export var precision_mul: float = 1.0
+## Antecipação antes do disparo (Crucifixo 0,2 s; animation-agent). Trocar de arma no meio cancela
+## sem gastar a recarga.
+@export var windup: float = 0.0
+## Congela por isto quem o projétil acerta (Crucifixo 50 ms; animation-agent).
+@export var hit_freeze: float = 0.0
+## Tremor da tela a cada disparo (px, s); 0 = nenhum.
+@export var fire_shake_px: float = 0.0
+@export var fire_shake_time: float = 0.0
+## Direções possíveis da mira (Bíblia 32: o raio em pixel inteiro não treme); 0 = livre.
+@export var aim_steps: int = 0
 ## Tabela explícita, um item por nível.
 @export var levels: Array[WeaponLevelData] = []
 

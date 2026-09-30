@@ -1,0 +1,70 @@
+[gd_resource type="Resource" script_class="WeaponData" load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://src/data/weapon_data.gd" id="1_wd"]
+[ext_resource type="Script" path="res://src/data/weapon_level_data.gd" id="2_lv"]
+[ext_resource type="Texture2D" path="res://assets/placeholders/itm_weapon_crucifix.tres" id="3_icon"]
+
+[sub_resource type="Resource" id="lv1"]
+script = ExtResource("2_lv")
+damage = 4
+interval = 1.6
+range = 140.0
+speed = 360.0
+count = 1
+pierce = 8
+width = 8.0
+
+[sub_resource type="Resource" id="lv2"]
+script = ExtResource("2_lv")
+damage = 4
+interval = 1.4
+range = 140.0
+speed = 360.0
+count = 1
+pierce = 8
+width = 8.0
+
+[sub_resource type="Resource" id="lv3"]
+script = ExtResource("2_lv")
+damage = 6
+interval = 1.4
+range = 140.0
+speed = 360.0
+count = 1
+pierce = 8
+width = 8.0
+
+[sub_resource type="Resource" id="lv4"]
+script = ExtResource("2_lv")
+damage = 6
+interval = 1.4
+range = 180.0
+speed = 360.0
+count = 1
+pierce = 8
+width = 12.0
+
+[sub_resource type="Resource" id="lv5"]
+script = ExtResource("2_lv")
+damage = 8
+interval = 1.2
+range = 180.0
+speed = 360.0
+count = 1
+pierce = 8
+width = 12.0
+
+[resource]
+script = ExtResource("1_wd")
+id = &"crucifix"
+display_name = "WPN_CRUCIFIX"
+short_desc = "WPN_CRUCIFIX_DESC"
+mode = &"auto"
+pattern = &"burst"
+projectile_kind = 1
+windup = 0.2
+hit_freeze = 0.05
+fire_shake_px = 1.0
+fire_shake_time = 0.1
+icon = ExtResource("3_icon")
+levels = Array[ExtResource("2_lv")]([SubResource("lv1"), SubResource("lv2"), SubResource("lv3"), SubResource("lv4"), SubResource("lv5")])

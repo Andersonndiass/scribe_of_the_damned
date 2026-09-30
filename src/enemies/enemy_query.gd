@@ -41,6 +41,15 @@ static func hit(pos: Vector2, radius: float, damage: int) -> bool:
 	return provider.call(&"query_hit", pos, radius, damage)
 
 
+## Acerto que atravessa (017 Crucifixo): uids novos atingidos (-1 = chefe). Só com o EnemyManager.
+static func hit_pierce(pos: Vector2, radius: float, damage: int, already: PackedInt32Array, freeze: float, max_new: int) -> PackedInt32Array:
+	if _manager != null:
+		return _manager.query_hit_pierce(pos, radius, damage, already, freeze, max_new)
+	if provider != null and max_new > 0 and provider.call(&"query_hit", pos, radius, damage):
+		return PackedInt32Array([0])
+	return PackedInt32Array()
+
+
 ## Dano em todos os inimigos no retângulo que sai de `origin` na direção `dir`. Retorna quantos acertou.
 static func damage_line(origin: Vector2, dir: Vector2, length: float, width: float, damage: int) -> int:
 	if provider == null:

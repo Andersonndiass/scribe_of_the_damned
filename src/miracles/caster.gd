@@ -126,11 +126,7 @@ func _on_heresy_absolved() -> void:
 ## Direção das palavras direcionais (D-067): o cursor, se a opção estiver ligada e houver mouse;
 ## senão, para onde o escriba olha.
 func aim_direction(origin: Vector2) -> Vector2:
-	if GameState.aim_with_mouse and GameState.aim_point != Vector2.INF:
-		var d: Vector2 = GameState.aim_point - origin
-		if d.length() > 1.0:
-			return d.normalized()
-	return player.facing
+	return Aim.direction(origin, player.facing)
 
 
 func _partner_latins() -> PackedStringArray:

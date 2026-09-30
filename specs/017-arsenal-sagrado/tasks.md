@@ -16,16 +16,16 @@
 **Checkpoint 017-A:** o jogo se sente igual, agora com o inventário. ✅ (2026-09-30; GUT 486/486; T1709: paridade da Pena provada em `test_burst_weapon` — mesma cadência, alvo e dano do AutoAttack; a sonda não tem seed, então a paridade dela é informal)
 
 ## Fase 2 — Bíblia e Crucifixo
-- **T1710** `ZoneShape` extraída de `KillZone`.
-- **T1711** `WeaponZones` (não letal) + canal `weapon_touch_ready` no passe das zonas.
-- **T1712** `SpatialHash.query_segment`.
-- **T1713** `Aim.direction` comum (Caster, Bíblia, Aspersório).
-- **T1714** `BeamWeapon` + `bible.tres` + raio por Bresenham.
-- **T1715** Pierce/kind no PlayerProjectileManager + `crucifix.tres`.
-- **T1716** `?stress=bible` (SC-1703) + sonda `weapons`/`swap`.
+- ✅ **T1710** `ZoneShape` extraída de `KillZone`.
+- ✅ **T1711** `WeaponZones` (não letal) + canal `weapon_touch_ready` no passe das zonas.
+- ✅ **T1712** `SpatialHash.query_segment`.
+- ✅ **T1713** `Aim.direction` comum (Caster, Bíblia, Aspersório).
+- ✅ **T1714** `BeamWeapon` + `bible.tres` + raio por Bresenham.
+- ✅ **T1715** Pierce/kind no PlayerProjectileManager + `crucifix.tres` (projétil que atravessa até 8, 360 px/s, congela 50 ms; D-088).
+- ✅ **T1716** `?stress=bible` (SC-1703) + sonda `weapons`/`swap`.
 - **T1717** **Playtest do autor** (SC-1705).
 
-**Checkpoint 017-B:** Bíblia e Crucifixo jogáveis; o autor testa.
+**Checkpoint 017-B:** Bíblia e Crucifixo jogáveis; o autor testa. (2026-09-30: jogáveis, GUT 500/500; stress desktop com a Bíblia 60 FPS, p95 56,7; SC-1703 no Chrome **não medido** — o Chrome do Claude não alcançou o servidor local; sonda onda 1 god: Pena 52, Bíblia 66, Crucifixo 66, as duas com troca 67 mortes/min. Falta o playtest do autor.)
 
 ## Fase 3 — Menu de escolha da letra
 - **T1718** `LetterOfferRoll` (1 garantida + 2 sorteadas, distintas).
