@@ -13,7 +13,9 @@ extends SceneTree
 ##         desde o começo. Imprime uma linha ARENA com STUCK: % das amostras (a cada 0,5 s) em que um
 ##         inimigo que anda QUER andar (velocidade ≥ 30% da dele), está encostado numa peça e não saiu
 ##         do lugar (≤ 2 px). Monge parado atirando e Gárgula preparando o dash não contam.
-##   smart_magnet target=F life=F magnet=F dropall=F = números de letras em memória (D-082).
+##   target=F magnet=F dropall=F = números de letras em memória (D-082).
+##   react=F acerto=F = menu da letra (017 T1728): o bot escolhe depois de F s (padrão 0,8) e acerta
+##         a letra que continua a palavra com chance F (padrão 0,9, a do rules-agent). Linha LETTERS.
 ##   only_waves = no modo chapter, termina no fim da onda 9 (sem a luta do chefe; a sonda do chefe
 ##         trava na fase 3, D-081; o nome não pode conter "boss": o Main abriria direto no chefe).
 ##   grace = liga a Graça (016) com escolha automática, sem pausar. Imprime uma linha GRACE: níveis
@@ -46,6 +48,12 @@ var _shots: int = 0
 var _god: bool = false
 var _targets: int = 0
 var _eaten: int = 0
+## 017 T1728: menu da letra.
+var _react: float = 0.8
+var _hit_chance: float = 0.9
+var _lost: int = 0
+var _overflow: int = 0
+var _menu_rng := RandomNumberGenerator.new()
 var _heresies: int = 0
 var _purges: int = 0
 var _chapter: bool = false
@@ -100,16 +108,16 @@ func _initialize() -> void:
 	for arg: String in OS.get_cmdline_user_args():
 		if arg.begins_with("hp="):
 			imp.set("max_hp", int(arg.substr(3)))
-		elif arg == "smart_magnet":
-			(load("res://data/tuning/drop_tuning.tres") as Resource).set("selective_magnet", true)
 		elif arg.begins_with("drop="):
 			imp.set("letter_drop_chance", float(arg.substr(5)))
 		# D-082 (ritmo das palavras): target=F bônus da letra-alvo · life=F segundos da letra no
 		# chão · magnet=F raio do ímã · dropall=F multiplica o drop de letra de todos os inimigos.
 		elif arg.begins_with("target="):
 			(load("res://data/tuning/drop_tuning.tres") as Resource).set("target_bonus", float(arg.substr(7)))
-		elif arg.begins_with("life="):
-			(load("res://data/tuning/drop_tuning.tres") as Resource).set("letter_lifetime", float(arg.substr(5)))
+		elif arg.begins_with("react="):
+			_react = float(arg.substr(6))
+		elif arg.begins_with("acerto="):
+			_hit_chance = float(arg.substr(7))
 		elif arg.begins_with("magnet="):
 			(load("res://data/player/anselmo.tres") as Resource).set("magnet_radius", float(arg.substr(7)))
 		elif arg.begins_with("dropall="):
@@ -179,10 +187,11 @@ func _initialize() -> void:
 		_limit = 20.0 * 60.0
 		bus.wave_started.connect(func(i: int, _d: float) -> void:
 			print("CHAPTER onda %d começou (t=%.1fmin, tinta=%d)" % [i, _time / 60.0, int(root.get_node("GameState").get("gold_ink"))]))
-	bus.letter_dropped.connect(func(_l: String, _r: bool, t: bool, _p: Vector2) -> void:
+	bus.letter_menu_opened.connect(func(_o: Array) -> void:
 		_dropped += 1
-		if t:
-			_targets += 1)
+		_targets += 1)
+	bus.letter_lost.connect(func() -> void: _lost += 1)
+	bus.letter_offer_dropped.connect(func() -> void: _overflow += 1)
 	bus.letter_eaten.connect(func(_l: String, _p: Vector2) -> void: _eaten += 1)
 	bus.heresy_committed.connect(func(_p: Vector2) -> void: _heresies += 1)
 	bus.atril_purged.connect(func(_l: PackedStringArray, _p: Vector2) -> void: _purges += 1)
@@ -209,6 +218,7 @@ func _physics_process(delta: float) -> bool:
 		return false
 	_time += delta
 	_drive_weapons(delta)
+	_answer_menu()
 	if _god:
 		(_player.get("vitals") as RefCounted).set("iframes_left", 1.0e6)
 	_max_alive = maxi(_max_alive, _manager.get("count"))
@@ -246,6 +256,9 @@ func _physics_process(delta: float) -> bool:
 		print("PROBE onda=%d still=%s tempo=%.1fs mortes=%d golpes_sofridos=%d morreu_em=%s max_vivos=%d onda_terminou=%s tiros=%d conjurações=%s letras_caídas=%d coletadas=%s" % [
 			GameState_wave(), _still, _time, _kills, _hits, ("%.1fs" % _died_at) if _died_at >= 0.0 else "não", _max_alive, _ended, _shots, _casts, _dropped, _collected])
 		_print_weapons()
+		var mins: float = maxf(_time / 60.0, 0.001)
+		print("LETTERS menus=%d menus/min=%.1f perdidas=%d fila_cheia=%d coletadas=%d react=%.2f acerto=%.2f" % [
+			_dropped, _dropped / mins, _lost, _overflow, _collected.length(), _react, _hit_chance])
 		if _god:
 			var minutes: float = maxf(_time / 60.0, 0.001)
 			var words: int = 0
@@ -292,24 +305,6 @@ func _steer() -> void:
 		var d: float = away.length()
 		if d < 70.0 and d > 0.01:
 			flee += away / d * (70.0 - d)
-	if _cast_mode:
-		var best_d: float = INF
-		var best := Vector2.INF
-		var atril_now: RefCounted = _field.get("atril")
-		var lex: RefCounted = _field.get("lexicon")
-		var prefix: String = atril_now.call("text")
-		var cap: int = atril_now.get("capacity")
-		for l: Node2D in _field.get("_active"):
-			# Jogador competente: só busca letras que continuam uma palavra que cabe no atril.
-			if not lex.call("is_prefix", prefix + String(l.get("letter")), cap):
-				continue
-			var dl: float = l.global_position.distance_to(p)
-			if dl < best_d:
-				best_d = dl
-				best = l.global_position
-		if best != Vector2.INF:
-			# Invencível: buscar letras é a prioridade (mede o fluxo, não a sobrevivência).
-			flee += (best - p).normalized() * (400.0 if _god else 40.0)
 	# Evita as bordas puxando para o centro.
 	flee += (Vector2(320, 180) - p) * 0.15
 	if flee.x < -2.0:
@@ -420,3 +415,25 @@ func _print_weapons() -> void:
 	var beam_hits: int = int((beam.get("zone") as RefCounted).get("hits")) if beam != null else 0
 	print("WEAPONS armas=%s trocas=%d tiros=%d toques_do_raio=%d mortes/min=%.1f" % [
 		",".join(names), _swaps, _shots, beam_hits, _kills / maxf(_time / 60.0, 0.001)])
+
+
+## 017 T1728: responde ao menu da letra depois de `_react` s de menu; com `_hit_chance` escolhe a
+## letra que continua a palavra, senão uma das outras.
+func _answer_menu() -> void:
+	if not _cast_mode:
+		return
+	var menu: Node = _field.get("menu")
+	if menu == null or not bool(menu.call("is_open")) or float(menu.get("open_for")) < _react:
+		return
+	var options: Array = menu.get("options")
+	var good := -1
+	var bad: Array[int] = []
+	for i: int in options.size():
+		if bool(options[i]["useful"]) and good < 0:
+			good = i
+		else:
+			bad.append(i)
+	var pick: int = good
+	if good < 0 or (_menu_rng.randf() >= _hit_chance and not bad.is_empty()):
+		pick = bad[_menu_rng.randi_range(0, bad.size() - 1)]
+	menu.call("pick", pick)

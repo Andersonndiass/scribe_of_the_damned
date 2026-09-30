@@ -3,7 +3,7 @@ extends RefCounted
 ## Buffs do escriba (002 plan: PlayerBuffs no Player). Lógica pura com timers; quem aplica é o
 ## milagre, quem consulta é o sistema afetado (Player, LetterField, Caster).
 ##   FIDES: escudo com cargas até ser consumido ou o fim da onda (FR-206).
-##   LUMEN: ímã e bônus da letra-alvo multiplicados por um tempo (FR-207).
+##   LUMEN: chance de letra dos inimigos multiplicada por um tempo (FR-207; 017 D-087).
 ##   GLORIA: dano e cura dos milagres multiplicados por um tempo (FR-209).
 ##   SPIRITUS / MISERERE: estado pronto para a Fase 4 (D-046).
 ## Reconjurar renova o tempo e não acumula.
@@ -14,8 +14,7 @@ var gloria_left: float = 0.0
 var spiritus_left: float = 0.0
 var forgive_heresy: bool = false
 
-var _magnet_mul: float = 1.0
-var _target_mul: float = 1.0
+var _letter_mul: float = 1.0
 var _gloria_mul: float = 1.0
 var _spiritus_speed: float = 1.0
 
@@ -36,10 +35,9 @@ func absorb_hit() -> bool:
 	return true
 
 
-func apply_lumen(duration: float, magnet: float, target: float) -> void:
+func apply_lumen(duration: float, letter_mul: float) -> void:
 	lumen_left = duration
-	_magnet_mul = magnet
-	_target_mul = target
+	_letter_mul = letter_mul
 
 
 func apply_gloria(duration: float, mul: float) -> void:
@@ -64,12 +62,9 @@ func consume_forgiveness() -> bool:
 	return true
 
 
-func magnet_mul() -> float:
-	return _magnet_mul if lumen_left > 0.0 else 1.0
-
-
-func target_weight_mul() -> float:
-	return _target_mul if lumen_left > 0.0 else 1.0
+## LUMEN: chance de letra multiplicada enquanto dura.
+func letter_chance_mul() -> float:
+	return _letter_mul if lumen_left > 0.0 else 1.0
 
 
 func damage_mul() -> float:

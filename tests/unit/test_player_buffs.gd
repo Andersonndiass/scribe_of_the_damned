@@ -11,8 +11,7 @@ func before_each() -> void:
 
 func test_starts_neutral() -> void:
 	assert_false(_b.has_shield())
-	assert_eq(_b.magnet_mul(), 1.0)
-	assert_eq(_b.target_weight_mul(), 1.0)
+	assert_eq(_b.letter_chance_mul(), 1.0)
 	assert_eq(_b.damage_mul(), 1.0)
 	assert_eq(_b.speed_mul(), 1.0)
 	assert_false(_b.is_intangible())
@@ -35,15 +34,13 @@ func test_fides_lasts_until_the_wave_ends() -> void:
 	assert_false(_b.has_shield())
 
 
-func test_lumen_multiplies_magnet_and_target_for_its_duration() -> void:
-	_b.apply_lumen(10.0, 2.0, 2.0)
-	assert_eq(_b.magnet_mul(), 2.0)
-	assert_eq(_b.target_weight_mul(), 2.0)
+func test_lumen_multiplies_the_letter_chance_for_its_duration() -> void:
+	_b.apply_lumen(10.0, 2.0)
+	assert_eq(_b.letter_chance_mul(), 2.0)
 	_b.tick(9.9)
-	assert_eq(_b.magnet_mul(), 2.0)
+	assert_eq(_b.letter_chance_mul(), 2.0)
 	_b.tick(0.2)
-	assert_eq(_b.magnet_mul(), 1.0)
-	assert_eq(_b.target_weight_mul(), 1.0)
+	assert_eq(_b.letter_chance_mul(), 1.0)
 
 
 func test_gloria_multiplies_damage_and_renews() -> void:

@@ -22,7 +22,7 @@ ITEM_SANDALS_DESC,Velocidade +10%,Speed +10%
 ITEM_ALMS_PURSE,Bolsa do Esmoler,Almoner Purse
 ITEM_ALMS_PURSE_DESC,Tinta dourada +20%,Gold ink +20%
 ITEM_COPYIST_LENSES,Lentes do Copista,Copyist Lenses
-ITEM_COPYIST_LENSES_DESC,Letra útil cai mais,Useful letters drop more
+ITEM_COPYIST_LENSES_DESC,"+0,5 s para escolher a letra",+0.5 s to pick a letter
 ITEM_DOUBLE_INKWELL,Tinteiro Duplo,Double Inkwell
 ITEM_DOUBLE_INKWELL_DESC,10% de letra extra,10% extra letter
 ITEM_FINE_QUILL,Pena de Ganso Fina,Fine Goose Quill
@@ -33,7 +33,7 @@ ITEM_NEW_SHELF,Estante Nova,New Shelf
 ITEM_NEW_SHELF_DESC,+1 espaço no atril,+1 lectern slot
 APOCRYPHA_PURGO_DESC,Limpa a tela,Clears the screen
 APOCRYPHA_FIDES_DESC,Escudo de 1 golpe,Shield against 1 hit
-APOCRYPHA_LUMEN_DESC,Ímã e letra útil X2,Magnet and useful letters X2
+APOCRYPHA_LUMEN_DESC,Letras X2 por 10 s,Letters X2 for 10 s
 APOCRYPHA_GLORIA_DESC,Milagres X1.5,Miracles X1.5
 APOCRYPHA_VERBUM_DESC,Repete a palavra; libera o B,Repeats the word; unlocks B
 BOSS_ASMODEUS,"ASMODEUS, O RASURADOR","ASMODEUS, THE ERASER"

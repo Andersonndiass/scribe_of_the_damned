@@ -58,10 +58,8 @@ func _asked() -> String:
 
 func _counts() -> Dictionary:
 	var em: EnemyManager = _main.get_node("World/EnemyManager")
-	var field: LetterField = _main.get_node("World/LetterField")
 	return {
 		"inimigos": em.count,
-		"letras": field.active_count(),
 		"projeteis": _driver.call(&"active_projectiles"),
 		"tiros_inimigos": _driver.call(&"enemy_projectiles"),
 		"pocas": _driver.call(&"puddles"),

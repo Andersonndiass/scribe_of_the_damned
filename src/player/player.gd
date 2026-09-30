@@ -67,6 +67,8 @@ func _physics_process(delta: float) -> void:
 
 ## Direção pedida pelo teclado, já normalizada (diagonal não é mais rápida).
 func input_direction() -> Vector2:
+	if GameState.letter_menu_open:
+		return Vector2.ZERO  # 017 D-087: com o menu da letra aberto, o escriba fica parado
 	return Input.get_vector(&"move_left", &"move_right", &"move_up", &"move_down")
 
 

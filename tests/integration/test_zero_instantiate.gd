@@ -1,6 +1,6 @@
 extends GutTest
 ## T083 SC-002: durante a onda, nenhum instantiate — nem sob a carga do SC-001 nem numa MORTIS
-## que mata 300 de uma vez (dissoluções e letras excedentes são puladas, não instanciadas).
+## que mata 300 de uma vez (dissoluções e pedidos de menu excedentes são pulados, não instanciadas).
 
 const MAIN_SCENE := preload("res://src/main/main.tscn")
 
@@ -32,13 +32,11 @@ func test_sc001_load_and_mass_kill_do_not_instantiate() -> void:
 	rng.seed = 7
 	for i: int in 300:
 		_manager.spawn(imp, Vector2(rng.randf_range(30, 610), rng.randf_range(30, 330)))
-	for i: int in 150:
-		_field.spawn_letter("L", false, false, Vector2(rng.randf_range(200, 610), rng.randf_range(30, 330)))
 	var projectiles: PlayerProjectileManager = _main.get_node("PlayerProjectiles")
 	for i: int in 200:
 		assert_true(projectiles.fire(Vector2(320, 180), Vector2.RIGHT.rotated(i * 0.1), 220.0, 1, 600.0))
 	await wait_physics_frames(30)
-	_field.atril.clear()  # o ímã pode ter puxado Ls durante a carga
+	_field.atril.clear()
 	_field.atril.set_capacity(6)
 	for ch: String in "MORTIS":
 		_field.collect(ch, false)

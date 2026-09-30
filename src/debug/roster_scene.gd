@@ -28,6 +28,3 @@ func _ready() -> void:
 			# 2ª fileira: campeões (a Traça não é campeã, D-040).
 			var champ: bool = n == 1 and d.id != &"moth"
 			m.spawn(d, Vector2(90 + k * 115, 70 + n * 210), champ)
-	var field: LetterField = _main.get_node("World/LetterField")
-	field.spawn_letter("L", false, true, Vector2(215, 100))
-	field.spawn_letter("X", false, false, Vector2(215, 260))

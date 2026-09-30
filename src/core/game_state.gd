@@ -26,6 +26,10 @@ var gold_fraction: float = 0.0
 var shake_enabled: bool = true
 ## Mirar as palavras direcionais com o mouse (D-067; ligado por padrão; Opções na 007).
 var aim_with_mouse: bool = true
+## 017: menu da letra aberto (o escriba fica parado; Espaço e setas são do menu).
+var letter_menu_open: bool = false
+## Multiplicador de chance de letra da onda atual (WaveData.letter_drop_mul).
+var letter_drop_mul: float = 1.0
 ## Onde está o cursor no mundo; Vector2.INF = sem mouse nesta sessão (mira = direção do escriba).
 var aim_point: Vector2 = Vector2.INF
 ## Alto contraste (007, D-066): quem desenha consulta; variação dentro da paleta travada.

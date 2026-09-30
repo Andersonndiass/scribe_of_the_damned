@@ -1,9 +1,9 @@
 extends Node
 ## DEBUG (T080, 005 T540): mantém uma carga fixa sobre a cena principal real e mede com o FpsProbe.
-##   modo "sc001" (padrão): 300 Diabretes + 150 letras + 200 projéteis do jogador (SC-001).
+##   modo "sc001" (padrão): 300 Diabretes + 200 projéteis do jogador (SC-001; as 150 letras do chão saíram na 017).
 ##   modo "wave9": o mesmo, mas os 300 inimigos são a MISTURA da onda 9 com os comportamentos
 ##                 ativos, mais 60 projéteis inimigos e 20 poças mantidos no ar/chão (SC-503).
-##   modo "boss": a luta contra o chefe do capítulo com o Summon ativo, 150 letras e 200 projéteis
+##   modo "boss": a luta contra o chefe do capítulo com o Summon ativo e 200 projéteis
 ##                do jogador; o chefe tem vida enorme e o escriba é invulnerável (006 SC-607).
 ##   modo "sweep": a carga do SC-001 e, a cada SWEEP_CYCLE s, uma varredura de tela (sweep_word:
 ##                 PURGO, DOMINUS ou MISERERE; vazio = controle, não conjura). Registra os frames nos
@@ -14,7 +14,6 @@ extends Node
 ## canto, sem ataque automático, invulnerável. Nada de gameplay é alterado nos .tres.
 
 const ENEMIES := 300
-const LETTERS := 150
 const PROJECTILES := 200
 const ENEMY_PROJECTILES := 60
 const PUDDLES := 20
@@ -114,10 +113,6 @@ func setup(p_main: Node2D, p_mode: StringName = &"sc001") -> void:
 		for i: int in ENEMIES:
 			_manager.spawn(imp, _random_point())
 
-	var tuning: DropTuning = _field.tuning.duplicate()
-	tuning.letter_lifetime = 1.0e6
-	_field.tuning = tuning
-	_refill_letters()
 	_ready_to_run = true
 
 
@@ -149,8 +144,7 @@ func _physics_process(delta: float) -> void:
 	if mode == &"sweep":
 		_sweep_tick(delta)
 	if mode == &"wave9":
-		# As Traças comem letras; os Monges e Borrões já atiram e sujam, completamos até a carga-alvo.
-		_refill_letters()
+		# Os Monges e Borrões já atiram e sujam, completamos até a carga-alvo.
 		while _eproj.count < ENEMY_PROJECTILES:
 			_eproj.fire(_shot, _random_point(), Vector2.RIGHT.rotated(_rng.randf() * TAU))
 		while _hazards.count < PUDDLES:
@@ -204,17 +198,6 @@ func _report_sweep() -> void:
 	print(line)
 	if OS.has_feature("web"):
 		JavaScriptBridge.eval("fetch('/fps_result?' + encodeURIComponent(%s)).catch(function(){})" % JSON.stringify(line))
-
-
-func _refill_letters() -> void:
-	var alphabet: PackedStringArray = _field.lexicon.data.alphabet
-	var i: int = _field.active_count()
-	while _field.active_count() < LETTERS:
-		var p: Vector2 = _random_point()
-		p.x = maxf(p.x, 140.0)
-		if _field.spawn_letter(alphabet[i % 19], i % 7 == 0, i % 5 == 0, p) == null:
-			return
-		i += 1
 
 
 func active_projectiles() -> int:

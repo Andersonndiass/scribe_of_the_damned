@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_s")
 min_useful = 3
-wait = 4.0
-cooldown = 4.0
+wait = 8.0
+cooldown = 8.0
 min_distance = 48.0
 max_distance = 80.0

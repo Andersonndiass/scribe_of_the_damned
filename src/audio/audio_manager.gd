@@ -230,8 +230,11 @@ func _connect_events() -> void:
 	EventBus.player_died.connect(func() -> void:
 		music.on_player_died()
 		play_event(&"player_died"))
-	EventBus.letter_dropped.connect(func(_l: String, rare: bool, _t: bool, _p: Vector2) -> void:
-		play_event(&"letter_dropped", &"rare" if rare else &""))
+	# 017: o menu da letra substitui a letra caindo no chão; a variante rara toca se houver rara.
+	EventBus.letter_menu_opened.connect(func(options: Array) -> void:
+		var rare: bool = options.any(func(o: Dictionary) -> bool: return o["rare"])
+		play_event(&"letter_menu_opened", &"rare" if rare else &""))
+	EventBus.letter_lost.connect(func() -> void: play_event(&"letter_lost"))
 	EventBus.letter_collected.connect(func(_l: String, rare: bool) -> void:
 		play_event(&"letter_collected", &"rare" if rare else &""))
 	EventBus.letter_rejected.connect(func(_l: String) -> void: play_event(&"letter_rejected"))

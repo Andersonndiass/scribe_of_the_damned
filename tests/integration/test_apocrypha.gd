@@ -80,10 +80,10 @@ func test_fides_ends_with_the_wave() -> void:
 	assert_false(_player.buffs.has_shield())
 
 
-func test_lumen_doubles_the_magnet() -> void:
+func test_lumen_doubles_the_letter_chance() -> void:
+	assert_eq(_player.buffs.letter_chance_mul(), 1.0)
 	assert_true(_cast("LUMEN"))
-	assert_eq(_player.buffs.magnet_mul(), 2.0)
-	assert_eq(_player.buffs.target_weight_mul(), 2.0)
+	assert_eq(_player.buffs.letter_chance_mul(), 2.0)
 
 
 func test_gloria_multiplies_damage_only() -> void:

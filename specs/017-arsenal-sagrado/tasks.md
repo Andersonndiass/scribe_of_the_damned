@@ -28,17 +28,19 @@
 **Checkpoint 017-B:** Bíblia e Crucifixo jogáveis; o autor testa. (2026-09-30: jogáveis, GUT 500/500; stress desktop com a Bíblia 60 FPS, p95 56,7; SC-1703 no Chrome **não medido** — o Chrome do Claude não alcançou o servidor local; sonda onda 1 god: Pena 52, Bíblia 66, Crucifixo 66, as duas com troca 67 mortes/min. Falta o playtest do autor.)
 
 ## Fase 3 — Menu de escolha da letra
-- **T1718** `LetterOfferRoll` (1 garantida + 2 sorteadas, distintas).
-- **T1719** `LetterMenu` (FSM, fila, relógio real, câmera lenta) + `LetterMenuTuning`.
-- **T1720** `LetterMenuView` (acima do escriba; setas, Espaço, clique; anel nas letras úteis; barra).
-- **T1721** Guardas: GraceFlow, Main (loja), Caster, movimento.
-- **T1722** Sai o chão: pool Letter, ímã de letras, marcação por clique, campos do DropTuning, sinais.
-- **T1723** Traça nova.
-- **T1724** Purge novo.
-- **T1725** LetterSafety por oferta.
-- **T1726** Áudio (mapa de sinais).
-- **T1727** Testes da Fase 3.
-- **T1728** Sonda `letters`/`react` + linha LETTERS.
+- ✅ **T1718** `LetterOfferRoll` (1 garantida + 2 sorteadas, distintas).
+- ✅ **T1719** `LetterMenu` (FSM, fila, relógio real, câmera lenta) + `LetterMenuTuning`.
+- ✅ **T1720** `LetterMenuView` (acima do escriba; setas, Espaço, clique; barra; **sem anel nas letras úteis — D-087 item 4**).
+- ✅ **T1721** Guardas: GraceFlow, Main (loja), Caster, movimento.
+- ✅ **T1722** Sai o chão: pool Letter, ímã de letras, marcação por clique, campos do DropTuning, sinais.
+- ✅ **T1723** Traça nova.
+- ✅ **T1724** Purge novo.
+- ✅ **T1725** LetterSafety por oferta.
+- ✅ **T1726** Áudio (mapa de sinais).
+- ✅ **T1727** Testes da Fase 3.
+- ✅ **T1728** Sonda `letters`/`react` + linha LETTERS.
+
+**Checkpoint 017-C:** ✅ 2026-09-30 — menu da letra no lugar das letras do chão (D-090); GUT 504/504. Sonda onda 1: o menu abre e a sonda conjura; ~2 menus/min com a chance normal (alvo 5–6,5) → passada de ritmo. Ficou simples: o voo da letra até o atril.
 
 ## Fase 4 — Selos, loja e ímã reverso
 - **T1729** `SealOption` / `SealPool` + pesos.

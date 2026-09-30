@@ -39,36 +39,40 @@ func _data(path: String) -> EnemyData:
 
 # --- Traça ---------------------------------------------------------------------------------
 
-func test_moth_eats_the_nearest_letter_then_flees() -> void:
+func test_moth_steals_the_last_atril_letter_then_flees() -> void:
 	_player.global_position = Vector2(560, 300)
-	_field.spawn_letter("P", false, false, Vector2(150, 100))
-	var slot: int = _m.spawn(_data("res://data/enemies/moth.tres"), Vector2(110, 100))
+	_field.collect("P", false)
+	var slot: int = _m.spawn(_data("res://data/enemies/moth.tres"), _m.player_body() + Vector2(30, 0))
 	await wait_seconds(1.6)
-	assert_eq(_eaten, ["P"], "comeu a letra")
-	assert_eq(_field.active_count(), 0)
-	assert_eq(_m.state[slot], EnemyBehavior.STATE_FLEE, "max_eaten = 1: foge depois de comer")
+	assert_eq(_eaten, ["P"], "roubou a letra do atril")
+	assert_eq(_field.atril.size(), 0, "o atril ficou sem ela")
+	assert_eq(_m.state[slot], EnemyBehavior.STATE_FLEE, "max_eaten = 1: foge depois de roubar")
 	assert_eq(_m.carried[slot], "P")
 
 
-func test_moth_returns_eaten_letters_on_death() -> void:
+func test_moth_returns_the_stolen_letter_as_a_menu_on_death() -> void:
 	_player.global_position = Vector2(560, 300)
-	_field.spawn_letter("V", false, false, Vector2(150, 100))
-	var slot: int = _m.spawn(_data("res://data/enemies/moth.tres"), Vector2(120, 100))
+	_field.collect("V", false)
+	var slot: int = _m.spawn(_data("res://data/enemies/moth.tres"), _m.player_body() + Vector2(30, 0))
 	await wait_seconds(1.4)
 	assert_eq(_eaten.size(), 1)
+	var opened: Array = []
+	var on_open: Callable = func(o: Array) -> void: opened.append(o)
+	EventBus.letter_menu_opened.connect(on_open)
 	_m.damage_at(slot, 99)
-	var letters: Array = _field.get("_active").map(func(l: Letter) -> String: return l.letter)
-	assert_has(letters, "V", "a letra comida volta ao chão")
+	await wait_physics_frames(4)
+	EventBus.letter_menu_opened.disconnect(on_open)
+	assert_eq(opened.size(), 1, "a morte da Traça pediu um menu")
+	var letters: Array = (opened[0] as Array).map(func(o: Dictionary) -> String: return o["letter"])
+	assert_has(letters, "V", "a letra roubada é uma das opções")
 
 
-func test_moth_ignores_magnetized_letters() -> void:
+func test_moth_does_nothing_with_an_empty_atril() -> void:
 	_player.global_position = Vector2(560, 300)
-	var l: Letter = _field.spawn_letter("A", false, false, Vector2(150, 100))
-	l.magnetized = true
-	l.life = 100.0
-	_m.spawn(_data("res://data/enemies/moth.tres"), Vector2(140, 100))
+	var slot: int = _m.spawn(_data("res://data/enemies/moth.tres"), _m.player_body() + Vector2(30, 0))
 	await wait_seconds(1.0)
 	assert_eq(_eaten.size(), 0)
+	assert_ne(_m.state[slot], EnemyBehavior.STATE_FLEE, "sem o que roubar, segue perseguindo")
 
 
 # --- Gárgula -------------------------------------------------------------------------------

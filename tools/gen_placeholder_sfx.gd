@@ -39,7 +39,10 @@ const RECIPES: Dictionary = {
 	"player_healed": {"wave": "sine", "freqs": [523.0, 659.0], "dur": 0.35, "attack": 0.01, "slide": 1.5, "vol": 0.35},
 	"player_died": {"wave": "triangle", "freqs": [220.0, 262.0, 311.0], "dur": 1.2, "attack": 0.01, "slide": 0.5, "vol": 0.5},
 	# Letras e tinta.
-	"letter_dropped_rare": {"wave": "sine", "freqs": [1568.0], "dur": 0.12, "attack": 0.002, "vol": 0.18},
+	"letter_menu_opened": {"wave": "noise", "freqs": [0.0], "dur": 0.18, "attack": 0.01, "lp": 0.35, "vol": 0.18},
+	"letter_menu_opened_rare": {"wave": "noise", "freqs": [0.0], "dur": 0.18, "attack": 0.01, "lp": 0.35, "vol": 0.18,
+		"layers": [{"wave": "sine", "freqs": [1568.0], "dur": 0.12, "attack": 0.002, "vol": 0.18, "delay": 0.03}]},
+	"letter_lost": {"wave": "triangle", "freqs": [196.0], "dur": 0.25, "attack": 0.005, "slide": 0.6, "vol": 0.25},
 	"letter_collected": {"wave": "noise", "freqs": [0.0], "dur": 0.04, "attack": 0.001, "lp": 0.6, "vol": 0.12},
 	"letter_collected_rare": {"wave": "noise", "freqs": [0.0], "dur": 0.04, "attack": 0.001, "lp": 0.6, "vol": 0.12,
 		"layers": [{"wave": "sine", "freqs": [2093.0], "dur": 0.12, "attack": 0.002, "vol": 0.15, "delay": 0.02}]},

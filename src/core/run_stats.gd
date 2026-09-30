@@ -29,6 +29,7 @@ func _init(p_base: PlayerData) -> void:
 		&"word_damage_mul": 1.0,
 		# 017: Pena de Ganso — cadência de todas as armas (intervalo × isto).
 		&"weapon_interval_mul": 1.0,
+		&"menu_time_add": 0.0,
 	}
 
 

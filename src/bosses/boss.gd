@@ -169,8 +169,11 @@ func _letter_safety(delta: float) -> void:
 	if _safety_timer > 0.0 or letter_field == null:
 		return
 	_safety_timer = SAFETY_CHECK
-	if safety.tick(SAFETY_CHECK, letter_field.count_useful_on_ground()):
-		letter_field.drop_safety_letter(safety.drop_position(manager.player_body(), GameState.rng, Arena.PLAYABLE))
+	# 017: sem letras no chão, conta o tempo sem menu; passado `wait`, pede um menu de segurança.
+	var opened: int = letter_field.offers_opened
+	letter_field.offers_opened = 0
+	if safety.tick(SAFETY_CHECK, safety.tuning.min_useful if opened > 0 else 0):
+		letter_field.offer_safety()
 
 
 ## Desenho (design-agent): quadros gerados por script; overlays da F2 (rachaduras) e da F3 (fogo).

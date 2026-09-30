@@ -8,6 +8,7 @@ var _player: Player
 
 
 func before_each() -> void:
+	GameState.letter_menu_open = false  # um menu de letra aberto em outro teste deixaria o escriba parado
 	var arena: Node2D = ARENA_SCENE.instantiate()
 	add_child_autofree(arena)
 	_player = PLAYER_SCENE.instantiate()

@@ -1,5 +1,5 @@
 extends GutTest
-## T051 M2: coletar L, U, X e conjurar LUX (FR-012, FR-015, FR-017, FR-021).
+## T051 M2: pôr L, U, X no atril (017: pelo menu; aqui direto por collect) e conjurar LUX (FR-012, FR-015, FR-017, FR-021).
 
 const MAIN_SCENE := preload("res://src/main/main.tscn")
 
@@ -36,33 +36,24 @@ func _on_cast(word: WordData, _power: float, _origin: Vector2, _dir: Vector2) ->
 	_casts.append(word)
 
 
-func test_letters_on_the_ground_are_collected_in_order() -> void:
-	var p: Vector2 = _player.global_position
-	_field.spawn_letter("L", false, true, p + Vector2(10, -6))
-	await wait_physics_frames(20)
-	_field.spawn_letter("U", false, true, p + Vector2(-10, -6))
-	await wait_physics_frames(20)
-	_field.spawn_letter("X", false, true, p + Vector2(0, 10))
-	await wait_physics_frames(20)
+func test_collected_letters_fill_the_atril_in_order() -> void:
+	assert_true(_field.collect("L", false))
+	assert_true(_field.collect("U", false))
+	assert_true(_field.collect("X", false))
 	assert_eq(_field.atril.text(), "LUX")
 	assert_eq(_field.atril.state(_field.lexicon), Atril.Status.VALID)
-	assert_eq(_field.active_count(), 0, "letras coletadas voltaram ao pool")
 
 
-func test_far_letter_is_not_collected_and_expires() -> void:
-	_field.spawn_letter("P", false, false, _player.global_position + Vector2(200, 0))
-	await wait_physics_frames(10)
-	assert_eq(_field.atril.size(), 0, "fora do ímã não é puxada")
-	assert_eq(_field.active_count(), 1)
-
-
-func test_full_atril_rejects_letter_and_it_stays_on_ground() -> void:
+func test_full_atril_rejects_the_letter() -> void:
+	var rejected: Array[String] = []
+	var cb := func(l: String) -> void: rejected.append(l)
+	EventBus.letter_rejected.connect(cb)
 	for ch: String in "QQQQQ":
 		_field.collect(ch, false)
-	_field.spawn_letter("A", false, false, _player.global_position + Vector2(0, -6))
-	await wait_physics_frames(5)
+	assert_false(_field.collect("A", false), "atril cheio recusa a letra (D-008)")
+	EventBus.letter_rejected.disconnect(cb)
 	assert_eq(_field.atril.size(), 5)
-	assert_eq(_field.active_count(), 1, "a letra recusada continua no chão (D-008)")
+	assert_eq(rejected, ["A"])
 
 
 func test_casting_lux_kills_enemies_in_line_only() -> void:

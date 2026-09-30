@@ -41,6 +41,7 @@ func start(new_wave: WaveData = null, display_index: int = -1) -> void:
 	_closing_sent = false
 	running = true
 	GameState.wave_index = _display_index
+	GameState.letter_drop_mul = wave.letter_drop_mul
 	EventBus.wave_started.emit(_display_index, wave.duration)
 
 

@@ -151,22 +151,20 @@ func test_heresy_on_incomplete_prefix() -> void:
 	assert_eq(_heresies, 1, "prefixo incompleto também é heresia")
 
 
-func test_purge_drops_letters_around_and_they_can_be_recollected() -> void:
+func test_purge_empties_the_atril_and_the_letters_are_lost() -> void:
 	_write("LU")
+	var purged: Array[int] = []
+	var cb := func(letters: PackedStringArray, _p: Vector2) -> void: purged.append(letters.size())
+	EventBus.atril_purged.connect(cb)
 	assert_true(_caster.purge())
+	EventBus.atril_purged.disconnect(cb)
 	assert_eq(_field.atril.size(), 0)
-	assert_eq(_field.active_count(), 2, "as letras voltaram ao chão")
+	assert_eq(purged.size(), 1, "atril_purged emitido")
 	assert_eq(_heresies, 0, "purge não é heresia")
-	await wait_seconds(0.8)
-	assert_eq(_field.atril.size(), 0, "soltas: o ímã não puxa de volta (D-031)")
-	# Andar por cima recolhe na ordem escolhida: primeiro a que estiver embaixo do jogador.
-	var letters: Array = _field.get("_active")
-	var u: Letter = letters[0] if letters[0].letter == "U" else letters[1]
-	_player.global_position = u.global_position - LetterField.PLAYER_BODY_OFFSET
-	await wait_physics_frames(2)
-	assert_eq(_field.atril.text(), "U", "recolheu o U primeiro: nova ordem")
+	await wait_seconds(0.5)
+	assert_eq(_field.atril.size(), 0, "as letras se perdem: nada volta ao chão nem ao atril")
 
 
 func test_purge_with_empty_atril_does_nothing() -> void:
 	assert_false(_caster.purge())
-	assert_eq(_field.active_count(), 0)
+	assert_eq(_field.atril.size(), 0)

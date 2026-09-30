@@ -8,6 +8,8 @@ extends Resource
 @export var groups: Array[SpawnGroup] = []
 @export var min_spawn_distance: float = 96.0
 @export_range(0, 3) var degradation_stage: int = 0
+## 017 (rules-agent T1700): multiplica a chance de letra dos inimigos nesta onda (menus/min estável).
+@export var letter_drop_mul: float = 1.0
 @export_group("Campeões")
 ## Quantos campeões nesta onda (D-019: 1 a partir da onda 3).
 @export var champions: int = 0

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_eilwu"]
+[ext_resource type="AudioStream" path="res://assets/audio/placeholders/sfx_letter_menu_opened_rare.tres" id="2_7a1uv"]
+
+[resource]
+script = ExtResource("1_eilwu")
+id = &"letter_menu_opened_rare"
+event = &"letter_menu_opened:rare"
+stream = ExtResource("2_7a1uv")
+bus = &"UI"
+max_voices = 1
+cooldown_ms = 0
+note = "Menu com vogal rara: a mesma folha + brilho metálico (ouro)."

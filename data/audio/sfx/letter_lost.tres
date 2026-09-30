@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_um00w"]
+[ext_resource type="AudioStream" path="res://assets/audio/placeholders/sfx_letter_lost.tres" id="2_v3uf7"]
+
+[resource]
+script = ExtResource("1_um00w")
+id = &"letter_lost"
+event = &"letter_lost"
+stream = ExtResource("2_v3uf7")
+bus = &"UI"
+max_voices = 1
+cooldown_ms = 0
+note = "Tempo do menu acabou: tinta se desfazendo, a letra perdida."

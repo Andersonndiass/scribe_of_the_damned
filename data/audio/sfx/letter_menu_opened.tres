@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_djhb7"]
+[ext_resource type="AudioStream" path="res://assets/audio/placeholders/sfx_letter_menu_opened.tres" id="2_tjlp6"]
+
+[resource]
+script = ExtResource("1_djhb7")
+id = &"letter_menu_opened"
+event = &"letter_menu_opened"
+stream = ExtResource("2_tjlp6")
+bus = &"UI"
+max_voices = 1
+cooldown_ms = 0
+note = "Menu da letra abrindo em câmera lenta: folha virando rápida e um sopro que desacelera."

@@ -20,12 +20,13 @@
 | `data/audio/sfx/player_damaged.tres` | `player_damaged` | SFX | provisório | Vela apagando: sopro seco e chiado de pavio. |
 | `data/audio/sfx/player_healed.tres` | `player_healed` | SFX | provisório | Vela acendendo: fósforo e chama. |
 | `data/audio/sfx/player_died.tres` | `player_died` | SFX | provisório | Morte do escriba: todas as velas se apagam, silêncio pesado. |
-| `data/audio/sfx/letter_dropped.tres` | `letter_dropped` | SFX | silêncio | Letra caindo: pingo de tinta leve. |
-| `data/audio/sfx/letter_dropped_rare.tres` | `letter_dropped:rare` | SFX | provisório | Vogal rara caindo: pingo com brilho metálico (ouro). |
+| `data/audio/sfx/letter_menu_opened.tres` | `letter_menu_opened` | UI | provisório | Menu da letra abrindo em câmera lenta: folha virando rápida e um sopro que desacelera. |
+| `data/audio/sfx/letter_menu_opened_rare.tres` | `letter_menu_opened:rare` | UI | provisório | Menu com vogal rara: a mesma folha + brilho metálico (ouro). |
+| `data/audio/sfx/letter_lost.tres` | `letter_lost` | UI | provisório | Tempo do menu acabou: tinta se desfazendo, a letra perdida. |
 | `data/audio/sfx/letter_collected.tres` | `letter_collected` | SFX | provisório | Coleta: pena riscando o pergaminho, bem curta. |
 | `data/audio/sfx/letter_collected_rare.tres` | `letter_collected:rare` | SFX | provisório | Coleta rara: risco de pena + tilintar de ouro. |
 | `data/audio/sfx/letter_rejected.tres` | `letter_rejected` | SFX | provisório | Recusa (atril cheio): batida seca de madeira. |
-| `data/audio/sfx/letter_eaten.tres` | `letter_eaten` | SFX | silêncio | Traça comendo a letra: mastigar de papel. |
+| `data/audio/sfx/letter_eaten.tres` | `letter_eaten` | SFX | silêncio | Traça roubando a última letra do atril: mordida de papel. |
 | `data/audio/sfx/gold_ink_collected.tres` | `gold_ink_collected` | SFX | provisório | Tinta dourada: moedas pequenas. |
 | `data/audio/sfx/atril_valid.tres` | `atril_valid` | UI | provisório | Palavra pronta no atril: nota sustentada de órgão, suave. |
 | `data/audio/sfx/word_cast.tres` | `word_cast` | SFX | provisório | Conjuração genérica: palavra latina sussurrada em coro. |
@@ -45,6 +46,12 @@
 | `data/audio/sfx/heresy_committed.tres` | `heresy_committed` | SFX | provisório | Heresia: coro desafinado + estalo sujo de tinta. |
 | `data/audio/sfx/atril_purged.tres` | `atril_purged` | SFX | provisório | Purge: letras sacudidas de volta ao chão, papel farfalhando. |
 | `data/audio/sfx/combo_window_opened.tres` | `combo_window_opened` | UI | provisório | Janela de combo aberta: tique de relógio de areia. |
+| `data/audio/sfx/cs_fire.tres` | `cs_fire` | SFX | provisório | C1-01: fogo abafado que apaga (as paredes perdem o desenho), loop curto. |
+| `data/audio/sfx/cs_chest.tres` | `cs_chest` | SFX | provisório | C1-01: arca de ferro rangendo, correntes. |
+| `data/audio/sfx/cs_page.tres` | `cs_page` | SFX | provisório | Virada de página grande, papel grosso. |
+| `data/audio/sfx/cs_thud.tres` | `cs_thud` | SFX | provisório | C1-02: Anselmo cai na página (baque abafado em papel). |
+| `data/audio/sfx/cs_erase.tres` | `cs_erase` | SFX | provisório | C1-03: risco de pena rasurando, áspero. |
+| `data/audio/sfx/cs_gnaw.tres` | `cs_gnaw` | SFX | provisório | C1-04: traça roendo papel, estalos secos. |
 
 ## Música
 
@@ -52,4 +59,4 @@
 |---|---|---|
 | `data/audio/music/chapter_1.tres` | 3 | Capítulo 1 (Mosteiro de São Wendelino, 1348): 3 camadas no mesmo BPM. Base: órgão e drone grave. Camada 2: canto gregoriano masculino. Camada 3: percussão e cordas tensas. |
 
-**Faltam 39 arquivos.**
+**Faltam 46 arquivos.**

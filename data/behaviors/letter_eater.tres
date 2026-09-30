@@ -4,9 +4,7 @@
 
 [resource]
 script = ExtResource("1_s")
-seek_radius = 160.0
-eat_radius = 6.0
-eat_time = 0.4
+steal_radius = 6.0
 max_eaten = 1
-idle_speed_mul = 0.4
+chase_speed_mul = 1.0
 flee_speed_mul = 1.2

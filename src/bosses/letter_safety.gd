@@ -1,8 +1,8 @@
 class_name LetterSafety
 extends RefCounted
-## Garantia de letras na luta (006 FR-605): se o chão ficar com menos de `min_useful` letras
-## úteis por `wait` s, avisa para soltar uma (no máximo uma a cada `cooldown` s). Lógica pura:
-## quem conta as letras e as solta é a luta (LetterField + drop ponderado).
+## Garantia de letras na luta (006 FR-605; 017): se passar `wait` s sem menu de letra (a luta
+## informa `min_useful` quando abriu algum), avisa para pedir um (no máximo um a cada `cooldown`
+## s). Lógica pura: quem conta e pede é a luta (LetterField/LetterMenu).
 
 var tuning: LetterSafetyTuning
 var _below: float = 0.0
@@ -26,14 +26,3 @@ func tick(delta: float, useful: int) -> bool:
 		return true
 	return false
 
-
-## Onde a letra cai: num anel em volta do escriba, dentro da página.
-func drop_position(player: Vector2, rng: RandomNumberGenerator, page: Rect2) -> Vector2:
-	var best := Vector2.ZERO
-	for attempt: int in 8:
-		var angle: float = rng.randf() * TAU
-		var dist: float = rng.randf_range(tuning.min_distance, tuning.max_distance)
-		best = player + Vector2.RIGHT.rotated(angle) * dist
-		if page.has_point(best):
-			return best
-	return best.clamp(page.position, page.end - Vector2.ONE)

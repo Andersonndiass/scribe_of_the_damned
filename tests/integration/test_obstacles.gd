@@ -80,14 +80,10 @@ func test_nothing_spawns_or_falls_inside() -> void:
 	pass_test("10 mil sorteios fora das peças")
 
 
-func test_real_spawns_and_letters_are_pushed_out() -> void:
+func test_real_spawns_are_pushed_out() -> void:
 	var hole := Vector2(80, 80)
 	var slot: int = _m.spawn(IMP, hole)
 	assert_true(ObstacleQuery.is_free(_m.positions[slot], IMP.radius), "inimigo nasce fora do furo")
-	_player.global_position = Vector2(560, 300)
-	var l: Letter = _field.spawn_letter("A", false, false, hole)
-	assert_true(ObstacleQuery.is_free(l.global_position, ObstacleQuery.map.drop_margin), "letra fora do furo")
-	assert_eq(_field.active_count(), 1, "a letra não é descartada")
 
 
 func test_contact_does_not_cross_a_bench() -> void:

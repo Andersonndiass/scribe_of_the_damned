@@ -3,7 +3,6 @@ extends Node2D
 
 const TELEGRAPH_SCENE := preload("res://src/enemies/spawn_telegraph.tscn")
 const DISSOLVE_SCENE := preload("res://src/enemies/dissolve_fx.tscn")
-const LETTER_SCENE := preload("res://src/letters/letter.tscn")
 const GOLD_SCENE := preload("res://src/letters/gold_ink.tscn")
 const WAX_SCENE := preload("res://src/letters/wax_drop.tscn")
 ## Até ~8 campeões × 5 gotas no chão ao mesmo tempo (excedente some: D-037).
@@ -11,7 +10,6 @@ const GOLD_PREWARM := 40
 const TELEGRAPH_PREWARM := 64
 ## Cobre uma MORTIS na capacidade máxima do EnemyManager (visual; excedente é pulado).
 const DISSOLVE_PREWARM := EnemyManager.CAPACITY
-const LETTER_PREWARM := 150
 ## Instâncias de cada milagre em paralelo (conjurar é limitado pela coleta de letras).
 const MIRACLE_PREWARM := 4
 
@@ -89,7 +87,6 @@ func _ready() -> void:
 	EventBus.shop_closed.connect(_on_shop_closed)
 	PoolManager.register(SpawnTelegraph.POOL_KEY, TELEGRAPH_SCENE, TELEGRAPH_PREWARM, telegraph_layer)
 	PoolManager.register(DissolveFx.POOL_KEY, DISSOLVE_SCENE, DISSOLVE_PREWARM, fx_layer)
-	PoolManager.register(Letter.POOL_KEY, LETTER_SCENE, LETTER_PREWARM, letter_field)
 	PoolManager.register(GoldInk.POOL_KEY, GOLD_SCENE, GOLD_PREWARM, $World/GoldInkField)
 	for word: WordData in letter_field.lexicon_data.words:
 		if word.miracle_scene != null:

@@ -22,8 +22,14 @@ signal player_healed(amount: int, candles: int)
 signal player_died()
 
 # Letras e atril
-signal letter_dropped(letter: String, rare: bool, target: bool, position: Vector2)
 signal letter_collected(letter: String, rare: bool)
+## 017 menu da letra: abriu com as opções ({letter, rare, useful}); escolheu; o tempo acabou (a
+## letra se perdeu); fechou; um pedido passou do teto da fila e se perdeu.
+signal letter_menu_opened(options: Array)
+signal letter_chosen(letter: String, rare: bool)
+signal letter_lost()
+signal letter_menu_closed()
+signal letter_offer_dropped()
 signal letter_rejected(letter: String)
 ## rare_mask: bit i ligado = a letra i é vogal rara.
 signal atril_changed(letters: PackedStringArray, state: int, hints: PackedStringArray, rare_mask: int)

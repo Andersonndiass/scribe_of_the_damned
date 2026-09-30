@@ -109,19 +109,28 @@ func test_caecitas_blinds_and_damages() -> void:
 	assert_lt(_manager.hp[near], 100, "levou o clarão")
 
 
-func test_requiem_kills_and_every_death_drops_a_letter() -> void:
-	var dropped: Array[int] = [0]
-	var on_drop := func(_l: String, _r: bool, _t: bool, _p: Vector2) -> void: dropped[0] += 1
-	EventBus.letter_dropped.connect(on_drop)
+func test_requiem_kills_and_only_guaranteed_deaths_ask_for_a_menu() -> void:
+	# 017: a letra garantida vira pedido de menu (fila de 1: o excedente é contado como perdido).
+	# Sem chance normal de letra, só as `guaranteed_drop_cap` mortes do REQUIEM pedem.
+	var saved_mul: float = GameState.letter_drop_mul
+	GameState.letter_drop_mul = 0.0
+	var asked: Array[int] = [0]
+	var on_open := func(_o: Array) -> void: asked[0] += 1
+	var on_lost := func() -> void: asked[0] += 1
+	EventBus.letter_menu_opened.connect(on_open)
+	EventBus.letter_offer_dropped.connect(on_lost)
 	for i: int in 10:
 		_manager.spawn(_imp, Vector2(200 + i * 20, 100))
 	_cast("PAX")
 	_cast("MORTIS")
 	await wait_physics_frames(10)
-	EventBus.letter_dropped.disconnect(on_drop)
+	EventBus.letter_menu_opened.disconnect(on_open)
+	EventBus.letter_offer_dropped.disconnect(on_lost)
+	GameState.letter_drop_mul = saved_mul
+	var cap: int = (load("res://data/combos/requiem.tres") as WordData).guaranteed_drop_cap
 	assert_eq(_combos, [&"requiem"] as Array[StringName])
 	assert_eq(_manager.count, 0)
-	assert_eq(dropped[0], 10, "letra garantida em cada morte")
+	assert_eq(asked[0] + _field.menu.queued(), cap, "no máximo 2 pedidos (abertos + perdidos + na fila)")
 
 
 func test_vapor_hides_the_scribe_from_enemies_outside() -> void:

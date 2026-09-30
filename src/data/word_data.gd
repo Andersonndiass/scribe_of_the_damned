@@ -41,9 +41,8 @@ extends Resource
 @export_group("Apócrifos e orações (002)")
 ## GLORIA: multiplicador de dano/cura dos milagres durante o efeito.
 @export var buff_mul: float = 1.0
-## LUMEN: multiplicadores do ímã e do bônus da letra-alvo.
-@export var magnet_mul: float = 1.0
-@export var target_weight_mul: float = 1.0
+## LUMEN (017 D-087 item 8): multiplica a chance de letra dos inimigos durante o efeito.
+@export var letter_chance_mul: float = 1.0
 ## FIDES: golpes absorvidos pelo escudo.
 @export var charges: int = 0
 ## Efeitos de tela inteira em lotes (SC-202).

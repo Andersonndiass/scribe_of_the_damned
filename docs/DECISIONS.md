@@ -584,6 +584,14 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
 - **Arena:** capitular "I" removida dos ornamentos (game-design: aprovado). **Banco não mudou:** o game-design pediu ajuste (a posição proposta deixa fresta de ~15 px que prende no dash) — volta na 018, com rules-agent + sonda, antes do painel das poções cobrir o banco.
 - **Status:** ✅ aplicado; GUT 502/502.
 
+### D-090 · 2026-09-30 · 017 Fase 3: menu da letra (as letras saem do chão)
+- **Sistema:** `LetterMenu` (filho do LetterField; FSM IDLE/OPEN/GAP) + `LetterOfferRoll` + `LetterMenuView` + `LetterMenuTuning` (`data/tuning/letter_menu.tres`). Morte de inimigo → `menu.offer()`; 3 opções (1 continua a palavra; 2 pelo peso base, 5% raras); 2,5 s de jogo a ×1 (o relógio desconta a câmera lenta e o hit-stop); câmera lenta ×0,2 em degraus (0,5→0,2 em 50 ms; 0,5→1 em 100 ms) pelo `TimeScale` (dono `letter_menu`); fila 1; 0,25 s entre menus; trava de 0,1 s; teclas `letter_prev/next/pick` (← → / A D, Espaço/Enter) + clique; escriba parado (`GameState.letter_menu_open`).
+- **Números (rules-agent T1700):** chance de letra 0,04×HP (Traça 0,04 · Diabrete 0,08 · Borrão 0,12 · Monge 0,16 · Gárgula 0,20) × `WaveData.letter_drop_mul` (1,00 … 0,38) × LUMEN; campeão = letra garantida rara; no máximo 1 letra por conjuração; REQUIEM `guaranteed_drop_cap` 2; LetterSafety do chefe 8 s sem menu.
+- **Respostas do autor aplicadas (D-087):** Shift esvazia o atril sem heresia; Traça rouba a última letra ao encostar e a devolve (sempre, na frente da fila) ao morrer; sem marca nas letras úteis; Lentes +0,5 s (teto +1); LUMEN chance ×2 por 10 s.
+- **Saíram:** `Letter` e o pool, ímã de letras, marcação por clique, letras do stress (SC-001 agora mede 300 inimigos + 200 projéteis).
+- **Medido (sonda onda 1, god):** o menu abre e a sonda conjura; com a chance normal saíram ~2 menus/min (alvo 5–6,5): as armas matam menos que o rules-agent supôs. Vai para a passada de ritmo.
+- **Fora desta fase:** o voo da letra até o atril e o pop de 50 ms (animation-agent) ficaram simples (a letra entra direto).
+
 ## Conflitos abertos
 
 - ~~**C-008 · Menu de escolha da letra (D-085 item 2).**~~ Resolvido: autor "1a 2b 3b e mouse clicando 4a" —

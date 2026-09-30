@@ -9,4 +9,4 @@ event = &"letter_eaten"
 max_voices = 2
 cooldown_ms = 80
 priority = 0
-note = "Traça comendo a letra: mastigar de papel."
+note = "Traça roubando a última letra do atril: mordida de papel."

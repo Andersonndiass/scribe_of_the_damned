@@ -39,7 +39,7 @@ func test_lodestone_sandals_lenses() -> void:
 	_bless(&"sandals")
 	assert_almost_eq(GameState.run_stats.value(&"move_speed"), _player.data.move_speed * 1.1, 0.01)
 	_bless(&"copyist_lenses")
-	assert_eq(GameState.run_stats.value(&"target_bonus_add"), 6.0)
+	assert_eq(GameState.run_stats.value(&"menu_time_add"), 0.5, "Lentes: +0,5 s no menu da letra")
 
 
 func test_rosary_halves_the_heresy_stun_once() -> void:

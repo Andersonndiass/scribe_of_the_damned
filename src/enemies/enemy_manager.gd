@@ -46,6 +46,8 @@ var uid_of := PackedInt32Array()
 var _next_uid: int = 1
 ## Carimbo por slot da última passada das zonas (um inimigo, um golpe por tick).
 var _zone_seen := PackedInt32Array()
+## Durante as mortes das zonas letais: a conjuração que está matando (017: 1 letra por palavra).
+var kill_cast_id: int = 0
 var positions := PackedVector2Array()
 ## Posição antes do último passo de steering de cada inimigo (para a interpolação do desenho).
 var prev_positions := PackedVector2Array()
@@ -364,6 +366,7 @@ func _apply_kill_zones(delta: float) -> void:
 	var slots := PackedInt32Array()
 	var dmg := PackedInt32Array()
 	var drop := PackedByteArray()
+	var casts := PackedInt32Array()
 	var cap: int = kill_zone_tuning.max_kills_per_tick if kill_zone_tuning != null else 30
 	for zone: KillZone in zones:
 		if not zone.is_live():
@@ -385,6 +388,7 @@ func _apply_kill_zones(delta: float) -> void:
 				slots.append(i)
 				dmg.append(zone.champion_damage(max_hp_of[i]))
 				drop.append(0)
+				casts.append(zone.cast_id)
 			else:
 				found = true
 				if _zone_seen[i] == last_tick or slots.size() >= cap:
@@ -393,6 +397,7 @@ func _apply_kill_zones(delta: float) -> void:
 				slots.append(i)
 				dmg.append(hp[i])
 				drop.append(1 if zone.drops_left > 0 else 0)
+				casts.append(zone.cast_id)
 				if zone.drops_left > 0:
 					zone.drops_left -= 1
 				zone.kills += 1
@@ -411,7 +416,9 @@ func _apply_kill_zones(delta: float) -> void:
 			continue
 		if drop[k] == 1:
 			guaranteed_drop[i] = 1
+		kill_cast_id = casts[k]
 		damage_at(i, dmg[k])
+	kill_cast_id = 0
 	_hash_dirty = true
 	Prof.stop(&"inimigos_zonas", t0)
 

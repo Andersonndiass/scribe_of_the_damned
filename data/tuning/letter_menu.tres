@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="LetterMenuTuning" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/data/letter_menu_tuning.gd" id="1_lm"]
+
+[resource]
+script = ExtResource("1_lm")
+menu_time = 2.5
+time_add_cap = 1.0
+slow_factor = 0.2
+slow_in_steps = PackedFloat32Array(0.5, 0.2)
+slow_in_step_time = 0.05
+slow_out_steps = PackedFloat32Array(0.5, 1.0)
+slow_out_step_time = 0.1
+queue_cap = 1
+reopen_gap = 0.25
+pick_guard = 0.1
+other_rare_chance = 0.05
+blink_window = 0.7
+blink_fast_window = 0.2

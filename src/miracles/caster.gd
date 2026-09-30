@@ -47,6 +47,8 @@ func _process(delta: float) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if GameState.letter_menu_open:
+		return  # 017: Espaço e setas são do menu da letra
 	if event.is_action_pressed(&"cast"):
 		cast()
 		get_viewport().set_input_as_handled()
@@ -155,22 +157,18 @@ func _start_miracle(word: WordData, power: float, origin: Vector2, direction: Ve
 		push_warning("Caster: '%s' não tem cena de milagre registrada" % word.latin)
 
 
-## Shift: devolve as letras ao chão, num anel ao redor do jogador. Retorna true se havia letras.
+## Shift: esvazia o atril sem heresia (017 D-087). Retorna true se havia letras.
 func purge() -> bool:
 	if player == null or not player.vitals.is_alive():
 		return false
 	var atril: Atril = letter_field.atril
 	if atril.size() == 0:
 		return false
-	var tuning: DropTuning = letter_field.tuning
+	# 017 T1724 (D-087 item 1): Shift esvazia o atril sem heresia; as letras se perdem (não há
+	# mais letras no chão para onde voltar).
 	var taken: Dictionary = atril.take_all()
 	var letters: PackedStringArray = taken["letters"]
-	var rare: Array = taken["rare"]
 	var center: Vector2 = player.global_position + PURGE_CENTER_OFFSET
-	for i: int in letters.size():
-		var angle: float = TAU * float(i) / letters.size() - PI / 2.0
-		var pos: Vector2 = center + Vector2.RIGHT.rotated(angle) * tuning.purge_scatter_radius
-		letter_field.spawn_letter(letters[i], rare[i], false, pos, tuning.purge_pickup_lock, true)
 	EventBus.atril_purged.emit(letters, center)
 	letter_field.emit_atril()
 	return true

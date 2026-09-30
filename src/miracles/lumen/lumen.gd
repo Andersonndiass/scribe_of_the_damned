@@ -1,6 +1,6 @@
 extends Miracle
-## LUMEN — por `duration` s, ímã e bônus da letra-alvo multiplicados (002 FR-207).
-## Usa: duration, magnet_mul, target_weight_mul. Reconjurar renova (PlayerBuffs).
+## LUMEN — por `duration` s, a chance de letra dos inimigos multiplicada (017 D-087 item 8; antes
+## era o ímã, que saiu com as letras do chão). Usa: duration, letter_chance_mul. Reconjurar renova.
 ## Visual (design-agent): 4 pontos CHALK de 1 px em órbita (raio 14, 1 volta / 1.2 s) no corpo;
 ## piscam em passos de 0.1 s nos últimos 2 s. A fase vem do relógio: duas instâncias coincidem.
 
@@ -16,7 +16,7 @@ var _player: Player
 func _on_start() -> void:
 	_player = get_tree().get_first_node_in_group(&"player") as Player
 	if _player != null:
-		_player.buffs.apply_lumen(word.duration, word.magnet_mul, word.target_weight_mul)
+		_player.buffs.apply_lumen(word.duration, word.letter_chance_mul)
 	_follow()
 	queue_redraw()
 

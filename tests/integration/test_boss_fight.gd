@@ -150,11 +150,13 @@ func test_erasure_respects_the_protections() -> void:
 	assert_eq(_field.atril.text(), "LUX", "palavra pronta nunca é apagada")
 
 
-func test_letter_safety_drops_letters_when_the_ground_is_empty() -> void:
+func test_letter_safety_opens_a_menu_when_none_opened_for_a_while() -> void:
 	await _start()
-	var dropped: Array[int] = [0]
-	var on_drop := func(_l: String, _r: bool, _t: bool, _p: Vector2) -> void: dropped[0] += 1
-	EventBus.letter_dropped.connect(on_drop)
-	await wait_seconds(5.0)
-	EventBus.letter_dropped.disconnect(on_drop)
-	assert_gt(dropped[0], 0, "SC-604: caiu letra de segurança")
+	_player.vitals.iframes_left = 1.0e6  # a espera é longa: o chefe não pode matar o escriba no teste
+	var opened: Array[int] = [0]
+	var on_open := func(_o: Array) -> void: opened[0] += 1
+	EventBus.letter_menu_opened.connect(on_open)
+	var tuning: LetterSafetyTuning = load("res://data/tuning/letter_safety.tres")
+	await wait_seconds(tuning.wait + 2.0)
+	EventBus.letter_menu_opened.disconnect(on_open)
+	assert_gt(opened[0], 0, "SC-604: abriu um menu de segurança")
