@@ -14,4 +14,5 @@ damage = 2.0
 tick_interval = 0.25
 radius = 48.0
 duration = 3.0
+kill_zone = true
 vfx_prefix = &"VFX_IGNIS"

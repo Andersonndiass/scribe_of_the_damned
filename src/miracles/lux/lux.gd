@@ -12,6 +12,13 @@ func _on_start() -> void:
 	rotation = direction.angle()
 	_left = word.duration
 	EnemyQuery.damage_line(origin, direction, word.length, word.radius, dmg(word.damage))
+	if word.kill_zone:
+		# D-084: enquanto o raio está na tela, quem entra nele morre.
+		var z := open_zone(KillZone.Shape.LINE, word.duration)
+		z.origin = origin
+		z.dir = direction
+		z.length = word.length
+		z.width = word.radius
 	queue_redraw()
 
 

@@ -17,6 +17,7 @@ damage = 3.0
 tick_interval = 0.25
 slow_factor = 0.5
 duration = 6.0
+kill_zone = true
 miracle_scene = ExtResource("2_scene")
 draw_below_world = true
 vfx_prefix = &"VFX_SANCTUS"

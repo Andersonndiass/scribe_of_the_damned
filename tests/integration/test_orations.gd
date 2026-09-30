@@ -70,13 +70,26 @@ func test_orations_only_fit_a_big_atril() -> void:
 
 
 func test_sanctus_damages_and_slows_inside() -> void:
-	var inside: int = _tough(_player.global_position + Caster.PEN_OFFSET + Vector2(40, 0))
-	var outside: int = _tough(Vector2(600, 40))
+	# D-084: comum dentro do solo morre (zona letal); o campeão é ferido e fica lento.
+	var center: Vector2 = _player.global_position + Caster.PEN_OFFSET
+	_tough(center + Vector2(40, 0))
+	_tough(Vector2(600, 40))
+	var champ: int = _manager.spawn(_imp, center + Vector2(-40, 0), true)
+	_manager.hp[champ] = 10_000
+	_manager.max_hp_of[champ] = 100
 	assert_true(_cast("SANCTUS"))
 	await wait_physics_frames(20)
-	assert_lt(_manager.hp[inside], 10_000, "ferido dentro do solo")
-	assert_lt(_manager.slow_factor[inside], 1.0, "lento dentro do solo")
-	assert_eq(_manager.hp[outside], 10_000, "fora do raio, intacto")
+	assert_eq(_manager.count, 2, "o comum dentro morreu; o de fora e o campeão ficam")
+	var c: int = -1
+	var o: int = -1
+	for i: int in _manager.count:
+		if _manager.champion[i] == 1:
+			c = i
+		else:
+			o = i
+	assert_lt(_manager.hp[c], 10_000, "campeão ferido dentro do solo")
+	assert_lt(_manager.slow_factor[c], 1.0, "lento dentro do solo")
+	assert_eq(_manager.hp[o], 10_000, "fora do raio, intacto")
 
 
 func test_dominus_stuns_and_damages_the_whole_screen() -> void:

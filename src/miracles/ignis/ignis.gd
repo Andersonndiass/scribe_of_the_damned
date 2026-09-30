@@ -15,6 +15,11 @@ func _on_start() -> void:
 	var arena := get_tree().get_first_node_in_group(&"arena") as Arena
 	if arena != null:
 		arena.stamp(&"burn", origin, word.radius * power)
+	if word.kill_zone:
+		# D-084: comum no fogo morre enquanto ele queima (os ticks seguem para chefe e campeão).
+		var z := open_zone(KillZone.Shape.CIRCLE, word.duration)
+		z.origin = origin
+		z.radius = word.radius * power
 	queue_redraw()
 
 

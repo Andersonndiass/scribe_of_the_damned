@@ -16,6 +16,7 @@ burst_damage = 8.0
 damage = 2.0
 tick_interval = 0.25
 duration = 3.0
+kill_zone = true
 length = 320.0
 width = 20.0
 draw_below_world = true

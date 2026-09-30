@@ -15,13 +15,18 @@ func _on_start() -> void:
 	if em != null:
 		em.blind_in_radius(origin, word.radius, word.stun)
 		em.damage_in_radius(origin, word.radius, dmg(word.damage))
+	if word.kill_zone:
+		# D-084: o clarão mata o comum no raio enquanto dura (`duration`, antes FLASH + RING).
+		var z := open_zone(KillZone.Shape.CIRCLE, word.duration)
+		z.origin = origin
+		z.radius = word.radius
 	queue_redraw()
 
 
 func _process(delta: float) -> void:
 	_t += delta
 	queue_redraw()
-	if _t >= FLASH_TIME + RING_TIME:
+	if _t >= maxf(FLASH_TIME + RING_TIME, word.duration):
 		finish()
 
 

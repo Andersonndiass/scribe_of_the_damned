@@ -13,5 +13,6 @@ miracle_scene = ExtResource("2_scene")
 damage = 8.0
 radius = 10.0
 length = 320.0
-duration = 0.3
+duration = 0.5
+kill_zone = true
 vfx_prefix = &"VFX_LUX"

@@ -16,6 +16,11 @@ func _on_start() -> void:
 	_left = word.duration
 	_tick = 0.0
 	_player = get_tree().get_first_node_in_group(&"player") as Player
+	if word.kill_zone:
+		# D-084: comum na nuvem morre (o escriba continua escondido nela).
+		var z := open_zone(KillZone.Shape.CIRCLE, word.duration)
+		z.origin = origin
+		z.radius = word.radius
 	queue_redraw()
 
 

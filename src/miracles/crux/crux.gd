@@ -15,6 +15,13 @@ func _on_start() -> void:
 	_tick = 0.0
 	if word.blocks_projectiles:
 		ProjectileBlockers.register(self)
+	if word.kill_zone:
+		# D-084: comum que toca a cruz morre enquanto ela está no chão.
+		var z := open_zone(KillZone.Shape.CROSS, word.duration)
+		z.origin = origin
+		z.length = word.length
+		z.width = word.width
+		z.angle = 0.0
 	queue_redraw()
 
 

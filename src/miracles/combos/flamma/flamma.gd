@@ -22,6 +22,13 @@ func _on_start() -> void:
 	_tick = word.tick_interval
 	var combo := word as ComboData
 	EnemyQuery.damage_line(origin, direction, word.length, word.width, dmg(combo.burst_damage))
+	if word.kill_zone:
+		# D-084: a faixa de fogo inteira mata o comum enquanto queima.
+		var z := open_zone(KillZone.Shape.LINE, word.duration)
+		z.origin = origin
+		z.dir = direction
+		z.length = word.length
+		z.width = word.width
 	queue_redraw()
 
 

@@ -22,6 +22,11 @@ func _on_start() -> void:
 	_left = word.duration
 	_tick = 0.0
 	_t = 0.0
+	if word.kill_zone:
+		# D-084: comum no solo consagrado morre (a lentidão e os ticks seguem para os outros).
+		var z := open_zone(KillZone.Shape.CIRCLE, word.duration)
+		z.origin = origin
+		z.radius = word.radius
 	queue_redraw()
 
 
