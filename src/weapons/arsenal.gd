@@ -20,9 +20,9 @@ var loadout: Loadout
 ## Folga da soma de frames na antecipação (0,2 s = 12 frames, não 13).
 const WINDUP_EPS := 0.0001
 
-var _timers := PackedFloat32Array()
+var _timers := PackedFloat64Array()  # 64 bits: com 32, 1,4 travado vira 1,39999998 < 1,4 e a arma nunca atira
 ## Antecipação em curso por espaço (< 0 = nenhuma).
-var _windup := PackedFloat32Array()
+var _windup := PackedFloat64Array()
 var _draw_left: float = 0.0
 ## Raio da Bíblia (um só: só a arma ativa ataca).
 var beam: BeamWeapon

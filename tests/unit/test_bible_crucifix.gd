@@ -155,3 +155,15 @@ func test_charge_feeds_the_hud() -> void:
 	_run(0.1)
 	assert_eq(_arsenal.loadout.slots[1].charge, 1.0)
 
+
+func test_every_crucifix_level_fires() -> void:
+	# Regressão (017 T1742): no nível 3 (intervalo 1,4 s) a recarga em float de 32 bits travava
+	# em 1,39999998 < 1,4 e o Crucifixo nunca atirava.
+	for level: int in range(1, CRUCIFIX.max_level() + 1):
+		_shots = 0
+		_arsenal.loadout = Loadout.new(2, CRUCIFIX)
+		_arsenal.loadout.slots[0].level = level
+		_arsenal._timers.fill(0.0)
+		_run(CRUCIFIX.stats(level).interval + CRUCIFIX.windup + 0.1)
+		assert_eq(_shots, 1, "nível %d atira" % level)
+

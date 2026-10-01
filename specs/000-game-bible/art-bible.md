@@ -68,11 +68,16 @@ Borda das chamas do IGNIS (é fogo) · olho de Asmodeus · estola de Malaquias �
 6 frames @60ms, em três tamanhos (12×12, 16×16, 16×24). **Sempre sobe**, virando fumaça de tinta; nenhum pixel cai. Deixa um decal 8×4 que desbota em 4 passos ao longo de 2s.
 
 ### 6.2 Milagres
-- Toda conjuração tem hit-stop de 60ms e flash CHALK 8×8 na ponta da pena (1 frame).
+- Toda conjuração tem flash CHALK 8×8 na ponta da pena (1 frame). Hit-stop e tremor por tipo (017, `data/tuning/word_feel.tres`): palavra de ataque 100ms + 2px/400ms; tela e combos grandes (MARTYRIUM, PURGO, REQUIEM, MISERERE) 100ms + 3px/400ms; palavra-ferramenta 60ms.
 - Núcleo CHALK, borda GOLD, INK só para contraste.
 - Nome da palavra em blackletter GOLD de 24px sobre o escriba.
 - Start, loop e end são animações separadas.
-- Nenhum efeito esconde as letras do chão por mais de 1s (exceto o PURGO).
+- Nenhum efeito esconde o atril nem o menu da letra (017: as letras não caem mais no chão).
+
+### 6.2b Armas sagradas (017)
+- Toda arma é miolo CHALK com contorno INK; **nenhuma usa GOLD** (o dourado é das palavras) nem BLOOD.
+- Bíblia: raio de 5px por Bresenham (miolo CHALK 3, borda INK 1), 32 direções; Crucifixo: sempre de pé, rastro de 1 silhueta INK_SOFT; Rosário: a 1ª conta é a cruz; Turíbulo: fumaça abaixo dos inimigos; ímã reverso: anel INK_SOFT de 3px abaixo dos inimigos (+1px INK quando fere).
+- Mapas de pixels: `docs/reviews/T1700-design-maps.json` (`tools/item_icon_maps.json`).
 
 ### 6.3 Combos, heresia e ambientais
 - Heresia: 6F @60ms + "HÆRESIS!" com a ligadura desenhada.
@@ -102,6 +107,7 @@ A arena do Cap. 1 é montada em camadas separadas (fundo, texto-fantasma, orname
 
 ### 8.2 HUD
 Velas (vida), atril, timer com sino, "Onda N", barra do chefe (400×10), teclas, balão de fala (160×28, fonte 7px).
+Sistema do HUD (T1800, `docs/reviews/T1800-hud-parecer.md`): um painel só (`UiStyle.draw_plate`), grade 6/4/3px, barras com trilho e preenchimento opostos (≥3:1), recurso segmentado e tempo contínuo, nada só por cor. Inventário embaixo à esquerda (2 armas com recarga e nível em etiqueta; lugar das 4 poções da 018). Menu da letra acima do escriba (3 cartas 28×28, barra de tempo, moldura INK de 2px na borda da tela durante a câmera lenta).
 
 ### 8.3 Estados do atril
 | Estado | Frames | Quando |
@@ -116,7 +122,8 @@ Velas (vida), atril, timer com sino, "Onda N", barra do chefe (400×10), teclas,
 | upgrade | 5 | Item de loja amplia o atril |
 
 ## 9. Letras
-Losango 10×10 com cantos cortados. Glifo 5×6 desenhado à mão, com traço e serifa de 1px; não usa a fonte blackletter. Vogal rara: contorno do próprio losango em GOLD. Letra-alvo: anel extra de fora, 12×12, pulsando a 700ms. As duas marcas nunca se confundem.
+Losango 10×10 com cantos cortados. Glifo 5×6 desenhado à mão, com traço e serifa de 1px; não usa a fonte blackletter. Vogal rara: contorno do próprio losango em GOLD.
+**017:** as letras não caem mais no chão; aparecem só no menu de escolha (ampliadas 2×) e no atril. Sem marca de letra útil no menu (D-087). O anel da letra-alvo saiu.
 
 ## 10. Projéteis
 No máximo 10×10, exceto raios e paredes (XUL 24×8, SINGI 32×16, XURC 16×24, Sermão 64×6). Pivot no centro.
@@ -134,7 +141,8 @@ Todas em 640×360 exato. Dessaturação, overlay e fade são **código**. Nos mo
 
 ## 14. Tempos
 - Escala de durações para VFX e UI: **50 / 100 / 200 / 400 / 700 / 2500ms**.
-- Hit-stop: 60ms na conjuração; 40ms na morte de campeão.
+- Hit-stop: 100ms na palavra de ataque, 60ms na palavra-ferramenta (`word_feel.tres`); 40ms na morte de campeão. Nenhuma arma tem hit-stop global.
+- Menu da letra: câmera lenta ×0,2 (entra 0,5→0,2 em 50ms cada; sai 0,5→1,0 em 100ms cada), 2,5s, trava de 100ms.
 - Frames com evento de código ficam marcados com GOLD na ficha e viram *method tracks* ou sinais no AnimationPlayer.
 
 ## 15. Ficha de entrega (obrigatória para todo asset novo)
