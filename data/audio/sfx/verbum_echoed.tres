@@ -8,6 +8,7 @@ script = ExtResource("1_fw8ug")
 id = &"verbum_echoed"
 event = &"verbum_echoed"
 stream = ExtResource("2_11wkp")
+volume_db = -3.0
 max_voices = 2
 priority = 2
 note = "VERBUM ecoa a palavra anterior."

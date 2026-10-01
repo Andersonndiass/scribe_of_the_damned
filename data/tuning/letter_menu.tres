@@ -4,6 +4,7 @@
 
 [resource]
 script = ExtResource("1_lm")
+pause_game = true
 menu_time = 2.5
 time_add_cap = 1.0
 slow_factor = 0.2

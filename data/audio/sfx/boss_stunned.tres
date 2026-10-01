@@ -8,6 +8,7 @@ script = ExtResource("1_xl8af")
 id = &"boss_stunned"
 event = &"boss_stunned"
 stream = ExtResource("2_vqpx4")
+volume_db = -9.5
 pitch_jitter = 0.03
 max_voices = 2
 cooldown_ms = 0

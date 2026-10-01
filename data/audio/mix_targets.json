@@ -1,0 +1,17 @@
+{
+  "_doc": "Volume médio (RMS, dBFS) que cada categoria de efeito deve ter no jogo (feedback do autor 2026-10-01: efeitos altos demais). tools/mix_sfx.py calcula o volume_db de cada SoundData = alvo - RMS do arquivo. Ordem de prioridade da DIRECAO-SONORA §1.4.",
+  "categories": {
+    "frequent": -34.0,
+    "weapon": -31.0,
+    "ui": -30.0,
+    "pickup": -31.0,
+    "enemy": -32.0,
+    "player": -25.0,
+    "word": -23.0,
+    "boss": -25.0,
+    "stinger": -24.0,
+    "cutscene": -24.0,
+    "default": -28.0
+  },
+  "clamp_db": [-30.0, 6.0]
+}

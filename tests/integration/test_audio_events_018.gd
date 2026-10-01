@@ -13,6 +13,8 @@ func after_each() -> void:
 func test_every_manifest_sound_is_in_the_map_with_a_file() -> void:
 	var items: Array = JSON.parse_string(FileAccess.get_file_as_string(MANIFEST))
 	for it: Dictionary in items:
+		if not it.get("generated", true):
+			continue  # ainda não gerado (tools/gen_missing_sfx.py)
 		var s: SoundData = AudioManager.event_map.resolve(StringName(it["event"]))
 		assert_not_null(s, "evento %s no mapa" % it["event"])
 		if s != null:

@@ -8,6 +8,7 @@ script = ExtResource("1_25vaa")
 id = &"boss_telegraph_swipe"
 event = &"boss_telegraph:swipe"
 stream = ExtResource("2_legbr")
+volume_db = -6.0
 pitch_jitter = 0.03
 max_voices = 2
 cooldown_ms = 0

@@ -8,6 +8,7 @@ script = ExtResource("1_inwlx")
 id = &"boss_attack_beam"
 event = &"boss_attack:beam"
 stream = ExtResource("2_jcewi")
+volume_db = -8.4
 pitch_jitter = 0.03
 max_voices = 2
 cooldown_ms = 0

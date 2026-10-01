@@ -8,6 +8,7 @@ script = ExtResource("1_vi0av")
 id = &"enemy_monk_shot"
 event = &"enemy_attack:hollow_monk"
 stream = ExtResource("2_d6gv7")
+volume_db = -16.0
 pitch_jitter = 0.08
 max_voices = 2
 cooldown_ms = 150

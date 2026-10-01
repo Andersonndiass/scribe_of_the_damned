@@ -8,6 +8,7 @@ script = ExtResource("1_hreyl")
 id = &"atril_erase"
 event = &"atril_erase_requested"
 stream = ExtResource("2_srte2")
+volume_db = 0.3
 max_voices = 2
 priority = 2
 note = "Chefe apaga uma letra do atril."

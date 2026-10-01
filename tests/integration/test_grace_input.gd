@@ -41,6 +41,12 @@ func _open_and_unlock() -> void:
 	EventBus.word_cast.emit(IGNIS, 1.0, Vector2.ZERO, Vector2.RIGHT)
 	await _wait(0.05)
 	await _wait(_flow.tuning.announce_time + _flow.tuning.pick_guard + 0.1)
+	# A trava conta em ms reais desde a entrada no CHOOSING; um quadro lento a atrasa: espera
+	# até liberar (no máximo 1 s) em vez de depender só do tempo fixo.
+	for k: int in 20:
+		if _flow.can_pick():
+			break
+		await _wait(0.05)
 
 
 func _key(action: StringName) -> InputEventKey:

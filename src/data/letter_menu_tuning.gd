@@ -8,7 +8,10 @@ extends Resource
 @export var menu_time: float = 2.5
 ## Lentes do Copista somam aqui (`menu_time_add`); teto do acréscimo.
 @export var time_add_cap: float = 1.0
-## Câmera lenta com o menu aberto (teto ×0,3).
+## Feedback do autor (2026-10-01, D-098): o menu PAUSA o jogo (o tempo do menu corre em tempo
+## real, com a barra embaixo das cartas). Falso = a câmera lenta antiga (D-090).
+@export var pause_game: bool = true
+## Câmera lenta com o menu aberto (teto ×0,3; só com `pause_game` falso).
 @export var slow_factor: float = 0.2
 ## Entrada e saída da câmera lenta em degraus (animation-agent): fatores e duração de cada degrau.
 @export var slow_in_steps: PackedFloat32Array = PackedFloat32Array([0.5, 0.2])

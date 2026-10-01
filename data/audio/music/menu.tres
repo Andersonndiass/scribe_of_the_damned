@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="MusicData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://src/data/music_data.gd" id="1_ghube"]
+[ext_resource type="AudioStream" path="res://assets/audio/music/menu.mp3" id="2_menu"]
+
+[resource]
+script = ExtResource("1_ghube")
+id = &"menu"
+layers = Array[AudioStream]([ExtResource("2_menu")])
+mode = &"layers"
+volume_db = -12.0
+note = "Menu (Gemini, autor 2026-10-01): coro de bispos numa igreja de pedra, eco longo."

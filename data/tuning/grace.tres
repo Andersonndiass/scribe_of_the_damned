@@ -15,6 +15,7 @@
 
 [resource]
 script = ExtResource("1_gt")
+levelup_slow_time = 1.0
 per_letter = 10.0
 level_base = 8
 level_step = 28

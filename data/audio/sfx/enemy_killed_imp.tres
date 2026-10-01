@@ -8,6 +8,7 @@ script = ExtResource("1_eviu2")
 id = &"enemy_killed_imp"
 event = &"enemy_killed:imp"
 stream = ExtResource("2_erii0")
+volume_db = -21.5
 max_voices = 3
 cooldown_ms = 50
 note = "Diabrete: guincho agudo que vira borrão de tinta."

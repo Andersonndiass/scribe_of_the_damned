@@ -8,6 +8,7 @@ script = ExtResource("1_eilwu")
 id = &"letter_menu_opened_rare"
 event = &"letter_menu_opened:rare"
 stream = ExtResource("2_7a1uv")
+volume_db = -15.1
 bus = &"UI"
 max_voices = 1
 cooldown_ms = 0

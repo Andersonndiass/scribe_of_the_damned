@@ -8,6 +8,7 @@ script = ExtResource("1_cn435")
 id = &"ui_word_unlocked"
 event = &"word_unlocked"
 stream = ExtResource("2_xp0nm")
+volume_db = -13.4
 bus = &"UI"
 pitch_jitter = 0.0
 max_voices = 2

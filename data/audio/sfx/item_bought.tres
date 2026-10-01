@@ -8,6 +8,7 @@ script = ExtResource("1_isc1q")
 id = &"item_bought"
 event = &"item_bought"
 stream = ExtResource("2_hvo2q")
+volume_db = -2.3
 bus = &"UI"
 pitch_jitter = 0.0
 max_voices = 2

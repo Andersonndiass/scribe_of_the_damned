@@ -8,6 +8,7 @@ script = ExtResource("1_hbui3")
 id = &"wave_closing"
 event = &"wave_closing"
 stream = ExtResource("2_bvai1")
+volume_db = -2.6
 max_voices = 2
 priority = 3
 note = "Onda prestes a fechar."

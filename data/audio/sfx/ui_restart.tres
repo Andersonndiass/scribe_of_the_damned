@@ -8,6 +8,7 @@ script = ExtResource("1_ob78a")
 id = &"ui_restart"
 event = &"game_restart_requested"
 stream = ExtResource("2_6qmuu")
+volume_db = -7.4
 bus = &"UI"
 pitch_jitter = 0.0
 max_voices = 2

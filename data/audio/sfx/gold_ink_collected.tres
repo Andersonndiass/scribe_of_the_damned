@@ -8,5 +8,6 @@ script = ExtResource("1_6txy7")
 id = &"gold_ink_collected"
 event = &"gold_ink_collected"
 stream = ExtResource("2_8x54l")
+volume_db = -16.5
 max_voices = 2
 note = "Tinta dourada: moedas pequenas."

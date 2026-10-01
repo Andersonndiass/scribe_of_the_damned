@@ -8,6 +8,7 @@ script = ExtResource("1_yonq0")
 id = &"combo_cast_vapor"
 event = &"combo_cast:vapor"
 stream = ExtResource("2_dy4f8")
+volume_db = -5.6
 max_voices = 1
 cooldown_ms = 0
 priority = 3

@@ -8,6 +8,7 @@ script = ExtResource("1_um00w")
 id = &"letter_lost"
 event = &"letter_lost"
 stream = ExtResource("2_v3uf7")
+volume_db = -14.3
 bus = &"UI"
 max_voices = 1
 cooldown_ms = 0

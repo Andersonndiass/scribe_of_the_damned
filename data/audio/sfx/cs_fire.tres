@@ -8,6 +8,7 @@ script = ExtResource("1_hroct")
 id = &"cs_fire"
 event = &"cs_fire"
 stream = ExtResource("2_bf340")
+volume_db = -4.9
 max_voices = 1
 cooldown_ms = 0
 priority = 2

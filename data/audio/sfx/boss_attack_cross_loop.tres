@@ -8,6 +8,7 @@ script = ExtResource("1_wa5br")
 id = &"boss_attack_cross_loop"
 event = &"boss_attack:rotating_cross"
 stream = ExtResource("2_w78yn")
+volume_db = -8.0
 pitch_jitter = 0.03
 max_voices = 2
 cooldown_ms = 0

@@ -8,6 +8,7 @@ script = ExtResource("1_81inh")
 id = &"seals_shown"
 event = &"seals_shown"
 stream = ExtResource("2_qtc8g")
+volume_db = -9.3
 bus = &"UI"
 pitch_jitter = 0.0
 max_voices = 2

@@ -8,6 +8,7 @@ script = ExtResource("1_jh71p")
 id = &"heresy_forgiven"
 event = &"heresy_forgiven"
 stream = ExtResource("2_uq8oc")
+volume_db = -9.2
 max_voices = 2
 priority = 2
 note = "Heresia perdoada."

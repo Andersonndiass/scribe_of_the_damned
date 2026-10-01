@@ -8,6 +8,7 @@ script = ExtResource("1_lu7dp")
 id = &"letter_menu_choose"
 event = &"letter_chosen"
 stream = ExtResource("2_iicfm")
+volume_db = 0.0
 bus = &"UI"
 pitch_jitter = 0.0
 max_voices = 2

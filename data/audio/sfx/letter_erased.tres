@@ -8,6 +8,7 @@ script = ExtResource("1_t28pe")
 id = &"letter_erased"
 event = &"letter_erased"
 stream = ExtResource("2_7ibby")
+volume_db = -6.1
 max_voices = 2
 priority = 2
 note = "Letra apagada."

@@ -8,6 +8,7 @@ script = ExtResource("1_8q1py")
 id = &"champion_spawned"
 event = &"champion_spawned"
 stream = ExtResource("2_m8d2x")
+volume_db = -19.1
 max_voices = 2
 priority = 2
 note = "Campeão surge."

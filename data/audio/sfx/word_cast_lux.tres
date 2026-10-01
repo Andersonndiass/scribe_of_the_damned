@@ -8,6 +8,7 @@ script = ExtResource("1_0q3bx")
 id = &"word_cast_lux"
 event = &"word_cast:lux"
 stream = ExtResource("2_dcprb")
+volume_db = -5.3
 max_voices = 1
 cooldown_ms = 0
 priority = 2

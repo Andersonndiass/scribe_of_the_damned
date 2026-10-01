@@ -8,6 +8,7 @@ script = ExtResource("1_4me45")
 id = &"combo_cast_requiem"
 event = &"combo_cast:requiem"
 stream = ExtResource("2_t6fb7")
+volume_db = -4.2
 max_voices = 1
 cooldown_ms = 0
 priority = 3

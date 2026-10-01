@@ -8,6 +8,7 @@ script = ExtResource("1_r0cgs")
 id = &"letter_dropped"
 event = &"letter_dropped"
 stream = ExtResource("2_205k5")
+volume_db = 0.0
 max_voices = 2
 priority = 2
 note = "Letra caindo: pingo de tinta leve."

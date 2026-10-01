@@ -8,6 +8,7 @@ script = ExtResource("1_sowka")
 id = &"enemy_killed"
 event = &"enemy_killed"
 stream = ExtResource("2_j8poq")
+volume_db = -8.8
 max_voices = 3
 cooldown_ms = 50
 note = "Morte genérica: tinta que se desfaz, curta (< 0,25 s)."

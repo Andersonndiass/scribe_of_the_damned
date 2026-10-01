@@ -21,11 +21,17 @@ const VOICE_EXTS: PackedStringArray = ["mp3", "ogg", "wav"]
 const HERESY_VOICE := &"haeresis"
 const EVENT_MAP_PATH := "res://data/audio/event_map.tres"
 const CHAPTER_MUSIC_PATH := "res://data/audio/music/chapter_1.tres"
+const MENU_MUSIC_PATH := "res://data/audio/music/menu.tres"
+const BOSS_MUSIC_PATH := "res://data/audio/music/boss.tres"
+## Telas que tocam a música do menu (as outras param a música; o jogo começa a dele na onda 1).
+const MENU_SCREENS: Array[StringName] = [&"splash", &"menu", &"character", &"chapter", &"credits", &"options", &"codex"]
 
 var event_map: AudioEventMap
 var music: MusicDirector
 ## Músicas por capítulo (a seleção de capítulo, 007, troca esta referência).
 var chapter_music: MusicData
+var menu_music: MusicData
+var boss_music: MusicData
 ## Total de sons que passaram pelo allocator (métricas e testes).
 var plays_total: int = 0
 var last_played: StringName = &""
@@ -61,6 +67,10 @@ func _ready() -> void:
 		event_map.build()
 	if ResourceLoader.exists(CHAPTER_MUSIC_PATH):
 		chapter_music = load(CHAPTER_MUSIC_PATH)
+	if ResourceLoader.exists(MENU_MUSIC_PATH):
+		menu_music = load(MENU_MUSIC_PATH)
+	if ResourceLoader.exists(BOSS_MUSIC_PATH):
+		boss_music = load(BOSS_MUSIC_PATH)
 	_sfx = VoiceAllocator.new(VOICES_SFX)
 	_ui = VoiceAllocator.new(VOICES_UI)
 	_sfx_players = _make_players(VOICES_SFX, &"SFX", Node.PROCESS_MODE_PAUSABLE)
@@ -275,10 +285,10 @@ func _release_finished(alloc: VoiceAllocator, players: Array[AudioStreamPlayer],
 
 
 func _connect_events() -> void:
-	EventBus.wave_started.connect(func(index: int, _d: float) -> void:
-		if index == 1 and chapter_music != null:
+	EventBus.wave_started.connect(func(index: int, duration: float) -> void:
+		if chapter_music != null and (index == 1 or music.data != chapter_music):
 			music.start(chapter_music)
-		music.on_wave_started(index)
+		music.on_wave_started(index, duration)
 		play_event(&"wave_started"))
 	EventBus.wave_ended.connect(func(_i: int) -> void: play_event(&"wave_ended"))
 	EventBus.chapter_completed.connect(func(_c: int) -> void: play_event(&"chapter_completed"))
@@ -367,7 +377,16 @@ func _connect_events_018() -> void:
 			play_event(&"page_stage_changed"))
 	EventBus.page_degraded.connect(func(_s: int) -> void: play_event(&"page_degraded"))
 	# Chefe.
-	EventBus.boss_spawned.connect(func(_b: BossData) -> void: play_event(&"boss_spawned"))
+	EventBus.boss_spawned.connect(func(_b: BossData) -> void:
+		if boss_music != null:
+			music.start(boss_music)
+		play_event(&"boss_spawned"))
+	EventBus.screen_changed.connect(func(screen: StringName) -> void:
+		if screen in MENU_SCREENS:
+			if menu_music != null:
+				music.start(menu_music)
+		else:
+			music.stop())
 	EventBus.boss_damaged.connect(func(_h: int, _m: int) -> void: play_event(&"boss_damaged"))
 	EventBus.boss_exposed.connect(func(_s: float) -> void: play_event(&"boss_exposed"))
 	EventBus.boss_phase_changed.connect(func(i: int) -> void:
@@ -400,7 +419,9 @@ func _connect_events_018() -> void:
 		play_event(&"game_restart_requested"))
 	EventBus.cutscene_skipped.connect(func(_i: StringName) -> void: play_event(&"cutscene_skipped"))
 	EventBus.player_died.connect(func() -> void: stop_all_loops())
-	EventBus.wave_ended.connect(func(_i: int) -> void: stop_all_loops())
+	EventBus.wave_ended.connect(func(_i: int) -> void:
+		stop_all_loops()
+		music.on_wave_ended())
 	# Sinais só de áudio (EventBus, bloco "Áudio"). Armas sem som no manifesto ficam mudas (sem variante).
 	EventBus.weapon_fired.connect(func(id: StringName) -> void: _play_variant_only(&"weapon_fired", id))
 	EventBus.weapon_hit.connect(func(id: StringName) -> void: _play_variant_only(&"weapon_hit", id))
@@ -435,6 +456,15 @@ func _connect_events_018() -> void:
 	EventBus.ui_backed.connect(func() -> void: play_event(&"ui_back"))
 	EventBus.ui_slider_changed.connect(func() -> void: play_event(&"ui_slider_changed"))
 	EventBus.ui_key_remapped.connect(func() -> void: play_event(&"ui_key_remapped"))
+	# Efeitos que faltavam (feedback do autor 2026-10-01; audio-agent): ficam mudos até o arquivo
+	# existir (tools/gen_missing_sfx.py → gen_audio_data → mix_sfx).
+	EventBus.levelup_beam_started.connect(func(_d: float) -> void: play_event(&"levelup_beam_started"))
+	EventBus.levelup_beam_ended.connect(func() -> void: play_event(&"levelup_beam_ended"))
+	EventBus.potion_effect_ended.connect(func(_id: StringName, reason: StringName) -> void:
+		play_event(&"potion_effect_ended", reason))
+	EventBus.potion_leveled.connect(func(_id: StringName, _l: int) -> void: play_event(&"potion_leveled"))
+	EventBus.passive_leveled.connect(func(_id: StringName, _l: int) -> void: play_event(&"passive_leveled"))
+	EventBus.letter_offer_dropped.connect(func() -> void: play_event(&"letter_dropped"))
 
 
 ## Liga/desliga o passa-baixa da música (o efeito `AudioEffectLowPassFilter` do barramento Music).

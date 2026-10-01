@@ -4,8 +4,11 @@ extends Node
 ## cada letra que um inimigo soltaria vira um pedido na fila; o menu abre com 3 opções (1 continua
 ## a palavra), o jogo entra em câmera lenta e o escriba fica parado; setas + Espaço ou clique
 ## escolhem; se o tempo acabar, a letra se perde.
-## FSM: IDLE → OPEN → (escolha | tempo) → GAP → IDLE. Com o jogo pausado, nada anda (o nó é
-## pausável). O relógio desconta a câmera lenta e o hit-stop (tempo de jogo a ×1).
+## FSM: IDLE → OPEN → (escolha | tempo) → GAP → IDLE. O relógio desconta a câmera lenta e o
+## hit-stop (tempo de jogo a ×1).
+## D-098 (`tuning.pause_game`): aberto, o menu pausa a árvore e conta o tempo em tempo real (o nó
+## roda sempre). Pausa de outro dono (Esc, selos, loja) congela o menu e impede de abrir; só
+## despausa o que ele mesmo pausou.
 
 enum Phase { IDLE, OPEN, GAP }
 
@@ -34,11 +37,21 @@ var _gap: float = 0.0
 var _ramp := PackedFloat32Array()
 var _ramp_step: float = 0.0
 var _ramp_t: float = 0.0
+## A pausa da árvore é deste menu (D-098)?
+var _paused_by_me: bool = false
+## O menu de pausa (Esc) está aberto por cima.
+var _pause_menu: bool = false
 
 
 func _ready() -> void:
+	if tuning.pause_game:
+		process_mode = Node.PROCESS_MODE_ALWAYS
 	EventBus.wave_ended.connect(func(_i: int) -> void: cancel())
 	EventBus.player_died.connect(cancel)
+	EventBus.pause_menu_toggled.connect(func(open: bool) -> void:
+		_pause_menu = open
+		if not open and _paused_by_me and phase == Phase.OPEN and is_inside_tree():
+			get_tree().paused = true)  # o Esc despausou por cima do menu: volta a pausar
 
 
 ## A cena sai com o menu aberto (reiniciar, trocar de tela): nada de câmera lenta nem escriba
@@ -81,9 +94,12 @@ func cancel() -> void:
 	GameState.letter_menu_open = false
 	_ramp = PackedFloat32Array()
 	TimeScale.clear(SLOW_OWNER)
+	_release_pause()
 
 
 func _process(delta: float) -> void:
+	if tuning.pause_game and is_inside_tree() and get_tree().paused and (not _paused_by_me or _pause_menu):
+		return  # pausa de outro dono: nada anda, nada abre
 	var product: float = TimeScale.factor_product()
 	var dt: float = delta / product if product > 0.001 else 0.0
 	_tick_ramp(dt)
@@ -97,7 +113,7 @@ func _process(delta: float) -> void:
 			_gap -= dt
 			if _gap <= 0.0:
 				phase = Phase.IDLE
-				if _queue.is_empty() or not _can_open():
+				if not tuning.pause_game and (_queue.is_empty() or not _can_open()):
 					_start_ramp(tuning.slow_out_steps, tuning.slow_out_step_time)
 	if phase == Phase.IDLE and not _queue.is_empty() and _can_open():
 		_open()
@@ -142,7 +158,11 @@ func _open() -> void:
 	open_for = 0.0
 	phase = Phase.OPEN
 	GameState.letter_menu_open = true
-	if not TimeScale.has_factor(SLOW_OWNER) or _ramp.size() > 0 and _ramp[_ramp.size() - 1] >= 1.0:
+	if tuning.pause_game:
+		if is_inside_tree() and not get_tree().paused:
+			get_tree().paused = true
+			_paused_by_me = true
+	elif not TimeScale.has_factor(SLOW_OWNER) or _ramp.size() > 0 and _ramp[_ramp.size() - 1] >= 1.0:
 		_start_ramp(tuning.slow_in_steps, tuning.slow_in_step_time)
 	EventBus.letter_menu_opened.emit(options)
 
@@ -176,7 +196,14 @@ func _close() -> void:
 	phase = Phase.GAP
 	_gap = tuning.reopen_gap
 	GameState.letter_menu_open = false
+	_release_pause()
 	EventBus.letter_menu_closed.emit()
+
+
+func _release_pause() -> void:
+	if _paused_by_me and is_inside_tree():
+		get_tree().paused = false
+	_paused_by_me = false
 
 
 func _input(event: InputEvent) -> void:

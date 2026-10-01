@@ -663,6 +663,23 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
   - ~~13 falas em latim~~: geradas pelo autor com `tools/gen_latin_voices.py` (2026-10-01); as 24 palavras e a heresia têm voz;
   - camadas 2–3 da música (plano pago).
 
+### D-098 · 2026-10-01 · Feedback do playtest do autor (1ª rodada)
+- **Recado:** efeitos altos demais, botões sem som, efeitos faltando; level-up com 1 s de câmera lenta; menu da letra pausando o jogo; dicas de letra fora (só o TAB); painel de teclas à esquerda; mais falas (dano, nível, morte); cutscene sempre; letras mais difíceis ("as palavras são um milagre"); Bíblia seguindo o mouse até a ponta; upgrades melhores; diálogo do vendedor; música do Gemini (menu com bispos e eco; batalha com clímax ao avançar a onda; chefe).
+- **Respostas do autor** ("1a2b3b … 4b5a"):
+  1. ~1 palavra a cada 2 min.
+  2. O selo deixa escolher o atributo da arma (cadência, quantidade, tamanho…).
+  3. O menu pausa, com os 2,5 s correndo, uma barra de carregamento embaixo das cartas e clique do mouse.
+  4. Painel de teclas nas 2 primeiras ondas; depois a tecla H mostra e esconde.
+  5. Fala de dano no máximo a cada ~20 s; nível e morte sempre.
+- **Fase 1 (som), feita:**
+  - **Mixagem:** `tools/mix_sfx.py` + `data/audio/mix_targets.json` (volume médio por categoria; os frequentes em −34 dB RMS, palavras em −23).
+  - **Som de interface:** `UiScreen.ui_sound` em toda entrada que uma tela consome (Menu, Opções, Capítulo, Personagem, Códex, Pausa/Fim, loja, selos).
+  - **Efeitos novos:** 14 no manifesto, gerados por `tools/gen_missing_sfx.py`, que o autor roda; os sinais já estão ligados.
+  - **Música** (`MusicData.mode = sections`): batalha calma → crescendo (40% da onda) → clímax (75%), volta à calma no fim da onda; menu nas telas de menu; chefe ao surgir o Asmodeus. Volume −12 dB, para ajustar de ouvido.
+- **Fase 2, em andamento:**
+  - `levelup_slow_time` 2,5 → 1,0.
+  - Menu da letra com `pause_game`: pausa a árvore, conta em tempo real, só despausa o que pausou, congela com o Esc/selos/loja. Substitui a câmera lenta da D-090.
+
 ## Conflitos abertos
 
 - ~~**C-008 · Menu de escolha da letra (D-085 item 2).**~~ Resolvido: autor "1a 2b 3b e mouse clicando 4a" —

@@ -51,3 +51,25 @@ func test_silent_music_has_no_players_playing() -> void:
 	_m.step(0.1)
 	for p: AudioStreamPlayer in _m.players:
 		assert_false(p.playing, "sem stream não toca")
+
+
+## Feedback do autor (2026-10-01): batalha em faixas — calma, crescendo, clímax pelo progresso da onda.
+func test_sections_follow_the_wave_progress_and_reset_at_the_end() -> void:
+	var d := MusicData.new()
+	d.mode = &"sections"
+	d.layers = [AudioStreamWAV.new(), AudioStreamWAV.new(), AudioStreamWAV.new()]
+	d.section_thresholds = PackedFloat32Array([0.0, 0.4, 0.75])
+	d.fade_ms = 1000
+	_m.start(d)
+	_m.on_wave_started(1, 60.0)
+	assert_eq(_m.section, 0, "começo: calma")
+	_m.advance_wave(30.0)
+	assert_eq(_m.section, 1, "50%: crescendo")
+	_m.advance_wave(20.0)
+	assert_eq(_m.section, 2, "83%: clímax")
+	_m.step(1.0)
+	assert_almost_eq(_m.gain_of(2), 1.0, 0.01)
+	assert_almost_eq(_m.gain_of(0), 0.0, 0.01, "só uma faixa audível")
+	_m.on_wave_ended()
+	assert_eq(_m.section, 0, "fim da onda: volta à calma")
+

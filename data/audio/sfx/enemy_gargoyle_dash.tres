@@ -8,6 +8,7 @@ script = ExtResource("1_cersk")
 id = &"enemy_gargoyle_dash"
 event = &"enemy_attack:gargoyle"
 stream = ExtResource("2_j75eb")
+volume_db = -11.5
 pitch_jitter = 0.08
 max_voices = 2
 cooldown_ms = 150

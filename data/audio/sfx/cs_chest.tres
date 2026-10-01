@@ -8,6 +8,7 @@ script = ExtResource("1_epw86")
 id = &"cs_chest"
 event = &"cs_chest"
 stream = ExtResource("2_buybg")
+volume_db = -1.4
 max_voices = 1
 cooldown_ms = 0
 priority = 2

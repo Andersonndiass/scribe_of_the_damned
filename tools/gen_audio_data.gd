@@ -111,6 +111,9 @@ func _add_manifest_sounds(map: AudioEventMap) -> int:
 		if not ResourceLoader.exists(wav):
 			continue
 		var s := SoundData.new()
+		var path0: String = SFX_DIR + String(it["id"]) + ".tres"
+		if ResourceLoader.exists(path0):
+			s.volume_db = (load(path0) as SoundData).volume_db  # a mixagem (tools/mix_sfx.py) fica
 		s.id = StringName(it["id"])
 		s.event = StringName(event)
 		s.stream = load(wav)

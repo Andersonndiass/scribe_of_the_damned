@@ -8,6 +8,7 @@ script = ExtResource("1_1ipfd")
 id = &"boss_spawned"
 event = &"boss_spawned"
 stream = ExtResource("2_m3puu")
+volume_db = -11.5
 pitch_jitter = 0.03
 max_voices = 2
 cooldown_ms = 0

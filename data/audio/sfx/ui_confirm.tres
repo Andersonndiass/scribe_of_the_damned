@@ -8,6 +8,7 @@ script = ExtResource("1_vmwdj")
 id = &"ui_confirm"
 event = &"ui_confirm"
 stream = ExtResource("2_4giwn")
+volume_db = 0.9
 bus = &"UI"
 pitch_jitter = 0.0
 max_voices = 2

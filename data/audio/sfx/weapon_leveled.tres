@@ -8,6 +8,7 @@ script = ExtResource("1_61of0")
 id = &"weapon_leveled"
 event = &"weapon_leveled"
 stream = ExtResource("2_rc7en")
+volume_db = -11.8
 pitch_jitter = 0.06
 max_voices = 3
 cooldown_ms = 40

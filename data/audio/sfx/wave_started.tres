@@ -8,6 +8,7 @@ script = ExtResource("1_o3i7m")
 id = &"wave_started"
 event = &"wave_started"
 stream = ExtResource("2_yrdas")
+volume_db = 0.0
 bus = &"UI"
 max_voices = 1
 cooldown_ms = 0

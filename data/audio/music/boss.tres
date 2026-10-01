@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="MusicData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://src/data/music_data.gd" id="1_ghube"]
+[ext_resource type="AudioStream" path="res://assets/audio/music/boss.mp3" id="2_boss"]
+
+[resource]
+script = ExtResource("1_ghube")
+id = &"boss"
+layers = Array[AudioStream]([ExtResource("2_boss")])
+mode = &"layers"
+volume_db = -12.0
+note = "Chefe Asmodeus (Gemini, autor 2026-10-01)."

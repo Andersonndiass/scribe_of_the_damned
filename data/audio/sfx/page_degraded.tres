@@ -8,6 +8,7 @@ script = ExtResource("1_kun7g")
 id = &"page_degraded"
 event = &"page_degraded"
 stream = ExtResource("2_hupe7")
+volume_db = 4.6
 max_voices = 2
 priority = 3
 note = "Página degradada."

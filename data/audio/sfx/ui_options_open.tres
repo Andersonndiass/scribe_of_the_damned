@@ -8,6 +8,7 @@ script = ExtResource("1_5dfu5")
 id = &"ui_options_open"
 event = &"screen_changed:options"
 stream = ExtResource("2_6s1mv")
+volume_db = -7.8
 bus = &"UI"
 pitch_jitter = 0.0
 max_voices = 2

@@ -8,6 +8,7 @@ script = ExtResource("1_oatf5")
 id = &"letter_rejected"
 event = &"letter_rejected"
 stream = ExtResource("2_ankm7")
+volume_db = -12.0
 max_voices = 1
 cooldown_ms = 100
 note = "Recusa (atril cheio): batida seca de madeira."

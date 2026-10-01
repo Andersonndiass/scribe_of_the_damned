@@ -8,6 +8,7 @@ script = ExtResource("1_g7fnf")
 id = &"enemy_hazard_tick"
 event = &"hazard_damage"
 stream = ExtResource("2_obfg7")
+volume_db = -9.2
 pitch_jitter = 0.08
 max_voices = 3
 cooldown_ms = 60

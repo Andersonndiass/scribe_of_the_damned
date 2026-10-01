@@ -8,6 +8,7 @@ script = ExtResource("1_rml1q")
 id = &"ui_pause"
 event = &"pause_menu_toggled:open"
 stream = ExtResource("2_pd55i")
+volume_db = -3.5
 bus = &"UI"
 pitch_jitter = 0.0
 max_voices = 2

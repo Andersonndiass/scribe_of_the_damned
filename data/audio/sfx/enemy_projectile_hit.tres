@@ -8,6 +8,7 @@ script = ExtResource("1_ojy2i")
 id = &"enemy_projectile_hit"
 event = &"enemy_projectile_hit"
 stream = ExtResource("2_hm6yq")
+volume_db = -17.1
 pitch_jitter = 0.08
 max_voices = 3
 cooldown_ms = 60

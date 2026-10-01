@@ -36,6 +36,7 @@ var _origin := Vector2.ZERO
 func _ready() -> void:
 	top_level = true
 	z_index = 60
+	process_mode = Node.PROCESS_MODE_ALWAYS  # D-098: o menu pausa o jogo; clique e desenho seguem
 
 
 func panel_origin() -> Vector2:

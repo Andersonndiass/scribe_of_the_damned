@@ -8,6 +8,7 @@ script = ExtResource("1_xq808")
 id = &"page_stage_changed"
 event = &"page_stage_changed"
 stream = ExtResource("2_gdfm2")
+volume_db = 1.9
 max_voices = 2
 priority = 2
 note = "Página degrada (mudança de estágio)."

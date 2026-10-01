@@ -69,6 +69,7 @@ func test_mass_kill_respects_max_voices() -> void:
 	rng.seed = 3
 	for i: int in 300:
 		_manager.spawn(imp, Vector2(rng.randf_range(30, 610), rng.randf_range(30, 330)))
+	_field.menu.enabled = false  # D-098: o menu da letra pausaria o jogo no meio das mortes
 	for ch: String in "MORTIS":
 		_field.collect(ch, false)
 	assert_true(_caster.cast())

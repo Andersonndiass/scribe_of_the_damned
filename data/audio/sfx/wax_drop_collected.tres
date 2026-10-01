@@ -8,6 +8,7 @@ script = ExtResource("1_76ffu")
 id = &"wax_drop_collected"
 event = &"wax_drop_collected"
 stream = ExtResource("2_0l0qy")
+volume_db = -7.3
 pitch_jitter = 0.08
 max_voices = 3
 cooldown_ms = 60

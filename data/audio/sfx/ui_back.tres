@@ -8,6 +8,7 @@ script = ExtResource("1_5q2ja")
 id = &"ui_back"
 event = &"ui_back"
 stream = ExtResource("2_3t33c")
+volume_db = -12.8
 bus = &"UI"
 pitch_jitter = 0.0
 max_voices = 2

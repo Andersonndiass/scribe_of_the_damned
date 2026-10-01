@@ -8,6 +8,7 @@ script = ExtResource("1_t3w1n")
 id = &"boss_telegraph_cross"
 event = &"boss_telegraph:rotating_cross"
 stream = ExtResource("2_lq0px")
+volume_db = -13.3
 pitch_jitter = 0.03
 max_voices = 2
 cooldown_ms = 0

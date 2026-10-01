@@ -8,6 +8,7 @@ script = ExtResource("1_ieqxn")
 id = &"weapon_crucifix_hit"
 event = &"weapon_hit:crucifix"
 stream = ExtResource("2_75itj")
+volume_db = -22.5
 pitch_jitter = 0.08
 max_voices = 3
 cooldown_ms = 60

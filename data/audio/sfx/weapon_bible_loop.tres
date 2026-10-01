@@ -8,6 +8,7 @@ script = ExtResource("1_f2rwm")
 id = &"weapon_bible_loop"
 event = &"weapon_loop:bible"
 stream = ExtResource("2_n8hma")
+volume_db = -17.7
 pitch_jitter = 0.06
 max_voices = 3
 cooldown_ms = 40

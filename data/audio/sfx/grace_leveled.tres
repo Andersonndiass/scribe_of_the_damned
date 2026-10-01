@@ -8,6 +8,7 @@ script = ExtResource("1_82dmh")
 id = &"grace_leveled"
 event = &"grace_leveled"
 stream = ExtResource("2_oh1e1")
+volume_db = -10.2
 max_voices = 2
 priority = 2
 note = "Graça subiu de nível."

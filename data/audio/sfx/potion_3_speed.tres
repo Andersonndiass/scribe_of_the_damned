@@ -8,6 +8,7 @@ script = ExtResource("1_5u73b")
 id = &"potion_3_speed"
 event = &"potion_drunk:wine"
 stream = ExtResource("2_wn5qv")
+volume_db = -4.0
 max_voices = 2
 priority = 2
 note = "Poção 3: velocidade."

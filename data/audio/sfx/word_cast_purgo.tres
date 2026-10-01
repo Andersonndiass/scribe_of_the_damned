@@ -8,6 +8,7 @@ script = ExtResource("1_qdu12")
 id = &"word_cast_purgo"
 event = &"word_cast:purgo"
 stream = ExtResource("2_w2fvp")
+volume_db = -3.7
 pitch_jitter = 0.02
 max_voices = 1
 cooldown_ms = 0

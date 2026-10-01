@@ -8,6 +8,7 @@ script = ExtResource("1_16ca1")
 id = &"erasure_warned"
 event = &"erasure_warned"
 stream = ExtResource("2_k874a")
+volume_db = -7.4
 max_voices = 2
 priority = 2
 note = "Aviso de apagamento (loop enquanto ativo)."

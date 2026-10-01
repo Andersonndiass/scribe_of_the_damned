@@ -8,5 +8,6 @@ script = ExtResource("1_8mh1m")
 id = &"shield_broken"
 event = &"shield_broken"
 stream = ExtResource("2_6w1vw")
+volume_db = -10.4
 max_voices = 2
 note = "Escudo FIDES quebrando."

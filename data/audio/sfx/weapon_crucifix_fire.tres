@@ -8,6 +8,7 @@ script = ExtResource("1_htrpa")
 id = &"weapon_crucifix_fire"
 event = &"weapon_fired:crucifix"
 stream = ExtResource("2_cfbju")
+volume_db = -16.8
 pitch_jitter = 0.06
 max_voices = 3
 cooldown_ms = 40

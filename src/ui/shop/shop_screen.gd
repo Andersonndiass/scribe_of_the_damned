@@ -114,6 +114,8 @@ func is_closing() -> bool:
 func _unhandled_input(event: InputEvent) -> void:
 	if visible and _shop != null and _shop.is_open and handle_input(event):
 		get_viewport().set_input_as_handled()
+		if not (event.is_action(&"cast") or event.is_action(&"shop_next")):
+			UiScreen.ui_sound(event)  # comprar já tem o som de compra ou de recusa
 
 
 ## Trata uma tecla da loja. Retorna true se era da loja (e consome a entrada).

@@ -86,19 +86,32 @@ func test_champion_letter_is_a_rare_vowel_when_possible() -> void:
 	assert_gte(rare.size(), 1, "atril vazio: há palavras que começam por vogal")
 
 
-func test_open_slows_time_stops_the_scribe_and_pick_collects() -> void:
+## D-098: o menu pausa o jogo (sem câmera lenta) e despausa ao escolher.
+func test_open_pauses_the_game_and_pick_collects() -> void:
 	_open()
 	assert_true(GameState.letter_menu_open, "escriba parado")
-	assert_eq(_player.input_direction(), Vector2.ZERO)
+	assert_true(get_tree().paused, "o jogo pausa com o menu aberto")
+	assert_almost_eq(TimeScale.factor_product(), 1.0, 0.001, "sem câmera lenta")
 	_advance(0.2)
-	assert_almost_eq(TimeScale.factor_product(), _menu.tuning.slow_factor, 0.001, "câmera lenta ×0,2")
 	var letter: String = _menu.options[_menu.focus]["letter"]
 	assert_true(_menu.pick(_menu.focus))
 	assert_eq(_field.atril.text(), letter, "a letra foi para o atril")
 	assert_false(_menu.is_open())
 	assert_false(GameState.letter_menu_open)
+	assert_false(get_tree().paused, "despausou ao escolher")
+
+
+## D-098: pausa de outro dono (Esc) congela o tempo do menu e não é desfeita por ele.
+func test_pause_menu_freezes_the_letter_timer() -> void:
+	_open()
+	var left: float = _menu.left
+	EventBus.pause_menu_toggled.emit(true)
 	_advance(1.0)
-	assert_almost_eq(TimeScale.factor_product(), 1.0, 0.001, "a câmera lenta sai depois do intervalo")
+	assert_almost_eq(_menu.left, left, 0.001, "o tempo não corre com o Esc aberto")
+	EventBus.pause_menu_toggled.emit(false)
+	assert_true(get_tree().paused, "fechar o Esc devolve a pausa do menu")
+	_menu.cancel()
+	assert_false(get_tree().paused)
 
 
 func test_pick_guard_blocks_the_first_instant() -> void:

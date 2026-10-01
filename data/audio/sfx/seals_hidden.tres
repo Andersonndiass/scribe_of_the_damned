@@ -8,6 +8,7 @@ script = ExtResource("1_nn8ek")
 id = &"seals_hidden"
 event = &"seals_hidden"
 stream = ExtResource("2_2mvdo")
+volume_db = -10.7
 bus = &"UI"
 pitch_jitter = 0.0
 max_voices = 2

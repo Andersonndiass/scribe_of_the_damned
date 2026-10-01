@@ -8,6 +8,7 @@ script = ExtResource("1_3eixw")
 id = &"enemy_killed_gargoyle"
 event = &"enemy_killed:gargoyle"
 stream = ExtResource("2_sotam")
+volume_db = -15.5
 max_voices = 2
 cooldown_ms = 60
 note = "Gárgula: pedra rachando."

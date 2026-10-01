@@ -8,6 +8,7 @@ script = ExtResource("1_pfiv0")
 id = &"chapter_completed"
 event = &"chapter_completed"
 stream = ExtResource("2_orwfw")
+volume_db = -9.4
 bus = &"UI"
 max_voices = 1
 cooldown_ms = 0

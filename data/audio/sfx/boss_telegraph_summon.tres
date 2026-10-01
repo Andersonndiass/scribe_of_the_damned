@@ -8,6 +8,7 @@ script = ExtResource("1_6mk3r")
 id = &"boss_telegraph_summon"
 event = &"boss_telegraph:summon"
 stream = ExtResource("2_4dql4")
+volume_db = -7.0
 pitch_jitter = 0.03
 max_voices = 2
 cooldown_ms = 0

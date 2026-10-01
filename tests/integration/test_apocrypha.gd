@@ -134,6 +134,7 @@ func test_purgo_kills_commons_and_only_scratches_champions() -> void:
 		_manager.spawn(_imp, Vector2(rng.randf_range(30, 610), rng.randf_range(30, 330)))
 	var champ: int = _manager.spawn(_imp, Vector2(320, 60), true)
 	_manager.hp[champ] = 500
+	_field.menu.enabled = false  # D-098: o menu da letra pausaria o jogo no meio da varredura
 	assert_true(_cast("PURGO"))
 	var purgo: WordData = _field.lexicon.word_for("PURGO")
 	await wait_physics_frames(15)

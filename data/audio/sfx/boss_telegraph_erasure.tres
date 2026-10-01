@@ -8,6 +8,7 @@ script = ExtResource("1_b00rd")
 id = &"boss_telegraph_erasure"
 event = &"boss_telegraph:erasure"
 stream = ExtResource("2_2lu8u")
+volume_db = -4.5
 pitch_jitter = 0.03
 max_voices = 2
 cooldown_ms = 0

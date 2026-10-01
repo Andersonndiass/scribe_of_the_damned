@@ -8,6 +8,7 @@ script = ExtResource("1_vvr2g")
 id = &"word_cast_verbum"
 event = &"word_cast:verbum"
 stream = ExtResource("2_ps8f7")
+volume_db = -0.7
 pitch_jitter = 0.02
 max_voices = 1
 cooldown_ms = 0

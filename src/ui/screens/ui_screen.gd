@@ -31,6 +31,29 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 	if handle_input(event):
 		get_viewport().set_input_as_handled()
+		ui_sound(event)
+
+
+## Som de interface de uma entrada que uma tela consumiu (feedback do autor: botões sem som).
+## Clique esquerdo ou confirmar → ui_confirmed; voltar ou clique direito → ui_backed; setas → foco.
+## Repetições no mesmo instante (o MenuList também emite) caem na recarga do som.
+static func ui_sound(event: InputEvent) -> void:
+	var mb := event as InputEventMouseButton
+	if mb != null:
+		if mb.pressed and mb.button_index == MOUSE_BUTTON_LEFT:
+			EventBus.ui_confirmed.emit()
+		elif mb.pressed and mb.button_index == MOUSE_BUTTON_RIGHT:
+			EventBus.ui_backed.emit()
+		return
+	if event is InputEventMouseMotion or not event.is_pressed() or event.is_echo():
+		return
+	if is_confirm(event):
+		EventBus.ui_confirmed.emit()
+	elif is_back(event):
+		EventBus.ui_backed.emit()
+	elif event.is_action(&"move_left") or event.is_action(&"move_right") \
+			or event.is_action(&"move_up") or event.is_action(&"move_down"):
+		EventBus.ui_focus_changed.emit()
 
 
 ## Entrada da tela (as telas podem sobrescrever). Retorna true se consumiu. O mouse chega nas

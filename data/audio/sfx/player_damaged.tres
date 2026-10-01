@@ -8,6 +8,7 @@ script = ExtResource("1_pcugp")
 id = &"player_damaged"
 event = &"player_damaged"
 stream = ExtResource("2_buc3f")
+volume_db = -6.0
 max_voices = 1
 cooldown_ms = 80
 priority = 2

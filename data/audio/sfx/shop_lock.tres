@@ -8,6 +8,7 @@ script = ExtResource("1_h0mwu")
 id = &"shop_lock"
 event = &"shop_lock_toggled"
 stream = ExtResource("2_0y6nc")
+volume_db = -2.4
 bus = &"UI"
 pitch_jitter = 0.0
 max_voices = 2

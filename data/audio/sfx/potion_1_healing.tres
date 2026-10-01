@@ -8,6 +8,7 @@ script = ExtResource("1_rsb8j")
 id = &"potion_1_healing"
 event = &"potion_drunk:oil"
 stream = ExtResource("2_1lf1n")
+volume_db = -1.3
 max_voices = 2
 priority = 2
 note = "Poção 1: cura."

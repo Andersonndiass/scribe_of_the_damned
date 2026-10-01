@@ -1,9 +1,16 @@
-[gd_resource type="Resource" script_class="MusicData" format=3]
+[gd_resource type="Resource" script_class="MusicData" load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://src/data/music_data.gd" id="1_ghube"]
+[ext_resource type="AudioStream" path="res://assets/audio/music/battle_calm.mp3" id="2_battle_calm"]
+[ext_resource type="AudioStream" path="res://assets/audio/music/battle_build.mp3" id="3_battle_build"]
+[ext_resource type="AudioStream" path="res://assets/audio/music/battle_climax.mp3" id="4_battle_climax"]
 
 [resource]
 script = ExtResource("1_ghube")
 id = &"chapter_1"
-intensity_thresholds = PackedFloat32Array(0, 0.34, 0.67)
-note = "Capítulo 1 (Mosteiro de São Wendelino, 1348): 3 camadas no mesmo BPM. Base: órgão e drone grave. Camada 2: canto gregoriano masculino. Camada 3: percussão e cordas tensas."
+layers = Array[AudioStream]([ExtResource("2_battle_calm"), ExtResource("3_battle_build"), ExtResource("4_battle_climax")])
+mode = &"sections"
+volume_db = -12.0
+section_thresholds = PackedFloat32Array(0, 0.4, 0.75)
+fade_ms = 2500
+note = "Capítulo 1 (Gemini, autor 2026-10-01): calma → crescendo (40% da onda) → clímax (75%); volta à calma no fim da onda. Cruzamento de 2,5 s."

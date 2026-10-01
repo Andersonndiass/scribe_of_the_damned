@@ -8,6 +8,7 @@ script = ExtResource("1_u1l1y")
 id = &"weapon_bible_start"
 event = &"weapon_fired:bible"
 stream = ExtResource("2_lf0tb")
+volume_db = -19.1
 pitch_jitter = 0.06
 max_voices = 3
 cooldown_ms = 40

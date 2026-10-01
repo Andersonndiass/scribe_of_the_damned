@@ -8,6 +8,7 @@ script = ExtResource("1_j51mk")
 id = &"word_cast_angelus"
 event = &"word_cast:angelus"
 stream = ExtResource("2_mun88")
+volume_db = -3.6
 pitch_jitter = 0.02
 max_voices = 1
 cooldown_ms = 0

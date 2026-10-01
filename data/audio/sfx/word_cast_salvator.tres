@@ -8,6 +8,7 @@ script = ExtResource("1_83g1m")
 id = &"word_cast_salvator"
 event = &"word_cast:salvator"
 stream = ExtResource("2_h7stb")
+volume_db = -5.3
 pitch_jitter = 0.02
 max_voices = 1
 cooldown_ms = 0

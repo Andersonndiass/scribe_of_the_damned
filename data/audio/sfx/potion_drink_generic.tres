@@ -8,5 +8,6 @@ script = ExtResource("1_pnaoh")
 id = &"potion_drink_generic"
 event = &"potion_drunk"
 stream = ExtResource("2_dboyg")
+volume_db = 2.7
 max_voices = 2
 note = "Beber poção (genérico)."

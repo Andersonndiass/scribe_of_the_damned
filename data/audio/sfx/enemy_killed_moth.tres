@@ -8,6 +8,7 @@ script = ExtResource("1_t0w3s")
 id = &"enemy_killed_moth"
 event = &"enemy_killed:moth"
 stream = ExtResource("2_jx27w")
+volume_db = -8.8
 max_voices = 3
 cooldown_ms = 50
 note = "Traça: papel seco se esfarelando."

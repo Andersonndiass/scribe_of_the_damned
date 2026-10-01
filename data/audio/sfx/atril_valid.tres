@@ -8,6 +8,7 @@ script = ExtResource("1_amxc6")
 id = &"atril_valid"
 event = &"atril_valid"
 stream = ExtResource("2_taohp")
+volume_db = -13.5
 bus = &"UI"
 max_voices = 1
 cooldown_ms = 0

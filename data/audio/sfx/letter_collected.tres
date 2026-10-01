@@ -8,5 +8,6 @@ script = ExtResource("1_2prvy")
 id = &"letter_collected"
 event = &"letter_collected"
 stream = ExtResource("2_glur4")
+volume_db = -16.2
 max_voices = 3
 note = "Coleta: pena riscando o pergaminho, bem curta."

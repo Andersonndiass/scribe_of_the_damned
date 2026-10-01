@@ -99,6 +99,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouse:
 		if mode != Mode.NONE and _mouse_input(_canvas.make_input_local(event) as InputEventMouse):
 			get_viewport().set_input_as_handled()
+			UiScreen.ui_sound(event)
 		return
 	if not event.is_pressed() or event.is_echo():
 		return
@@ -120,6 +121,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		handled = menu.handle_input(event)
 	if handled:
 		get_viewport().set_input_as_handled()
+		if not event.is_action(&"pause"):  # pausar já tem o próprio som
+			UiScreen.ui_sound(event)
 
 
 func toggle_pause() -> void:

@@ -8,6 +8,7 @@ script = ExtResource("1_reb87")
 id = &"letter_dropped_rare"
 event = &"letter_dropped:rare"
 stream = ExtResource("2_rg7h5")
+volume_db = -4.0
 max_voices = 2
 priority = 2
 note = "Vogal rara caindo: pingo com brilho metálico."

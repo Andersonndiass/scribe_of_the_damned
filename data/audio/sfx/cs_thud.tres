@@ -8,6 +8,7 @@ script = ExtResource("1_mu65g")
 id = &"cs_thud"
 event = &"cs_thud"
 stream = ExtResource("2_4b27a")
+volume_db = 2.9
 max_voices = 1
 cooldown_ms = 0
 priority = 2

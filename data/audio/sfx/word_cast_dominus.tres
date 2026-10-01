@@ -8,6 +8,7 @@ script = ExtResource("1_pm3xe")
 id = &"word_cast_dominus"
 event = &"word_cast:dominus"
 stream = ExtResource("2_l113y")
+volume_db = -5.7
 pitch_jitter = 0.02
 max_voices = 1
 cooldown_ms = 0

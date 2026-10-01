@@ -8,6 +8,7 @@ script = ExtResource("1_eapjg")
 id = &"enemy_killed_hollow_monk"
 event = &"enemy_killed:hollow_monk"
 stream = ExtResource("2_c00w4")
+volume_db = -20.2
 max_voices = 2
 cooldown_ms = 60
 note = "Monge Oco: suspiro grave que some."

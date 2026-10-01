@@ -28,6 +28,7 @@ func after_each() -> void:
 func test_sc001_load_and_mass_kill_do_not_instantiate() -> void:
 	var before: int = PoolManager.instantiate_count
 	var imp: EnemyData = load("res://data/enemies/imp.tres")
+	_field.menu.enabled = false  # D-098: o menu da letra pausaria o jogo no meio das mortes
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 7
 	for i: int in 300:

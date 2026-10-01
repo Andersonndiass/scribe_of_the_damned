@@ -8,6 +8,7 @@ script = ExtResource("1_emd61")
 id = &"word_cast_ignis"
 event = &"word_cast:ignis"
 stream = ExtResource("2_ktxli")
+volume_db = -4.0
 max_voices = 1
 cooldown_ms = 0
 priority = 2
