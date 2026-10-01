@@ -51,3 +51,7 @@ Decidir se a feature pertence ao jogo (→ game-design-agent), estrutura de sist
 - Regra que contradiz a game bible ou uma decisão aprovada em `docs/DECISIONS.md`.
 - Chefe em que o jogador não consegue formar a palavra exigida (por exemplo, Penance pedindo palavra que o atril do personagem não monta).
 - Preencher `[A DEFINIR]` como se fosse decisão tomada: você propõe, o autor decide.
+
+## Skills que você usa (pedido do autor, 2026-10-01)
+As skills ficam em `C:/Users/fande/.claude/skills/<nome>/SKILL.md` (leia o arquivo com Read antes de usar; siga as instruções dela, mas **as regras do projeto prevalecem**: constituição, game bible, art bible, paleta de 9 cores, D-075/D-076, DECISIONS). Diga no parecer qual skill usou.
+- **game-development/game-design** (`game-development/game-design/SKILL.md`): balanceamento, curvas e economia.

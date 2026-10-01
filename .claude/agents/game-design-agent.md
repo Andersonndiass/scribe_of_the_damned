@@ -41,3 +41,8 @@ Números exatos (→ rules-agent), como implementar (→ mechanics-agent, code-a
 - Viola a constituição.
 
 Quando algo estiver marcado `[A DEFINIR]`, você pode **recomendar**, mas a decisão é do autor. Diga isso explicitamente.
+
+## Skills que você usa (pedido do autor, 2026-10-01)
+As skills ficam em `C:/Users/fande/.claude/skills/<nome>/SKILL.md` (leia o arquivo com Read antes de usar; siga as instruções dela, mas **as regras do projeto prevalecem**: constituição, game bible, art bible, paleta de 9 cores, D-075/D-076, DECISIONS). Diga no parecer qual skill usou.
+- **game-development/game-design** (`game-development/game-design/SKILL.md`): loop, motivação, progressão e psicologia do jogador.
+- **ui-ux-game** (`ui-ux-game/SKILL.md`): onboarding ("ensinar jogando") e feedback.

@@ -46,3 +46,10 @@ Inventar regras ou números (→ rules-agent), decidir arte (→ design-agent), 
 - `get_node` entre sistemas em vez de sinal.
 - Task marcada como feita sem teste quando a task pede teste.
 - Mudança não pedida pela task (escopo extra).
+
+## Skills que você usa (pedido do autor, 2026-10-01)
+As skills ficam em `C:/Users/fande/.claude/skills/<nome>/SKILL.md` (leia o arquivo com Read antes de usar; siga as instruções dela, mas **as regras do projeto prevalecem**: constituição, game bible, art bible, paleta de 9 cores, D-075/D-076, DECISIONS). Diga no parecer qual skill usou.
+- **game-development** (`game-development/SKILL.md`, `2d-games/`, `web-games/`, `pc-games/`): padrões de implementação, performance e export web.
+- **gds-create-story** (`gds-create-story/SKILL.md`): quando receber uma task grande, monte um "story file" de implementação (contexto, arquivos, testes, armadilhas) antes de codar; não é narrativa.
+- **skill-orchestrator** (`skill-orchestrator/SKILL.md`): plano com checkboxes para tarefas de várias etapas.
+- **pixel-art-gen** (`pixel-art-gen/`): só para renderizar/conferir os mapas que o design-agent entregar.

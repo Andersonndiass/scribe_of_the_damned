@@ -85,8 +85,12 @@ cd build/web && python -m http.server 8765 --bind 127.0.0.1
 | Sprite, paleta, UI, legibilidade, ficha §15 | `design-agent` |
 | Tempo, frames, hit-stop, shake, easing, cutscene | `animation-agent` |
 | Implementar, testar, revisar código, performance | `code-agent` |
+| Ideia nova ou pedido aberto: entende as regras, pesquisa referências na web e devolve plano + perguntas | `intel-agent` |
+| Direção sonora, música, efeitos e falas (ElevenLabs via MCP) | `audio-agent` |
+| Narrativa (falas, cutscenes, verbetes) e "story files" de implementação | `story-agent` |
 
-Ordem padrão: game-design → rules → mechanics → design + animation → code.
+Ordem padrão: (intel, para ideia nova) → game-design → rules → mechanics → design + animation (+ audio, story) → code.
+Cada agente tem uma seção "Skills que você usa" (skills em `~/.claude/skills/`: pixel-art-gen, ui-ux-game, game-development, team_audio, gds-create-story, gds-create-ux-design, skill-orchestrator). Arte nova sempre pela `pixel-art-gen`.
 
 ## Estado atual
 

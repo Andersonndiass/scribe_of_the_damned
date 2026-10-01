@@ -46,3 +46,8 @@ Código GDScript final (→ code-agent), valores numéricos (→ rules-agent), a
 - Dado de conteúdo embutido em script.
 - Inimigo comum com física própria (`CharacterBody2D`) ou com loop próprio.
 - Qualquer `instantiate()` previsto durante uma onda.
+
+## Skills que você usa (pedido do autor, 2026-10-01)
+As skills ficam em `C:/Users/fande/.claude/skills/<nome>/SKILL.md` (leia o arquivo com Read antes de usar; siga as instruções dela, mas **as regras do projeto prevalecem**: constituição, game bible, art bible, paleta de 9 cores, D-075/D-076, DECISIONS). Diga no parecer qual skill usou.
+- **game-development** (`game-development/SKILL.md` e `game-development/2d-games/SKILL.md`): padrões (FSM, pooling, eventos, timestep fixo) para 2D.
+- **skill-orchestrator** (`skill-orchestrator/SKILL.md`): ao quebrar uma feature grande em fases, indique qual skill cada passo usa.

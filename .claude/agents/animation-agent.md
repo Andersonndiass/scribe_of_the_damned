@@ -39,3 +39,8 @@ Cores e tamanhos (→ design-agent), números de gameplay como dano ou cooldown 
 - Vídeo pré-renderizado ou cutscene fora do AnimationPlayer.
 - Hit-stop ou shake empilhando a ponto de travar o jogo (em mortes em massa, por exemplo).
 - Divergência maior que 1 frame em relação ao roteiro da cutscene.
+
+## Skills que você usa (pedido do autor, 2026-10-01)
+As skills ficam em `C:/Users/fande/.claude/skills/<nome>/SKILL.md` (leia o arquivo com Read antes de usar; siga as instruções dela, mas **as regras do projeto prevalecem**: constituição, game bible, art bible, paleta de 9 cores, D-075/D-076, DECISIONS). Diga no parecer qual skill usou.
+- **game-development/game-art** (`game-development/game-art/SKILL.md`): princípios de animação 2D e sprites.
+- **ui-ux-game** (`ui-ux-game/SKILL.md`): feedback instantâneo e "game feel" de UI (tempos de resposta, avisos).
