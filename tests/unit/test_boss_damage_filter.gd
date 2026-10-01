@@ -19,15 +19,17 @@ func test_starts_full_in_phase_one() -> void:
 
 func test_cast_soft_and_hard_caps() -> void:
 	assert_eq(_f.apply(70, &"mortis", 1), 70, "abaixo do teto suave entra inteiro")
-	assert_eq(_f.apply(200, &"miserere", 2), 120 + 40, "120 inteiros + metade dos 80 seguintes")
-	assert_eq(_f.apply(420, &"miserere", 3), 120 + 60, "teto duro: 240 no máximo")
+	# 017 (rules-agent T1700 §3): teto suave 250, duro 500.
+	assert_eq(_f.apply(400, &"miserere", 2), 250 + 75, "250 inteiros + metade dos 150 seguintes")
+	_f = BossDamageFilter.new(DATA, BOSS)  # fase cheia de novo (o golpe anterior gastou a fase)
+	assert_eq(_f.apply(900, &"miserere", 3), 250 + 125, "teto duro: 500 no máximo")
 
 
 func test_cap_sums_ticks_of_the_same_cast() -> void:
 	var total: int = 0
-	for i: int in 24:  # SANCTUS: 15 por tick × 24 = 360
+	for i: int in 48:  # SANCTUS: 15 por tick × 48 = 720
 		total += _f.apply(15, &"sanctus", 7)
-	assert_eq(total, 180, "o teto vale para a soma da conjuração")
+	assert_eq(total, 375, "o teto vale para a soma da conjuração")
 	assert_eq(_f.apply(15, &"sanctus", 8), 15, "outra conjuração começa do zero")
 
 

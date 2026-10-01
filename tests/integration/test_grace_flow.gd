@@ -80,19 +80,19 @@ func _to_choosing() -> void:
 
 func test_grace_from_words_kills_combos_and_the_verbum_echo() -> void:
 	_cast(LUX)
-	assert_eq(_gains[-1], [18, &"word"], "6 por letra")
+	assert_eq(_gains[-1], [30, &"word"], "10 por letra (017)")
 	EventBus.enemy_killed.emit(0, IMP, Vector2.ZERO)
 	assert_eq(_gains[-1], [IMP.grace, &"kill"])
 	EventBus.champion_killed.emit(IMP, Vector2.ZERO)
 	assert_eq(_gains[-1][0], roundi(IMP.grace * (_flow.tuning.champion_mul - 1.0)), "campeão × 5 no total")
 	_cast(LUX)
 	EventBus.combo_cast.emit(load("res://data/combos/vapor.tres"), 1.0)
-	assert_eq(_gains[-1], [9, &"combo"], "a 2ª palavra vale × 1,5")
+	assert_eq(_gains[-1], [15, &"combo"], "a 2ª palavra vale × 1,5")
 	var before: int = _gains.size()
 	EventBus.verbum_echoed.emit(LUX)
 	_cast(LUX)  # o eco repete a palavra; não conta de novo
 	assert_eq(_gains.size(), before + 1)
-	assert_eq(_gains[-1], [36, &"word"], "o eco vale as 6 letras de VERBUM")
+	assert_eq(_gains[-1], [60, &"word"], "o eco vale as 6 letras de VERBUM (10 cada)")
 
 
 # --- Subir de nível ------------------------------------------------------------------------

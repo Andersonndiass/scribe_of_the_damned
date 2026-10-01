@@ -5,8 +5,8 @@ extends Node
 ##   Shift: PURGE (FR-020) — as letras voltam ao chão ao redor do jogador, sem custo, SOLTAS:
 ##   o ímã as ignora e o jogador escolhe a nova ordem andando por cima (D-031).
 
-## Hit-stop da conjuração (design-tokens: hitstop_ms.cast).
-const CAST_HITSTOP_MS := 60
+## Peso da palavra (017 T1740): hit-stop e tremor por tipo (ataque, tela, ferramenta).
+@export var feel: WordFeelData = preload("res://data/tuning/word_feel.tres")
 ## A pena fica na altura do peito do Anselmo.
 const PEN_OFFSET := Vector2(0, -8)
 ## As letras do purge saem em anel ao redor do corpo, não dos pés.
@@ -81,7 +81,7 @@ func cast() -> bool:
 		last_repeatable = word
 		last_repeatable_power = power
 	EventBus.word_cast.emit(word, power, origin, direction)
-	EventBus.hitstop_requested.emit(CAST_HITSTOP_MS)
+	_feel(combo if combo != null else word)
 	player.pen_flash()
 	if combo != null:
 		# O combo substitui o milagre da 2ª palavra (FR-202); as vogais raras dela valem para ele.
@@ -110,7 +110,7 @@ func _cast_verbum() -> bool:
 	EventBus.verbum_echoed.emit(last_repeatable)
 	# O eco conta como a palavra repetida para quem lê as marcas (chefes, FR-202c).
 	EventBus.word_cast.emit(last_repeatable, last_repeatable_power, origin, direction)
-	EventBus.hitstop_requested.emit(CAST_HITSTOP_MS)
+	_feel(last_repeatable)
 	player.pen_flash()
 	_start_miracle(last_repeatable, last_repeatable_power, origin, direction)
 	letter_field.emit_atril()
@@ -141,6 +141,13 @@ func _partner_latins() -> PackedStringArray:
 			if ids.has(w.id) and not out.has(w.latin):
 				out.append(w.latin)
 	return out
+
+
+func _feel(w: WordData) -> void:
+	var f: Dictionary = feel.for_word(w)
+	EventBus.hitstop_requested.emit(f["hitstop_ms"])
+	if f["shake_px"] > 0.0:
+		EventBus.shake_requested.emit(f["shake_px"], f["shake_time"])
 
 
 func _start_miracle(word: WordData, power: float, origin: Vector2, direction: Vector2) -> void:

@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_s")
-cast_soft_cap = 120.0
-cast_hard_cap = 240.0
+cast_soft_cap = 250.0
+cast_hard_cap = 500.0
 over_soft_mul = 0.5
 uncapped_tags = Array[StringName]([&"auto", &"purgo"])

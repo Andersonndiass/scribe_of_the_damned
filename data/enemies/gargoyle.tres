@@ -20,5 +20,5 @@ letter_drop_chance = 0.2
 sprite_frames = ExtResource("3_e")
 sprite_pivot = Vector2(8, 15)
 dissolve_size = 16
-grace = 2
+grace = 6
 wax_drop_chance = 0.01

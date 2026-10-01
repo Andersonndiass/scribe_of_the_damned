@@ -73,7 +73,7 @@ func test_crux_damages_on_arms_and_blocks_projectiles() -> void:
 func test_crux_stops_blocking_after_duration() -> void:
 	_write("CRUX")
 	_caster.cast()
-	await wait_seconds(4.3)
+	await wait_seconds(5.3)  # CRUX dura 5 s (017)
 	assert_eq(ProjectileBlockers.count(), 0)
 
 
@@ -98,7 +98,7 @@ func test_aqua_slows_enemies_inside() -> void:
 func test_ignis_burns_enemies_and_the_page() -> void:
 	var before: int = _arena.stamps_by_kind.get(&"burn", 0)
 	_manager.spawn(_imp, _pen() + Vector2(20, 0))
-	_manager.spawn(_imp, _pen() + Vector2(200, 0))
+	_manager.spawn(_imp, _pen() + Vector2(-260, 0))  # longe: raio 72 × power 2,4 ≈ 173 (017)
 	_write("IGNIS")
 	assert_true(_caster.cast())
 	await wait_seconds(0.6)

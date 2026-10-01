@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="WordFeelData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/data/word_feel_data.gd" id="1_wf"]
+
+[resource]
+script = ExtResource("1_wf")
+attack_hitstop_ms = 100
+attack_shake_px = 2.0
+attack_shake_time = 0.4
+screen_hitstop_ms = 100
+screen_shake_px = 3.0
+screen_shake_time = 0.4
+screen_words = Array[StringName]([&"martyrium", &"purgo", &"requiem", &"miserere"])
+tool_hitstop_ms = 60
