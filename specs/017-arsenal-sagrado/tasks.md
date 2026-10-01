@@ -62,7 +62,9 @@
 **Checkpoint 017-E:** ✅ 2026-10-01 — Rosário, Turíbulo e Aspersório jogáveis e na loja (D-092); `?stress=arsenal` 60 FPS no desktop (p95 54,9); GUT 517/517.
 
 ## Fase 6 — Palavras ultimate, ritmo e fechamento
-- **T1740** Palavras ×1,5 área / ×2,5 dano; `word_feel` (hit-stop 100 ms, shake, flash); filtro do chefe 250/500; `champion_strike_frac` 0,5; letras por onda; Graça nova.
-- **T1741** SC-001/1703 (Chrome alternado).
-- **T1742** Sonda por arma e por onda (SC-1704) + parecer do rules-agent.
-- **T1743** Docs: art bible, FEATURES, CLAUDE.md, DECISIONS.
+- ✅ **T1740** Palavras ×1,5 área / ×2,5 dano; `word_feel` (hit-stop 100 ms, shake, flash); filtro do chefe 250/500; `champion_strike_frac` 0,5; letras por onda; Graça nova.
+- ⏳ **T1741** SC-001/1703 (Chrome alternado) — com o autor: o Chrome do Claude não alcança o servidor local; desktop 60 FPS.
+- ✅ **T1742** Sonda por arma e por onda (SC-1704) + parecer do rules-agent.
+- ✅ **T1743** Docs: art bible, FEATURES, CLAUDE.md, DECISIONS.
+
+**Checkpoint 017-F (fechamento):** ✅ 2026-10-01 — D-093; GUT 518/518; pendentes do autor: playtest (SC-1705) e Chrome (T1741).

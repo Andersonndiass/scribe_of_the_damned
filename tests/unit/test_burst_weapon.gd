@@ -50,9 +50,10 @@ func _run(seconds: float) -> void:
 		_arsenal._physics_process(DT)
 
 
-func test_pen_level_1_is_the_old_auto_attack() -> void:
+func test_pen_level_1_keeps_the_old_cadence() -> void:
 	var s: WeaponLevelData = PEN.stats(1)
-	assert_eq([s.damage, s.interval, s.range, s.speed, s.count], [1, 0.8, 160.0, 220.0, 1], "números de antes")
+	# T1742 (rules-agent): 2 gotas desde o nível 1 (a cadência e o alcance são os de antes).
+	assert_eq([s.damage, s.interval, s.range, s.speed, s.count], [1, 0.8, 160.0, 220.0, 2], "2 gotas a cada 0,8 s")
 	_run(0.75)
 	assert_eq(_shots, 0)
 	_run(0.1)

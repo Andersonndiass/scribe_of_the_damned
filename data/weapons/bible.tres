@@ -7,7 +7,7 @@
 [sub_resource type="Resource" id="lv1"]
 script = ExtResource("2_lv")
 damage = 1
-interval = 0.6
+interval = 0.7
 range = 200.0
 speed = 0.0
 count = 1
@@ -17,7 +17,7 @@ width = 6.0
 [sub_resource type="Resource" id="lv2"]
 script = ExtResource("2_lv")
 damage = 1
-interval = 0.5
+interval = 0.6
 range = 200.0
 speed = 0.0
 count = 1
@@ -27,7 +27,7 @@ width = 6.0
 [sub_resource type="Resource" id="lv3"]
 script = ExtResource("2_lv")
 damage = 1
-interval = 0.5
+interval = 0.55
 range = 260.0
 speed = 0.0
 count = 1

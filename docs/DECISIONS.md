@@ -607,6 +607,13 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
 - **Proposta sem parecer:** velocidade das gotas do Aspersório 240 px/s (o rules-agent não deu número) — conferir na passada de ritmo.
 - **Loja:** as 3 armas a 6 de tinta. **Stress:** `?stress=arsenal` (Turíbulo + Rosário no nível 5, trocando a cada 2 s): 60 FPS no desktop.
 
+### D-093 · 2026-10-01 · 017 Fase 6 e fechamento: palavras ultimate, sonda por arma, ajuste da onda 1
+- **Palavras como ultimate (T1740, rules-agent T1700 §3):** medidas ×1,5 e dano ×2,5 (tabela; PAX/AQUA/DOMINUS/SPIRITUS pela regra geral); `word_feel.tres` (ataque 100 ms + 2 px, tela/combos grandes 100 ms + 3 px, ferramenta 60 ms); filtro do chefe 250/500; golpe no campeão 0,5; Graça 1/2/3/5/6 por inimigo, 10 por letra, curva 40 + 24.
+- **Sonda por arma e por onda (T1742):** achou o bug do float32 (Crucifixo nos níveis 2–4 não atirava; relógios em 64 bits). Parecer `docs/reviews/T1742-rules-parecer.md`: Pena 2 gotas desde o nv 1 (0,80/0,70/0,60/0,60/0,55; 3 gotas no nv 4–5), onda 1 `spawn_rate_end` 1,6 e `letter_drop_mul` 1,2, Rosário 3 contas e raio 36/40/44, Bíblia tick 0,70/0,60/0,55 nos nv 1–3, Turíbulo rastro 1,0/1,5/2,0 nos nv 1–3. Depois: a Pena vence a onda 1 sem god em 3 de 3.
+- **Não medido:** SC-001/SC-1703 no Chrome (o Chrome do Claude não alcança o servidor local; com o autor). Desktop: `?stress=bible` e `?stress=arsenal` a 60 FPS.
+- **Fica para a passada de ritmo (018):** Rosário nv 1 fraco; menus/min com muita variação; onda 9 4–4,7 menus/min; Crucifixo nv 1 errando; velocidade do Aspersório; eficiência da Pena; vida do chefe.
+- **Status:** 017 ✅ Complete (GUT 518/518). Pendentes do autor: playtest (SC-1705) e medição no Chrome.
+
 ## Conflitos abertos
 
 - ~~**C-008 · Menu de escolha da letra (D-085 item 2).**~~ Resolvido: autor "1a 2b 3b e mouse clicando 4a" —

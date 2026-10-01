@@ -1,6 +1,6 @@
 # 017 — Arsenal sagrado: armas, menu de escolha da letra e ímã reverso
 
-> Status: **Aprovada** (2026-09-30, D-087: "1a 2a 3a 4b 5a 6a 7a 8a 9a 10a 11a") — direção aprovada pelo autor na D-085 (respostas "1a 2a… 12a") e C-008 ("1a 2b 3b e mouse clicando 4a"). Game bible: Emenda 1.
+> Status: **Complete** (2026-10-01, D-093; playtest do autor e Chrome pendentes) · antes: **Aprovada** (2026-09-30, D-087: "1a 2a 3a 4b 5a 6a 7a 8a 9a 10a 11a") — direção aprovada pelo autor na D-085 (respostas "1a 2a… 12a") e C-008 ("1a 2b 3b e mouse clicando 4a"). Game bible: Emenda 1.
 > Parecer de direção: `docs/reviews/D085-game-design-arsenal.md` (game-design-agent, AJUSTAR).
 > Pareceres: `docs/reviews/T1700-rules-parecer.md` (números: armas por nível, letras 0,04×HP × `letter_drop_mul` por onda, palavras ×1,5 área/×2,5 dano, Graça, selos, ímã, loja) · `T1700-mechanics-parecer.md` (TimeScale, contextos de tecla, WeaponData/Loadout/Arsenal, WeaponZones, LetterMenu, SealPool; 6 fases) · `T1700-design-parecer.md` + `T1700-design-maps.json` (ícones, ataques CHALK/INK, HUD do inventário, menu acima do escriba) · `T1700-animation-parecer.md` (troca 100 ms, ataques, câmera lenta ×0,2, ultimate com 100 ms de hit-stop).
 > Depende de: 016 (Graça, selos, `RunUpgrade`, `BlessingOffer`), 003 (loja), 002 (palavras, atril), D-084 (zonas letais das palavras), 007 (Opções, teclas).

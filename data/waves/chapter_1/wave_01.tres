@@ -14,9 +14,9 @@ script = ExtResource("2_sg")
 enemy = ExtResource("3_imp")
 start_time = 20.0
 spawn_rate_start = 1.0
-spawn_rate_end = 2.0
+spawn_rate_end = 1.6
 
 [resource]
 script = ExtResource("1_wd")
-letter_drop_mul = 1.0
+letter_drop_mul = 1.2
 groups = Array[ExtResource("2_sg")]([SubResource("Group_early"), SubResource("Group_late")])

@@ -90,7 +90,7 @@ Ordem padrão: game-design → rules → mechanics → design + animation → co
 
 ## Estado atual
 
-- **Etapa:** Etapa 3 — features **001–008, 016 e 017 Complete**; 009 Fases 1–2 ✅. GUT 517/517. Paleta C (D-048) com valores exatos (D-076). Autor = Francisco.
+- **Etapa:** Etapa 3 — features **001–008, 016 e 017 Complete**; 009 Fases 1–2 ✅. GUT 518/518. Paleta C (D-048) com valores exatos (D-076). Autor = Francisco.
 - **017 Arsenal sagrado (D-087…D-093):** 6 armas em dados (`data/weapons/*.tres`; `Arsenal` + `BeamWeapon`/`OrbitWeapon`/`SwingTrailWeapon` + projéteis com pierce; zonas de arma `WeaponZone(s)` no `EnemyManager`); inventário de 2 (`GameState.loadout`, teclas 1/2); **menu da letra** (`LetterMenu` filho do `LetterField`, câmera lenta pelo `TimeScale`; letras não caem mais no chão); selos de arma/status/ímã (`SealPool`); loja de armas e ímã reverso (`RepulseAura`); palavras como ultimate (`data/tuning/word_feel.tres`). Debug: `?weapons=bible,crucifix&wlevel=3`, `?stress=bible|arsenal`. Sonda: `weapons= wlevel= swap react= acerto=` (linhas WEAPONS e LETTERS).
 - **HUD (T1800):** painel único `UiStyle.draw_plate`, barras `draw_bar`, grade 6/4/3 (regras na memória e no art bible §8.2).
 - **Próximo:** playtest do autor (SC-1705) → **passada de ritmo** (menus/min e palavras/min abaixo do alvo; D-093) → 018 Poções. Áudio: ElevenLabs via MCP (falhando: 502/500 do mcpmarket); manifesto em `docs/audio/sfx_manifest.json` + `docs/voice/`.
