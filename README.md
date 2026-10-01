@@ -24,7 +24,7 @@ Roguelite 2D de ação em pixel art, feito em **Godot 4.7.2**. Ano de 1348, o an
 | Tab (segurar) | Ver as palavras conhecidas |
 | Mouse | Mira da Bíblia, do Aspersório e das palavras direcionais |
 | Esc | Pausa |
-| 3 · 4 · 5 · 6 | Poções (feature 018, em andamento) |
+| 3 · 4 · 5 · 6 | Poções: Óleo da Unção (vela), Água Benta, Vinho do Fervor, Tinta Iluminada (018, em andamento: o Óleo já funciona) |
 
 ## Estado das features
 | # | Feature | Status |
@@ -33,7 +33,7 @@ Roguelite 2D de ação em pixel art, feito em **Godot 4.7.2**. Ano de 1348, o an
 | 016 | Graça e subir de nível (3 selos, pingo de cera) | ✅ |
 | 017 | Arsenal sagrado (6 armas, inventário de 2, menu da letra, ímã reverso, palavras como ultimate) | ✅ |
 | T1800 | HUD novo (painéis em pixel art, recarga das armas) | ✅ |
-| 018 | Poções (Óleo da Unção, Água Benta, Vinho do Fervor, Tinta Iluminada), subir de nível com feixe de luz e câmera lenta, passada de ritmo | 🔨 Fase 1 ✅ (feixe + câmera lenta, 1º nível mais rápido) · Fase 2 em seguida |
+| 018 | Poções (Óleo da Unção, Água Benta, Vinho do Fervor, Tinta Iluminada), subir de nível com feixe de luz e câmera lenta, passada de ritmo | 🔨 Fases 1–2 ✅ (feixe + câmera lenta, 1º nível mais rápido; poções no HUD, Óleo) · Fase 3 em seguida |
 | 009 | Áudio (efeitos e falas via ElevenLabs; música do autor) | sons provisórios |
 | 010–015 | Personagens, export para itch.io, capítulos 2–5 | planejado |
 

@@ -238,6 +238,10 @@ GRACE_LEVELUP_TITLE,Graça - nível {n},Grace - level {n}
 GRACE_HINT,{p1} {p2} {p3} escolhe   {prev} {next} + {cast} confirma,{p1} {p2} {p3} choose   {prev} {next} + {cast} confirm
 ACTION_WEAPON_1,Arma 1,Weapon 1
 ACTION_WEAPON_2,Arma 2,Weapon 2
+ACTION_POTION_1,Poção 1,Potion 1
+ACTION_POTION_2,Poção 2,Potion 2
+ACTION_POTION_3,Poção 3,Potion 3
+ACTION_POTION_4,Poção 4,Potion 4
 WPN_PEN,Pena do Copista,Copyist's Quill
 WPN_PEN_DESC,Gota de tinta no mais próximo,Ink drop at the nearest foe
 WPN_BIBLE,Bíblia,Bible
@@ -250,3 +254,11 @@ WPN_CENSER,Turíbulo,Censer
 WPN_CENSER_DESC,Balança e deixa incenso que fere,Swings and leaves burning incense
 WPN_ASPERGILLUM,Aspersório,Aspergillum
 WPN_ASPERGILLUM_DESC,Leque de água benta para onde mira,Fan of holy water where you aim
+POTION_OIL,Óleo da Unção,Anointing Oil
+POTION_OIL_DESC,Acende 1 vela,Lights 1 candle
+POTION_HOLY_WATER,Água Benta,Holy Water
+POTION_HOLY_WATER_DESC,Círculo onde os inimigos não entram,A circle foes cannot enter
+POTION_WINE,Vinho do Fervor,Wine of Fervor
+POTION_WINE_DESC,A arma ativa ataca mais rápido,Your active weapon strikes faster
+POTION_ILLUMINATION,Tinta Iluminada,Illuminated Ink
+POTION_ILLUMINATION_DESC,Abre um menu de letra agora,Opens a letter choice now

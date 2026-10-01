@@ -21,6 +21,9 @@ var loadout: Loadout = null
 ## 017: ímã reverso (0 = não comprado; 1..5 = nível, subindo pelos selos).
 var repulse_level: int = 0
 var repulse: RepulseData = preload("res://data/weapons/reverse_magnet.tres")
+## 018: cargas e níveis das 4 poções (começa com 1 Óleo da Unção).
+var potion_tuning: PotionTuning = preload("res://data/tuning/potions.tres")
+var potions: PotionBelt = null
 ## Sorteios da 016 (selos, pingo de cera): separados do `rng` das letras para não mudar a sequência.
 var grace_rng := RandomNumberGenerator.new()
 ## Fração de tinta acumulada pelo ×tinta da Bolsa do Esmoler (a gota é inteira).
@@ -98,6 +101,7 @@ func start_run(player: PlayerData, seed_value: int = -1) -> void:
 	letter_menu_open = false
 	levelup_beam = false
 	repulse_level = 0
+	potions = PotionBelt.new(potion_tuning)
 	gold_ink = 0
 	gold_fraction = 0.0
 	_rec_wave = 0

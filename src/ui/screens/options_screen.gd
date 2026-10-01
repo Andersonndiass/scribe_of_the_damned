@@ -42,7 +42,13 @@ const BUTTON_W := 112
 const HINT_Y := 324
 ## Subpágina de teclas: 17 linhas desde a 017 (+ armas 1 e 2; antes 15, design-agent T1600).
 const KEY_Y0 := 54
-const KEY_STEP := 13
+const KEY_STEP := 17
+## 018: com as poções a lista passa de 17 ações — duas colunas de 11, ← → trocam de coluna.
+const KEY_PER_COL := 11
+const KEY_COL_X: Array[float] = [36.0, 332.0]
+const KEY_COL_W := 272.0
+const KEY_LABEL_PAD := 16.0
+const KEY_VALUE_PAD := 12.0
 const KEY_ROW_H := 11
 const KEY_SUBTITLE_Y := 45
 const KEY_BACK := Vector2(320, 298)
@@ -135,7 +141,7 @@ func _mouse_input(m: InputEventMouse) -> bool:
 				in_keys = false
 			return click
 		for i: int in Settings.REBINDABLE.size():
-			if Rect2(ROW_X, KEY_Y0 + i * KEY_STEP, ROW_W, KEY_ROW_H).has_point(p):
+			if key_rect(i).has_point(p):
 				key_focus = i
 				if click:
 					waiting_key = true
@@ -234,6 +240,10 @@ func _keys_input(event: InputEvent) -> bool:
 		key_focus = (key_focus + 1) % count
 	elif event.is_action(&"move_up"):
 		key_focus = (key_focus - 1 + count) % count
+	elif event.is_action(&"move_right") and key_focus + KEY_PER_COL < count:
+		key_focus += KEY_PER_COL
+	elif event.is_action(&"move_left") and key_focus >= KEY_PER_COL:
+		key_focus -= KEY_PER_COL
 	elif is_confirm(event):
 		waiting_key = true
 		swapped_with.clear()
@@ -300,8 +310,8 @@ func _plate_title(text: String) -> void:
 	PixelFont.draw_centered(self, text, 320, TITLE_Y, UiStyle.text_on_dark(), 2)
 
 
-func _draw_focus_band(y: float, h: float = ROW_H) -> void:
-	var band := Rect2(ROW_X, y, ROW_W, h)
+func _draw_focus_band(y: float, h: float = ROW_H, x: float = ROW_X, w: float = ROW_W) -> void:
+	var band := Rect2(x, y, w, h)
 	if UiStyle.high():
 		# Nas linhas baixas das teclas, grow(3) invadiria a vizinha.
 		draw_rect(band.grow(3 if h >= ROW_H else 2), Palette.INK)
@@ -310,7 +320,7 @@ func _draw_focus_band(y: float, h: float = ROW_H) -> void:
 		draw_rect(band.grow(1), Palette.GOLD)
 	draw_rect(band, Palette.PARCHMENT_OLD)
 	var bob: float = -1.0 if int(age / BLINK) % 2 == 0 else 0.0
-	UiStyle.draw_quill(self, Vector2(ROW_X - 4, y + h / 2.0 + bob), true)
+	UiStyle.draw_quill(self, Vector2(x - 4, y + h / 2.0 + bob), true)
 
 
 func _draw_rows() -> void:
@@ -415,25 +425,32 @@ func _draw_language(y: float, focused: bool) -> void:
 		PixelFont.draw(self, tr(&"UI_NEXT"), Vector2(end_x + 8, y + 5), Palette.INK_SOFT)
 
 
+## Retângulo da linha `i` da lista de teclas (2 colunas).
+func key_rect(i: int) -> Rect2:
+	var col: int = mini(i / KEY_PER_COL, KEY_COL_X.size() - 1)
+	return Rect2(KEY_COL_X[col], KEY_Y0 + (i % KEY_PER_COL) * KEY_STEP, KEY_COL_W, KEY_ROW_H)
+
+
 func _draw_keys() -> void:
 	PixelFont.draw_centered(self, tr(&"OPT_KEYS"), 320, KEY_SUBTITLE_Y, UiStyle.text_on_light(true))
 	for i: int in Settings.REBINDABLE.size():
 		var action: StringName = Settings.REBINDABLE[i]
-		var y: float = KEY_Y0 + i * KEY_STEP
+		var r: Rect2 = key_rect(i)
+		var y: float = r.position.y
 		var focused: bool = i == key_focus
 		if focused:
-			_draw_focus_band(y, KEY_ROW_H)
+			_draw_focus_band(y, KEY_ROW_H, r.position.x, r.size.x)
 			if waiting_key:
 				# Esperando tecla: faixa lisa com moldura GOLD de 2 px.
-				UiStyle.frame(self, Rect2(ROW_X, y, ROW_W, KEY_ROW_H).grow(2), Palette.GOLD, 2.0)
-				draw_rect(Rect2(ROW_X, y, ROW_W, KEY_ROW_H), Palette.PARCHMENT)
+				UiStyle.frame(self, r.grow(2), Palette.GOLD, 2.0)
+				draw_rect(r, Palette.PARCHMENT)
 		var label: String = action_label(action)
 		var shift: float = UiStyle.RIBBON_FOCUS_SHIFT if focused else 0.0
-		PixelFont.draw(self, label, Vector2(LABEL_X + shift, y + 3), Palette.INK if focused else UiStyle.text_on_light(true))
+		PixelFont.draw(self, label, Vector2(r.position.x + KEY_LABEL_PAD + shift, y + 3), Palette.INK if focused else UiStyle.text_on_light(true))
 		var waiting_here: bool = focused and waiting_key
 		var key_text: String = tr(&"OPT_PRESS_KEY") if waiting_here else Settings.key_label(action)
 		var kw: float = PixelFont.width(key_text)
-		var plate := Rect2(VALUE_END - kw - 8, y + 1, kw + 8, 10)
+		var plate := Rect2(r.end.x - KEY_VALUE_PAD - kw - 8, y + 1, kw + 8, 10)
 		var edge: Color = Palette.INK_SOFT
 		if (waiting_here and UiStyle.high()) or (action in swapped_with and _swap_left > SWAP_NOTICE - 0.1):
 			edge = Palette.GOLD
@@ -443,7 +460,7 @@ func _draw_keys() -> void:
 		if waiting_here and not UiStyle.high() and int(age / BLINK) % 2 == 1:
 			key_color = Palette.INK_SOFT
 		PixelFont.draw(self, key_text, plate.position + Vector2(4, 2), key_color)
-		var dots_from: float = LABEL_X + shift + PixelFont.width(label) + 6
+		var dots_from: float = r.position.x + KEY_LABEL_PAD + shift + PixelFont.width(label) + 6
 		var dots_to: float = plate.position.x - 6
 		var x: float = dots_from
 		while x < dots_to:

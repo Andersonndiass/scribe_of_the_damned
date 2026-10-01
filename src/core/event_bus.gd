@@ -118,6 +118,14 @@ signal weapon_switched(slot: int, weapon: WeaponData)
 ## 018 (D-095): feixe do nível começou (duração da câmera lenta) e terminou.
 signal levelup_beam_started(duration: float)
 signal levelup_beam_ended()
+## 018 Poções: bebeu (id, nível, cargas que sobraram); recusou sem gastar (motivo: empty, gap,
+## blocked, stunned, full, menu_busy); efeito acabou (timeout, heresy, wave_end); cargas mudaram
+## (loja ou gole); nível subiu (selo).
+signal potion_drunk(id: StringName, level: int, charges: int)
+signal potion_refused(id: StringName, reason: StringName)
+signal potion_effect_ended(id: StringName, reason: StringName)
+signal potion_charges_changed(id: StringName, charges: int, max_charges: int)
+signal potion_leveled(id: StringName, level: int)
 signal passive_leveled(id: StringName, level: int)
 signal repulse_pulsed(center: Vector2, radius: float, level: int, pushed: int)
 signal weapon_leveled(slot: int, weapon: WeaponData, level: int)

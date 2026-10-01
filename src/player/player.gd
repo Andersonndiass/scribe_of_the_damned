@@ -25,6 +25,7 @@ var facing: Vector2 = Vector2.RIGHT
 @onready var hurtbox: Hurtbox = $Hurtbox
 @onready var arsenal: Arsenal = $Arsenal
 var repulse_aura: RepulseAura
+var potion_user: PotionUser
 ## Nome antigo (antes da 017) para o arsenal: `enabled`, `projectiles` e `fired` continuam.
 var auto_attack: Arsenal:
 	get:
@@ -45,6 +46,11 @@ func _ready() -> void:
 	repulse_aura.name = "RepulseAura"
 	repulse_aura.player = self
 	add_child(repulse_aura)
+	# 018: poções nas teclas 3–6.
+	potion_user = PotionUser.new()
+	potion_user.name = "PotionUser"
+	potion_user.player = self
+	add_child(potion_user)
 	_sync_state()
 	hurtbox.hit.connect(take_hit)
 	EventBus.wave_ended.connect(func(_i: int) -> void: buffs.on_wave_ended())

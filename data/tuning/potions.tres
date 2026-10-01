@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="PotionTuning" load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://src/data/potion_tuning.gd" id="1_pt"]
+[ext_resource type="Script" path="res://src/data/potion_data.gd" id="2_pd"]
+[ext_resource type="Resource" path="res://data/potions/oil.tres" id="3_oil"]
+[ext_resource type="Resource" path="res://data/potions/holy_water.tres" id="4_water"]
+[ext_resource type="Resource" path="res://data/potions/wine.tres" id="5_wine"]
+[ext_resource type="Resource" path="res://data/potions/illumination.tres" id="6_ink"]
+
+[resource]
+script = ExtResource("1_pt")
+order = Array[ExtResource("2_pd")]([ExtResource("3_oil"), ExtResource("4_water"), ExtResource("5_wine"), ExtResource("6_ink")])
+use_gap = 1.5
+cadence_floor = 0.55
+start = Dictionary[StringName, int]({&"oil": 1})
