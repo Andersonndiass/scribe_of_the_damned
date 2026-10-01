@@ -38,7 +38,7 @@
 
 **Checkpoint 018-E:** ✅ 2026-10-01 — prateleira de poções na loja (↑/↓, clique, teto, preço por onda), selo de poção (peso 0,08; status 0,37), VITA 2 velas; GUT 536/536.
 
-## Fase 6 — Passada de ritmo
-- **T1819** Sonda nova (distância = alcance, ≥ 3 rodadas, capítulo inteiro, onda 9 sem god; o bot bebe poções).
-- **T1820** Ajustes pela lista do rules-agent (T1801 §5) com parecer novo.
-- **T1821** Docs: art bible, FEATURES, CLAUDE.md, DECISIONS.
+## Fase 6 — Passada de ritmo ✅
+- ✅ **T1819** Sonda nova (distância = alcance, ≥ 3 rodadas, capítulo inteiro, onda 9 sem god; o bot bebe poções).
+- ✅ **T1820** Ajustes pela lista do rules-agent (T1801 §5) com parecer novo.
+- ✅ **T1821** Docs: art bible, FEATURES, CLAUDE.md, DECISIONS.

@@ -1,6 +1,6 @@
 extends GutTest
 ## 017 T1714–T1715: a Bíblia liga o raio enquanto é a ativa (D-087 item 5), segue a mira presa a
-## 32 direções e desliga na troca; o Crucifixo antecipa 0,2 s dentro do intervalo de 1,6 s, a troca
+## 32 direções e desliga na troca; o Crucifixo antecipa 0,2 s dentro do intervalo (0,8 s no nv 1; T1820), a troca
 ## no meio cancela sem gastar a recarga; a cruz atravessa a fila e fere cada um uma vez.
 
 const PEN := preload("res://data/weapons/pen.tres")
@@ -90,14 +90,15 @@ func test_bible_beam_is_on_while_active_and_follows_the_aim() -> void:
 
 func test_crucifix_winds_up_inside_its_interval() -> void:
 	_arsenal.loadout = Loadout.new(2, CRUCIFIX)
-	_run(1.77)
-	assert_eq(_shots, 0, "pronto em 1,6 s + 0,2 s de antecipação")
+	var interval: float = CRUCIFIX.stats(1).interval
+	_run(interval + CRUCIFIX.windup - 0.03)
+	assert_eq(_shots, 0, "pronto no intervalo + 0,2 s de antecipação")
 	_run(0.05)
 	assert_eq(_shots, 1)
-	_run(1.5)
+	_run(interval - 0.1)
 	assert_eq(_shots, 1)
 	_run(0.12)
-	assert_eq(_shots, 2, "o 2º sai 1,6 s depois do 1º: a antecipação conta dentro do intervalo")
+	assert_eq(_shots, 2, "o 2º sai um intervalo depois do 1º: a antecipação conta dentro do intervalo")
 
 
 func test_swap_during_windup_cancels_without_spending() -> void:
@@ -105,7 +106,7 @@ func test_swap_during_windup_cancels_without_spending() -> void:
 	_arsenal.loadout.equip(PEN)
 	var spy: Array[int] = [0]
 	_arsenal.windup_started.connect(func(_s: int) -> void: spy[0] += 1)
-	_run(1.7)
+	_run(CRUCIFIX.stats(1).interval + 0.1)
 	assert_eq(spy[0], 1, "começou a subir")
 	_arsenal.switch_to(1)
 	_run(0.5)

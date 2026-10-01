@@ -107,7 +107,7 @@ A arena do Cap. 1 é montada em camadas separadas (fundo, texto-fantasma, orname
 
 ### 8.2 HUD
 Velas (vida), atril, timer com sino, "Onda N", barra do chefe (400×10), teclas, balão de fala (160×28, fonte 7px).
-Sistema do HUD (T1800, `docs/reviews/T1800-hud-parecer.md`): um painel só (`UiStyle.draw_plate`), grade 6/4/3px, barras com trilho e preenchimento opostos (≥3:1), recurso segmentado e tempo contínuo, nada só por cor. Inventário embaixo à esquerda (2 armas com recarga e nível em etiqueta; lugar das 4 poções da 018). Menu da letra acima do escriba (3 cartas 28×28, barra de tempo, moldura INK de 2px na borda da tela durante a câmera lenta).
+Sistema do HUD (T1800, `docs/reviews/T1800-hud-parecer.md`): um painel só (`UiStyle.draw_plate`), grade 6/4/3px, barras com trilho e preenchimento opostos (≥3:1), recurso segmentado e tempo contínuo, nada só por cor. Inventário embaixo à esquerda (2 armas com recarga e nível em etiqueta; 4 poções da 018 ao lado, teclas 3–6, com cargas em quadradinhos, recarga e o "não" piscando quando a poção é recusada). Subir de nível (018): feixe GOLD/GOLD_LIGHT/CHALK sobre o escriba na FxLayer (sem `top_level`) e barra 25×3 acima da cabeça durante os 2,5 s de câmera lenta. Loja: prateleira das poções na mesa (4 células 32×42, preço com gota, "MAX" no teto). Menu da letra acima do escriba (3 cartas 28×28, barra de tempo, moldura INK de 2px na borda da tela durante a câmera lenta).
 
 ### 8.3 Estados do atril
 | Estado | Frames | Quando |

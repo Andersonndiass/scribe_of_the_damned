@@ -56,7 +56,7 @@ max_alive = 12
 
 [resource]
 script = ExtResource("1_wd")
-letter_drop_mul = 0.38
+letter_drop_mul = 0.45
 chapter = 1
 index = 9
 duration = 90.0

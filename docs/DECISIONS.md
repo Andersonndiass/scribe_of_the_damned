@@ -637,6 +637,21 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
 - **Também (rules-agent T1801):** curva da Graça `level_costs [16, 40]`, base 8, passo 28 (1º nível aos ~15 s, pedido D-094); banco da arena em (184, 272); poções com 3 níveis, tetos e preços do parecer.
 - **Arte:** os 4 ícones do HUD foram desenhados com a skill `pixel-art-gen` (pedido do autor), em `docs/reviews/T1801-potion-icons.json`.
 
+### D-096 · 2026-10-01 · 018 Fase 6: passada de ritmo (fechamento da 018)
+- **Sonda (T1819):** `balance_probe` ganhou `kite` (o bot mantém distância = 0,8 × alcance da arma ativa) e `potions` (bebe Óleo com 1 vela, Água Benta cercado, Vinho com > 5 vivos, Iluminura com palavra começada; compra poções até 40% da tinta da visita; não troca a arma que já tem). Linhas novas: RHYTHM (palavras/min, menus por onda, nível final, nível da arma por onda, tinta, gasto em poções) e POTIONS.
+- **Escolha automática dos selos** (`GraceFlow._auto_pick_all`, usada só pela sonda e pelo stress): prefere o selo de arma. Antes pegava o 1º, e a garantia de arma fica por último, então uma rodada travou a Pena no nv 2 (156 vivos, a Traça comeu 25 letras, 0,08 palavras/min).
+- **Parecer:** `docs/reviews/T1820-rules-parecer.md` (rules-agent). Aplicado:
+  1. Crucifixo `interval` 1,6/1,4/1,4/1,4/1,2 → **0,8/0,7/0,6/0,6/0,5** (onda 1 sem god 0/3 → 3/3; nv 1→5 agora cresce: 85/86/106/119/129 mortes/min; o nv 3 deixou de ser morto).
+  2. Loja `price_growth` 0,10 → **0,08**; `wave_clear_ink` 6 → **7** (compras 5–6 → 7/7/7).
+  3. Onda 1 `Group_late.spawn_rate_end` 1,6 → **1,5** (Pena sem god com poções 3/5 → 5/5; Aspersório 3/3).
+  4. Onda 9 `letter_drop_mul` 0,38 → **0,45** (menus/min da o9 3,9 → 6,0).
+- **Medido no fim** (capítulo ×3, god): palavras/min 0,83/1,08/1,08; 1º nível 15–16 s; nível final 15–16; tinta 80/92/101; poções ≤ 20% da tinta; mortes/min por arma ≤ 1,25× a mediana nas ondas 1/5/9.
+- **Ressalvas para o playtest (SC-1705):**
+  - a arma ativa chega ao nv 5 nas ondas 3–4 (o bot sempre pega o selo de arma);
+  - os menus da onda 1 ficaram em 8–10/min na última bateria (alvo 5–6,5; na anterior foram ~6,3), com a alavanca `wave_01.letter_drop_mul` 1,2 → 1,0 se o autor sentir excesso;
+  - Pena e Aspersório rendem ~0,6× das armas de área na onda 5 (a regra não tem piso).
+- Não medidos pela sonda: eficiência da Pena, acerto do Aspersório, campeão, banco com/sem, desempenho (o Crucifixo nv 5 dispara ~2,4× mais cruzes; conferir `?stress=arsenal`).
+
 ## Conflitos abertos
 
 - ~~**C-008 · Menu de escolha da letra (D-085 item 2).**~~ Resolvido: autor "1a 2b 3b e mouse clicando 4a" —

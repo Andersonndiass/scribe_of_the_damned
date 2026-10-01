@@ -224,8 +224,14 @@ func _apply(b: BlessingData) -> void:
 
 func _auto_pick_all() -> void:
 	while ledger().pending > 0:
+		# Simula o jogador que sobe a arma: o selo de arma primeiro (a garantia o põe por último).
 		var o: Array[BlessingData] = _draw_seals()
-		_apply(o[0])
+		var pick: BlessingData = o[0]
+		for b: BlessingData in o:
+			if b.kind == &"weapon_level":
+				pick = b
+				break
+		_apply(pick)
 	_enter(Phase.IDLE)
 
 

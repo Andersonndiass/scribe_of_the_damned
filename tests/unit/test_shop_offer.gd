@@ -89,7 +89,7 @@ func test_capped_item_leaves_the_deck() -> void:
 func test_price_grows_with_the_wave() -> void:
 	var bible := _card(&"weapon_bible")
 	assert_eq(_offer.price_of(bible, 1), 6, "rules-agent §7: arma base 6")
-	assert_eq(_offer.price_of(bible, 8), roundi(6 * 1.7))
+	assert_eq(_offer.price_of(bible, 8), roundi(6 * 1.56), "T1820: price_growth 0,08 → ×1,56 na onda 8")
 
 
 func test_buy_needs_ink_and_marks_sold() -> void:

@@ -33,7 +33,7 @@ Roguelite 2D de ação em pixel art, feito em **Godot 4.7.2**. Ano de 1348, o an
 | 016 | Graça e subir de nível (3 selos, pingo de cera) | ✅ |
 | 017 | Arsenal sagrado (6 armas, inventário de 2, menu da letra, ímã reverso, palavras como ultimate) | ✅ |
 | T1800 | HUD novo (painéis em pixel art, recarga das armas) | ✅ |
-| 018 | Poções (Óleo da Unção, Água Benta, Vinho do Fervor, Tinta Iluminada), subir de nível com feixe de luz e câmera lenta, passada de ritmo | 🔨 Fases 1–5 ✅ (feixe + câmera lenta; as 4 poções; prateleira na loja; selo de poção) · falta a passada de ritmo |
+| 018 | Poções (Óleo da Unção, Água Benta, Vinho do Fervor, Tinta Iluminada), subir de nível com feixe de luz e câmera lenta, passada de ritmo | ✅ Complete (Crucifixo mais rápido, loja mais barata no fim, onda 1 mais leve, mais letras na onda 9; D-096) |
 | 009 | Áudio (efeitos e falas via ElevenLabs) | ✅ 146 efeitos e 46 falas gerados; música: camada base provisória |
 | 010–015 | Personagens, export para itch.io, capítulos 2–5 | planejado |
 

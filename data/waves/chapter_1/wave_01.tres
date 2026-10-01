@@ -14,7 +14,7 @@ script = ExtResource("2_sg")
 enemy = ExtResource("3_imp")
 start_time = 20.0
 spawn_rate_start = 1.0
-spawn_rate_end = 1.6
+spawn_rate_end = 1.5
 
 [resource]
 script = ExtResource("1_wd")

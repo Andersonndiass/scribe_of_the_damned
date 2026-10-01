@@ -14,6 +14,10 @@ extends SceneTree
 ##         inimigo que anda QUER andar (velocidade ≥ 30% da dele), está encostado numa peça e não saiu
 ##         do lugar (≤ 2 px). Monge parado atirando e Gárgula preparando o dash não contam.
 ##   target=F magnet=F dropall=F = números de letras em memória (D-082).
+##   kite = 018 T1819: o bot mantém distância = 0,8 × alcance da arma ativa (não os 70 px fixos).
+##   potions = o bot bebe poções (Óleo com 1 vela, Vinho pronto, Água Benta cercado, Iluminura com
+##         palavra começada). Linhas POTIONS e RHYTHM (palavras/min, menus/min por onda, níveis,
+##         tinta, compras, gasto em poções, letras da Iluminura).
 ##   react=F acerto=F = menu da letra (017 T1728): o bot escolhe depois de F s (padrão 0,8) e acerta
 ##         a letra que continua a palavra com chance F (padrão 0,9, a do rules-agent). Linha LETTERS.
 ##   only_waves = no modo chapter, termina no fim da onda 9 (sem a luta do chefe; a sonda do chefe
@@ -50,6 +54,15 @@ var _targets: int = 0
 var _eaten: int = 0
 ## 017 T1728: menu da letra.
 var _react: float = 0.8
+## 018 T1819.
+var _kite: bool = false
+var _potion_bot: bool = false
+var _drunk: Dictionary = {}
+var _potion_ink: int = 0
+var _menus_by_wave: Dictionary = {}
+var _words_total: int = 0
+var _illum_menus: int = 0
+var _weapon_lvls: Dictionary = {}
 var _hit_chance: float = 0.9
 var _lost: int = 0
 var _overflow: int = 0
@@ -114,6 +127,10 @@ func _initialize() -> void:
 		# chão · magnet=F raio do ímã · dropall=F multiplica o drop de letra de todos os inimigos.
 		elif arg.begins_with("target="):
 			(load("res://data/tuning/drop_tuning.tres") as Resource).set("target_bonus", float(arg.substr(7)))
+		elif arg == "kite":
+			_kite = true
+		elif arg == "potions":
+			_potion_bot = true
 		elif arg.begins_with("react="):
 			_react = float(arg.substr(6))
 		elif arg.begins_with("acerto="):
@@ -189,14 +206,27 @@ func _initialize() -> void:
 			print("CHAPTER onda %d começou (t=%.1fmin, tinta=%d)" % [i, _time / 60.0, int(root.get_node("GameState").get("gold_ink"))]))
 	bus.letter_menu_opened.connect(func(_o: Array) -> void:
 		_dropped += 1
-		_targets += 1)
+		_targets += 1
+		var w: int = GameState_wave()
+		_menus_by_wave[w] = int(_menus_by_wave.get(w, 0)) + 1)
+	bus.potion_drunk.connect(func(id: StringName, _l: int, _c: int) -> void:
+		_drunk[id] = int(_drunk.get(id, 0)) + 1
+		if id == &"illumination":
+			_illum_menus += 1)
+	bus.potion_bought.connect(func(_id: StringName, price: int) -> void: _potion_ink += price)
+	bus.wave_started.connect(func(i: int, _d: float) -> void:
+		var lo: RefCounted = root.get_node("GameState").get("loadout")
+		if lo != null and lo.call("active_slot") != null:
+			_weapon_lvls[i] = int(lo.call("active_slot").get("level")))
 	bus.letter_lost.connect(func() -> void: _lost += 1)
 	bus.letter_offer_dropped.connect(func() -> void: _overflow += 1)
 	bus.letter_eaten.connect(func(_l: String, _p: Vector2) -> void: _eaten += 1)
 	bus.heresy_committed.connect(func(_p: Vector2) -> void: _heresies += 1)
 	bus.atril_purged.connect(func(_l: PackedStringArray, _p: Vector2) -> void: _purges += 1)
 	bus.letter_collected.connect(func(l: String, _r: bool) -> void: _collected += l)
-	bus.word_cast.connect(func(w: Resource, _pw: float, _o: Vector2, _d: Vector2) -> void: _casts[w.get("latin")] = _casts.get(w.get("latin"), 0) + 1)
+	bus.word_cast.connect(func(w: Resource, _pw: float, _o: Vector2, _d: Vector2) -> void:
+		_casts[w.get("latin")] = _casts.get(w.get("latin"), 0) + 1
+		_words_total += 1)
 	_player.get_node("Arsenal").fired.connect(func(_t: Vector2) -> void: _shots += 1)
 	root.get_node("TimeScale").call("set_base", TIME_SCALE)
 	Engine.physics_ticks_per_second = 60
@@ -219,6 +249,7 @@ func _physics_process(delta: float) -> bool:
 	_time += delta
 	_drive_weapons(delta)
 	_answer_menu()
+	_drink_potions()
 	if _god:
 		(_player.get("vitals") as RefCounted).set("iframes_left", 1.0e6)
 	_max_alive = maxi(_max_alive, _manager.get("count"))
@@ -256,6 +287,7 @@ func _physics_process(delta: float) -> bool:
 		print("PROBE onda=%d still=%s tempo=%.1fs mortes=%d golpes_sofridos=%d morreu_em=%s max_vivos=%d onda_terminou=%s tiros=%d conjurações=%s letras_caídas=%d coletadas=%s" % [
 			GameState_wave(), _still, _time, _kills, _hits, ("%.1fs" % _died_at) if _died_at >= 0.0 else "não", _max_alive, _ended, _shots, _casts, _dropped, _collected])
 		_print_weapons()
+		_print_rhythm()
 		var mins: float = maxf(_time / 60.0, 0.001)
 		print("LETTERS menus=%d menus/min=%.1f perdidas=%d fila_cheia=%d coletadas=%d react=%.2f acerto=%.2f" % [
 			_dropped, _dropped / mins, _lost, _overflow, _collected.length(), _react, _hit_chance])
@@ -278,16 +310,30 @@ func _on_shop_opened() -> void:
 		return
 	var shop: Node = _main.get_node("Shop")
 	var offer: RefCounted = shop.get("offer")
+	var gs: Node = root.get_node("GameState")
+	var budget_start: int = int(gs.get("gold_ink"))
 	while true:
 		var best: int = -1
 		var prices: PackedInt32Array = offer.get("prices")
 		var cards: Array = offer.get("cards")
+		var full: bool = bool(gs.get("loadout").call("is_full"))
 		for i: int in cards.size():
-			if bool(shop.call("can_afford", i)) and (best < 0 or prices[i] < prices[best]):
+			if cards[i] == null or not bool(shop.call("can_afford", i)):
+				continue
+			if String((cards[i] as Resource).get("kind")) == "weapon" and full:
+				continue  # não troca a arma que já tem
+			if best < 0 or prices[i] < prices[best]:
 				best = i
 		if best < 0 or not bool(shop.call("buy", best)):
-			return
+			break
 		_bought.append(String((cards[best] as Resource).get("id")))
+	if not _potion_bot:
+		return
+	# Poções com o que sobrou, no máximo 40% da tinta que havia ao abrir a loja.
+	var spent: int = 0
+	for i: int in [0, 2, 1, 3]:
+		while spent + int(shop.call("potion_price", i)) <= int(0.4 * budget_start) and bool(shop.call("buy_potion", i)):
+			spent += int(shop.call("potion_price", i))
 
 
 func GameState_wave() -> int:
@@ -299,12 +345,17 @@ func _steer() -> void:
 		Input.action_release(a)
 	var p: Vector2 = _player.global_position
 	var flee := Vector2.ZERO
+	var keep: float = 70.0
+	if _kite:
+		var slot: RefCounted = root.get_node("GameState").get("loadout").call("active_slot")
+		if slot != null:
+			keep = maxf(40.0, 0.8 * float((slot.call("stats") as Resource).get("range")))
 	var positions: PackedVector2Array = _manager.get("positions")
 	for i: int in int(_manager.get("count")):
 		var away: Vector2 = p - positions[i]
 		var d: float = away.length()
-		if d < 70.0 and d > 0.01:
-			flee += away / d * (70.0 - d)
+		if d < keep and d > 0.01:
+			flee += away / d * (keep - d)
 	# Evita as bordas puxando para o centro.
 	flee += (Vector2(320, 180) - p) * 0.15
 	if flee.x < -2.0:
@@ -437,3 +488,46 @@ func _answer_menu() -> void:
 	if good < 0 or (_menu_rng.randf() >= _hit_chance and not bad.is_empty()):
 		pick = bad[_menu_rng.randi_range(0, bad.size() - 1)]
 	menu.call("pick", pick)
+
+
+## 018 T1819: o bot bebe (Óleo com 1 vela, Vinho pronto, Água Benta com 6+ perto, Iluminura com
+## palavra começada).
+func _drink_potions() -> void:
+	if not _potion_bot:
+		return
+	var user: Object = _player.get("potion_user")
+	var belt: RefCounted = root.get_node("GameState").get("potions")
+	if user == null or belt == null:
+		return
+	var vitals: RefCounted = _player.get("vitals")
+	if int(vitals.get("candles")) <= 1 and int(belt.call("charges", &"oil")) > 0:
+		user.call("drink", 0)
+		return
+	var p: Vector2 = _player.global_position
+	var near: int = 0
+	var positions: PackedVector2Array = _manager.get("positions")
+	for i: int in int(_manager.get("count")):
+		if positions[i].distance_to(p) < 40.0:
+			near += 1
+	if near >= 6 and int(belt.call("charges", &"holy_water")) > 0:
+		user.call("drink", 1)
+		return
+	if int(belt.call("charges", &"wine")) > 0 and not bool(belt.call("active", &"wine")) and int(_manager.get("count")) > 5:
+		user.call("drink", 2)
+		return
+	var atril: RefCounted = _field.get("atril")
+	if int(belt.call("charges", &"illumination")) > 0 and int(atril.call("size")) > 0:
+		user.call("drink", 3)
+
+
+func _print_rhythm() -> void:
+	var mins: float = maxf(_time / 60.0, 0.001)
+	var gs: Node = root.get_node("GameState")
+	var waves: PackedStringArray = []
+	for w: int in range(1, 10):
+		waves.append("%d:%d" % [w, int(_menus_by_wave.get(w, 0))])
+	print("RHYTHM palavras/min=%.2f menus_por_onda=[%s] iluminura=%d letras=%d nivel_final=%d nivel_arma_por_onda=%s tinta_ganha=%d tinta_em_pocao=%d compras=%d" % [
+		_words_total / mins, ", ".join(waves), _illum_menus, _collected.length(),
+		int((gs.get("grace") as RefCounted).get("level")) if gs.get("grace") != null else -1,
+		_weapon_lvls, _ink_earned, _potion_ink, _bought.size()])
+	print("POTIONS bebidas=%s" % [_drunk])
