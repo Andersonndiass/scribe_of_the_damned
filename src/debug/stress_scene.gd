@@ -24,6 +24,8 @@ func _ready() -> void:
 		mode = &"wave9"
 	elif asked.contains("stress=boss"):
 		mode = &"boss"
+	elif asked.contains("stress=refuge"):
+		mode = &"refuge"  # 018 SC-1803: Água Benta com 300 inimigos
 	elif asked.contains("stress=arsenal"):
 		mode = &"arsenal"  # 017 T1739: Turíbulo + Rosário no nível 5
 	elif asked.contains("stress=bible"):

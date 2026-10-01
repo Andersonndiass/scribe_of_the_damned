@@ -6,7 +6,9 @@ extends RefCounted
 ##   - as outras 2 vêm do peso base (sem bônus de alvo), diferentes entre si e da certa, cada uma
 ##     com `other_rare_chance` de ser rara (só vogais);
 ##   - `forced` (a Traça devolvendo a letra roubada) entra no lugar de uma das sorteadas;
-##   - `rare_first` (campeão): a certa é uma vogal rara quando houver vogal entre as úteis.
+##   - `rare_first` (campeão): a certa é uma vogal rara quando houver vogal entre as úteis;
+##   - `useful_count` (Tinta Iluminada, 018): quantas das 3 continuam a palavra (as que faltarem saem
+##     pelo sorteio normal).
 ## Cada item: {"letter": String, "rare": bool, "useful": bool}. A ordem na tela é embaralhada.
 
 const VOWELS := "AEIOU"
@@ -15,7 +17,7 @@ const OPTIONS := 3
 
 static func roll(atril: Atril, lexicon: Lexicon, drop: DropTuning, menu: LetterMenuTuning,
 		rng: RandomNumberGenerator, unlocked: Array[StringName], forced: String = "",
-		rare_first: bool = false) -> Array[Dictionary]:
+		rare_first: bool = false, useful_count: int = 1) -> Array[Dictionary]:
 	var useful: PackedStringArray = _available(lexicon.next_letters(atril.text(), atril.capacity), lexicon, unlocked)
 	if useful.is_empty():
 		useful = _available(lexicon.next_letters("", atril.capacity), lexicon, unlocked)
@@ -34,6 +36,15 @@ static func roll(atril: Atril, lexicon: Lexicon, drop: DropTuning, menu: LetterM
 		var sure_rare: bool = VOWELS.contains(sure) and (rare_first or rng.randf() < drop.rare_chance)
 		out.append({"letter": sure, "rare": sure_rare, "useful": true})
 		taken.append(sure)
+	# Iluminura: mais opções que continuam a palavra, sem repetir.
+	var extra_pool: PackedStringArray = useful.duplicate()
+	while out.size() < mini(useful_count, OPTIONS) and not extra_pool.is_empty():
+		var ch: String = extra_pool[rng.randi_range(0, extra_pool.size() - 1)]
+		extra_pool.remove_at(extra_pool.find(ch))
+		if taken.has(ch):
+			continue
+		out.append({"letter": ch, "rare": VOWELS.contains(ch) and rng.randf() < drop.rare_chance, "useful": true})
+		taken.append(ch)
 	if forced != "" and not taken.has(forced):
 		out.append({"letter": forced, "rare": false, "useful": useful.has(forced)})
 		taken.append(forced)

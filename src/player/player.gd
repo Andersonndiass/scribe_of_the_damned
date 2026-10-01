@@ -66,7 +66,7 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	var idle: bool = velocity.is_zero_approx() and machine.current != null \
-		and machine.current.name == &"Idle"
+		and machine.current.name == &"Idle" and not RefugeZones.contains(global_position)  # 018: no círculo não recupera
 	buffs.tick(delta)
 	var healed: int = vitals.tick(delta, idle)
 	if healed > 0:

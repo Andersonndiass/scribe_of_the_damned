@@ -73,8 +73,16 @@ func switch_to(i: int) -> bool:
 
 
 func interval_of(slot: WeaponSlot) -> float:
+	var lo: Loadout = current()
+	return maxf(slot.stats().interval * _slot_mul(lo.slots.find(slot) if lo != null else -1), 0.01)
+
+
+## Pena de Ganso × Vinho do Fervor (018: só no espaço do momento em que bebeu), com piso.
+func _slot_mul(index: int) -> float:
 	var mul: float = RunStats.of(data).value(&"weapon_interval_mul") if data != null else 1.0
-	return maxf(slot.stats().interval * mul, 0.01)
+	if GameState.potions != null:
+		mul = maxf(mul * GameState.potions.cadence_mul(index), GameState.potion_tuning.cadence_floor)
+	return mul
 
 
 func _physics_process(delta: float) -> void:
@@ -131,7 +139,8 @@ func _physics_process(delta: float) -> void:
 
 
 func _interval_mul() -> float:
-	return RunStats.of(data).value(&"weapon_interval_mul") if data != null else 1.0
+	var lo: Loadout = current()
+	return _slot_mul(lo.active if lo != null else -1)
 
 
 ## Turíbulo: pronto e com inimigo ao alcance do balanço, balança para o lado dele; senão espera.

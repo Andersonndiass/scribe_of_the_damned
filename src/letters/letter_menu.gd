@@ -26,6 +26,8 @@ var left: float = 0.0
 var total: float = 0.0
 var open_for: float = 0.0
 
+## Este menu veio da Tinta Iluminada (018): cantoneiras nas 3 cartas.
+var illuminated: bool = false
 ## Pedidos esperando: {"forced": String, "rare_first": bool}.
 var _queue: Array[Dictionary] = []
 var _gap: float = 0.0
@@ -108,10 +110,26 @@ func _can_open() -> bool:
 	return not field.atril.is_full() and st != Atril.Status.VALID
 
 
+## Iluminura (018 T1812): pode abrir um menu agora? (fechado, sem fila e sem o intervalo)
+func can_open_now() -> bool:
+	return phase == Phase.IDLE and _queue.is_empty() and _can_open()
+
+
+## Abre na hora, pulando a fila, com `useful_count` letras que continuam a palavra.
+## Falso se não pôde (a poção não é gasta).
+func open_now(useful_count: int) -> bool:
+	if not can_open_now():
+		return false
+	_queue.push_front({"forced": "", "rare_first": false, "useful": useful_count, "illuminated": true})
+	_open()
+	return phase == Phase.OPEN
+
+
 func _open() -> void:
 	var req: Dictionary = _queue.pop_front()
+	illuminated = req.get("illuminated", false)
 	options = LetterOfferRoll.roll(field.atril, field.lexicon, field.tuning, tuning, GameState.rng,
-		GameState.unlocked_words, req["forced"], req["rare_first"])
+		GameState.unlocked_words, req["forced"], req["rare_first"], req.get("useful", 1))
 	if options.is_empty():
 		EventBus.letter_offer_dropped.emit()  # sem letra possível: o pedido se perde, com aviso
 		return

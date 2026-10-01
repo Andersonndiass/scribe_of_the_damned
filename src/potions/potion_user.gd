@@ -12,6 +12,7 @@ const ACTIONS: Array[StringName] = [&"potion_1", &"potion_2", &"potion_3", &"pot
 var player: Player
 var phase: Phase = Phase.OFF
 var gap_left: float = 0.0
+var circle: RefugeCircle
 
 
 func _ready() -> void:
@@ -22,6 +23,15 @@ func _ready() -> void:
 	EventBus.wave_ended.connect(func(_i: int) -> void: _turn_off())
 	EventBus.shop_opened.connect(func(_w: int) -> void: _turn_off())
 	EventBus.player_died.connect(_turn_off)
+	EventBus.heresy_committed.connect(_on_heresy)
+	# Desenho do círculo: na camada de efeitos do Main (abaixo dos inimigos), se houver.
+	circle = RefugeCircle.new()
+	circle.name = "RefugeCircle"
+	var host: Node = player.get_parent().get_parent().get_node_or_null(^"FxLayer") if player != null and player.get_parent() != null and player.get_parent().get_parent() != null else null
+	if host != null:
+		host.add_child.call_deferred(circle)
+	else:
+		add_child(circle)
 
 
 func belt() -> PotionBelt:
@@ -43,6 +53,17 @@ func _turn_off() -> void:
 	for id: StringName in b.left.keys():
 		b.left.erase(id)
 		EventBus.potion_effect_ended.emit(id, &"wave_end")
+	RefugeZones.clear()
+
+
+## Heresia dentro do círculo apaga o círculo (D-094 item 5; a perdoada não chega aqui).
+func _on_heresy(pos: Vector2) -> void:
+	if not RefugeZones.contains(pos):
+		return
+	RefugeZones.clear()
+	if belt() != null and belt().left.has(&"holy_water"):
+		belt().left.erase(&"holy_water")
+	EventBus.potion_effect_ended.emit(&"holy_water", &"heresy")
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -89,6 +110,10 @@ func _refusal(p: PotionData) -> StringName:
 		return &"empty"
 	if p.effect == &"heal" and player.vitals.candles >= player.vitals.max_candles:
 		return &"full"
+	if p.effect == &"illumination":
+		var field: LetterField = get_tree().get_first_node_in_group(&"letter_field") as LetterField
+		if field == null or not field.menu.can_open_now():
+			return &"menu_busy"
 	return &""
 
 
@@ -107,8 +132,13 @@ func _apply(p: PotionData) -> bool:
 			b.left[p.id] = s.duration
 		&"refuge":
 			b.left[p.id] = s.duration
+			RefugeZones.open(player.global_position, s.radius)  # beber de novo recentraliza
+			var em := EnemyQuery.provider as EnemyManager
+			if em != null:
+				em.expel_from_refuge()
 		&"illumination":
-			return false  # Fase 3 (T1812): abre o menu da letra na hora
+			var field: LetterField = get_tree().get_first_node_in_group(&"letter_field") as LetterField
+			return field != null and field.menu.open_now(s.useful_options)
 	return true
 
 
@@ -124,4 +154,6 @@ func _physics_process(delta: float) -> void:
 		b.left[id] -= delta
 		if b.left[id] <= 0.0:
 			b.left.erase(id)
+			if id == &"holy_water":
+				RefugeZones.clear()
 			EventBus.potion_effect_ended.emit(id, &"timeout")

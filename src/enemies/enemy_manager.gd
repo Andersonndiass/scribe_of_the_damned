@@ -1015,9 +1015,30 @@ func _rebuild_hash_if_dirty() -> void:
 ## Posição dentro da página e fora das peças que bloqueiam o andar (voadores só na página).
 func _place(i: int, p: Vector2) -> Vector2:
 	var q: Vector2 = _clamp_to_world(p)
+	# 018: o círculo da Água Benta barra todos os inimigos comuns (o chefe tem movimento próprio).
+	if RefugeZones.active:
+		var r: float = RefugeZones.radius + radius_of[i]
+		var away: Vector2 = q - RefugeZones.center
+		if away.length_squared() < r * r:
+			if away.is_zero_approx():
+				away = Vector2.RIGHT.rotated(float(i) * 2.399)
+			q = RefugeZones.center + away.normalized() * r
 	if data_of[i].flying:
 		return q
 	return ObstacleQuery.constrain(q, radius_of[i])
+
+
+## Água Benta (018): quem estava dentro quando o círculo abre vai para a borda, sem dano.
+func expel_from_refuge() -> int:
+	if not RefugeZones.active:
+		return 0
+	var n: int = 0
+	for i: int in _slots_in_radius(RefugeZones.center, RefugeZones.radius):
+		positions[i] = _place(i, positions[i])
+		prev_positions[i] = positions[i]
+		n += 1
+	_hash_dirty = true
+	return n
 
 
 ## Contato com o escriba: perto o bastante e sem peça no meio (o banco separa; 004 FR-410).

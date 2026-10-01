@@ -10,6 +10,8 @@ extends Node
 ##                 SWEEP_WINDOW s seguintes e repõe os inimigos (002 SC-202).
 ##   modo "bible": a carga do SC-001 e a Bíblia no nível 5 ligada, girando a mira pelo meio da
 ##                 multidão (017 SC-1703).
+##   modo "refuge": a carga do SC-001 com o círculo da Água Benta (raio 48) no meio do caminho dos
+##                 inimigos o tempo todo (018 SC-1803).
 ##   modo "arsenal": a carga do SC-001 com Turíbulo e Rosário no nível 5, trocando a cada
 ##                 ARSENAL_SWAP s (rastro de incenso no teto + contas; 017 T1739).
 ## Inimigos com HP enorme (não morrem) perseguem um alvo que gira no centro; o jogador fica num
@@ -141,6 +143,8 @@ func _physics_process(delta: float) -> void:
 	_time += delta
 	_target.global_position = Vector2(320, 180) + Vector2.RIGHT.rotated(_time * ORBIT_SPEED) * ORBIT_RADIUS
 	_player.vitals.iframes_left = 1.0
+	if mode == &"refuge":
+		RefugeZones.open(Vector2(320, 180), 48.0)
 	if mode == &"arsenal":
 		_player.global_position = BIBLE_PLAYER_AT
 		_swap_left -= delta

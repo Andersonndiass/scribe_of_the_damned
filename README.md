@@ -24,7 +24,7 @@ Roguelite 2D de ação em pixel art, feito em **Godot 4.7.2**. Ano de 1348, o an
 | Tab (segurar) | Ver as palavras conhecidas |
 | Mouse | Mira da Bíblia, do Aspersório e das palavras direcionais |
 | Esc | Pausa |
-| 3 · 4 · 5 · 6 | Poções: Óleo da Unção (vela), Água Benta, Vinho do Fervor, Tinta Iluminada (018, em andamento: o Óleo já funciona) |
+| 3 · 4 · 5 · 6 | Poções: Óleo da Unção (acende vela), Água Benta (círculo onde os inimigos não entram), Vinho do Fervor (arma mais rápida), Tinta Iluminada (abre um menu de letra) |
 
 ## Estado das features
 | # | Feature | Status |
@@ -33,8 +33,8 @@ Roguelite 2D de ação em pixel art, feito em **Godot 4.7.2**. Ano de 1348, o an
 | 016 | Graça e subir de nível (3 selos, pingo de cera) | ✅ |
 | 017 | Arsenal sagrado (6 armas, inventário de 2, menu da letra, ímã reverso, palavras como ultimate) | ✅ |
 | T1800 | HUD novo (painéis em pixel art, recarga das armas) | ✅ |
-| 018 | Poções (Óleo da Unção, Água Benta, Vinho do Fervor, Tinta Iluminada), subir de nível com feixe de luz e câmera lenta, passada de ritmo | 🔨 Fases 1–2 ✅ (feixe + câmera lenta, 1º nível mais rápido; poções no HUD, Óleo) · Fase 3 em seguida |
-| 009 | Áudio (efeitos e falas via ElevenLabs; música do autor) | sons provisórios |
+| 018 | Poções (Óleo da Unção, Água Benta, Vinho do Fervor, Tinta Iluminada), subir de nível com feixe de luz e câmera lenta, passada de ritmo | 🔨 Fases 1–4 ✅ (feixe + câmera lenta; as 4 poções funcionando) · falta loja/selo e a passada de ritmo |
+| 009 | Áudio (efeitos e falas via ElevenLabs) | ✅ 146 efeitos e 46 falas gerados; música: camada base provisória |
 | 010–015 | Personagens, export para itch.io, capítulos 2–5 | planejado |
 
 Detalhes em [`FEATURES.md`](FEATURES.md) e nas decisões em [`docs/DECISIONS.md`](docs/DECISIONS.md).
@@ -55,7 +55,7 @@ cd build/web && python -m http.server 8765 --bind 127.0.0.1
 ```
 
 Atalhos de teste na URL do build web (ou depois de `--` na linha de comando):
-`?weapons=bible,censer&wlevel=3` (armas e nível) · `?boss&unlock=all&atril=8` (luta direto) · `?shop` (loja) · `?stress`, `?stress=bible`, `?stress=arsenal` (medir FPS) · `?roster` (os inimigos) · `?cutscene=c1_01`.
+`?weapons=bible,censer&wlevel=3` (armas e nível) · `?boss&unlock=all&atril=8` (luta direto) · `?shop` (loja) · `?stress`, `?stress=bible`, `?stress=arsenal`, `?stress=refuge` (medir FPS) · `?roster` (os inimigos) · `?cutscene=c1_01`.
 
 Sonda de balanceamento: `godot --headless --path . -s tools/balance_probe.gd -- cast god wave=1 weapons=pen` (linhas PROBE, WEAPONS, LETTERS, FLOW, ARENA).
 

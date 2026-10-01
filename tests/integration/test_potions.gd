@@ -27,6 +27,7 @@ func before_each() -> void:
 
 func after_each() -> void:
 	EventBus.potion_refused.disconnect(_on_refused)
+	RefugeZones.clear()
 	GameState.letter_menu_open = false
 	TimeScale.reset()
 
@@ -138,3 +139,102 @@ func test_options_key_list_fits_in_two_columns() -> void:
 			assert_false(o.intersects(r), "linhas não se cobrem")
 		rects.append(r)
 	assert_has(Settings.REBINDABLE, &"potion_4")
+
+
+# --- Fase 3 (T1811–T1812) -------------------------------------------------------------------
+
+func test_wine_speeds_only_the_slot_it_was_drunk_on_with_a_floor() -> void:
+	_start_wave()
+	GameState.loadout.equip(load("res://data/weapons/crucifix.tres"))
+	var pen_slot: WeaponSlot = GameState.loadout.slots[0]
+	var base: float = _player.arsenal.interval_of(pen_slot)
+	GameState.potions.add_charge(&"wine")
+	assert_true(_user.drink(2))
+	assert_almost_eq(_player.arsenal.interval_of(pen_slot), base * 0.8, 0.0001, "×0,80 na arma do momento")
+	var other: WeaponSlot = GameState.loadout.slots[1]
+	assert_almost_eq(_player.arsenal.interval_of(other), other.stats().interval, 0.0001, "a outra não")
+	for k: int in 3:
+		GameState.run_stats.apply(load("res://data/blessings/fine_quill.tres"))
+	GameState.potions.level_up(&"wine")
+	GameState.potions.level_up(&"wine")
+	GameState.potions.fervor_mul = GameState.potions.stats(&"wine").interval_mul
+	assert_almost_eq(_player.arsenal.interval_of(pen_slot), pen_slot.stats().interval * 0.55, 0.0001,
+		"Pena de Ganso 0,70 × Vinho 0,70 = 0,49 → piso 0,55")
+
+
+func test_illumination_opens_a_menu_now_with_useful_letters_by_level() -> void:
+	_start_wave()
+	var menu: LetterMenu = (_main.get_node("World/LetterField") as LetterField).menu
+	menu.set_process(false)
+	GameState.potions.add_charge(&"illumination")
+	GameState.potions.level_up(&"illumination")
+	GameState.potions.level_up(&"illumination")
+	assert_true(_user.drink(3))
+	assert_true(menu.is_open(), "abriu na hora")
+	assert_true(menu.illuminated)
+	var useful: int = menu.options.filter(func(o: Dictionary) -> bool: return o["useful"]).size()
+	assert_eq(useful, 3, "nível 3: as 3 continuam a palavra")
+	menu.cancel()
+
+
+func test_illumination_waits_if_a_menu_is_busy() -> void:
+	_start_wave()
+	var menu: LetterMenu = (_main.get_node("World/LetterField") as LetterField).menu
+	menu.set_process(false)
+	GameState.potions.add_charge(&"illumination")
+	assert_true(menu.offer())
+	assert_false(_user.drink(3), "há pedido na fila")
+	assert_eq(_refused[-1], &"menu_busy")
+	assert_eq(GameState.potions.charges(&"illumination"), 1, "não gastou")
+	menu.cancel()
+
+
+# --- Fase 4 (T1813–T1815): Água Benta ---------------------------------------------------------
+
+func _holy_water() -> EnemyManager:
+	_start_wave()
+	var em: EnemyManager = _main.get_node("World/EnemyManager")
+	em.dissolve_all()
+	GameState.potions.add_charge(&"holy_water")
+	return em
+
+
+func test_holy_water_expels_and_keeps_enemies_out() -> void:
+	var em: EnemyManager = _holy_water()
+	var imp: EnemyData = load("res://data/enemies/imp.tres").duplicate()
+	imp.max_hp = 999
+	var inside: int = em.spawn(imp, _player.global_position + Vector2(10, 0))
+	em.spawn(imp, _player.global_position + Vector2(90, 0))
+	assert_true(_user.drink(1))
+	var r: float = RefugeZones.radius
+	assert_eq(r, 32.0, "nível 1: raio 32")
+	assert_gte(em.positions[inside].distance_to(RefugeZones.center), r, "quem estava dentro foi para a borda")
+	await wait_physics_frames(90)  # 1,5 s andando na direção do escriba
+	for i: int in em.count:
+		assert_gte(em.positions[i].distance_to(RefugeZones.center), r - 0.5, "ninguém entra")
+
+
+func test_heresy_inside_puts_out_the_circle_but_not_a_forgiven_one() -> void:
+	_holy_water()
+	assert_true(_user.drink(1))
+	var center: Vector2 = RefugeZones.center
+	EventBus.heresy_forgiven.emit(center)
+	assert_true(RefugeZones.active, "a perdoada (MISERERE) não apaga")
+	EventBus.heresy_committed.emit(center + Vector2(200, 0))
+	assert_true(RefugeZones.active, "heresia fora do círculo não apaga")
+	EventBus.heresy_committed.emit(center)
+	assert_false(RefugeZones.active, "heresia dentro apaga")
+	assert_false(GameState.potions.active(&"holy_water"))
+
+
+func test_standing_in_the_circle_does_not_recover_a_candle() -> void:
+	_holy_water()
+	_player.vitals.candles = 1
+	assert_true(_user.drink(1))
+	RefugeZones.open(_player.global_position, 48.0)
+	var before: int = _player.vitals.candles
+	for k: int in 60 * 9:
+		_player.vitals.tick(1.0 / 60.0, false)  # o Player passa idle = falso dentro do círculo
+	assert_eq(_player.vitals.candles, before, "parado no círculo não recupera")
+	assert_true(RefugeZones.contains(_player.global_position))
+

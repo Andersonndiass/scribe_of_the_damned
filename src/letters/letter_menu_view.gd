@@ -25,6 +25,8 @@ const BAR := Rect2(4, 37, 92, 5)
 const BAR_STEPS := 25
 const INK_LAST := 0.5
 const SCREEN := Vector2(640, 360)
+## Tinta Iluminada (design-agent T1801): cantoneiras INK nas 3 cartas (não marca a útil).
+const CORNER := preload("res://assets/placeholders/vfx_illum_corner_tl.png")
 const FRAME_W := 2.0
 
 var menu: LetterMenu
@@ -79,6 +81,8 @@ func _draw() -> void:
 	UiStyle.draw_plate(self, Rect2(_origin, SIZE))
 	for i: int in menu.options.size():
 		_draw_card(i, menu.options[i], i == menu.focus)
+		if menu.illuminated:
+			_draw_corners(card_rect(i).grow(1))
 	_draw_timer()
 	if menu.queued() > 0:
 		var tag := "+%d" % menu.queued()
@@ -101,6 +105,14 @@ func _draw_card(i: int, o: Dictionary, focused: bool) -> void:
 	var src := Rect2(index * CELL, (1 if o["rare"] else 0) * CELL, CELL, CELL)
 	var dst := Rect2(r.position + (r.size - Vector2(CELL, CELL) * 2.0) / 2.0, Vector2(CELL, CELL) * 2.0)
 	draw_texture_rect_region(ATLAS, dst, src)
+
+
+func _draw_corners(r: Rect2) -> void:
+	var s: Vector2 = CORNER.get_size()
+	draw_texture_rect(CORNER, Rect2(r.position, s), false)
+	draw_texture_rect(CORNER, Rect2(Vector2(r.end.x, r.position.y), Vector2(-s.x, s.y)), false)
+	draw_texture_rect(CORNER, Rect2(Vector2(r.position.x, r.end.y), Vector2(s.x, -s.y)), false)
+	draw_texture_rect(CORNER, Rect2(r.end, -s), false)
 
 
 ## Barra em 25 degraus que esvazia pela direita; INK no último meio segundo; nos últimos 0,7 s

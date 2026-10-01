@@ -21,13 +21,15 @@
 **Checkpoint 018-B:** ✅ 2026-10-01 — dados das 4 poções, cinto (1 Óleo inicial), teclas 3–6 (Opções em 2 colunas), PotionUser com as guardas, Óleo, HUD das poções; GUT 527/527.
 
 ## Fase 3 — Vinho e Iluminura
-- **T1811** `cadence_mul` no Arsenal (só o espaço do momento; piso 0,55; Bíblia e Rosário).
-- **T1812** `LetterMenu.can_open_now/open_now` + Iluminura (úteis 1/2/3 por nível; cantoneiras nas 3 cartas).
+- ✅ **T1811** `cadence_mul` no Arsenal (só o espaço do momento; piso 0,55; Bíblia e Rosário).
+- ✅ **T1812** `LetterMenu.can_open_now/open_now` + Iluminura (úteis 1/2/3 por nível; cantoneiras nas 3 cartas).
 
 ## Fase 4 — Água Benta
-- **T1813** `RefugeZones` + barra no `EnemyManager._place` + expulsão inicial.
-- **T1814** Travas: heresia dentro apaga; parado dentro não recupera vela.
-- **T1815** `RefugeCircle` (anel + marcadores) + `?stress=refuge`.
+- ✅ **T1813** `RefugeZones` + barra no `EnemyManager._place` + expulsão inicial.
+- ✅ **T1814** Travas: heresia dentro apaga; parado dentro não recupera vela.
+- ✅ **T1815** `RefugeCircle` (anel + marcadores) + `?stress=refuge`.
+
+**Checkpoint 018-C/D:** ✅ 2026-10-01 — Vinho (só a arma do momento, piso 0,55), Iluminura (menu na hora, 1/2/3 úteis, cantoneiras), Água Benta (barra comuns/voadores/campeões, expulsa, heresia apaga, sem recuperar vela), `?stress=refuge` 60 FPS (p95 55,6); GUT 533/533.
 
 ## Fase 5 — Loja, selo e VITA
 - **T1816** Prateleira fixa (`ShopOffer`/`Shop`/`ShopScreen`, ↑/↓ entre cartas e prateleira) + a sonda compra poção.
