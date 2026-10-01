@@ -21,7 +21,7 @@ As skills ficam em `C:/Users/fande/.claude/skills/<nome>/SKILL.md` (leia com Rea
 4. **Integração:** quais `data/audio/sfx/*.tres` recebem o arquivo e quais sinais novos o código precisa (o code-agent implementa).
 
 ## Regras
-- Latim das palavras **não é falado** (o jogador lê).
+- O latim das palavras é falado quando a D-072 pede (voz do conjurador).
 - Nada de música/som com marca, letra de música real ou voz que imite pessoa real.
 - Volume e prioridade coerentes com o `event_map` (efeitos de prioridade 1 curtos: < 0,25 s).
 - Responda em português.

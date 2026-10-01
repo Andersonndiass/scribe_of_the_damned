@@ -238,3 +238,38 @@ func test_standing_in_the_circle_does_not_recover_a_candle() -> void:
 	assert_eq(_player.vitals.candles, before, "parado no círculo não recupera")
 	assert_true(RefugeZones.contains(_player.global_position))
 
+
+
+# --- Fase 5 (T1816–T1818): loja, selo de poção, VITA ------------------------------------------
+
+func test_shelf_sells_charges_up_to_the_cap_with_wave_price() -> void:
+	var shop: Shop = _main.get_node("Shop")
+	shop.open(3)
+	GameState.gold_ink = 50
+	var wine: int = 2
+	assert_eq(shop.potion_price(wine), roundi(4 * 1.2), "preço base 4 cresce por onda")
+	assert_true(shop.buy_potion(wine))
+	assert_true(shop.buy_potion(wine), "pode comprar de novo na mesma visita")
+	assert_false(shop.buy_potion(wine), "teto de 2 cargas")
+	assert_eq(GameState.potions.charges(&"wine"), 2)
+	assert_eq(GameState.gold_ink, 50 - 2 * shop.potion_price(wine))
+	GameState.gold_ink = 0
+	assert_false(shop.buy_potion(1), "sem tinta")
+
+
+func test_potion_seal_only_for_bought_potions_and_raises_the_level() -> void:
+	var rng := RandomNumberGenerator.new()
+	var seen := {}
+	for k: int in 120:
+		rng.seed = k
+		for b: BlessingData in SealPool.draw(GameState.grace_tuning, GameState.run_stats, GameState.loadout, 0, 5, rng):
+			if b.kind == &"potion_level":
+				seen[b.target] = true
+	assert_eq(seen.keys(), [&"oil"], "só o Óleo (a única comprada)")
+	RunUpgrade.apply(SealPool.potion_seal(&"oil"), _player, null)
+	assert_eq(GameState.potions.level(&"oil"), 2)
+
+
+func test_vita_lights_two_candles() -> void:
+	var vita: WordData = load("res://data/words/vita.tres")
+	assert_eq(vita.heal_candles, 2, "VITA 2 > Óleo 1 (D-095)")

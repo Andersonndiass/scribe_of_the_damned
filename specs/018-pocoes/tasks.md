@@ -32,9 +32,11 @@
 **Checkpoint 018-C/D:** ✅ 2026-10-01 — Vinho (só a arma do momento, piso 0,55), Iluminura (menu na hora, 1/2/3 úteis, cantoneiras), Água Benta (barra comuns/voadores/campeões, expulsa, heresia apaga, sem recuperar vela), `?stress=refuge` 60 FPS (p95 55,6); GUT 533/533.
 
 ## Fase 5 — Loja, selo e VITA
-- **T1816** Prateleira fixa (`ShopOffer`/`Shop`/`ShopScreen`, ↑/↓ entre cartas e prateleira) + a sonda compra poção.
-- **T1817** `SealPool` tipo poção (`BlessingData.target`, peso 0,08; status 0,37) + `RunUpgrade`.
-- **T1818** VITA acende 2 velas.
+- ✅ **T1816** Prateleira fixa (`ShopOffer`/`Shop`/`ShopScreen`, ↑/↓ entre cartas e prateleira) + a sonda compra poção.
+- ✅ **T1817** `SealPool` tipo poção (`BlessingData.target`, peso 0,08; status 0,37) + `RunUpgrade`.
+- ✅ **T1818** VITA acende 2 velas.
+
+**Checkpoint 018-E:** ✅ 2026-10-01 — prateleira de poções na loja (↑/↓, clique, teto, preço por onda), selo de poção (peso 0,08; status 0,37), VITA 2 velas; GUT 536/536.
 
 ## Fase 6 — Passada de ritmo
 - **T1819** Sonda nova (distância = alcance, ≥ 3 rodadas, capítulo inteiro, onda 9 sem god; o bot bebe poções).

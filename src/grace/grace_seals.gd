@@ -330,6 +330,8 @@ func _done(b: BlessingData) -> int:
 			return lo.slots[b.slot].level - 1 if lo != null and lo.slots[b.slot] != null else 0
 		&"passive_level":
 			return GameState.repulse_level - 1
+		&"potion_level":
+			return GameState.potions.level(b.target) - 1 if GameState.potions != null else 0
 	return GameState.run_stats.buys_of(b.id)
 
 
@@ -341,6 +343,8 @@ func _choices_to_cap(b: BlessingData) -> int:
 			return lo.weapon(b.slot).max_level() - 1 if lo != null and lo.weapon(b.slot) != null else 0
 		&"passive_level":
 			return GameState.repulse.max_level() - 1
+		&"potion_level":
+			return GameState.potion_tuning.by_id(b.target).max_level() - 1
 	if b.stat == &"" or GameState.run_stats == null:
 		return 0
 	var probe := RunStats.new(GameState.run_stats.base)

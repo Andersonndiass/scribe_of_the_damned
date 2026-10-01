@@ -11,3 +11,5 @@ extends StatUpgradeData
 ## montados na hora pelo SealPool (não há .tres).
 @export var kind: StringName = &"stat"
 var slot: int = -1
+## 018: selo de poção — o id da poção que sobe (`kind == &"potion_level"`).
+var target: StringName = &""

@@ -19,6 +19,15 @@ const REROLL_PLATE := Rect2(192, 228, 96, 24)
 const RIBBON := Rect2(448, 230, 176, 20)
 const LEGEND_POS := Vector2(16, 336)
 const DROP_ICON := preload("res://assets/placeholders/itm_gota_dourada.tres")
+## Prateleira de poções (018; design-agent T1801): na mesa, entre o Rerolar e a fita.
+const SHELF := Rect2(298, 221, 138, 46)
+const SHELF_CELL := Vector2(32, 42)
+const SHELF_X0 := 300.0
+const SHELF_STEP := 34.0
+const SHELF_Y := 223.0
+const SHELF_INFO := Rect2(298, 280, 138, 16)
+const PIP := 4.0
+const PIP_STEP := 5.0
 
 ## Tempos (animation-agent): entrada 5 q @80 ms com 100 ms entre cartas; compra 200 + 400 ms;
 ## sem tinta treme 4 × 50 ms e o preço fica BLOOD por 400 ms; trava 100 ms; reroll 400 ms por
@@ -41,6 +50,8 @@ const EXIT_STEPS := 4
 @export var shop_path: NodePath = ^"../Shop"
 
 var selected: int = 0
+## Poção em foco na prateleira (-1 = foco nas cartas). ↓/↑ alternam entre cartas e prateleira.
+var shelf_focus: int = -1
 
 var _shop: Shop
 var _canvas: Node2D
@@ -112,7 +123,16 @@ func handle_input(event: InputEvent) -> bool:
 	if not event.is_pressed() or event.is_echo():
 		return false
 	var n: int = _shop.offer.cards.size()
-	if event.is_action(&"move_left"):
+	if event.is_action(&"move_down") and shelf_focus < 0:
+		shelf_focus = 0
+	elif event.is_action(&"move_up") and shelf_focus >= 0:
+		shelf_focus = -1
+	elif shelf_focus >= 0 and (event.is_action(&"move_left") or event.is_action(&"move_right")):
+		var k: int = _shop.potion_count()
+		shelf_focus = (shelf_focus + (1 if event.is_action(&"move_right") else -1) + k) % k
+	elif shelf_focus >= 0 and event.is_action(&"cast"):
+		_try_buy_potion(shelf_focus)
+	elif event.is_action(&"move_left"):
 		_finish_entry()
 		selected = (selected - 1 + n) % n
 	elif event.is_action(&"move_right"):
@@ -143,6 +163,15 @@ func handle_input(event: InputEvent) -> bool:
 func _mouse_input(m: InputEventMouse) -> bool:
 	var b := m as InputEventMouseButton
 	var p: Vector2 = m.position
+	for i: int in _shop.potion_count():
+		if shelf_rect(i).has_point(p):
+			shelf_focus = i
+			if b != null and b.pressed and b.button_index == MOUSE_BUTTON_LEFT:
+				_try_buy_potion(i)
+				_canvas.queue_redraw()
+				return true
+			_canvas.queue_redraw()
+			return b != null
 	var over: int = -1
 	for i: int in _shop.offer.cards.size():
 		if i < CARD_X.size() and Rect2(CARD_X[i], CARD_Y - HOVER_LIFT, CARD_SIZE.x, CARD_SIZE.y + HOVER_LIFT).has_point(p):
@@ -207,6 +236,16 @@ func _try_buy(i: int) -> void:
 	else:
 		_shake_left[i] = SHAKE_TIME
 		_alert_left[i] = ALERT_TIME
+
+
+func shelf_rect(i: int) -> Rect2:
+	return Rect2(SHELF_X0 + SHELF_STEP * i, SHELF_Y, SHELF_CELL.x, SHELF_CELL.y)
+
+
+func _try_buy_potion(i: int) -> void:
+	if _shop.buy_potion(i):
+		_pop_left = INK_POP
+		_ink_rate = maxf(absf(_ink_shown - GameState.gold_ink) / INK_ROLL_MAX, 1.0 / INK_STEP)
 
 
 func _try_reroll() -> void:
@@ -304,7 +343,7 @@ func _draw_card(i: int) -> void:
 		_:
 			if _shake_left[i] > 0.0:
 				pos.x += 1.0 if int(_shake_left[i] / SHAKE_STEP) % 2 == 0 else -1.0
-	var is_sel: bool = i == selected and state != &"enter"
+	var is_sel: bool = i == selected and state != &"enter" and shelf_focus < 0  # foco na prateleira: nenhuma carta
 	if is_sel:
 		pos.y -= HOVER_LIFT
 	pos = pos.round()
@@ -402,6 +441,7 @@ func _draw_ui() -> void:
 		c.draw_rect(Rect2(side, RIBBON.position.y, 6, 6), Palette.BLOOD_DARK)
 		c.draw_rect(Rect2(side, RIBBON.end.y - 6, 6, 6), Palette.BLOOD_DARK)
 	PixelFont.draw_centered(c, tr(&"SHOP_NEXT").format({"next": Settings.key_label(&"shop_next")}), RIBBON.get_center().x, 237, Palette.CHALK)
+	_draw_shelf()
 	if confirm_replace >= 0 and GameState.loadout != null:
 		var leaving: WeaponData = GameState.loadout.weapon(GameState.loadout.active)
 		var ask: String = tr(&"SHOP_REPLACE_CONFIRM").format({"weapon": tr(leaving.display_name) if leaving != null else ""})
@@ -409,6 +449,53 @@ func _draw_ui() -> void:
 	PixelFont.draw(c, tr(&"SHOP_LEGEND").format({
 		"cast": Settings.key_label(&"cast"), "lock": Settings.key_label(&"shop_lock"),
 		"reroll": Settings.key_label(&"shop_reroll"), "next": Settings.key_label(&"shop_next")}), LEGEND_POS, Palette.PARCHMENT_OLD)
+
+
+## Prateleira (design-agent T1801): 4 células com o ícone, as cargas em quadradinhos, o preço
+## (BLOOD sem tinta) ou "MAX", e o nível a partir do 2; a selecionada sobe 2 px com borda INK de 2 px.
+func _draw_shelf() -> void:
+	if GameState.potions == null:
+		return
+	var c := _canvas
+	UiStyle.draw_panel(c, SHELF)
+	var belt: PotionBelt = GameState.potions
+	for i: int in _shop.potion_count():
+		var p: PotionData = _shop.potion_at(i)
+		var r: Rect2 = shelf_rect(i)
+		var sel: bool = i == shelf_focus
+		var full: bool = belt.is_full(p.id)
+		if sel:
+			r.position.y -= 2.0
+			c.draw_rect(r, Palette.INK)
+			c.draw_rect(r.grow(-2), Palette.PARCHMENT)
+		else:
+			c.draw_rect(r, Palette.INK_SOFT)
+			c.draw_rect(r.grow(-1), Palette.PARCHMENT_OLD if full else Palette.PARCHMENT)
+		if p.shop_icon != null:
+			c.draw_texture(p.shop_icon, r.position + Vector2(4, 2))
+		for k: int in belt.max_charges(p.id):
+			var pip := Rect2(r.position.x + 4 + PIP_STEP * k, r.position.y + 28, PIP, PIP)
+			c.draw_rect(pip, Palette.INK)
+			if k >= belt.charges(p.id):
+				c.draw_rect(pip.grow(-1), Palette.PARCHMENT_OLD)
+		if belt.level(p.id) >= 2:
+			var lv := Rect2(r.position.x + 23, r.position.y + 1, 8, 9)
+			c.draw_rect(lv, Palette.INK)
+			c.draw_rect(lv.grow(-1), Palette.PARCHMENT)
+			PixelFont.draw_centered(c, str(belt.level(p.id)), lv.get_center().x, lv.position.y + 2, Palette.INK)
+		if full:
+			PixelFont.draw(c, tr(&"SHOP_FULL"), r.position + Vector2(5, 33), Palette.INK_SOFT)
+		else:
+			var price: int = _shop.potion_price(i)
+			c.draw_texture(DROP_ICON, r.position + Vector2(3, 32))
+			PixelFont.draw(c, str(price), r.position + Vector2(13, 33), Palette.BLOOD if GameState.gold_ink < price else Palette.INK)
+	if shelf_focus >= 0:
+		var p: PotionData = _shop.potion_at(shelf_focus)
+		var w: float = maxf(SHELF_INFO.size.x, maxf(PixelFont.width(tr(p.display_name)), PixelFont.width(tr(p.short_desc))) + 8.0)
+		var info := Rect2(SHELF_INFO.position, Vector2(w, SHELF_INFO.size.y))
+		UiStyle.draw_panel(c, info)
+		PixelFont.draw(c, tr(p.display_name), info.position + Vector2(4, 1), Palette.INK)
+		PixelFont.draw(c, tr(p.short_desc), info.position + Vector2(4, 8), Palette.INK_SOFT)
 
 
 ## Saída: dithering Bayer em 4 passos cobrindo a tela da loja cada vez menos.

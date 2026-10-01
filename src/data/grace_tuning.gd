@@ -48,8 +48,10 @@ extends Resource
 ## ou sem bênção fora do teto, o tipo sai do sorteio e os outros dividem a chance.
 @export var seal_weapon_active: float = 0.30
 @export var seal_weapon_reserve: float = 0.15
-@export var seal_status: float = 0.45
+@export var seal_status: float = 0.37
 @export var seal_passive: float = 0.10
+## 018 (rules-agent T1801): selo de poção, só com poção comprada abaixo do nível 3.
+@export var seal_potion: float = 0.08
 @export_group("Feixe do nível (018, D-095)")
 ## Ao subir de nível: feixe dourado + câmera lenta por `levelup_slow_time` s (relógio que desconta
 ## a câmera lenta e o hit-stop), depois a pausa com os selos (animation-agent T1802).

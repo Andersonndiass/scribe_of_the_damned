@@ -23,6 +23,9 @@ ITEM_REVERSE_MAGNET,Ímã Reverso,Reverse Lodestone
 ITEM_REVERSE_MAGNET_DESC,Empurra os inimigos em volta,Pushes nearby foes away
 SEAL_WEAPON_LEVEL_DESC,Sobe 1 nível,Up 1 level
 SEAL_PASSIVE_LEVEL_DESC,"Mais rápido e, depois, fere","Faster, then it hurts"
+SEAL_POTION_LEVEL_DESC,Poção mais forte,Stronger potion
+SHOP_POTIONS,POÇÕES,POTIONS
+SHOP_FULL,MAX,MAX
 SHOP_REPLACE_CONFIRM,TROCAR {weapon}? DE NOVO PARA CONFIRMAR,REPLACE {weapon}? AGAIN TO CONFIRM
 ITEM_SANDALS,Sandálias do Peregrino,Pilgrim Sandals
 ITEM_SANDALS_DESC,Velocidade +10%,Speed +10%

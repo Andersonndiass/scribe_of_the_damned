@@ -33,6 +33,9 @@ static func apply_option(b: BlessingData) -> void:
 				EventBus.weapon_leveled.emit(b.slot, lo.weapon(b.slot), lo.slots[b.slot].level)
 		&"passive_level":
 			level_repulse()
+		&"potion_level":
+			if GameState.potions != null:
+				GameState.potions.level_up(b.target)
 
 
 ## Compra (nível 1) ou selo (+1) do ímã reverso, até o teto.

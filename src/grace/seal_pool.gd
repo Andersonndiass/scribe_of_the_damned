@@ -10,10 +10,17 @@ const ACTIVE := &"weapon_active"
 const RESERVE := &"weapon_reserve"
 const STATUS := &"status"
 const PASSIVE := &"passive"
+const POTION := &"potion"
 
 
 static func draw(tuning: GraceTuning, stats: RunStats, loadout: Loadout, repulse_level: int,
-		repulse_max: int, rng: RandomNumberGenerator) -> Array[BlessingData]:
+		repulse_max: int, rng: RandomNumberGenerator, potions: PotionBelt = null) -> Array[BlessingData]:
+	if potions == null:
+		potions = GameState.potions
+	# 018: selo de poção = +1 nível de uma poção já comprada (D-094 item 2); 1 por oferta.
+	var potion_ids: Array[StringName] = []
+	if potions != null:
+		potion_ids = potions.levelable_ids()
 	var status_pool: Array[BlessingData] = []
 	for b: BlessingData in tuning.blessings:
 		if b.stat == &"" or not stats.is_capped(b):
@@ -42,6 +49,9 @@ static func draw(tuning: GraceTuning, stats: RunStats, loadout: Loadout, repulse
 		if passive_ok:
 			kinds.append(PASSIVE)
 			weights.append(tuning.seal_passive)
+		if not potion_ids.is_empty():
+			kinds.append(POTION)
+			weights.append(tuning.seal_potion)
 		if kinds.is_empty():
 			break
 		match _weighted(kinds, weights, rng):
@@ -54,6 +64,9 @@ static func draw(tuning: GraceTuning, stats: RunStats, loadout: Loadout, repulse
 			PASSIVE:
 				out.append(passive_seal(repulse_level))
 				passive_ok = false
+			POTION:
+				out.append(potion_seal(potion_ids[rng.randi_range(0, potion_ids.size() - 1)]))
+				potion_ids.clear()
 			_:
 				var picked: Array[BlessingData] = BlessingOffer.draw(status_pool, stats, rng, 1, null)
 				out.append(picked[0])
@@ -96,6 +109,19 @@ static func weapon_seal(loadout: Loadout, slot: int) -> BlessingData:
 	b.icon = w.icon
 	b.display_name = w.display_name
 	b.short_desc = "SEAL_WEAPON_LEVEL_DESC"
+	return b
+
+
+## Selo "+1 nível" de uma poção comprada (ícone e nome da poção; sem GOLD).
+static func potion_seal(id: StringName) -> BlessingData:
+	var p: PotionData = GameState.potion_tuning.by_id(id)
+	var b := BlessingData.new()
+	b.id = StringName("potion_level_%s" % id)
+	b.kind = &"potion_level"
+	b.target = id
+	b.icon = p.shop_icon
+	b.display_name = p.display_name
+	b.short_desc = "SEAL_POTION_LEVEL_DESC"
 	return b
 
 

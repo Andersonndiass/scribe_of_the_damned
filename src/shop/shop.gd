@@ -72,6 +72,37 @@ func can_afford(i: int) -> bool:
 		and not offer.is_sold(i) and GameState.gold_ink >= offer.prices[i]
 
 
+# --- Prateleira de poções (018 T1816; FR-1809): fixa, fora do sorteio, sem reroll nem trava ---
+
+func potion_count() -> int:
+	return GameState.potion_tuning.order.size()
+
+
+func potion_at(i: int) -> PotionData:
+	return GameState.potion_tuning.order[i]
+
+
+## Preço da poção `i` nesta visita (cresce por onda como os itens).
+func potion_price(i: int) -> int:
+	return roundi(potion_at(i).base_price * (1.0 + tuning.price_growth * float(offer.wave - 1)))
+
+
+func can_buy_potion(i: int) -> bool:
+	return GameState.potions != null and not GameState.potions.is_full(potion_at(i).id) \
+		and GameState.gold_ink >= potion_price(i)
+
+
+## Compra 1 carga da poção `i` (pode comprar várias vezes até o teto). Retorna true se comprou.
+func buy_potion(i: int) -> bool:
+	if i < 0 or i >= potion_count() or not can_buy_potion(i):
+		return false
+	var price: int = potion_price(i)
+	GameState.gold_ink -= price
+	GameState.potions.add_charge(potion_at(i).id)
+	EventBus.potion_bought.emit(potion_at(i).id, price)
+	return true
+
+
 ## Comprar esta carta troca a arma ativa? (os 2 espaços cheios; a tela pede confirmação)
 func replaces_weapon(i: int) -> bool:
 	if i < 0 or i >= offer.cards.size() or offer.cards[i] == null or offer.cards[i].kind != &"weapon":

@@ -10,5 +10,5 @@ latin = "VITA"
 translation_key = &"word_vita"
 miracle_scene = ExtResource("2_scene")
 power_budget = 1.6
-heal_candles = 1
+heal_candles = 2
 vfx_prefix = &"VFX_VITA"

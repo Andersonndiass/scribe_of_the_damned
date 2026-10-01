@@ -9,7 +9,7 @@ Roguelite 2D de ação em pixel art, feito em **Godot 4.7.2**. Ano de 1348, o an
 - **Letras:** quando um inimigo solta uma letra, o jogo entra em **câmera lenta** e abre um **menu com 3 letras**. Uma delas continua a palavra que está no atril. Você tem 2,5 s para escolher.
 - **Palavras (o "ultimate"):** com a palavra completa no atril, conjure. LUX, IGNIS, CRUX, SANCTUS… limpam a tela. Combos, apócrifos e orações são palavras raras e fortes. Errar a palavra é **heresia**: o escriba fica atordoado, aparece uma poça de aggro e o atril se perde.
 - **Graça (XP):** vem das mortes e das palavras. A cada nível um **feixe de luz dourado** desce sobre o escriba e o jogo fica **2,5 s em câmera lenta** (uma barra mostra quanto falta); depois o jogo pausa e você escolhe **1 de 3 selos**: nível de arma, status (vela, velocidade, estante, tinteiro…), ímã reverso ou poção.
-- **Loja (Scriptorium)** entre as ondas: armas, ímã reverso, apócrifos e, em breve, poções.
+- **Loja (Scriptorium)** entre as ondas: armas, ímã reverso, apócrifos e uma prateleira fixa de poções (↓ para chegar nela).
 - **Capítulo 1:** 9 ondas e o chefe **Asmodeus, o Rasurador**. A página do livro se degrada a cada onda.
 
 ### Controles (teclado e mouse; trocáveis em Opções)
@@ -33,7 +33,7 @@ Roguelite 2D de ação em pixel art, feito em **Godot 4.7.2**. Ano de 1348, o an
 | 016 | Graça e subir de nível (3 selos, pingo de cera) | ✅ |
 | 017 | Arsenal sagrado (6 armas, inventário de 2, menu da letra, ímã reverso, palavras como ultimate) | ✅ |
 | T1800 | HUD novo (painéis em pixel art, recarga das armas) | ✅ |
-| 018 | Poções (Óleo da Unção, Água Benta, Vinho do Fervor, Tinta Iluminada), subir de nível com feixe de luz e câmera lenta, passada de ritmo | 🔨 Fases 1–4 ✅ (feixe + câmera lenta; as 4 poções funcionando) · falta loja/selo e a passada de ritmo |
+| 018 | Poções (Óleo da Unção, Água Benta, Vinho do Fervor, Tinta Iluminada), subir de nível com feixe de luz e câmera lenta, passada de ritmo | 🔨 Fases 1–5 ✅ (feixe + câmera lenta; as 4 poções; prateleira na loja; selo de poção) · falta a passada de ritmo |
 | 009 | Áudio (efeitos e falas via ElevenLabs) | ✅ 146 efeitos e 46 falas gerados; música: camada base provisória |
 | 010–015 | Personagens, export para itch.io, capítulos 2–5 | planejado |
 
