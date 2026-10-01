@@ -614,6 +614,29 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
 - **Fica para a passada de ritmo (018):** Rosário nv 1 fraco; menus/min com muita variação; onda 9 4–4,7 menus/min; Crucifixo nv 1 errando; velocidade do Aspersório; eficiência da Pena; vida do chefe.
 - **Status:** 017 ✅ Complete (GUT 518/518). Pendentes do autor: playtest (SC-1705) e medição no Chrome.
 
+### D-094 · 2026-10-01 · 018 Poções: direção aprovada
+- **Parecer:** `docs/reviews/T1800G-game-design-018.md` (game-design-agent, AJUSTAR).
+- **Respostas do autor:** "1a 2a 3a 4a 5a 6a" —
+  1. **Tinta Iluminada = "Iluminura":** abre um menu da letra na hora (regras de sempre; bloqueada com menu aberto ou na fila).
+  2. **Selo de poção = +1 nível da poção** (efeito maior), só das já compradas.
+  3. **Começa com 1 Óleo da Unção.**
+  4. **Loja:** prateleira fixa de poções, separada das vagas sorteadas.
+  5. **Água Benta:** heresia dentro do círculo apaga o círculo; parado no círculo não recupera vela.
+  6. **Banco da arena** decidido na Fase 1 da 018, antes do painel das poções.
+- **Pedido do autor no mesmo recado:** "subir do nível 1 para o 2 está demorando muito — encurte" → custo do 1º nível da Graça (rules-agent, na 018).
+- **Status:** ✅ direção aprovada; números, sistema e arte nos pareceres T1801.
+
+### D-095 · 2026-10-01 · 018: subir de nível com feixe de luz e câmera lenta; VITA 2 velas; Iluminura
+- **Pareceres:** `docs/reviews/T1801-{rules,mechanics,animation}-parecer.md` (design em andamento).
+- **Respostas do autor:** "1a 2.5seg se camera lenta e uma barra de carregamento mostrando quando acaba a camera lenta. 2a. 3a. 4a. 5a" —
+  1. **Subir de nível:** um feixe de luz desce sobre o Anselmo e o jogo entra em **câmera lenta por 2,5 s**, com **uma barra mostrando quando a câmera lenta acaba**; depois pausa e os 3 selos aparecem (como hoje).
+  2. **Feixe dourado** (a cor da Graça).
+  3. **VITA acende 2 velas** (o Óleo da Unção fica com 1; SALVATOR continua 3).
+  4. **Iluminura por nível:** nv 1 = 1 das 3 letras continua a palavra; nv 2 = 2; nv 3 = 3.
+  5. **Regras do mechanics-agent:** beber Água Benta de novo recentraliza o círculo; o Vinho fica na arma ativa do momento; atordoado não bebe.
+- **Também (rules-agent T1801):** curva da Graça `level_costs [16, 40]`, base 8, passo 28 (1º nível aos ~15 s, pedido D-094); banco da arena em (184, 272); poções com 3 níveis, tetos e preços do parecer.
+- **Arte:** os 4 ícones do HUD foram desenhados com a skill `pixel-art-gen` (pedido do autor), em `docs/reviews/T1801-potion-icons.json`.
+
 ## Conflitos abertos
 
 - ~~**C-008 · Menu de escolha da letra (D-085 item 2).**~~ Resolvido: autor "1a 2b 3b e mouse clicando 4a" —
