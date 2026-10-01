@@ -218,6 +218,7 @@ func stop_all_loops() -> void:
 	for i: int in _loop_players.size():
 		_loop_players[i].stop()
 		_loop_ids[i] = &""
+	set_music_muffled(false)
 
 
 ## Volume linear (0–1) do barramento (FR-901; a tela de Opções usa).
@@ -329,8 +330,13 @@ func _connect_events_018() -> void:
 	EventBus.blessing_chosen.connect(func(b: BlessingData, _l: int) -> void: play_event(&"blessing_chosen", b.id))
 	EventBus.wax_drop_collected.connect(func(_p: Vector2) -> void: play_event(&"wax_drop_collected"))
 	# Menu da letra: a contagem toca em loop enquanto ele estiver aberto.
-	EventBus.letter_menu_opened.connect(func(_o: Array) -> void: start_loop(&"letter_menu_countdown"))
-	EventBus.letter_menu_closed.connect(func() -> void: stop_loop(&"letter_menu_countdown"))
+	# ... e a música afunda (passa-baixa 1,2 kHz, §2.4) enquanto o tempo está lento.
+	EventBus.letter_menu_opened.connect(func(_o: Array) -> void:
+		start_loop(&"letter_menu_countdown")
+		set_music_muffled(true))
+	EventBus.letter_menu_closed.connect(func() -> void:
+		stop_loop(&"letter_menu_countdown")
+		set_music_muffled(false))
 	EventBus.letter_chosen.connect(func(_l: String, _r: bool) -> void: play_event(&"letter_chosen"))
 	# Armas (017).
 	EventBus.weapon_switched.connect(func(_s: int, _w: WeaponData) -> void: play_event(&"weapon_switched"))
@@ -429,6 +435,24 @@ func _connect_events_018() -> void:
 	EventBus.ui_backed.connect(func() -> void: play_event(&"ui_back"))
 	EventBus.ui_slider_changed.connect(func() -> void: play_event(&"ui_slider_changed"))
 	EventBus.ui_key_remapped.connect(func() -> void: play_event(&"ui_key_remapped"))
+
+
+## Liga/desliga o passa-baixa da música (o efeito `AudioEffectLowPassFilter` do barramento Music).
+func set_music_muffled(on: bool) -> void:
+	var bus: int = AudioServer.get_bus_index(&"Music")
+	if bus < 0:
+		return
+	for i: int in AudioServer.get_bus_effect_count(bus):
+		if AudioServer.get_bus_effect(bus, i) is AudioEffectLowPassFilter:
+			AudioServer.set_bus_effect_enabled(bus, i, on)
+
+
+func is_music_muffled() -> bool:
+	var bus: int = AudioServer.get_bus_index(&"Music")
+	for i: int in AudioServer.get_bus_effect_count(bus) if bus >= 0 else 0:
+		if AudioServer.get_bus_effect(bus, i) is AudioEffectLowPassFilter:
+			return AudioServer.is_bus_effect_enabled(bus, i)
+	return false
 
 
 ## Só a variante (`key:variant`), sem cair no som base: arma ou inimigo sem som próprio fica mudo.

@@ -658,10 +658,9 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
 - **Loops e barramento:** o `AudioManager` liga os sinais, toca os loops com início e fim explícitos e manda falas e latim para o barramento novo `Voice`, que abaixa a música por compressor (sidechain).
 - **Poções:** os 4 sons foram mapeados pelo id da poção (o manifesto usava 1–4).
 - **Teste:** `tests/integration/test_audio_events_018.gd`.
+- **Opções e menu:** linha FALAS nas Opções (volume do `Voice`); passa-baixa de 1,2 kHz na música com o menu da letra aberto.
 - **Pendente:**
   - 13 falas em latim (o autor roda o script com `!`);
-  - volume do `Voice` nas Opções;
-  - passa-baixa da música no menu da letra;
   - camadas 2–3 da música (plano pago).
 
 ## Conflitos abertos

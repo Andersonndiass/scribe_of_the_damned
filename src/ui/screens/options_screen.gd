@@ -7,17 +7,18 @@ extends UiScreen
 ## Pausa (embedded).
 
 const ROWS: Array[StringName] = [
-	&"vol_master", &"vol_music", &"vol_sfx", &"shake", &"language", &"aim", &"contrast",
+	&"vol_master", &"vol_music", &"vol_sfx", &"vol_voice", &"shake", &"language", &"aim", &"contrast",
 	&"keys", &"reset", &"back",
 ]
 ## Linhas da lista (as duas últimas de ROWS são as fitas).
-const LIST_ROWS := 8
+const LIST_ROWS := 9
 const LABELS: Dictionary = {
 	&"vol_master": "OPT_VOL_MASTER", &"vol_music": "OPT_VOL_MUSIC", &"vol_sfx": "OPT_VOL_SFX",
+	&"vol_voice": "OPT_VOL_VOICE",
 	&"shake": "OPT_SHAKE", &"language": "OPT_LANGUAGE", &"aim": "OPT_AIM_MOUSE",
 	&"contrast": "OPT_HIGH_CONTRAST", &"keys": "OPT_KEYS", &"reset": "OPT_RESET", &"back": "OPT_BACK",
 }
-const BUS_OF: Dictionary = {&"vol_master": &"Master", &"vol_music": &"Music", &"vol_sfx": &"SFX"}
+const BUS_OF: Dictionary = {&"vol_master": &"Master", &"vol_music": &"Music", &"vol_sfx": &"SFX", &"vol_voice": &"Voice"}
 const TOGGLES: Array[StringName] = [&"shake", &"aim", &"contrast"]
 const VOLUME_STEP := 0.1
 const SWAP_NOTICE := 2.0
@@ -35,7 +36,7 @@ const ROW_H := 16
 const LABEL_X := 140
 const VALUE_X := 304
 const VALUE_END := 504
-const SEPARATE_AFTER: Array[int] = [2, 6]
+const SEPARATE_AFTER: Array[int] = [3, 7]
 const BUTTONS_Y := 284
 const BUTTON_X: Array[int] = [248, 392]
 const BUTTON_W := 112

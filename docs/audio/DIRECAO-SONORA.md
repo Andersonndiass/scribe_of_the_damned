@@ -153,10 +153,10 @@ Cada efeito gerado cujo evento já existe no `event_map` foi posto como `stream`
 - Poções por id: Óleo → `potion_1_healing`, Água Benta → `potion_4_shield`, Vinho → `potion_3_speed`, Iluminura → `potion_2_ink`.
 - Arma ou inimigo sem som próprio fica mudo, sem cair no som base (Rosário, Turíbulo, Aspersório no disparo).
 
-**Não ligados:**
-- `weapon_ready` (opcional; tocaria o tempo todo).
-- O volume do `Voice` ainda não aparece nas Opções (segue o Master).
-- O filtro passa-baixa da Music no menu da letra (§2.4).
+- Opções: linha **FALAS** (volume do barramento `Voice`, salvo como os outros).
+- Menu da letra: passa-baixa de 1,2 kHz na Music enquanto aberto (`AudioManager.set_music_muffled`; §2.4).
+
+**Não ligado:** `weapon_ready` (opcional; tocaria o tempo todo).
 
 Lista original:
 Itens do manifesto com `exists_in_event_map = false`: o arquivo já existe (quando gerado) mas não há `.tres` nem sinal. Agrupados:

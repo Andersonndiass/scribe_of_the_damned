@@ -53,3 +53,15 @@ func test_audio_only_signals_play_their_sound() -> void:
 	assert_true(AudioManager.is_looping(&"boss_attack", &"rotating_cross"), "a cruz gira em loop")
 	EventBus.boss_attack_finished.emit(&"rotating_cross")
 	assert_false(AudioManager.is_looping(&"boss_attack", &"rotating_cross"))
+
+
+func test_letter_menu_muffles_the_music_while_open() -> void:
+	EventBus.letter_menu_opened.emit([])
+	assert_true(AudioManager.is_music_muffled(), "passa-baixa ligado com o menu aberto")
+	EventBus.letter_menu_closed.emit()
+	assert_false(AudioManager.is_music_muffled())
+
+
+func test_voice_bus_exists_and_has_a_volume_setting() -> void:
+	assert_gt(AudioServer.get_bus_index(&"Voice"), 0)
+	assert_true(Settings.BUSES.has(&"Voice"), "Falas nas Opções")

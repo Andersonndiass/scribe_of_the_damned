@@ -5,7 +5,7 @@ extends Node
 ## teclas no InputMap. Trocar uma tecla já usada troca as duas ações de lugar (sem conflito).
 
 const PATH := "user://settings.cfg"
-const BUSES: Array[StringName] = [&"Master", &"Music", &"SFX"]
+const BUSES: Array[StringName] = [&"Master", &"Music", &"SFX", &"Voice"]
 const LANGUAGES: PackedStringArray = ["pt_BR", "en"]
 ## Ações que o jogador pode remapear (teclado).
 const REBINDABLE: Array[StringName] = [
