@@ -4,6 +4,8 @@ extends RefCounted
 ##   Cada visita: `item_slots` itens + 1 vaga de apócrifo não liberado (sem nenhum, vira item).
 ##   Preço cresce por onda; a carta travada volta na visita seguinte pelo preço antigo.
 ##   Reroll troca o que não está vendido nem travado; custo sobe dentro da visita.
+##   017 (T1733): armas e o ímã reverso que já se tem não aparecem (`owned`); com `weapons_first`
+##   (1ª loja com o espaço 2 vazio; rules-agent §7), as vagas de item são armas.
 
 var deck: Array[ShopItemData] = []
 var tuning: ShopTuning
@@ -17,6 +19,9 @@ var _locked_slot: int = -1
 var _locked_item: ShopItemData = null
 var _locked_price: int = 0
 var _rerolls: int = 0
+## ids de armas e passivos que o jogador já tem (não aparecem na oferta).
+var _owned: Array[StringName] = []
+var _weapons_first: bool = false
 
 
 func _init(p_deck: Array[ShopItemData], p_tuning: ShopTuning) -> void:
@@ -29,8 +34,11 @@ func price_of(item: ShopItemData, p_wave: int) -> int:
 
 
 ## Abre a loja depois da onda `p_wave`. A travada (se houver) volta pelo preço antigo.
-func open_visit(p_wave: int, stats: RunStats, unlocked: Array[StringName], rng: RandomNumberGenerator) -> void:
+func open_visit(p_wave: int, stats: RunStats, unlocked: Array[StringName], rng: RandomNumberGenerator,
+		owned: Array[StringName] = [], weapons_first: bool = false) -> void:
 	wave = p_wave
+	_owned = owned
+	_weapons_first = weapons_first
 	_rerolls = 0
 	var slots: int = tuning.item_slots + (1 if tuning.apocrypha_slot else 0)
 	cards.clear()
@@ -109,12 +117,20 @@ func _fill(stats: RunStats, unlocked: Array[StringName], rng: RandomNumberGenera
 			used.append(c.id)
 	var apo_pool: Array[ShopItemData] = []
 	var item_pool: Array[ShopItemData] = []
+	var weapon_pool: Array[ShopItemData] = []
 	for c: ShopItemData in deck:
 		if used.has(c.id):
 			continue
 		if c.kind == &"apocrypha":
 			if c.word != null and not unlocked.has(c.word.id):
 				apo_pool.append(c)
+		elif c.kind == &"weapon":
+			if c.weapon != null and not _owned.has(c.weapon.id):
+				item_pool.append(c)
+				weapon_pool.append(c)
+		elif c.kind == &"passive":
+			if not _owned.has(c.passive) and stats.can_offer(c):
+				item_pool.append(c)
 		elif stats.can_offer(c):
 			item_pool.append(c)
 	for i: int in cards.size():
@@ -122,9 +138,13 @@ func _fill(stats: RunStats, unlocked: Array[StringName], rng: RandomNumberGenera
 			continue
 		var is_apo_slot: bool = tuning.apocrypha_slot and i == cards.size() - 1
 		var pool: Array[ShopItemData] = apo_pool if (is_apo_slot and not apo_pool.is_empty()) else item_pool
+		if not is_apo_slot and _weapons_first and not weapon_pool.is_empty():
+			pool = weapon_pool
 		if pool.is_empty():
 			continue
 		var pick: ShopItemData = pool[rng.randi_range(0, pool.size() - 1)]
 		pool.erase(pick)
+		item_pool.erase(pick)
+		weapon_pool.erase(pick)
 		cards[i] = pick
 		prices[i] = price_of(pick, wave)

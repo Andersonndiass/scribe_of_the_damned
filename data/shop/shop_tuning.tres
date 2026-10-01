@@ -1,9 +1,10 @@
-[gd_resource type="Resource" script_class="ShopTuning" load_steps=10 format=3]
+[gd_resource type="Resource" script_class="ShopTuning" load_steps=11 format=3]
 
 [ext_resource type="Script" path="res://src/data/shop_tuning.gd" id="1_st"]
 [ext_resource type="Script" path="res://src/data/shop_item_data.gd" id="99_si"]
-[ext_resource type="Resource" path="res://data/shop/items/double_inkwell.tres" id="7_double_inkwell"]
-[ext_resource type="Resource" path="res://data/shop/items/new_shelf.tres" id="10_new_shelf"]
+[ext_resource type="Resource" path="res://data/shop/items/weapon_bible.tres" id="20_bible"]
+[ext_resource type="Resource" path="res://data/shop/items/weapon_crucifix.tres" id="21_crucifix"]
+[ext_resource type="Resource" path="res://data/shop/items/reverse_magnet.tres" id="22_magnet"]
 [ext_resource type="Resource" path="res://data/shop/items/apocrypha_purgo.tres" id="11_apocrypha_purgo"]
 [ext_resource type="Resource" path="res://data/shop/items/apocrypha_fides.tres" id="12_apocrypha_fides"]
 [ext_resource type="Resource" path="res://data/shop/items/apocrypha_lumen.tres" id="13_apocrypha_lumen"]
@@ -12,13 +13,13 @@
 
 [resource]
 script = ExtResource("1_st")
-deck = Array[ExtResource("99_si")]([ExtResource("7_double_inkwell"), ExtResource("10_new_shelf"), ExtResource("11_apocrypha_purgo"), ExtResource("12_apocrypha_fides"), ExtResource("13_apocrypha_lumen"), ExtResource("14_apocrypha_gloria"), ExtResource("15_apocrypha_verbum")])
+deck = Array[ExtResource("99_si")]([ExtResource("20_bible"), ExtResource("21_crucifix"), ExtResource("22_magnet"), ExtResource("11_apocrypha_purgo"), ExtResource("12_apocrypha_fides"), ExtResource("13_apocrypha_lumen"), ExtResource("14_apocrypha_gloria"), ExtResource("15_apocrypha_verbum")])
 item_slots = 2
 apocrypha_slot = true
 price_growth = 0.1
 reroll_base = 3
 reroll_step = 2
 max_locks = 1
-wave_clear_ink = 5
+wave_clear_ink = 6
 open_delay = 1.0
 heal_only_candles = 1

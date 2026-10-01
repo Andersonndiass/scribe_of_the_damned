@@ -114,6 +114,9 @@ signal wax_drop_collected(position: Vector2)
 # Armas (017): arma posta num espaço, troca da ativa (1/2), nível subido.
 signal weapon_equipped(slot: int, weapon: WeaponData, level: int)
 signal weapon_switched(slot: int, weapon: WeaponData)
+## 017: ímã reverso subiu de nível (1 = comprado) e soltou um pulso (inimigos empurrados).
+signal passive_leveled(id: StringName, level: int)
+signal repulse_pulsed(center: Vector2, radius: float, level: int, pushed: int)
 signal weapon_leveled(slot: int, weapon: WeaponData, level: int)
 
 # Cutscenes (008): o fluxo do jogo escuta só o `cutscene_finished`, que sai sempre por último.

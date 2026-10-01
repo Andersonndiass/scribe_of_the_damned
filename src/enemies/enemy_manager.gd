@@ -733,6 +733,30 @@ func stun_in_radius(center: Vector2, radius: float, stun: float, knockback: floa
 	return hits.size()
 
 
+## Ímã reverso (017 T1734): empurra para longe de `center` os inimigos no raio (o campeão só
+## `champion_mul` do empurrão) e, com `damage` > 0, fere todos e o chefe (que nunca é empurrado).
+## Retorna quantos inimigos estavam no raio.
+func repulse(center: Vector2, radius: float, knockback: float, champion_mul: float, damage: int) -> int:
+	if damage > 0 and _boss_live() and _boss_in_circle(center, radius):
+		DamageSource.mark(&"auto", 0)
+		_hit_boss(damage)
+		DamageSource.clear()
+	var hits := _slots_in_radius(center, radius)
+	for i: int in hits:
+		var away: Vector2 = positions[i] - center
+		if away.is_zero_approx():
+			away = Vector2.RIGHT.rotated(float(i) * 2.399)
+		var push: float = knockback * (champion_mul if champion[i] == 1 else 1.0)
+		positions[i] = _place(i, positions[i] + away.normalized() * push)
+		prev_positions[i] = positions[i]
+	_hash_dirty = true
+	if damage > 0:
+		DamageSource.mark(&"auto", 0)
+		_damage_descending(hits, damage)
+		DamageSource.clear()
+	return hits.size()
+
+
 ## Deixa lentos os inimigos no raio por `duration` s (AQUA). factor = multiplicador de velocidade.
 func slow_in_radius(center: Vector2, radius: float, factor: float, duration: float) -> int:
 	var hits := _slots_in_radius(center, radius)

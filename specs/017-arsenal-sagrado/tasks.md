@@ -43,13 +43,15 @@
 **Checkpoint 017-C:** ✅ 2026-09-30 — menu da letra no lugar das letras do chão (D-090); GUT 504/504. Sonda onda 1: o menu abre e a sonda conjura; ~2 menus/min com a chance normal (alvo 5–6,5) → passada de ritmo. Ficou simples: o voo da letra até o atril.
 
 ## Fase 4 — Selos, loja e ímã reverso
-- **T1729** `SealOption` / `SealPool` + pesos.
-- **T1730** `GraceSeals` por tipo (nível de arma sem GOLD).
-- **T1731** `RunUpgrade.apply_option`.
-- **T1732** Estante Nova e Tinteiro Duplo viram bênção; sai a Pedra-Ímã; Escapulário.
-- **T1733** Loja: tipos weapon/passive, exclui o que já tem, vaga de arma garantida, confirmação de troca.
-- **T1734** `RepulseData` + `RepulseAura` + `repulse_pulsed`.
-- **T1735** Testes da Fase 4.
+- ✅ **T1729** `SealOption` / `SealPool` + pesos.
+- ✅ **T1730** `GraceSeals` por tipo (nível de arma sem GOLD).
+- ✅ **T1731** `RunUpgrade.apply_option`.
+- ✅ **T1732** Estante Nova e Tinteiro Duplo viram bênção; sai a Pedra-Ímã; Escapulário.
+- ✅ **T1733** Loja: tipos weapon/passive, exclui o que já tem, vaga de arma garantida, confirmação de troca.
+- ✅ **T1734** `RepulseData` + `RepulseAura` + `repulse_pulsed`.
+- ✅ **T1735** Testes da Fase 4.
+
+**Checkpoint 017-D:** ✅ 2026-10-01 — selos de arma/status/ímã, loja de armas e ímã reverso (D-091); GUT 513/513.
 
 ## Fase 5 — Rosário, Turíbulo, Aspersório
 - **T1736** `OrbitWeapon` + Rosário.

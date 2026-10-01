@@ -301,7 +301,9 @@ func _draw_beads(c: CanvasItem, b: BlessingData, o: Vector2) -> void:
 	var total: int = _choices_to_cap(b)
 	if total <= 0:
 		return
-	var done: int = GameState.run_stats.buys_of(b.id)
+	var done: int = _done(b)
+	# Arma e ímã: a conta desta escolha em CHALK (o dourado é das palavras e da Graça; T1700).
+	var tinted: bool = b.kind != &"stat"
 	var w: float = 10.0 * total - 3.0
 	var x0: float = roundf(o.x + CARD.x / 2.0 - w / 2.0)
 	for k: int in total:
@@ -310,15 +312,35 @@ func _draw_beads(c: CanvasItem, b: BlessingData, o: Vector2) -> void:
 			c.draw_rect(r, Palette.INK)
 		elif k == done:
 			c.draw_rect(r, Palette.INK)
-			c.draw_rect(r.grow(-1), Palette.GOLD)
-			c.draw_rect(Rect2(r.end.x - 2, r.position.y + 1, 1, 1), Palette.GOLD_LIGHT)
+			if tinted:
+				c.draw_rect(r.grow(-1), Palette.CHALK)
+			else:
+				c.draw_rect(r.grow(-1), Palette.GOLD)
+				c.draw_rect(Rect2(r.end.x - 2, r.position.y + 1, 1, 1), Palette.GOLD_LIGHT)
 		else:
 			c.draw_rect(r, Palette.INK if UiStyle.high() else Palette.INK_SOFT)
 			c.draw_rect(r.grow(-1), Palette.PARCHMENT_OLD)
 
 
+## Escolhas já feitas: compras da bênção, ou níveis acima do 1 da arma/do ímã.
+func _done(b: BlessingData) -> int:
+	match b.kind:
+		&"weapon_level":
+			var lo: Loadout = GameState.loadout
+			return lo.slots[b.slot].level - 1 if lo != null and lo.slots[b.slot] != null else 0
+		&"passive_level":
+			return GameState.repulse_level - 1
+	return GameState.run_stats.buys_of(b.id)
+
+
 ## Quantas escolhas levam a bênção do valor-base até o teto (para as contas).
 func _choices_to_cap(b: BlessingData) -> int:
+	match b.kind:
+		&"weapon_level":
+			var lo: Loadout = GameState.loadout
+			return lo.weapon(b.slot).max_level() - 1 if lo != null and lo.weapon(b.slot) != null else 0
+		&"passive_level":
+			return GameState.repulse.max_level() - 1
 	if b.stat == &"" or GameState.run_stats == null:
 		return 0
 	var probe := RunStats.new(GameState.run_stats.base)

@@ -18,6 +18,9 @@ var grace_tuning: GraceTuning = preload("res://data/tuning/grace.tres")
 var grace: GraceLedger = null
 ## Inventário de armas da partida (017), zerado no start_run.
 var loadout: Loadout = null
+## 017: ímã reverso (0 = não comprado; 1..5 = nível, subindo pelos selos).
+var repulse_level: int = 0
+var repulse: RepulseData = preload("res://data/weapons/reverse_magnet.tres")
 ## Sorteios da 016 (selos, pingo de cera): separados do `rng` das letras para não mudar a sequência.
 var grace_rng := RandomNumberGenerator.new()
 ## Fração de tinta acumulada pelo ×tinta da Bolsa do Esmoler (a gota é inteira).
@@ -89,6 +92,9 @@ func start_run(player: PlayerData, seed_value: int = -1) -> void:
 	max_candles = player.start_candles
 	atril_capacity = player.atril_capacity
 	wave_index = 0
+	letter_drop_mul = 1.0
+	letter_menu_open = false
+	repulse_level = 0
 	gold_ink = 0
 	gold_fraction = 0.0
 	_rec_wave = 0

@@ -69,10 +69,10 @@ func is_capped(item: StatUpgradeData) -> bool:
 
 ## Pode aparecer na loja? (compra única já feita ou teto sem uso depois dele → não)
 func can_offer(item: ShopItemData) -> bool:
-	if item.kind != &"item":
-		return true
 	if item.max_buys > 0 and buys_of(item.id) >= item.max_buys:
 		return false
+	if item.kind != &"item":
+		return true
 	return not is_capped(item) or item.after_cap != &""
 
 

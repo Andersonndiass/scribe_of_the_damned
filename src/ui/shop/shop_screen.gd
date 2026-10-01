@@ -53,6 +53,8 @@ var _ink_shown: float = 0.0
 var _ink_rate: float = 0.0
 var _pop_left: float = 0.0
 var _exit_left: float = -1.0
+## 017 (D-087 item 9): carta de arma que troca a ativa esperando o 2º Comprar (-1 = nenhuma).
+var confirm_replace: int = -1
 
 
 func _ready() -> void:
@@ -89,6 +91,7 @@ func _on_opened(_wave: int) -> void:
 
 
 func _on_closed() -> void:
+	confirm_replace = -1
 	# A onda já recomeçou por baixo; a tela sai em dithering (4 × 100 ms).
 	_exit_left = EXIT_TIME
 
@@ -193,6 +196,10 @@ func card_state(i: int) -> StringName:
 func _try_buy(i: int) -> void:
 	if _shop.offer.is_sold(i):
 		return
+	if _shop.replaces_weapon(i) and _shop.can_afford(i) and confirm_replace != i:
+		confirm_replace = i  # 1º Comprar só avisa qual arma sai
+		return
+	confirm_replace = -1
 	if _shop.buy(i):
 		_start_anim(i, &"buy", 0.0)
 		_pop_left = INK_POP
@@ -395,6 +402,10 @@ func _draw_ui() -> void:
 		c.draw_rect(Rect2(side, RIBBON.position.y, 6, 6), Palette.BLOOD_DARK)
 		c.draw_rect(Rect2(side, RIBBON.end.y - 6, 6, 6), Palette.BLOOD_DARK)
 	PixelFont.draw_centered(c, tr(&"SHOP_NEXT").format({"next": Settings.key_label(&"shop_next")}), RIBBON.get_center().x, 237, Palette.CHALK)
+	if confirm_replace >= 0 and GameState.loadout != null:
+		var leaving: WeaponData = GameState.loadout.weapon(GameState.loadout.active)
+		var ask: String = tr(&"SHOP_REPLACE_CONFIRM").format({"weapon": tr(leaving.display_name) if leaving != null else ""})
+		UiStyle.draw_tag(c, ask, 320.0, LEGEND_POS.y - 14.0)
 	PixelFont.draw(c, tr(&"SHOP_LEGEND").format({
 		"cast": Settings.key_label(&"cast"), "lock": Settings.key_label(&"shop_lock"),
 		"reroll": Settings.key_label(&"shop_reroll"), "next": Settings.key_label(&"shop_next")}), LEGEND_POS, Palette.PARCHMENT_OLD)

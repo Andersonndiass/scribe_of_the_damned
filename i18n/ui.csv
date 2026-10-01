@@ -17,6 +17,13 @@ ITEM_LODESTONE,Pedra-Ímã,Lodestone
 ITEM_LODESTONE_DESC,Ímã +30%,Magnet +30%
 ITEM_ROSARY,Rosário de Contas,Prayer Beads
 ITEM_ROSARY_DESC,Heresia atordoa metade,Heresy stuns half as long
+ITEM_SCAPULAR,Escapulário,Scapular
+ITEM_SCAPULAR_DESC,Heresia atordoa metade,Heresy stuns half as long
+ITEM_REVERSE_MAGNET,Ímã Reverso,Reverse Lodestone
+ITEM_REVERSE_MAGNET_DESC,Empurra os inimigos em volta,Pushes nearby foes away
+SEAL_WEAPON_LEVEL_DESC,Sobe 1 nível,Up 1 level
+SEAL_PASSIVE_LEVEL_DESC,"Mais rápido e, depois, fere","Faster, then it hurts"
+SHOP_REPLACE_CONFIRM,TROCAR {weapon}? DE NOVO PARA CONFIRMAR,REPLACE {weapon}? AGAIN TO CONFIRM
 ITEM_SANDALS,Sandálias do Peregrino,Pilgrim Sandals
 ITEM_SANDALS_DESC,Velocidade +10%,Speed +10%
 ITEM_ALMS_PURSE,Bolsa do Esmoler,Almoner Purse

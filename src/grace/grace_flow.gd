@@ -123,8 +123,7 @@ func _can_open() -> bool:
 
 
 func _new_offer() -> void:
-	offer = BlessingOffer.draw(tuning.blessings, GameState.run_stats, GameState.grace_rng,
-		tuning.choices, tuning.fallback)
+	offer = _draw_seals()
 	seals_open = true
 	_enter(Phase.ANNOUNCING)
 	EventBus.seals_shown.emit(offer, ledger().level)
@@ -158,10 +157,15 @@ func _apply(b: BlessingData) -> void:
 
 func _auto_pick_all() -> void:
 	while ledger().pending > 0:
-		var o: Array[BlessingData] = BlessingOffer.draw(tuning.blessings, GameState.run_stats,
-			GameState.grace_rng, tuning.choices, tuning.fallback)
+		var o: Array[BlessingData] = _draw_seals()
 		_apply(o[0])
 	_enter(Phase.IDLE)
+
+
+## 017 (T1729): selos de arma, status e ímã reverso.
+func _draw_seals() -> Array[BlessingData]:
+	return SealPool.draw(tuning, GameState.run_stats, GameState.loadout, GameState.repulse_level,
+		GameState.repulse.max_level(), GameState.grace_rng)
 
 
 func _close(unpause: bool) -> void:

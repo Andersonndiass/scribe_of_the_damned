@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="BlessingData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://src/data/blessing_data.gd" id="1_bl"]
+[ext_resource type="Texture2D" path="res://assets/placeholders/itm_new_shelf.tres" id="2_icon"]
+
+[resource]
+script = ExtResource("1_bl")
+id = &"new_shelf"
+display_name = "ITEM_NEW_SHELF"
+short_desc = "ITEM_NEW_SHELF_DESC"
+icon = ExtResource("2_icon")
+stat = &"atril_capacity"
+mode = &"add"
+amount = 1.0
+cap = 8.0
+heal_candles = 0

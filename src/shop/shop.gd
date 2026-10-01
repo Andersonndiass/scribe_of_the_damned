@@ -10,6 +10,7 @@ var player: Player
 var letter_field: LetterField
 var offer: ShopOffer
 var is_open: bool = false
+var _visits: int = 0
 
 
 func _ready() -> void:
@@ -19,7 +20,16 @@ func _ready() -> void:
 
 ## Abre a loja depois da onda `wave` (1-based).
 func open(wave: int) -> void:
-	offer.open_visit(wave, GameState.run_stats, GameState.unlocked_words, GameState.rng)
+	var owned: Array[StringName] = []
+	var lo: Loadout = GameState.loadout
+	if lo != null:
+		owned.append_array(lo.owned_ids())
+	if GameState.repulse_level > 0:
+		owned.append(GameState.repulse.id)
+	# 1ª loja com o espaço 2 vazio: as vagas de item são armas (rules-agent §7).
+	var first: bool = _visits == 0 and lo != null and not lo.is_full()
+	_visits += 1
+	offer.open_visit(wave, GameState.run_stats, GameState.unlocked_words, GameState.rng, owned, first)
 	is_open = true
 	EventBus.shop_opened.emit(wave)
 
@@ -62,7 +72,23 @@ func can_afford(i: int) -> bool:
 		and not offer.is_sold(i) and GameState.gold_ink >= offer.prices[i]
 
 
+## Comprar esta carta troca a arma ativa? (os 2 espaços cheios; a tela pede confirmação)
+func replaces_weapon(i: int) -> bool:
+	if i < 0 or i >= offer.cards.size() or offer.cards[i] == null or offer.cards[i].kind != &"weapon":
+		return false
+	return GameState.loadout != null and GameState.loadout.is_full()
+
+
 func _apply(card: ShopItemData) -> void:
+	if card.kind == &"weapon" or card.kind == &"passive":
+		GameState.run_stats.apply(card)  # sem stat: só conta a compra (max_buys)
+	match card.kind:
+		&"weapon":
+			RunUpgrade.equip_weapon(card.weapon)
+			return
+		&"passive":
+			RunUpgrade.level_repulse()
+			return
 	if card.kind == &"apocrypha":
 		# A palavra vale na hora (FR-311); o VERBUM libera o B no mesmo instante (D-057).
 		GameState.unlock_word(card.word)

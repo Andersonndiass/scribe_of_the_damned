@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ShopItemData" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://src/data/shop_item_data.gd" id="1_si"]
+[ext_resource type="Texture2D" path="res://assets/placeholders/itm_weapon_bible.tres" id="9_icon"]
+[ext_resource type="Resource" path="res://data/weapons/bible.tres" id="2_wp"]
+
+[resource]
+script = ExtResource("1_si")
+id = &"weapon_bible"
+kind = &"weapon"
+display_name = "WPN_BIBLE"
+short_desc = "WPN_BIBLE_DESC"
+icon = ExtResource("9_icon")
+base_price = 6
+max_buys = 0
+weapon = ExtResource("2_wp")

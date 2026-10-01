@@ -1,9 +1,10 @@
-[gd_resource type="Resource" script_class="GraceTuning" load_steps=12 format=3]
+[gd_resource type="Resource" script_class="GraceTuning" load_steps=13 format=3]
 
 [ext_resource type="Script" path="res://src/data/grace_tuning.gd" id="1_gt"]
 [ext_resource type="Script" path="res://src/data/blessing_data.gd" id="2_bl"]
 [ext_resource type="Resource" path="res://data/blessings/consecrated_ink.tres" id="b0"]
-[ext_resource type="Resource" path="res://data/blessings/lodestone.tres" id="b1"]
+[ext_resource type="Resource" path="res://data/blessings/new_shelf.tres" id="b9"]
+[ext_resource type="Resource" path="res://data/blessings/double_inkwell.tres" id="b10"]
 [ext_resource type="Resource" path="res://data/blessings/sandals.tres" id="b2"]
 [ext_resource type="Resource" path="res://data/blessings/blessed_candle.tres" id="b3"]
 [ext_resource type="Resource" path="res://data/blessings/copyist_lenses.tres" id="b4"]
@@ -14,5 +15,5 @@
 
 [resource]
 script = ExtResource("1_gt")
-blessings = Array[ExtResource("2_bl")]([ExtResource("b0"), ExtResource("b1"), ExtResource("b2"), ExtResource("b3"), ExtResource("b4"), ExtResource("b5"), ExtResource("b6"), ExtResource("b7")])
+blessings = Array[ExtResource("2_bl")]([ExtResource("b0"), ExtResource("b2"), ExtResource("b3"), ExtResource("b4"), ExtResource("b5"), ExtResource("b6"), ExtResource("b7"), ExtResource("b9"), ExtResource("b10")])
 fallback = ExtResource("b8")

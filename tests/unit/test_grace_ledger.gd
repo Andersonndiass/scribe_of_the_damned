@@ -68,4 +68,4 @@ func test_run_start_resets_and_waves_do_not() -> void:
 
 func test_tuning_is_valid() -> void:
 	assert_eq(TUNING.validate(), "")
-	assert_eq(TUNING.blessings.size(), 8, "Tinta Consagrada + os 7 que saíram da loja")
+	assert_eq(TUNING.blessings.size(), 9, "017: saiu a Pedra-Ímã; entraram Estante Nova e Tinteiro Duplo")

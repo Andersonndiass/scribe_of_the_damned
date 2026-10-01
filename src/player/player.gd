@@ -24,6 +24,7 @@ var facing: Vector2 = Vector2.RIGHT
 @onready var flash: Flash = $Sprite/Flash
 @onready var hurtbox: Hurtbox = $Hurtbox
 @onready var arsenal: Arsenal = $Arsenal
+var repulse_aura: RepulseAura
 ## Nome antigo (antes da 017) para o arsenal: `enabled`, `projectiles` e `fired` continuam.
 var auto_attack: Arsenal:
 	get:
@@ -39,6 +40,11 @@ func _ready() -> void:
 	add_to_group(&"player")
 	vitals.setup(data)
 	arsenal.data = data
+	# 017: ímã reverso (só age com o passivo comprado).
+	repulse_aura = RepulseAura.new()
+	repulse_aura.name = "RepulseAura"
+	repulse_aura.player = self
+	add_child(repulse_aura)
 	_sync_state()
 	hurtbox.hit.connect(take_hit)
 	EventBus.wave_ended.connect(func(_i: int) -> void: buffs.on_wave_ended())

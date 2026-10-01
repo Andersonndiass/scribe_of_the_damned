@@ -54,32 +54,31 @@ func test_wave_end_pays_the_tithe_and_shop_opens_and_closes() -> void:
 	assert_false(_shop.is_open, "fora do jogo de verdade ela fecha sozinha")
 
 
-func test_buying_the_shelf_grows_the_atril_up_to_8() -> void:
+func test_buying_a_weapon_puts_it_in_the_inventory() -> void:
+	# 017: Estante Nova virou selo; a loja vende armas (FR-1715).
 	GameState.gold_ink = 999
 	_shop.open(1)
-	for i: int in 3:
-		_offer(&"new_shelf")
-		assert_true(_shop.buy(0))
-	assert_eq(_field.atril.capacity, 8, "SC-302")
-	assert_false(GameState.run_stats.can_offer(_card(&"new_shelf")))
+	_offer(&"weapon_crucifix")
+	assert_true(_shop.buy(0))
+	assert_true(GameState.loadout.has(&"crucifix"))
 
 
 func test_buying_without_ink_does_nothing() -> void:
 	GameState.gold_ink = 0
 	_shop.open(1)
-	_offer(&"double_inkwell")
+	_offer(&"weapon_bible")
 	assert_false(_shop.buy(0))
-	assert_eq(GameState.run_stats.value(&"double_letter_chance"), 0.0)
+	assert_false(GameState.loadout.has(&"bible"))
 
 
 func test_buying_charges_the_price() -> void:
 	GameState.gold_ink = 20
 	_shop.open(3)
-	_offer(&"double_inkwell")
+	_offer(&"reverse_magnet")
 	var price: int = _shop.offer.prices[0]
 	assert_true(_shop.buy(0))
 	assert_eq(GameState.gold_ink, 20 - price)
-	assert_almost_eq(GameState.run_stats.value(&"double_letter_chance"), 0.1, 0.001)
+	assert_eq(GameState.repulse_level, 1, "ímã reverso ligado")
 
 
 func test_apocrypha_card_unlocks_the_word_at_once() -> void:

@@ -5,6 +5,10 @@ extends RefCounted
 
 
 static func apply(item: StatUpgradeData, player: Player, letter_field: LetterField) -> void:
+	var b := item as BlessingData
+	if b != null and b.kind != &"stat":
+		apply_option(b)
+		return
 	var stats: RunStats = GameState.run_stats
 	stats.apply(item)  # sem stat (reserva), só conta a vez
 	match item.stat:
@@ -17,3 +21,32 @@ static func apply(item: StatUpgradeData, player: Player, letter_field: LetterFie
 				player.vitals.max_candles = stats.int_value(&"max_candles")
 	if item.heal_candles > 0 and player != null:
 		player.heal(item.heal_candles)
+
+
+## 017 (T1731): selo de nível de arma ou do ímã reverso.
+static func apply_option(b: BlessingData) -> void:
+	match b.kind:
+		&"weapon_level":
+			var lo: Loadout = GameState.loadout
+			if lo != null and lo.level_up(b.slot):
+				EventBus.weapon_leveled.emit(b.slot, lo.weapon(b.slot), lo.slots[b.slot].level)
+		&"passive_level":
+			level_repulse()
+
+
+## Compra (nível 1) ou selo (+1) do ímã reverso, até o teto.
+static func level_repulse() -> bool:
+	if GameState.repulse_level >= GameState.repulse.max_level():
+		return false
+	GameState.repulse_level += 1
+	EventBus.passive_leveled.emit(GameState.repulse.id, GameState.repulse_level)
+	return true
+
+
+## Compra de arma na loja (FR-1702): preenche o espaço vazio ou substitui a ativa.
+static func equip_weapon(w: WeaponData) -> void:
+	var lo: Loadout = GameState.loadout
+	if lo == null:
+		return
+	var slot: int = lo.equip(w)
+	EventBus.weapon_equipped.emit(slot, w, lo.slots[slot].level)

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ShopItemData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://src/data/shop_item_data.gd" id="1_si"]
+[ext_resource type="Texture2D" path="res://assets/placeholders/itm_reverse_magnet.tres" id="9_icon"]
+
+[resource]
+script = ExtResource("1_si")
+id = &"reverse_magnet"
+kind = &"passive"
+display_name = "ITEM_REVERSE_MAGNET"
+short_desc = "ITEM_REVERSE_MAGNET_DESC"
+icon = ExtResource("9_icon")
+base_price = 8
+max_buys = 1
+passive = &"reverse_magnet"

@@ -38,11 +38,11 @@ func _cap_all_but(keep: Array[StringName]) -> void:
 
 
 func test_capped_blessings_are_never_offered() -> void:
-	_cap_all_but([&"lodestone", &"sandals"])
+	_cap_all_but([&"new_shelf", &"sandals"])
 	for i: int in 30:
 		var ids: Array = _draw().map(func(b: BlessingData) -> StringName: return b.id)
 		assert_eq(ids.size(), 2, "sobram 2: mostra 2")
-		assert_true(ids.has(&"lodestone") and ids.has(&"sandals"))
+		assert_true(ids.has(&"new_shelf") and ids.has(&"sandals"))
 
 
 func test_fallback_when_everything_is_capped() -> void:

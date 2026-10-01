@@ -592,6 +592,13 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
 - **Medido (sonda onda 1, god):** o menu abre e a sonda conjura; com a chance normal saíram ~2 menus/min (alvo 5–6,5): as armas matam menos que o rules-agent supôs. Vai para a passada de ritmo.
 - **Fora desta fase:** o voo da letra até o atril e o pop de 50 ms (animation-agent) ficaram simples (a letra entra direto).
 
+### D-091 · 2026-10-01 · 017 Fase 4: selos de arma, loja de armas e ímã reverso
+- **Selos (`SealPool`):** cada selo sorteia o tipo — arma ativa 30%, arma guardada 15%, status 45%, ímã reverso 10% (se comprado) — e o tipo sem nada a oferecer sai; no máximo 1 selo por espaço; pelo menos 1 selo de arma quando houver arma para subir. Os selos de arma/ímã são `BlessingData` com `kind` (`weapon_level`, `passive_level`) montados na hora; a conta desta escolha é CHALK (sem GOLD).
+- **Bênçãos:** Estante Nova (+1, teto 8) e Tinteiro Duplo (+0,08, teto 0,24) saíram da loja e viraram selo; a Pedra-Ímã saiu; o Rosário aparece como Escapulário (id `rosary` mantido).
+- **Loja:** cartas de arma (Bíblia, Crucifixo; base 6) e do ímã reverso (8, compra única); o que já se tem não aparece; 1ª loja com o espaço 2 vazio = as 2 vagas são armas; com os 2 espaços cheios, o 1º Comprar pergunta "TROCAR <arma>?" e o 2º troca a ativa (D-087 item 9). Dízimo 5 → 6.
+- **Ímã reverso (`RepulseData` + `RepulseAura`):** níveis 6,0/5,0/4,5/4,0/3,5 s · raio 56/56/64/72/72 · empurrão 40/40/48/48/56 · dano 0/0/1/1/2 (rules-agent §6); campeão leva meio empurrão; o chefe não é empurrado, só ferido; sem ninguém no raio, o pulso espera; anel INK_SOFT abaixo dos inimigos.
+- **Status:** ✅ GUT 513/513.
+
 ## Conflitos abertos
 
 - ~~**C-008 · Menu de escolha da letra (D-085 item 2).**~~ Resolvido: autor "1a 2b 3b e mouse clicando 4a" —

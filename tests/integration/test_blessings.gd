@@ -33,9 +33,8 @@ func test_blessed_candle_raises_max_and_lights_one_up_to_8() -> void:
 	assert_eq(_player.vitals.max_candles, 8, "teto 8")
 
 
-func test_lodestone_sandals_lenses() -> void:
-	_bless(&"lodestone")
-	assert_almost_eq(GameState.run_stats.value(&"magnet_radius"), _player.data.magnet_radius * 1.3, 0.01)
+func test_sandals_and_lenses() -> void:
+	# 017: a Pedra-Ímã saiu (as letras não caem mais no chão; o ímã virou o ímã reverso da loja).
 	_bless(&"sandals")
 	assert_almost_eq(GameState.run_stats.value(&"move_speed"), _player.data.move_speed * 1.1, 0.01)
 	_bless(&"copyist_lenses")

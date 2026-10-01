@@ -37,14 +37,14 @@ func _ids() -> Array[StringName]:
 
 
 func test_two_items_and_one_apocrypha() -> void:
-	# 016 (rules-agent): 2 vagas de item — só sobraram Estante Nova e Tinteiro Duplo.
+	# 017: 2 vagas de item (armas e o ímã reverso) + 1 de apócrifo.
 	_offer.open_visit(1, _stats, _none, _rng)
 	assert_eq(_offer.cards.size(), 3)
 	var kinds: Array[StringName] = []
 	for c: ShopItemData in _offer.cards:
 		kinds.append(c.kind)
-	assert_eq(kinds.count(&"item"), 2)
 	assert_eq(kinds.count(&"apocrypha"), 1)
+	assert_eq(kinds.size() - kinds.count(&"apocrypha"), 2, "2 de arma ou passivo")
 	var ids := _ids()
 	for id: StringName in ids:
 		assert_eq(ids.count(id), 1, "sem repetição na oferta")
@@ -68,7 +68,7 @@ func test_apocrypha_slot_becomes_an_item_when_all_are_unlocked() -> void:
 	_offer.open_visit(2, _stats, all, _rng)
 	for c: ShopItemData in _offer.cards:
 		if c != null:
-			assert_eq(c.kind, &"item")
+			assert_ne(c.kind, &"apocrypha")
 
 
 func test_unlocked_apocrypha_is_never_offered() -> void:
@@ -79,18 +79,17 @@ func test_unlocked_apocrypha_is_never_offered() -> void:
 
 
 func test_capped_item_leaves_the_deck() -> void:
-	var shelf := _card(&"new_shelf")
-	for i: int in 3:
-		_stats.apply(shelf)
+	# O ímã reverso é compra única (max_buys 1).
+	_stats.apply(_card(&"reverse_magnet"))
 	for v: int in 20:
 		_offer.open_visit(1, _stats, _none, _rng)
-		assert_does_not_have(_ids(), &"new_shelf", "SC-302")
+		assert_does_not_have(_ids(), &"reverse_magnet", "SC-302")
 
 
 func test_price_grows_with_the_wave() -> void:
-	var shelf := _card(&"new_shelf")
-	assert_eq(_offer.price_of(shelf, 1), 9)
-	assert_eq(_offer.price_of(shelf, 8), roundi(9 * 1.7))
+	var bible := _card(&"weapon_bible")
+	assert_eq(_offer.price_of(bible, 1), 6, "rules-agent §7: arma base 6")
+	assert_eq(_offer.price_of(bible, 8), roundi(6 * 1.7))
 
 
 func test_buy_needs_ink_and_marks_sold() -> void:

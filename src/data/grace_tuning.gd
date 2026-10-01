@@ -44,6 +44,12 @@ extends Resource
 @export var stamp_impact: float = 0.05
 @export var stamp_hold: float = 0.1
 @export var stamp_exit_step: float = 0.1
+## 017 (rules-agent T1700 §5): chance de cada tipo de selo. Sem arma para subir, sem ímã comprado
+## ou sem bênção fora do teto, o tipo sai do sorteio e os outros dividem a chance.
+@export var seal_weapon_active: float = 0.30
+@export var seal_weapon_reserve: float = 0.15
+@export var seal_status: float = 0.45
+@export var seal_passive: float = 0.10
 ## Lista explícita (o build web não lista pastas).
 @export var blessings: Array[BlessingData] = []
 ## Reserva quando todas as bênçãos estão no teto.

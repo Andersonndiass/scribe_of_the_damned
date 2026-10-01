@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="BlessingData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://src/data/blessing_data.gd" id="1_bl"]
+[ext_resource type="Texture2D" path="res://assets/placeholders/itm_double_inkwell.tres" id="2_icon"]
+
+[resource]
+script = ExtResource("1_bl")
+id = &"double_inkwell"
+display_name = "ITEM_DOUBLE_INKWELL"
+short_desc = "ITEM_DOUBLE_INKWELL_DESC"
+icon = ExtResource("2_icon")
+stat = &"double_letter_chance"
+mode = &"add"
+amount = 0.08
+cap = 0.24
+heal_candles = 0
