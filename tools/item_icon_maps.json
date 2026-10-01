@@ -722,6 +722,68 @@
 			"..kkkk..",
 			"..kkkk..",
 			"..kkkk.."
+		],
+		"prj_rosary_bead": [
+			".KKKK.",
+			"KCCCCK",
+			"KCCCCK",
+			"KkCCCK",
+			"KkkCCK",
+			".KKKK."
+		],
+		"prj_rosary_cross": [
+			"..KKK..",
+			"..KCK..",
+			"KKKCKKK",
+			"KCCCCCK",
+			"KKKCKKK",
+			"..KCK..",
+			"..KKK.."
+		],
+		"prj_censer": [
+			"...KK...",
+			"..KkCK..",
+			".KkKkCK.",
+			"KKKKKKKK",
+			"KkkkkkCK",
+			".KkkkCK.",
+			"..KKKK.."
+		],
+		"prj_censer_link": [
+			"KK",
+			"KK"
+		],
+		"vfx_incense_l": [
+			"..kkkk...",
+			".kCCCCkk.",
+			"kCCCCCCCk",
+			"kCCCCCCCk",
+			".kCCCCCk.",
+			"..kkkkk.."
+		],
+		"vfx_incense_m": [
+			".kkkk..",
+			"kCCCCkk",
+			"kCCCCCk",
+			".kkkkk."
+		],
+		"vfx_incense_s": [
+			".kkk.",
+			"kCCCk",
+			".kkk."
+		],
+		"prj_holy_drop": [
+			".KK.",
+			"KCCK",
+			"KkCK",
+			".KK."
+		],
+		"vfx_asperge_mouth": [
+			"..K...K..",
+			".KCK.KCK.",
+			"KCCCKCCCK",
+			".KCK.KCK.",
+			"..K...K.."
 		]
 	}
 }

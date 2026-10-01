@@ -1,11 +1,14 @@
-[gd_resource type="Resource" script_class="ArsenalTuning" load_steps=6 format=3]
+[gd_resource type="Resource" script_class="ArsenalTuning" load_steps=9 format=3]
 
 [ext_resource type="Script" path="res://src/data/arsenal_tuning.gd" id="1_at"]
 [ext_resource type="Script" path="res://src/data/weapon_data.gd" id="2_wd"]
 [ext_resource type="Resource" path="res://data/weapons/pen.tres" id="3_pen"]
 [ext_resource type="Resource" path="res://data/weapons/bible.tres" id="4_bible"]
 [ext_resource type="Resource" path="res://data/weapons/crucifix.tres" id="5_crucifix"]
+[ext_resource type="Resource" path="res://data/weapons/rosary.tres" id="6_rosary"]
+[ext_resource type="Resource" path="res://data/weapons/censer.tres" id="7_censer"]
+[ext_resource type="Resource" path="res://data/weapons/aspergillum.tres" id="8_asp"]
 
 [resource]
 script = ExtResource("1_at")
-weapons = Array[ExtResource("2_wd")]([ExtResource("3_pen"), ExtResource("4_bible"), ExtResource("5_crucifix")])
+weapons = Array[ExtResource("2_wd")]([ExtResource("3_pen"), ExtResource("4_bible"), ExtResource("5_crucifix"), ExtResource("6_rosary"), ExtResource("7_censer"), ExtResource("8_asp")])

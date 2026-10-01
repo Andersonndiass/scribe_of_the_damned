@@ -599,6 +599,14 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
 - **Ímã reverso (`RepulseData` + `RepulseAura`):** níveis 6,0/5,0/4,5/4,0/3,5 s · raio 56/56/64/72/72 · empurrão 40/40/48/48/56 · dano 0/0/1/1/2 (rules-agent §6); campeão leva meio empurrão; o chefe não é empurrado, só ferido; sem ninguém no raio, o pulso espera; anel INK_SOFT abaixo dos inimigos.
 - **Status:** ✅ GUT 513/513.
 
+### D-092 · 2026-10-01 · 017 Fase 5: Rosário, Turíbulo e Aspersório
+- **Rosário (`OrbitWeapon`, zona POINTS):** contas 2/3/3/3/4, dano 1/1/1/2/2, raio 32/32/40/40/40, volta 1,6 s (1,3 no nível 5); cada inimigo leva no máximo 1 acerto a cada 0,4 s; a 1ª conta é a cruz; a troca recolhe as contas.
+- **Turíbulo (`SwingTrailWeapon`, zonas CIRCLE + POINTS):** com inimigo ao alcance, balança num arco de 150° alternando os lados (0,4 s), raio 40/40/40/52/52, intervalo 1,2 s (1,0 no nível 5), dano 1/1/2/2/2; a cabeça fere 1× por balanço; nuvens de incenso a cada 0,1 s (teto 25) que ferem a cada 0,5 s e duram 1,5/2,5 s; o rastro continua depois da troca.
+- **Aspersório (`fan`):** mirado, leque de 50° com 4/5/5/5/5 gotas, alcance 64/64/80/80/80, intervalo 1,10/…/0,85, dano 1 (2 no nível 5), não atravessa; só atira com inimigo ao alcance.
+- **Divergências resolvidas pelo número do rules-agent:** arco de 150° com raio 40 (o animation-agent previa ±60° e corrente de 16 px); volta do Rosário 1,6 s (animation: 1,4 s).
+- **Proposta sem parecer:** velocidade das gotas do Aspersório 240 px/s (o rules-agent não deu número) — conferir na passada de ritmo.
+- **Loja:** as 3 armas a 6 de tinta. **Stress:** `?stress=arsenal` (Turíbulo + Rosário no nível 5, trocando a cada 2 s): 60 FPS no desktop.
+
 ## Conflitos abertos
 
 - ~~**C-008 · Menu de escolha da letra (D-085 item 2).**~~ Resolvido: autor "1a 2b 3b e mouse clicando 4a" —

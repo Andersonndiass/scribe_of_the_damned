@@ -25,6 +25,7 @@ static func apply(item: StatUpgradeData, player: Player, letter_field: LetterFie
 
 ## 017 (T1731): selo de nível de arma ou do ímã reverso.
 static func apply_option(b: BlessingData) -> void:
+	GameState.run_stats.apply(b)  # sem stat: só conta a escolha, como as bênçãos
 	match b.kind:
 		&"weapon_level":
 			var lo: Loadout = GameState.loadout

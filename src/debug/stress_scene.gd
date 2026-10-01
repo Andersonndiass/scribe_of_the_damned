@@ -24,6 +24,8 @@ func _ready() -> void:
 		mode = &"wave9"
 	elif asked.contains("stress=boss"):
 		mode = &"boss"
+	elif asked.contains("stress=arsenal"):
+		mode = &"arsenal"  # 017 T1739: Turíbulo + Rosário no nível 5
 	elif asked.contains("stress=bible"):
 		mode = &"bible"  # 017 SC-1703: SC-001 com a Bíblia ligada
 	elif asked.contains("stress=ctl"):

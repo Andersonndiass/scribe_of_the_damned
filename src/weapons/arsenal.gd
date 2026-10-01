@@ -26,6 +26,9 @@ var _windup := PackedFloat32Array()
 var _draw_left: float = 0.0
 ## Raio da Bíblia (um só: só a arma ativa ataca).
 var beam: BeamWeapon
+## Rosário e Turíbulo (017 Fase 5).
+var orbit: OrbitWeapon
+var swing: SwingTrailWeapon
 
 
 func _ready() -> void:
@@ -37,6 +40,12 @@ func _ready() -> void:
 	beam = BeamWeapon.new()
 	beam.name = "Beam"
 	add_child(beam)
+	orbit = OrbitWeapon.new()
+	orbit.name = "Orbit"
+	add_child(orbit)
+	swing = SwingTrailWeapon.new()
+	swing.name = "Swing"
+	add_child(swing)
 
 
 func current() -> Loadout:
@@ -73,6 +82,8 @@ func _physics_process(delta: float) -> void:
 	if not enabled or projectiles == null or lo == null:
 		if beam != null:
 			beam.release()
+			orbit.release()
+			swing.stop_swing()
 		return
 	if _timers.size() < lo.slots.size():
 		_timers.resize(lo.slots.size())
@@ -80,6 +91,8 @@ func _physics_process(delta: float) -> void:
 		_windup.fill(-1.0)
 	_draw_left = maxf(0.0, _draw_left - delta)
 	var beaming: bool = false
+	var orbiting: bool = false
+	var swinging: bool = false
 	for i: int in lo.slots.size():
 		var slot: WeaponSlot = lo.slots[i]
 		if slot == null:
@@ -93,7 +106,15 @@ func _physics_process(delta: float) -> void:
 			_hold_beam(slot, interval)
 			beaming = true
 			continue
+		if slot.weapon.pattern == &"orbit":
+			orbit.hold(origin.global_position, slot.stats(), slot.weapon, _interval_mul(), delta)
+			orbiting = true
+			continue
 		_timers[i] += delta
+		if slot.weapon.pattern == &"swing_trail":
+			swinging = true
+			_tick_swing(i, slot, interval, delta)
+			continue
 		if slot.weapon.windup > 0.0:
 			_tick_windup(i, slot, interval, delta)
 			continue
@@ -102,7 +123,33 @@ func _physics_process(delta: float) -> void:
 			_fire(slot)
 	if not beaming:
 		beam.release()
+	if not orbiting:
+		orbit.release()
+	if not swinging and swing.is_swinging():
+		swing.stop_swing()  # a cabeça some na troca; o rastro no chão continua
 	_update_charge(lo)
+
+
+func _interval_mul() -> float:
+	return RunStats.of(data).value(&"weapon_interval_mul") if data != null else 1.0
+
+
+## Turíbulo: pronto e com inimigo ao alcance do balanço, balança para o lado dele; senão espera.
+func _tick_swing(i: int, slot: WeaponSlot, interval: float, delta: float) -> void:
+	var center: Vector2 = origin.global_position
+	if swing.is_swinging():
+		swing.swing_tick(center, delta)
+		return
+	_timers[i] = minf(_timers[i], interval)
+	if _timers[i] < interval:
+		return
+	var s: WeaponLevelData = slot.stats()
+	var target: Vector2 = EnemyQuery.nearest(center, s.range + slot.weapon.head_radius)
+	if target == Vector2.INF:
+		return
+	_timers[i] = 0.0
+	swing.start_swing(center, target - center, s, slot.weapon, _interval_mul())
+	fired.emit(target)
 
 
 ## Recarga para o HUD (T1800): rajada = tempo/intervalo; raio e antecipação = pronta; a ativa no
@@ -113,7 +160,7 @@ func _update_charge(lo: Loadout) -> void:
 		if slot == null:
 			continue
 		var c: float = clampf(_timers[i] / interval_of(slot), 0.0, 1.0)
-		if slot.weapon.pattern == &"beam" or _windup[i] >= 0.0:
+		if slot.weapon.pattern == &"beam" or slot.weapon.pattern == &"orbit" or _windup[i] >= 0.0:
 			c = 1.0
 		if i == lo.active and _draw_left > 0.0 and tuning.swap_draw_time > 0.0:
 			c = minf(c, 1.0 - _draw_left / tuning.swap_draw_time)
@@ -153,6 +200,8 @@ func _fire(slot: WeaponSlot) -> bool:
 	match slot.weapon.pattern:
 		&"burst":
 			return _fire_burst(slot)
+		&"fan":
+			return _fire_fan(slot)
 	return false
 
 
@@ -176,4 +225,27 @@ func _fire_burst(slot: WeaponSlot) -> bool:
 		fired.emit(targets[0])
 		if w.fire_shake_px > 0.0:
 			EventBus.shake_requested.emit(w.fire_shake_px, w.fire_shake_time)
+	return any
+
+
+## Aspersório (017 T1738): leque de `count` gotas em `spread_deg` para onde se mira (mouse ou
+## movimento); só com inimigo ao alcance. As gotas não atravessam.
+func _fire_fan(slot: WeaponSlot) -> bool:
+	var w: WeaponData = slot.weapon
+	var s: WeaponLevelData = slot.stats()
+	var from: Vector2 = origin.global_position + w.muzzle
+	if EnemyQuery.nearest(from, s.range) == Vector2.INF:
+		return false
+	var facing: Variant = origin.get(&"facing")
+	var dir: Vector2 = Aim.direction(from, facing if facing is Vector2 else Vector2.RIGHT)
+	var spread: float = deg_to_rad(s.spread_deg)
+	var radius: float = s.width / 2.0 if s.width > 0.0 else PlayerProjectileManager.HIT_RADIUS
+	var any: bool = false
+	for k: int in s.count:
+		var t: float = 0.5 if s.count == 1 else float(k) / float(s.count - 1)
+		var d: Vector2 = dir.rotated(-spread / 2.0 + spread * t)
+		if projectiles.fire(from, d, s.speed, s.damage, s.range * w.travel_mul, w.projectile_kind, radius, s.pierce):
+			any = true
+	if any:
+		fired.emit(from + dir * s.range)
 	return any

@@ -7,15 +7,17 @@ extends Node2D
 
 const CAPACITY := 200
 const HIT_RADIUS := 3.0
-## Visual por `WeaponData.projectile_kind` (0 = gota de tinta, 1 = crucifixo). O crucifixo fica
+## Visual por `WeaponData.projectile_kind` (0 = gota de tinta, 1 = crucifixo, 2 = gota de água benta). O crucifixo fica
 ## sempre de pé (design-agent) e deixa 1 silhueta INK_SOFT atrás.
 const TEXTURES: Array[Texture2D] = [
 	preload("res://assets/placeholders/prj_ink_drop.tres"),
 	preload("res://assets/placeholders/prj_crucifix.png"),
+	preload("res://assets/placeholders/prj_holy_drop.png"),
 ]
 const TRAILS: Array[Texture2D] = [
 	null,
 	preload("res://assets/placeholders/prj_crucifix_trail.png"),
+	null,
 ]
 ## Distância da silhueta do rastro atrás do projétil (px).
 const TRAIL_GAP := 6.0

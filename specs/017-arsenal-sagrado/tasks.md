@@ -54,10 +54,12 @@
 **Checkpoint 017-D:** ✅ 2026-10-01 — selos de arma/status/ímã, loja de armas e ímã reverso (D-091); GUT 513/513.
 
 ## Fase 5 — Rosário, Turíbulo, Aspersório
-- **T1736** `OrbitWeapon` + Rosário.
-- **T1737** `SwingTrailWeapon` + Turíbulo.
-- **T1738** `FanWeapon` + Aspersório.
-- **T1739** `?stress=arsenal`.
+- ✅ **T1736** `OrbitWeapon` + Rosário.
+- ✅ **T1737** `SwingTrailWeapon` + Turíbulo.
+- ✅ **T1738** `FanWeapon` + Aspersório.
+- ✅ **T1739** `?stress=arsenal`.
+
+**Checkpoint 017-E:** ✅ 2026-10-01 — Rosário, Turíbulo e Aspersório jogáveis e na loja (D-092); `?stress=arsenal` 60 FPS no desktop (p95 54,9); GUT 517/517.
 
 ## Fase 6 — Palavras ultimate, ritmo e fechamento
 - **T1740** Palavras ×1,5 área / ×2,5 dano; `word_feel` (hit-stop 100 ms, shake, flash); filtro do chefe 250/500; `champion_strike_frac` 0,5; letras por onda; Graça nova.

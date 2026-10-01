@@ -10,6 +10,8 @@ extends Node
 ##                 SWEEP_WINDOW s seguintes e repõe os inimigos (002 SC-202).
 ##   modo "bible": a carga do SC-001 e a Bíblia no nível 5 ligada, girando a mira pelo meio da
 ##                 multidão (017 SC-1703).
+##   modo "arsenal": a carga do SC-001 com Turíbulo e Rosário no nível 5, trocando a cada
+##                 ARSENAL_SWAP s (rastro de incenso no teto + contas; 017 T1739).
 ## Inimigos com HP enorme (não morrem) perseguem um alvo que gira no centro; o jogador fica num
 ## canto, sem ataque automático, invulnerável. Nada de gameplay é alterado nos .tres.
 
@@ -29,6 +31,8 @@ const SLOW_FRAME_MS := 33.0
 ## Modo bible: onde fica o escriba e a volta da mira (s).
 const BIBLE_PLAYER_AT := Vector2(220, 180)
 const BIBLE_AIM_PERIOD := 4.0
+const ARSENAL_SWAP := 2.0
+var _swap_left: float = 0.0
 ## Proporção da onda 9 (max_alive de wave_09.tres: 110/16/15/12/12), escalada para 300.
 const WAVE9_MIX: Array = [
 	["res://data/enemies/imp.tres", 200],
@@ -78,6 +82,14 @@ func setup(p_main: Node2D, p_mode: StringName = &"sc001") -> void:
 	_shot = load("res://data/projectiles/prj_page.tres")
 	_player.arsenal.enabled = false
 	_player.global_position = Vector2(40, 40)
+	if mode == &"arsenal":
+		for k: int in 2:
+			var w: WeaponData = load("res://data/weapons/%s.tres" % ["censer", "rosary"][k])
+			var ws := WeaponSlot.new(w)
+			ws.level = w.max_level()
+			GameState.loadout.slots[k] = ws
+		_player.arsenal.enabled = true
+		_player.global_position = BIBLE_PLAYER_AT
 	if mode == &"bible":
 		var bible: WeaponData = load("res://data/weapons/bible.tres")
 		var slot := WeaponSlot.new(bible)
@@ -129,6 +141,12 @@ func _physics_process(delta: float) -> void:
 	_time += delta
 	_target.global_position = Vector2(320, 180) + Vector2.RIGHT.rotated(_time * ORBIT_SPEED) * ORBIT_RADIUS
 	_player.vitals.iframes_left = 1.0
+	if mode == &"arsenal":
+		_player.global_position = BIBLE_PLAYER_AT
+		_swap_left -= delta
+		if _swap_left <= 0.0:
+			_swap_left = ARSENAL_SWAP
+			_player.arsenal.switch_to(1 - GameState.loadout.active)
 	if mode == &"bible":
 		_player.global_position = BIBLE_PLAYER_AT
 		GameState.aim_with_mouse = true

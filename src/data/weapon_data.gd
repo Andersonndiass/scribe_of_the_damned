@@ -33,6 +33,18 @@ extends Resource
 @export var fire_shake_time: float = 0.0
 ## Direções possíveis da mira (Bíblia 32: o raio em pixel inteiro não treme); 0 = livre.
 @export var aim_steps: int = 0
+@export_group("Turíbulo (swing_trail)")
+## Arco do balanço (°), alternando os lados (rules-agent T1700).
+@export var swing_arc_deg: float = 150.0
+## Duração de um balanço (animation-agent: 8 quadros de 50 ms).
+@export var swing_time: float = 0.4
+## Raio de acerto da cabeça do turíbulo (px).
+@export var head_radius: float = 6.0
+## Rastro de incenso: dano a cada `trail_tick` s; nuvem nova a cada `trail_every` s; teto de nuvens.
+@export var trail_tick: float = 0.5
+@export var trail_every: float = 0.1
+@export var trail_cap: int = 25
+@export_group("")
 ## Tabela explícita, um item por nível.
 @export var levels: Array[WeaponLevelData] = []
 
