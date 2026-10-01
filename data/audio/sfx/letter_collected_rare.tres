@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="SoundData" format=3]
 
 [ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_s5srb"]
-[ext_resource type="AudioStream" path="res://assets/audio/placeholders/sfx_letter_collected_rare.tres" id="2_a7qq0"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/letter_collected_rare.wav" id="2_a7qq0"]
 
 [resource]
 script = ExtResource("1_s5srb")

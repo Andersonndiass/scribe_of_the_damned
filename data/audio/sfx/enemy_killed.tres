@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="SoundData" format=3]
 
 [ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_sowka"]
-[ext_resource type="AudioStream" path="res://assets/audio/placeholders/sfx_enemy_killed.tres" id="2_j8poq"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/enemy_killed.wav" id="2_j8poq"]
 
 [resource]
 script = ExtResource("1_sowka")

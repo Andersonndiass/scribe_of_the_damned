@@ -8,7 +8,8 @@
   "loop": false,
   "prompt_en": "Short muffled monastery bell toll followed by a thick parchment page turning, medieval, no music.",
   "desc_pt": "Sino curto de mosteiro: a página vira e a onda começa.",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "wave_ended",
@@ -19,7 +20,8 @@
   "loop": false,
   "prompt_en": "Low resolving organ-like drone chord fading out slowly, like a page exhaling, church hall reverb, no melody.",
   "desc_pt": "Acorde grave que se resolve: a página respira.",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "chapter_completed",
@@ -30,73 +32,80 @@
   "loop": false,
   "prompt_en": "Brief deep choir of male voices singing a slow resolved chord in a stone church with long reverb, with one distant bell.",
   "desc_pt": "Coro breve e grave: o capítulo foi reescrito.",
-  "priority": 3
+  "priority": 3,
+  "generated": true
  },
  {
   "id": "enemy_killed",
   "event": "enemy_killed",
   "exists_in_event_map": true,
   "file": "assets/audio/sfx/enemy_killed.wav",
-  "duration_s": 0.3,
+  "duration_s": 0.24,
   "loop": false,
   "prompt_en": "Very short wet ink splash dissolving, a soft pop, under 0.3 seconds.",
   "desc_pt": "Morte genérica: tinta que se desfaz, curta.",
-  "priority": 1
+  "priority": 1,
+  "generated": true
  },
  {
   "id": "enemy_killed_imp",
   "event": "enemy_killed:imp",
   "exists_in_event_map": true,
   "file": "assets/audio/sfx/enemy_killed_imp.wav",
-  "duration_s": 0.5,
+  "duration_s": 0.24,
   "loop": false,
   "prompt_en": "Small high-pitched imp squeal that collapses into a wet ink blot splat.",
   "desc_pt": "Diabrete: guincho agudo que vira borrão de tinta.",
-  "priority": 1
+  "priority": 1,
+  "generated": true
  },
  {
   "id": "enemy_killed_moth",
   "event": "enemy_killed:moth",
   "exists_in_event_map": true,
   "file": "assets/audio/sfx/enemy_killed_moth.wav",
-  "duration_s": 0.4,
+  "duration_s": 0.24,
   "loop": false,
   "prompt_en": "Dry old paper crumbling and flaking apart with a tiny papery flutter.",
   "desc_pt": "Traça: papel seco se esfarelando.",
-  "priority": 1
+  "priority": 1,
+  "generated": true
  },
  {
   "id": "enemy_killed_gargoyle",
   "event": "enemy_killed:gargoyle",
   "exists_in_event_map": true,
   "file": "assets/audio/sfx/enemy_killed_gargoyle.wav",
-  "duration_s": 0.7,
+  "duration_s": 0.24,
   "loop": false,
   "prompt_en": "Heavy stone cracking and splitting with a short rubble collapse.",
   "desc_pt": "Gárgula: pedra rachando.",
-  "priority": 1
+  "priority": 1,
+  "generated": true
  },
  {
   "id": "enemy_killed_hollow_monk",
   "event": "enemy_killed:hollow_monk",
   "exists_in_event_map": true,
   "file": "assets/audio/sfx/enemy_killed_hollow_monk.wav",
-  "duration_s": 0.9,
+  "duration_s": 0.24,
   "loop": false,
   "prompt_en": "Deep hollow sigh of a robed ghost fading into nothing, airy and low, no words.",
   "desc_pt": "Monge Oco: suspiro grave que some.",
-  "priority": 1
+  "priority": 1,
+  "generated": true
  },
  {
   "id": "enemy_killed_ink_blot",
   "event": "enemy_killed:ink_blot",
   "exists_in_event_map": true,
   "file": "assets/audio/sfx/enemy_killed_ink_blot.wav",
-  "duration_s": 0.4,
+  "duration_s": 0.24,
   "loop": false,
   "prompt_en": "Thick heavy ink drop splashing on parchment with a wet slap.",
   "desc_pt": "Borrão: gota grossa espirrando.",
-  "priority": 1
+  "priority": 1,
+  "generated": true
  },
  {
   "id": "champion_killed",
@@ -107,7 +116,8 @@
   "loop": false,
   "prompt_en": "Strong sharp crack followed by the echo of a cracked church bell ringing out.",
   "desc_pt": "Campeão: estalo forte e eco de sino rachado.",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "player_damaged",
@@ -118,7 +128,8 @@
   "loop": false,
   "prompt_en": "A candle flame snuffed out by a dry puff of breath with a short wick sizzle.",
   "desc_pt": "Vela apagando: sopro seco e chiado de pavio.",
-  "priority": 1
+  "priority": 1,
+  "generated": true
  },
  {
   "id": "player_healed",
@@ -129,7 +140,8 @@
   "loop": false,
   "prompt_en": "A match strike then a small candle flame catching and flickering warmly.",
   "desc_pt": "Vela acendendo: fósforo e chama.",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "player_died",
@@ -140,7 +152,8 @@
   "loop": false,
   "prompt_en": "Many candles being snuffed out one after another, then a heavy hollow silence with a low stone-hall rumble.",
   "desc_pt": "Morte do escriba: todas as velas se apagam.",
-  "priority": 3
+  "priority": 3,
+  "generated": true
  },
  {
   "id": "letter_dropped",
@@ -151,7 +164,8 @@
   "loop": false,
   "prompt_en": "Light single ink droplet landing on parchment, soft plip.",
   "desc_pt": "Letra caindo: pingo de tinta leve.",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "letter_dropped_rare",
@@ -162,40 +176,44 @@
   "loop": false,
   "prompt_en": "Ink droplet landing with a bright metallic golden shimmer ring.",
   "desc_pt": "Vogal rara caindo: pingo com brilho metálico.",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "letter_collected",
   "event": "letter_collected",
   "exists_in_event_map": true,
   "file": "assets/audio/sfx/letter_collected.wav",
-  "duration_s": 0.25,
+  "duration_s": 0.24,
   "loop": false,
   "prompt_en": "Very short quill nib scratching a single stroke on parchment.",
   "desc_pt": "Coleta: pena riscando o pergaminho, bem curta.",
-  "priority": 1
+  "priority": 1,
+  "generated": true
  },
  {
   "id": "letter_collected_rare",
   "event": "letter_collected:rare",
   "exists_in_event_map": true,
   "file": "assets/audio/sfx/letter_collected_rare.wav",
-  "duration_s": 0.5,
+  "duration_s": 0.24,
   "loop": false,
   "prompt_en": "Short quill scratch on parchment followed by a small golden coin chime.",
   "desc_pt": "Coleta rara: risco de pena e tilintar de ouro.",
-  "priority": 1
+  "priority": 1,
+  "generated": true
  },
  {
   "id": "letter_rejected",
   "event": "letter_rejected",
   "exists_in_event_map": true,
   "file": "assets/audio/sfx/letter_rejected.wav",
-  "duration_s": 0.3,
+  "duration_s": 0.24,
   "loop": false,
   "prompt_en": "Dry short wooden knock, dull thunk, refusal.",
   "desc_pt": "Recusa (atril cheio): batida seca de madeira.",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "letter_eaten",
@@ -206,18 +224,20 @@
   "loop": false,
   "prompt_en": "Tiny insect chewing on paper, crunchy nibbling sounds.",
   "desc_pt": "Traça comendo a letra: mastigar de papel.",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "gold_ink_collected",
   "event": "gold_ink_collected",
   "exists_in_event_map": true,
   "file": "assets/audio/sfx/gold_ink_collected.wav",
-  "duration_s": 0.4,
+  "duration_s": 0.24,
   "loop": false,
   "prompt_en": "A few small gold coins tinkling together, bright and short.",
   "desc_pt": "Tinta dourada: moedas pequenas.",
-  "priority": 1
+  "priority": 1,
+  "generated": true
  },
  {
   "id": "atril_valid",
@@ -228,7 +248,8 @@
   "loop": false,
   "prompt_en": "Soft sustained single pipe organ note with gentle swell, church, pure tone.",
   "desc_pt": "Palavra pronta no atril: nota sustentada de órgão.",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "word_cast",
@@ -239,7 +260,8 @@
   "loop": false,
   "prompt_en": "A Latin word whispered by a hushed choir with a soft magical whoosh, church reverb, no intelligible lyrics.",
   "desc_pt": "Conjuração genérica: palavra latina sussurrada em coro.",
-  "priority": 1
+  "priority": 1,
+  "generated": true
  },
  {
   "id": "word_cast_lux",
@@ -250,7 +272,8 @@
   "loop": false,
   "prompt_en": "Crystalline buzzing beam of light zapping forward, bright glassy hum with a short choir breath.",
   "desc_pt": "LUX: raio de luz, zunido cristalino.",
-  "priority": 1
+  "priority": 1,
+  "generated": true
  },
  {
   "id": "word_cast_pax",
@@ -261,7 +284,8 @@
   "loop": false,
   "prompt_en": "Deep low pressure wave pushing outward, soft airy whoosh with a sub thump.",
   "desc_pt": "PAX: onda grave que empurra, sopro.",
-  "priority": 1
+  "priority": 1,
+  "generated": true
  },
  {
   "id": "word_cast_crux",
@@ -272,7 +296,8 @@
   "loop": false,
   "prompt_en": "Heavy wooden stake driven into the ground with a solid thud and splintering.",
   "desc_pt": "CRUX: madeira cravada no chão.",
-  "priority": 1
+  "priority": 1,
+  "generated": true
  },
  {
   "id": "word_cast_vita",
@@ -283,7 +308,8 @@
   "loop": false,
   "prompt_en": "A returning deep breath followed by a clear small bell, warm and soothing.",
   "desc_pt": "VITA: respiração que volta, sino claro.",
-  "priority": 1
+  "priority": 1,
+  "generated": true
  },
  {
   "id": "word_cast_aqua",
@@ -294,7 +320,8 @@
   "loop": false,
   "prompt_en": "Water splashing and spreading across a stone floor, liquid wash.",
   "desc_pt": "AQUA: água se espalhando.",
-  "priority": 1
+  "priority": 1,
+  "generated": true
  },
  {
   "id": "word_cast_ignis",
@@ -305,7 +332,8 @@
   "loop": false,
   "prompt_en": "Fire catching and spreading on dry parchment, crackling whoosh of flame.",
   "desc_pt": "IGNIS: fogo pegando no pergaminho.",
-  "priority": 1
+  "priority": 1,
+  "generated": true
  },
  {
   "id": "word_cast_mortis",
@@ -316,7 +344,8 @@
   "loop": false,
   "prompt_en": "Low choir wave rolling out with a funeral bell tolling, ominous, church reverb.",
   "desc_pt": "MORTIS: coro grave em onda, sino fúnebre.",
-  "priority": 1
+  "priority": 1,
+  "generated": true
  },
  {
   "id": "combo_cast",
@@ -327,7 +356,8 @@
   "loop": false,
   "prompt_en": "Unison choir chord with a powerful magical impact boom, church reverb.",
   "desc_pt": "Combo genérico: coro em uníssono e impacto.",
-  "priority": 1
+  "priority": 1,
+  "generated": true
  },
  {
   "id": "combo_cast_vapor",
@@ -338,7 +368,8 @@
   "loop": false,
   "prompt_en": "Hissing steam as water hits hot fire, a rolling cloud of mist.",
   "desc_pt": "VAPOR: chiado de água no fogo, névoa.",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "combo_cast_flamma",
@@ -349,7 +380,8 @@
   "loop": false,
   "prompt_en": "Zapping beam of light with a roaring fire trailing along its line.",
   "desc_pt": "FLAMMA: raio e fogo rugindo ao longo da linha.",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "combo_cast_caecitas",
@@ -360,7 +392,8 @@
   "loop": false,
   "prompt_en": "Blinding high-pitched flash with a ringing whine, swelling then fading.",
   "desc_pt": "CAECITAS: clarão agudo que ofusca, zumbido.",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "combo_cast_martyrium",
@@ -371,7 +404,8 @@
   "loop": false,
   "prompt_en": "Golden laser-like holy beam spinning around with a high choir rising, sustained.",
   "desc_pt": "MARTYRIUM: laser dourado girando, coro alto.",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "combo_cast_requiem",
@@ -382,7 +416,8 @@
   "loop": false,
   "prompt_en": "Requiem choir rolling in a wave with many church bells ringing, vast reverb.",
   "desc_pt": "REQUIEM: coro de réquiem em onda, muitos sinos.",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "heresy_committed",
@@ -393,7 +428,8 @@
   "loop": false,
   "prompt_en": "Out-of-tune choir screech with a dirty wet ink splat crack.",
   "desc_pt": "Heresia: coro desafinado e estalo sujo de tinta.",
-  "priority": 1
+  "priority": 1,
+  "generated": true
  },
  {
   "id": "atril_purged",
@@ -404,18 +440,20 @@
   "loop": false,
   "prompt_en": "Loose paper scraps rustling and scattering back onto the floor.",
   "desc_pt": "Purge: letras sacudidas de volta ao chão.",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "combo_window_opened",
   "event": "combo_window_opened",
   "exists_in_event_map": true,
   "file": "assets/audio/sfx/combo_window_opened.wav",
-  "duration_s": 0.5,
+  "duration_s": 0.24,
   "loop": false,
   "prompt_en": "Single tick of an hourglass, tiny grains of sand, soft clock click.",
   "desc_pt": "Janela de combo aberta: tique de relógio de areia.",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "cs_fire",
@@ -426,7 +464,8 @@
   "loop": true,
   "prompt_en": "Muffled crackling fire dying out slowly in a stone room, loopable.",
   "desc_pt": "C1-01: fogo abafado que apaga, loop.",
-  "priority": 3
+  "priority": 3,
+  "generated": true
  },
  {
   "id": "cs_chest",
@@ -437,7 +476,8 @@
   "loop": false,
   "prompt_en": "Old iron chest creaking open with rattling chains.",
   "desc_pt": "C1-01: arca de ferro rangendo, correntes.",
-  "priority": 3
+  "priority": 3,
+  "generated": true
  },
  {
   "id": "cs_page",
@@ -448,7 +488,8 @@
   "loop": false,
   "prompt_en": "Large thick parchment page turning with a heavy papery swoosh.",
   "desc_pt": "Virada de página grande, papel grosso.",
-  "priority": 3
+  "priority": 3,
+  "generated": true
  },
  {
   "id": "cs_thud",
@@ -459,7 +500,8 @@
   "loop": false,
   "prompt_en": "Muffled body thud landing on thick paper, soft dull impact.",
   "desc_pt": "C1-02: Anselmo cai na página.",
-  "priority": 3
+  "priority": 3,
+  "generated": true
  },
  {
   "id": "cs_erase",
@@ -470,7 +512,8 @@
   "loop": false,
   "prompt_en": "Rough scratchy quill scraping to erase ink from parchment.",
   "desc_pt": "C1-03: risco de pena rasurando, áspero.",
-  "priority": 3
+  "priority": 3,
+  "generated": true
  },
  {
   "id": "cs_gnaw",
@@ -481,7 +524,8 @@
   "loop": false,
   "prompt_en": "Moth gnawing on paper, dry crackling crunches.",
   "desc_pt": "C1-04: traça roendo papel.",
-  "priority": 3
+  "priority": 3,
+  "generated": true
  },
  {
   "id": "word_cast_fides",
@@ -492,7 +536,8 @@
   "loop": false,
   "prompt_en": "Holy shield forming around the caster, a bright resonant bell hum with a soft metallic shimmer and a choir breath.",
   "desc_pt": "FIDES: escudo sagrado (apócrifo) que absorve um golpe",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "word_cast_lumen",
@@ -503,7 +548,8 @@
   "loop": false,
   "prompt_en": "Warm glowing light blooming with a soft sustained shimmering hum and a gentle magnetic pull swirl.",
   "desc_pt": "LUMEN: luz que atrai as letras por 10 s",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "word_cast_verbum",
@@ -514,7 +560,8 @@
   "loop": false,
   "prompt_en": "Echoing whispered word repeating like a cathedral echo, ethereal reverb trail with a soft chime.",
   "desc_pt": "VERBUM: eco da última palavra",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "word_cast_purgo",
@@ -525,7 +572,8 @@
   "loop": false,
   "prompt_en": "Powerful cleansing sweeping wave of white noise and a choir burst wiping the page clean, huge shockwave.",
   "desc_pt": "PURGO: limpa tudo na tela",
-  "priority": 1
+  "priority": 1,
+  "generated": true
  },
  {
   "id": "word_cast_gloria",
@@ -536,7 +584,8 @@
   "loop": false,
   "prompt_en": "Triumphant radiant choir swelling upward with golden sparkling shimmer, brief and uplifting.",
   "desc_pt": "GLORIA: bênção que amplia o dano por 6 s",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "word_cast_sanctus",
@@ -547,7 +596,8 @@
   "loop": false,
   "prompt_en": "Sacred field erupting, deep choir drone with a ringing bell circle and a low humming aura.",
   "desc_pt": "SANCTUS: zona sagrada que fere e retarda",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "word_cast_dominus",
@@ -558,7 +608,8 @@
   "loop": false,
   "prompt_en": "Gigantic divine hammer blow with a booming impact, cracking stone and a deep bass choir hit.",
   "desc_pt": "DOMINUS: martelo divino, atordoa e fere",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "word_cast_angelus",
@@ -569,7 +620,8 @@
   "loop": false,
   "prompt_en": "Angelic wings fluttering with shimmering chimes and a soft ascending choir, circling swirl.",
   "desc_pt": "ANGELUS: anjos que orbitam ao redor",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "word_cast_spiritus",
@@ -580,7 +632,8 @@
   "loop": false,
   "prompt_en": "Rushing spirit wind surging in a whirlwind with whispering voices, fast swirl and airy rise.",
   "desc_pt": "SPIRITUS: sopro do espírito, vento veloz",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "word_cast_salvator",
@@ -591,7 +644,8 @@
   "loop": false,
   "prompt_en": "Heavenly radiant burst with a rising choir and bright bells, warm healing wave.",
   "desc_pt": "SALVATOR: cura três velas e limpa projéteis",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "word_cast_miserere",
@@ -602,7 +656,8 @@
   "loop": false,
   "prompt_en": "Massive solemn choir crying out with a thunderous tolling bell, overwhelming holy shockwave.",
   "desc_pt": "MISERERE: julgamento supremo, perdoa a heresia",
-  "priority": 1
+  "priority": 1,
+  "generated": true
  },
  {
   "id": "weapon_pen_fire",
@@ -613,7 +668,8 @@
   "loop": false,
   "prompt_en": "Quick light quill flick launching a tiny ink dart, swish with a faint wet tick.",
   "desc_pt": "Pena: disparo do dardo de tinta (muito frequente).",
-  "priority": 1
+  "priority": 1,
+  "generated": true
  },
  {
   "id": "weapon_pen_hit",
@@ -624,7 +680,8 @@
   "loop": false,
   "prompt_en": "Tiny ink splat on hit, small wet tick.",
   "desc_pt": "Pena: acerto do dardo.",
-  "priority": 1
+  "priority": 1,
+  "generated": true
  },
  {
   "id": "weapon_bible_start",
@@ -635,7 +692,8 @@
   "loop": false,
   "prompt_en": "Quick rising holy light ignition, bright swell whoosh into a beam.",
   "desc_pt": "Bíblia: início do raio.",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "weapon_bible_loop",
@@ -646,7 +704,8 @@
   "loop": true,
   "prompt_en": "Continuous holy light ray hum loop, sustained bright choir-like drone with a soft crackle, seamless loop.",
   "desc_pt": "Bíblia: raio contínuo em loop (toca enquanto o raio existe).",
-  "priority": 1
+  "priority": 1,
+  "generated": true
  },
  {
   "id": "weapon_bible_hit",
@@ -657,7 +716,8 @@
   "loop": false,
   "prompt_en": "Sizzling holy light burning a small enemy, short searing crackle.",
   "desc_pt": "Bíblia: acerto do raio (chiado de queima).",
-  "priority": 1
+  "priority": 1,
+  "generated": true
  },
  {
   "id": "weapon_crucifix_windup",
@@ -668,7 +728,8 @@
   "loop": false,
   "prompt_en": "Wooden crucifix raised with a rising metallic tension shimmer, anticipation.",
   "desc_pt": "Crucifixo: antecipação do arremesso.",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "weapon_crucifix_fire",
@@ -679,7 +740,8 @@
   "loop": false,
   "prompt_en": "Heavy wooden cross hurled forward with a powerful whoosh and low thud launch.",
   "desc_pt": "Crucifixo: disparo do projétil pesado.",
-  "priority": 1
+  "priority": 1,
+  "generated": true
  },
  {
   "id": "weapon_crucifix_hit",
@@ -690,7 +752,8 @@
   "loop": false,
   "prompt_en": "Heavy wood cross smashing through an enemy with a crunchy impact and a faint holy ring.",
   "desc_pt": "Crucifixo: acerto que atravessa.",
-  "priority": 1
+  "priority": 1,
+  "generated": true
  },
  {
   "id": "weapon_switched",
@@ -701,7 +764,8 @@
   "loop": false,
   "prompt_en": "Quick swap of a sacred object, soft leather and wood handling with a small metal click.",
   "desc_pt": "Troca de arma (teclas 1/2).",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "weapon_equipped",
@@ -712,7 +776,8 @@
   "loop": false,
   "prompt_en": "New holy relic equipped, bright short chime with cloth rustle.",
   "desc_pt": "Arma equipada (nova arma).",
-  "priority": 3
+  "priority": 3,
+  "generated": true
  },
  {
   "id": "weapon_leveled",
@@ -723,7 +788,8 @@
   "loop": false,
   "prompt_en": "Bright ascending small shimmer of bells, upgrade sparkle, short.",
   "desc_pt": "Arma subiu de nível.",
-  "priority": 3
+  "priority": 3,
+  "generated": true
  },
  {
   "id": "weapon_ready",
@@ -734,7 +800,8 @@
   "loop": false,
   "prompt_en": "Tiny soft click chime as a weapon becomes ready.",
   "desc_pt": "Recarga da arma pronta (opcional).",
-  "priority": 3
+  "priority": 3,
+  "generated": true
  },
  {
   "id": "grace_gained",
@@ -745,7 +812,8 @@
   "loop": false,
   "prompt_en": "Tiny wax-like droplet chime, very soft sparkle tick, pleasant.",
   "desc_pt": "Graça ganha: tique leve.",
-  "priority": 1
+  "priority": 1,
+  "generated": true
  },
  {
   "id": "grace_leveled",
@@ -756,7 +824,8 @@
   "loop": false,
   "prompt_en": "Bell shimmer rising with a warm choir swell, level-up blessing earned.",
   "desc_pt": "Graça subiu de nível.",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "seals_shown",
@@ -767,7 +836,8 @@
   "loop": false,
   "prompt_en": "Three wax seals stamped onto parchment one after another with heavy wax thumps and a soft choir pad.",
   "desc_pt": "Selos aparecem na tela.",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "blessing_chosen",
@@ -778,7 +848,8 @@
   "loop": false,
   "prompt_en": "Wax seal pressed firmly with a wet squish, then a resonant bell ring of blessing.",
   "desc_pt": "Bênção escolhida.",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "seals_hidden",
@@ -789,7 +860,8 @@
   "loop": false,
   "prompt_en": "Parchment rustle sweeping away, soft whoosh.",
   "desc_pt": "Selos somem.",
-  "priority": 3
+  "priority": 3,
+  "generated": true
  },
  {
   "id": "blessed_candle",
@@ -800,7 +872,8 @@
   "loop": false,
   "prompt_en": "Candle lighting with a warm flame whoosh and small bell chime.",
   "desc_pt": "Vela da bênção (+1 vela máx.).",
-  "priority": 3
+  "priority": 3,
+  "generated": true
  },
  {
   "id": "wax_drop_collected",
@@ -811,7 +884,8 @@
   "loop": false,
   "prompt_en": "Small wax drip dripping and solidifying, soft plop with a tiny high ping.",
   "desc_pt": "Pingo de cera coletado.",
-  "priority": 1
+  "priority": 1,
+  "generated": true
  },
  {
   "id": "shop_opened",
@@ -822,7 +896,8 @@
   "loop": false,
   "prompt_en": "Wooden shop door creaking open with a little hand bell jingle and parchment rustle.",
   "desc_pt": "Loja abre.",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "shop_closed",
@@ -833,7 +908,8 @@
   "loop": false,
   "prompt_en": "Heavy book closing with a soft thud and a wooden latch click.",
   "desc_pt": "Loja fecha.",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "item_bought",
@@ -844,7 +920,8 @@
   "loop": false,
   "prompt_en": "Coins dropped on a wooden counter with a clink followed by a seal stamp.",
   "desc_pt": "Compra realizada.",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "shop_denied",
@@ -855,7 +932,8 @@
   "loop": false,
   "prompt_en": "Dull wooden buzz with clinking empty purse, refusal, no money.",
   "desc_pt": "Sem dinheiro: recusa.",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "shop_rerolled",
@@ -866,7 +944,8 @@
   "loop": false,
   "prompt_en": "Quick shuffling of loose parchment sheets and coins.",
   "desc_pt": "Reroll da loja.",
-  "priority": 3
+  "priority": 3,
+  "generated": true
  },
  {
   "id": "shop_lock",
@@ -877,7 +956,8 @@
   "loop": false,
   "prompt_en": "Small iron padlock clicking shut.",
   "desc_pt": "Travar item da loja.",
-  "priority": 3
+  "priority": 3,
+  "generated": true
  },
  {
   "id": "ui_move",
@@ -888,7 +968,8 @@
   "loop": false,
   "prompt_en": "Tiny wooden tick, soft quill tap on parchment, extremely short UI cursor move.",
   "desc_pt": "Menu: mover cursor.",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "ui_confirm",
@@ -899,7 +980,8 @@
   "loop": false,
   "prompt_en": "Short firm wax seal press with a soft low thump, UI confirm.",
   "desc_pt": "Menu: confirmar.",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "ui_back",
@@ -910,7 +992,8 @@
   "loop": false,
   "prompt_en": "Soft page flip backward, light paper rustle, UI back.",
   "desc_pt": "Menu: voltar.",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "ui_pause",
@@ -921,7 +1004,8 @@
   "loop": false,
   "prompt_en": "Heavy book cover closing with a muffled hush as time stops.",
   "desc_pt": "Pausar.",
-  "priority": 3
+  "priority": 3,
+  "generated": true
  },
  {
   "id": "ui_unpause",
@@ -932,7 +1016,8 @@
   "loop": false,
   "prompt_en": "Book opening softly with a gentle whoosh, resuming.",
   "desc_pt": "Despausar.",
-  "priority": 3
+  "priority": 3,
+  "generated": true
  },
  {
   "id": "ui_options_open",
@@ -943,7 +1028,8 @@
   "loop": false,
   "prompt_en": "Parchment scroll unrolling quickly, short.",
   "desc_pt": "Abrir opções.",
-  "priority": 3
+  "priority": 3,
+  "generated": true
  },
  {
   "id": "ui_remap_key",
@@ -954,7 +1040,8 @@
   "loop": false,
   "prompt_en": "Quill tip tapping then a small stamp, keybinding set.",
   "desc_pt": "Remapear tecla.",
-  "priority": 3
+  "priority": 3,
+  "generated": true
  },
  {
   "id": "ui_slider",
@@ -965,7 +1052,8 @@
   "loop": false,
   "prompt_en": "Tiny wooden peg click sliding on a groove.",
   "desc_pt": "Ajuste de slider de volume.",
-  "priority": 3
+  "priority": 3,
+  "generated": true
  },
  {
   "id": "ui_codex_discovered",
@@ -976,7 +1064,8 @@
   "loop": false,
   "prompt_en": "Soft magical page shimmer with a single bright chime, discovery.",
   "desc_pt": "Verbete descoberto.",
-  "priority": 3
+  "priority": 3,
+  "generated": true
  },
  {
   "id": "ui_word_unlocked",
@@ -987,7 +1076,8 @@
   "loop": false,
   "prompt_en": "Rising sacred choir swell with a golden bell ring, word learned.",
   "desc_pt": "Palavra desbloqueada.",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "ui_restart",
@@ -998,7 +1088,8 @@
   "loop": false,
   "prompt_en": "A page being ripped out and replaced with a fast paper swish, restart.",
   "desc_pt": "Reiniciar partida.",
-  "priority": 3
+  "priority": 3,
+  "generated": true
  },
  {
   "id": "heresy_forgiven",
@@ -1009,7 +1100,8 @@
   "loop": false,
   "prompt_en": "Dissonance resolving into a pure gentle choir chord with a soft bell, absolution.",
   "desc_pt": "Heresia perdoada.",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "heresy_absolved",
@@ -1020,7 +1112,8 @@
   "loop": false,
   "prompt_en": "Soft release sigh with a clean chime, the stain lifting.",
   "desc_pt": "Heresia absolvida.",
-  "priority": 3
+  "priority": 3,
+  "generated": true
  },
  {
   "id": "shield_broken",
@@ -1031,7 +1124,8 @@
   "loop": false,
   "prompt_en": "Glass-like holy shield shattering with a bright crack and a metallic ring, bell shards.",
   "desc_pt": "Escudo FIDES quebrando.",
-  "priority": 1
+  "priority": 1,
+  "generated": true
  },
  {
   "id": "verbum_echoed",
@@ -1042,7 +1136,8 @@
   "loop": false,
   "prompt_en": "Whispered word echo repeating with reverb, ethereal double cast.",
   "desc_pt": "VERBUM ecoa a palavra anterior.",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "verbum_failed",
@@ -1053,7 +1148,8 @@
   "loop": false,
   "prompt_en": "Weak hollow whisper fizzling out, failed echo.",
   "desc_pt": "VERBUM falha.",
-  "priority": 3
+  "priority": 3,
+  "generated": true
  },
  {
   "id": "combo_window_closed",
@@ -1064,7 +1160,8 @@
   "loop": false,
   "prompt_en": "Soft dull sand-tick ending, the hourglass runs out.",
   "desc_pt": "Janela de combo fecha.",
-  "priority": 3
+  "priority": 3,
+  "generated": true
  },
  {
   "id": "atril_erase",
@@ -1075,7 +1172,8 @@
   "loop": false,
   "prompt_en": "Quill scratching out a letter violently from the lectern with a rough scrape.",
   "desc_pt": "Chefe apaga uma letra do atril.",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "erasure_warned",
@@ -1086,7 +1184,8 @@
   "loop": true,
   "prompt_en": "Low ominous scratching rasp warning loop, like an eraser approaching, creeping tension, seamless loop.",
   "desc_pt": "Aviso de apagamento (loop enquanto ativo).",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "letter_erased",
@@ -1097,7 +1196,8 @@
   "loop": false,
   "prompt_en": "Sharp scratch erasing a letter, ink fading with a wet drag.",
   "desc_pt": "Letra apagada.",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "boss_letters_burst",
@@ -1108,7 +1208,8 @@
   "loop": false,
   "prompt_en": "Burst of paper scraps and ink droplets exploding outward.",
   "desc_pt": "Chefe lança letras em explosão.",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "page_stage_changed",
@@ -1119,7 +1220,8 @@
   "loop": false,
   "prompt_en": "Old parchment page tearing and aging with crackling dry creaks and a low ominous rumble.",
   "desc_pt": "Página degrada (mudança de estágio).",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "page_degraded",
@@ -1130,7 +1232,8 @@
   "loop": false,
   "prompt_en": "Crumbling brittle paper cracking apart with a hollow rumble.",
   "desc_pt": "Página degradada.",
-  "priority": 3
+  "priority": 3,
+  "generated": true
  },
  {
   "id": "wave_closing",
@@ -1141,7 +1244,8 @@
   "loop": false,
   "prompt_en": "Ticking bell warning that time is nearly up, dull tolling twice.",
   "desc_pt": "Onda prestes a fechar.",
-  "priority": 3
+  "priority": 3,
+  "generated": true
  },
  {
   "id": "boss_spawned",
@@ -1152,7 +1256,8 @@
   "loop": false,
   "prompt_en": "Monstrous demon roar echoing in a cathedral with crashing deep bass, ominous arrival, growling vocalization allowed.",
   "desc_pt": "Asmodeus surge.",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "boss_telegraph_beam",
@@ -1163,7 +1268,8 @@
   "loop": false,
   "prompt_en": "Rising charging energy hum with a thin ominous whine, warning before a beam.",
   "desc_pt": "Telegrafia do raio (0,9 s).",
-  "priority": 1
+  "priority": 1,
+  "generated": true
  },
  {
   "id": "boss_attack_beam",
@@ -1174,7 +1280,8 @@
   "loop": false,
   "prompt_en": "Sharp burning dark-red demonic laser blast, a searing crack.",
   "desc_pt": "Raio do chefe dispara.",
-  "priority": 1
+  "priority": 1,
+  "generated": true
  },
  {
   "id": "boss_telegraph_double_beam",
@@ -1185,7 +1292,8 @@
   "loop": false,
   "prompt_en": "Two charging energy whines rising together in tension, ominous.",
   "desc_pt": "Telegrafia do raio duplo.",
-  "priority": 1
+  "priority": 1,
+  "generated": true
  },
  {
   "id": "boss_attack_double_beam",
@@ -1196,7 +1304,8 @@
   "loop": false,
   "prompt_en": "Two simultaneous searing demonic laser blasts, sharp crack with a wide hiss.",
   "desc_pt": "Raio duplo dispara.",
-  "priority": 1
+  "priority": 1,
+  "generated": true
  },
  {
   "id": "boss_telegraph_swipe",
@@ -1207,7 +1316,8 @@
   "loop": false,
   "prompt_en": "Quick scraping claw drawing back with a low growl-like rumble.",
   "desc_pt": "Telegrafia do golpe de garra.",
-  "priority": 1
+  "priority": 1,
+  "generated": true
  },
  {
   "id": "boss_attack_swipe",
@@ -1218,7 +1328,8 @@
   "loop": false,
   "prompt_en": "Fast clawed sweeping swipe whooshing through the air with a heavy thud.",
   "desc_pt": "Garra varre em arco.",
-  "priority": 1
+  "priority": 1,
+  "generated": true
  },
  {
   "id": "boss_telegraph_cross",
@@ -1229,7 +1340,8 @@
   "loop": false,
   "prompt_en": "Dark ritual energy building, heavy grinding stone with creaking wood, a rising hum.",
   "desc_pt": "Telegrafia da cruz giratória.",
-  "priority": 1
+  "priority": 1,
+  "generated": true
  },
  {
   "id": "boss_attack_cross_loop",
@@ -1240,7 +1352,8 @@
   "loop": true,
   "prompt_en": "Rotating wooden cross beams sweeping with a whooshing spin and low humming energy, seamless loop.",
   "desc_pt": "Cruz giratória ativa (loop, dura 5 s).",
-  "priority": 1
+  "priority": 1,
+  "generated": true
  },
  {
   "id": "boss_telegraph_summon",
@@ -1251,7 +1364,8 @@
   "loop": false,
   "prompt_en": "Dark ritual whispered chant bubbling with ink burbling.",
   "desc_pt": "Telegrafia da invocação.",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "boss_attack_summon",
@@ -1262,7 +1376,8 @@
   "loop": false,
   "prompt_en": "Ink blots bursting up from the page as demons materialize, wet squelch with demonic whispers.",
   "desc_pt": "Invocação de inimigos.",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "boss_telegraph_erasure",
@@ -1273,7 +1388,8 @@
   "loop": false,
   "prompt_en": "Ominous slow scraping rasp of a giant eraser, rising dread.",
   "desc_pt": "Telegrafia do apagamento.",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "boss_attack_erasure",
@@ -1284,7 +1400,8 @@
   "loop": false,
   "prompt_en": "Violent heavy eraser rubbing a circle on parchment, rough rasp with a dull thump.",
   "desc_pt": "Apagamento (círculo) acerta.",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "boss_damaged",
@@ -1295,7 +1412,8 @@
   "loop": false,
   "prompt_en": "Dull impact hit on a large demonic creature, meaty thud with a faint ink splash.",
   "desc_pt": "Chefe toma dano.",
-  "priority": 1
+  "priority": 1,
+  "generated": true
  },
  {
   "id": "boss_exposed",
@@ -1306,7 +1424,8 @@
   "loop": false,
   "prompt_en": "Demon stunned, dizzy groan with a descending tonal whine and a vulnerability chime.",
   "desc_pt": "Chefe exposto (janela de dano).",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "boss_stunned",
@@ -1317,7 +1436,8 @@
   "loop": false,
   "prompt_en": "Dizzy stunned groan and ringing, heavy stumble.",
   "desc_pt": "Chefe atordoado (DOMINUS).",
-  "priority": 3
+  "priority": 3,
+  "generated": true
  },
  {
   "id": "boss_phase_changed",
@@ -1328,7 +1448,8 @@
   "loop": false,
   "prompt_en": "Explosive demonic roar with ripping paper and crackling dark energy, dramatic transformation.",
   "desc_pt": "Troca de fase do chefe.",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "boss_defeated",
@@ -1339,7 +1460,8 @@
   "loop": false,
   "prompt_en": "Massive demon dying with a long descending roar, cracking and collapsing into ink, final church bell toll.",
   "desc_pt": "Chefe derrotado.",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "enemy_spawned",
@@ -1350,7 +1472,8 @@
   "loop": false,
   "prompt_en": "Tiny ink droplet surfacing and pooling, soft wet blip.",
   "desc_pt": "Inimigo nasce (leve).",
-  "priority": 1
+  "priority": 1,
+  "generated": true
  },
  {
   "id": "enemy_spawn_telegraph",
@@ -1361,7 +1484,8 @@
   "loop": false,
   "prompt_en": "Ink slowly pooling on parchment with a subtle growing murmur, warning.",
   "desc_pt": "Telegrafia de spawn.",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "champion_spawned",
@@ -1372,7 +1496,8 @@
   "loop": false,
   "prompt_en": "Ominous low horn-like growl with a cracked bell ring, elite arrival.",
   "desc_pt": "Campeão surge.",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "enemy_gargoyle_windup",
@@ -1383,7 +1508,8 @@
   "loop": false,
   "prompt_en": "Stone grinding crouch, gravelly creak before a lunge.",
   "desc_pt": "Gárgula prepara o dash.",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "enemy_gargoyle_dash",
@@ -1394,7 +1520,8 @@
   "loop": false,
   "prompt_en": "Heavy stone body lunging with a scraping rush and thud.",
   "desc_pt": "Gárgula investe em dash.",
-  "priority": 1
+  "priority": 1,
+  "generated": true
  },
  {
   "id": "enemy_monk_shot",
@@ -1405,7 +1532,8 @@
   "loop": false,
   "prompt_en": "Hollow ghostly shot of a dark ink projectile, short airy launch with a low whisper.",
   "desc_pt": "Monge Oco atira.",
-  "priority": 1
+  "priority": 1,
+  "generated": true
  },
  {
   "id": "enemy_ink_blot_puddle",
@@ -1416,7 +1544,8 @@
   "loop": false,
   "prompt_en": "Thick ink puddle spreading on parchment, wet slow splat and bubbling.",
   "desc_pt": "Borrão deixa poça.",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "enemy_hazard_tick",
@@ -1427,7 +1556,8 @@
   "loop": false,
   "prompt_en": "Sizzling acidic ink bubble burning lightly, tiny hiss.",
   "desc_pt": "Dano da poça (tique).",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "enemy_projectile_hit",
@@ -1438,7 +1568,8 @@
   "loop": false,
   "prompt_en": "Dark ink bolt smacking onto the player, wet dull impact.",
   "desc_pt": "Projétil inimigo acerta.",
-  "priority": 1
+  "priority": 1,
+  "generated": true
  },
  {
   "id": "magnet_push",
@@ -1449,18 +1580,32 @@
   "loop": false,
   "prompt_en": "Soft magnetic repulsion whoosh pushing small objects away, airy pulse.",
   "desc_pt": "Ímã reverso empurra letras (017).",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "letter_menu_open",
   "event": "letter_menu_opened",
-  "exists_in_event_map": false,
+  "exists_in_event_map": true,
   "file": "assets/audio/sfx/letter_menu_open.wav",
   "duration_s": 1.2,
   "loop": false,
   "prompt_en": "Time slowing down with a deep descending warp and a soft choir swell, slow-motion effect.",
   "desc_pt": "Menu da letra abre em câmera lenta.",
-  "priority": 1
+  "priority": 1,
+  "generated": true
+ },
+ {
+  "id": "letter_menu_open_rare",
+  "event": "letter_menu_opened:rare",
+  "exists_in_event_map": true,
+  "file": "assets/audio/sfx/letter_menu_open_rare.wav",
+  "duration_s": 1.2,
+  "loop": false,
+  "prompt_en": "Time slowing down with a deep descending warp and a soft wordless choir swell, topped by a bright shimmering golden metallic chime, slow-motion effect, no words.",
+  "desc_pt": "Menu da letra com vogal rara: o mesmo afundar do tempo + brilho metálico de ouro.",
+  "priority": 1,
+  "generated": true
  },
  {
   "id": "letter_menu_tick",
@@ -1471,7 +1616,8 @@
   "loop": true,
   "prompt_en": "Slow muted heartbeat-like ticking of an hourglass under slow motion, seamless loop.",
   "desc_pt": "Contagem de 2,5 s no menu da letra (loop).",
-  "priority": 3
+  "priority": 3,
+  "generated": true
  },
  {
   "id": "letter_menu_move",
@@ -1482,7 +1628,8 @@
   "loop": false,
   "prompt_en": "Tiny quill tap tick, soft cursor movement.",
   "desc_pt": "Mover entre opções da letra.",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "letter_menu_choose",
@@ -1493,18 +1640,20 @@
   "loop": false,
   "prompt_en": "Quill stroke writing a single letter with a bright chime, time resuming with a speed-up whoosh.",
   "desc_pt": "Letra escolhida; tempo volta.",
-  "priority": 1
+  "priority": 1,
+  "generated": true
  },
  {
   "id": "letter_menu_lost",
-  "event": "letter_menu_expired",
-  "exists_in_event_map": false,
+  "event": "letter_lost",
+  "exists_in_event_map": true,
   "file": "assets/audio/sfx/letter_menu_lost.wav",
   "duration_s": 0.8,
   "loop": false,
   "prompt_en": "Ink blot fading away with a hollow disappointed sigh, missed opportunity.",
   "desc_pt": "Letra perdida por tempo.",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "potion_drink_generic",
@@ -1515,7 +1664,8 @@
   "loop": false,
   "prompt_en": "Liquid gulp from a small glass vial with a soft cork pop and swallow.",
   "desc_pt": "Beber poção (genérico).",
-  "priority": 1
+  "priority": 1,
+  "generated": true
  },
  {
   "id": "potion_1_healing",
@@ -1526,7 +1676,8 @@
   "loop": false,
   "prompt_en": "Gulp from a glass vial followed by a warm rising bell and candle flame flare, healing.",
   "desc_pt": "Poção 1: cura.",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "potion_2_ink",
@@ -1537,7 +1688,8 @@
   "loop": false,
   "prompt_en": "Gulp followed by ink swirling and bubbling with a dark magical whoosh.",
   "desc_pt": "Poção 2: tinta.",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "potion_3_speed",
@@ -1548,7 +1700,8 @@
   "loop": false,
   "prompt_en": "Gulp followed by a fast wind swish and quick rising shimmer, swiftness.",
   "desc_pt": "Poção 3: velocidade.",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "potion_4_shield",
@@ -1559,7 +1712,8 @@
   "loop": false,
   "prompt_en": "Gulp followed by a crisp resonant bell ring and glassy shimmer, protection.",
   "desc_pt": "Poção 4: proteção.",
-  "priority": 2
+  "priority": 2,
+  "generated": true
  },
  {
   "id": "potion_empty",
@@ -1570,7 +1724,8 @@
   "loop": false,
   "prompt_en": "Empty vial clink with a dull refusal tick.",
   "desc_pt": "Poção sem estoque.",
-  "priority": 3
+  "priority": 3,
+  "generated": true
  },
  {
   "id": "gold_spent",
@@ -1581,7 +1736,8 @@
   "loop": false,
   "prompt_en": "Coins falling out of a purse with a light clink.",
   "desc_pt": "Gasto de tinta dourada.",
-  "priority": 3
+  "priority": 3,
+  "generated": true
  },
  {
   "id": "cutscene_skipped",
@@ -1592,6 +1748,7 @@
   "loop": false,
   "prompt_en": "Quick page flick fast-forward, light paper whoosh.",
   "desc_pt": "Pular cutscene.",
-  "priority": 3
+  "priority": 3,
+  "generated": true
  }
 ]

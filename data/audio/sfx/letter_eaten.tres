@@ -1,11 +1,13 @@
 [gd_resource type="Resource" script_class="SoundData" format=3]
 
 [ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_griep"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/letter_eaten.wav" id="2_strm"]
 
 [resource]
 script = ExtResource("1_griep")
 id = &"letter_eaten"
 event = &"letter_eaten"
+stream = ExtResource("2_strm")
 max_voices = 2
 cooldown_ms = 80
 priority = 0
