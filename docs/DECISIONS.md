@@ -660,7 +660,7 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
 - **Teste:** `tests/integration/test_audio_events_018.gd`.
 - **Opções e menu:** linha FALAS nas Opções (volume do `Voice`); passa-baixa de 1,2 kHz na música com o menu da letra aberto.
 - **Pendente:**
-  - 13 falas em latim: o autor roda `! python -m uv tool run --from elevenlabs-mcp python tools/gen_latin_voices.py` e depois `--import`. O script pula as que já existem e lê a chave da configuração local, nunca do repositório;
+  - ~~13 falas em latim~~: geradas pelo autor com `tools/gen_latin_voices.py` (2026-10-01); as 24 palavras e a heresia têm voz;
   - camadas 2–3 da música (plano pago).
 
 ## Conflitos abertos

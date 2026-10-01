@@ -34,7 +34,7 @@ Roguelite 2D de ação em pixel art, feito em **Godot 4.7.2**. Ano de 1348, o an
 | 017 | Arsenal sagrado (6 armas, inventário de 2, menu da letra, ímã reverso, palavras como ultimate) | ✅ |
 | T1800 | HUD novo (painéis em pixel art, recarga das armas) | ✅ |
 | 018 | Poções (Óleo da Unção, Água Benta, Vinho do Fervor, Tinta Iluminada), subir de nível com feixe de luz e câmera lenta, passada de ritmo | ✅ Complete (Crucifixo mais rápido, loja mais barata no fim, onda 1 mais leve, mais letras na onda 9; D-096) |
-| 009 | Áudio (efeitos e falas via ElevenLabs) | ✅ 146 efeitos ligados aos eventos do jogo (armas, chefe, inimigos, poções, loja, menus) e 46 falas; falas abaixam a música; faltam 13 latins e as camadas 2–3 da música |
+| 009 | Áudio (efeitos e falas via ElevenLabs) | ✅ 146 efeitos ligados aos eventos do jogo (armas, chefe, inimigos, poções, loja, menus) e 46 falas; falas abaixam a música; as 24 palavras em latim faladas; falta a música (o autor manda pronta) |
 | 010–015 | Personagens, export para itch.io, capítulos 2–5 | planejado |
 
 Detalhes em [`FEATURES.md`](FEATURES.md) e nas decisões em [`docs/DECISIONS.md`](docs/DECISIONS.md).
