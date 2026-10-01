@@ -97,3 +97,4 @@ Ondas: 60/65/70/75/80/80/85/90/90 s (695 s). Menus/min por onda (média de 3): 6
 - **Ressalva aberta:** os menus da o1 ficaram em 8–10/min na verificação final (eram ~6,3 antes). Fica para o playtest; a alavanca é `wave_01.letter_drop_mul` 1,2 → 1,0.
 - **Reserva do Aspersório:** não usada.
 - **GUT** 536/536 (testes do Crucifixo e do preço passaram a ler os dados); export web OK.
+- **#22 desempenho:** `stress_scene -- stress=crucifix` (novo; Crucifixo nv 5 a 0,5 s + Pena nv 5, 300 inimigos), no desktop: média 60,0, p95 55,2. O controle SC-001 deu p95 53,3, então sem regressão. A medição no web/Chrome fica com o autor.

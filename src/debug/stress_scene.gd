@@ -28,6 +28,8 @@ func _ready() -> void:
 		mode = &"refuge"  # 018 SC-1803: Água Benta com 300 inimigos
 	elif asked.contains("stress=arsenal"):
 		mode = &"arsenal"  # 017 T1739: Turíbulo + Rosário no nível 5
+	elif asked.contains("stress=crucifix"):
+		mode = &"crucifix"  # 018 T1820: Crucifixo nível 5 a 0,5 s
 	elif asked.contains("stress=bible"):
 		mode = &"bible"  # 017 SC-1703: SC-001 com a Bíblia ligada
 	elif asked.contains("stress=ctl"):

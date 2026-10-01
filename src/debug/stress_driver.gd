@@ -14,6 +14,8 @@ extends Node
 ##                 inimigos o tempo todo (018 SC-1803).
 ##   modo "arsenal": a carga do SC-001 com Turíbulo e Rosário no nível 5, trocando a cada
 ##                 ARSENAL_SWAP s (rastro de incenso no teto + contas; 017 T1739).
+##   modo "crucifix": a carga do SC-001 com o Crucifixo no nível 5 (0,5 s; T1820 dobrou a cadência:
+##                 ~2,4× mais cruzes com perfuração) e a Pena nível 5 na reserva.
 ## Inimigos com HP enorme (não morrem) perseguem um alvo que gira no centro; o jogador fica num
 ## canto, sem ataque automático, invulnerável. Nada de gameplay é alterado nos .tres.
 
@@ -90,6 +92,15 @@ func setup(p_main: Node2D, p_mode: StringName = &"sc001") -> void:
 			var ws := WeaponSlot.new(w)
 			ws.level = w.max_level()
 			GameState.loadout.slots[k] = ws
+		_player.arsenal.enabled = true
+		_player.global_position = BIBLE_PLAYER_AT
+	if mode == &"crucifix":
+		for k: int in 2:
+			var cw: WeaponData = load("res://data/weapons/%s.tres" % ["crucifix", "pen"][k])
+			var cs := WeaponSlot.new(cw)
+			cs.level = cw.max_level()
+			GameState.loadout.slots[k] = cs
+		GameState.loadout.set_active(0)
 		_player.arsenal.enabled = true
 		_player.global_position = BIBLE_PLAYER_AT
 	if mode == &"bible":
