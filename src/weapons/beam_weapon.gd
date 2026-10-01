@@ -43,6 +43,8 @@ func hold(p_from: Vector2, dir: Vector2, s: WeaponLevelData, w: WeaponData, inte
 		on = true
 		zone.open(ZoneShape.Shape.LINE)
 		WeaponZones.register(zone)
+		zone.weapon_id = w.id
+		EventBus.weapon_beam_toggled.emit(w.id, true)
 	zone.origin = p_from
 	zone.dir = dir
 	zone.length = s.range
@@ -63,6 +65,7 @@ func release() -> void:
 	on = false
 	zone.close()
 	WeaponZones.unregister(zone)
+	EventBus.weapon_beam_toggled.emit(zone.weapon_id, false)
 
 
 func _exit_tree() -> void:

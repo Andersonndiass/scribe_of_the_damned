@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_cn435"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/ui_word_unlocked.wav" id="2_xp0nm"]
+
+[resource]
+script = ExtResource("1_cn435")
+id = &"ui_word_unlocked"
+event = &"word_unlocked"
+stream = ExtResource("2_xp0nm")
+bus = &"UI"
+pitch_jitter = 0.0
+max_voices = 2
+priority = 2
+note = "Palavra desbloqueada."

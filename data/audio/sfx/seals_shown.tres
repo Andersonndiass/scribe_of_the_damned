@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_81inh"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/seals_shown.wav" id="2_qtc8g"]
+
+[resource]
+script = ExtResource("1_81inh")
+id = &"seals_shown"
+event = &"seals_shown"
+stream = ExtResource("2_qtc8g")
+bus = &"UI"
+pitch_jitter = 0.0
+max_voices = 2
+priority = 2
+note = "Selos aparecem na tela."

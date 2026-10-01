@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_hbui3"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/wave_closing.wav" id="2_bvai1"]
+
+[resource]
+script = ExtResource("1_hbui3")
+id = &"wave_closing"
+event = &"wave_closing"
+stream = ExtResource("2_bvai1")
+max_voices = 2
+priority = 3
+note = "Onda prestes a fechar."

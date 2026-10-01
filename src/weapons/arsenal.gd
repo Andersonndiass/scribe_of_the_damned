@@ -159,6 +159,7 @@ func _tick_swing(i: int, slot: WeaponSlot, interval: float, delta: float) -> voi
 	_timers[i] = 0.0
 	swing.start_swing(center, target - center, s, slot.weapon, _interval_mul())
 	fired.emit(target)
+	EventBus.weapon_fired.emit(slot.weapon.id)
 
 
 ## Recarga para o HUD (T1800): rajada = tempo/intervalo; raio e antecipação = pronta; a ativa no
@@ -188,6 +189,7 @@ func _tick_windup(i: int, slot: WeaponSlot, interval: float, delta: float) -> vo
 			return
 		_windup[i] = slot.weapon.windup
 		windup_started.emit(i)
+		EventBus.weapon_windup_started.emit(slot.weapon.id)
 		return
 	_windup[i] -= delta
 	if _windup[i] > WINDUP_EPS:
@@ -232,6 +234,7 @@ func _fire_burst(slot: WeaponSlot) -> bool:
 			any = true
 	if any:
 		fired.emit(targets[0])
+		EventBus.weapon_fired.emit(w.id)
 		if w.fire_shake_px > 0.0:
 			EventBus.shake_requested.emit(w.fire_shake_px, w.fire_shake_time)
 	return any
@@ -257,4 +260,5 @@ func _fire_fan(slot: WeaponSlot) -> bool:
 			any = true
 	if any:
 		fired.emit(from + dir * s.range)
+		EventBus.weapon_fired.emit(w.id)
 	return any

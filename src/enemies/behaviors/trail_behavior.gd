@@ -26,3 +26,4 @@ func _drop(m: EnemyManager, i: int) -> void:
 	var h: HazardField = m.get_hazards()
 	if h != null and puddle != null:
 		h.add_puddle(puddle, m.positions[i])
+		EventBus.enemy_attacked.emit(m.data_of[i].id)

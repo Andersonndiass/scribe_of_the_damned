@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_pnaoh"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/potion_drink_generic.wav" id="2_dboyg"]
+
+[resource]
+script = ExtResource("1_pnaoh")
+id = &"potion_drink_generic"
+event = &"potion_drunk"
+stream = ExtResource("2_dboyg")
+max_voices = 2
+note = "Beber poção (genérico)."

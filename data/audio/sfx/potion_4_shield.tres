@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_lydso"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/potion_4_shield.wav" id="2_03vd0"]
+
+[resource]
+script = ExtResource("1_lydso")
+id = &"potion_4_shield"
+event = &"potion_drunk:holy_water"
+stream = ExtResource("2_03vd0")
+max_voices = 2
+priority = 2
+note = "Poção 4: proteção."

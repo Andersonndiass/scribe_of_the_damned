@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_isc1q"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/item_bought.wav" id="2_hvo2q"]
+
+[resource]
+script = ExtResource("1_isc1q")
+id = &"item_bought"
+event = &"item_bought"
+stream = ExtResource("2_hvo2q")
+bus = &"UI"
+pitch_jitter = 0.0
+max_voices = 2
+priority = 2
+note = "Compra realizada."

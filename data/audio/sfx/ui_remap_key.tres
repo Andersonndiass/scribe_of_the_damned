@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_23vkx"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/ui_remap_key.wav" id="2_gh8ai"]
+
+[resource]
+script = ExtResource("1_23vkx")
+id = &"ui_remap_key"
+event = &"ui_key_remapped"
+stream = ExtResource("2_gh8ai")
+bus = &"UI"
+pitch_jitter = 0.0
+max_voices = 2
+priority = 3
+note = "Remapear tecla."

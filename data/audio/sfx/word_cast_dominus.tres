@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_pm3xe"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/word_cast_dominus.wav" id="2_l113y"]
+
+[resource]
+script = ExtResource("1_pm3xe")
+id = &"word_cast_dominus"
+event = &"word_cast:dominus"
+stream = ExtResource("2_l113y")
+pitch_jitter = 0.02
+max_voices = 1
+cooldown_ms = 0
+priority = 2
+note = "DOMINUS: martelo divino, atordoa e fere"

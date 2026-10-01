@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_xl8af"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/boss_stunned.wav" id="2_vqpx4"]
+
+[resource]
+script = ExtResource("1_xl8af")
+id = &"boss_stunned"
+event = &"boss_stunned"
+stream = ExtResource("2_vqpx4")
+pitch_jitter = 0.03
+max_voices = 2
+cooldown_ms = 0
+priority = 3
+note = "Chefe atordoado (DOMINUS)."

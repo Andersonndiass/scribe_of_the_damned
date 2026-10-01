@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_r0cgs"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/letter_dropped.wav" id="2_205k5"]
+
+[resource]
+script = ExtResource("1_r0cgs")
+id = &"letter_dropped"
+event = &"letter_dropped"
+stream = ExtResource("2_205k5")
+max_voices = 2
+priority = 2
+note = "Letra caindo: pingo de tinta leve."

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_vi0av"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/enemy_monk_shot.wav" id="2_d6gv7"]
+
+[resource]
+script = ExtResource("1_vi0av")
+id = &"enemy_monk_shot"
+event = &"enemy_attack:hollow_monk"
+stream = ExtResource("2_d6gv7")
+pitch_jitter = 0.08
+max_voices = 2
+cooldown_ms = 150
+note = "Monge Oco atira."

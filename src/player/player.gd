@@ -35,6 +35,7 @@ var auto_attack: Arsenal:
 var _squash_tween: Tween
 var _pen_flash: ColorRect
 var _hazards: HazardField
+var _in_hazard: bool = false
 
 
 func _ready() -> void:
@@ -96,7 +97,12 @@ func move(direction: Vector2) -> void:
 func _hazard_slow() -> float:
 	if _hazards == null and is_inside_tree():
 		_hazards = get_tree().get_first_node_in_group(&"hazards") as HazardField
-	return _hazards.slow_at(global_position) if _hazards != null else 1.0
+	var slow: float = _hazards.slow_at(global_position) if _hazards != null else 1.0
+	var inside: bool = slow < 1.0
+	if inside and not _in_hazard:
+		EventBus.hazard_entered.emit()
+	_in_hazard = inside
+	return slow
 
 
 func play_anim(anim: StringName) -> void:

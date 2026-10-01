@@ -6,6 +6,7 @@ extends SceneTree
 const SFX_DIR := "res://data/audio/sfx/"
 const MUSIC_DIR := "res://data/audio/music/"
 const MAP_PATH := "res://data/audio/event_map.tres"
+const MANIFEST_PATH := "res://docs/audio/sfx_manifest.json"
 
 ## [evento, prioridade, max_voices, cooldown_ms, barramento, o que gravar]
 const EVENTS: Array = [
@@ -80,6 +81,7 @@ func _init() -> void:
 			s = load(path)
 			written += 1
 		map.sounds.append(s)
+	written += _add_manifest_sounds(map)
 	ResourceSaver.save(map, MAP_PATH)
 	var music_path: String = MUSIC_DIR + "chapter_1.tres"
 	if not ResourceLoader.exists(music_path):
@@ -90,3 +92,58 @@ func _init() -> void:
 		ResourceSaver.save(m, music_path)
 	print("gen_audio_data: %d sons gravados, %d no mapa" % [written, map.sounds.size()])
 	quit(0)
+
+
+## 009/018: os efeitos do manifesto (ElevenLabs) que não estão em EVENTS. id = o id do manifesto
+## (o nome do .wav), evento = o do manifesto; vozes, recarga, barramento e variação de tom pela
+## categoria (DIRECAO-SONORA §2.3). Regrava sempre (o manifesto manda).
+func _add_manifest_sounds(map: AudioEventMap) -> int:
+	var known := {}
+	for s: SoundData in map.sounds:
+		known[s.event] = true
+	var items: Array = JSON.parse_string(FileAccess.get_file_as_string(MANIFEST_PATH))
+	var n: int = 0
+	for it: Dictionary in items:
+		var event: String = it["event"]
+		if known.has(StringName(event)):
+			continue
+		var wav: String = "res://assets/audio/sfx/%s.wav" % it["id"]
+		if not ResourceLoader.exists(wav):
+			continue
+		var s := SoundData.new()
+		s.id = StringName(it["id"])
+		s.event = StringName(event)
+		s.stream = load(wav)
+		s.priority = int(it["priority"])
+		s.note = it["desc_pt"]
+		var cat: Array = _category(String(it["id"]), event)
+		s.bus = cat[0]
+		s.max_voices = cat[1]
+		s.cooldown_ms = cat[2]
+		s.pitch_jitter = cat[3]
+		var path: String = SFX_DIR + String(it["id"]) + ".tres"
+		ResourceSaver.save(s, path)
+		map.sounds.append(load(path))
+		n += 1
+	return n
+
+
+## [barramento, vozes, recarga ms, variação de tom] por categoria (§2.3). Os muito frequentes
+## (Graça por morte, inimigo nascendo, acertos) ganham recarga maior para não virar ruído.
+static func _category(id: String, event: String) -> Array:
+	if id.begins_with("ui_") or id.begins_with("shop") or id.begins_with("letter_menu") \
+			or id.begins_with("seals") or event.begins_with("blessing_chosen") or id in ["item_bought", "gold_spent", "cutscene_skipped", "potion_empty"]:
+		return [&"UI", 2, 30, 0.0]
+	if id in ["grace_gained", "enemy_spawned"]:
+		return [&"SFX", 2, 120, 0.10]
+	if event.begins_with("weapon_hit") or id in ["enemy_projectile_hit", "boss_damaged", "enemy_hazard_tick", "wax_drop_collected"]:
+		return [&"SFX", 3, 60, 0.08]
+	if id.begins_with("enemy_") or id == "magnet_push":
+		return [&"SFX", 2, 150, 0.08]
+	if event.begins_with("weapon_"):
+		return [&"SFX", 3, 40, 0.06]
+	if event.begins_with("word_cast"):
+		return [&"SFX", 1, 0, 0.02]
+	if id.begins_with("boss"):
+		return [&"SFX", 2, 0, 0.03]
+	return [&"SFX", 2, 30, 0.05]

@@ -1669,7 +1669,7 @@
  },
  {
   "id": "potion_1_healing",
-  "event": "potion_drunk:1",
+  "event": "potion_drunk:oil",
   "exists_in_event_map": false,
   "file": "assets/audio/sfx/potion_1_healing.wav",
   "duration_s": 1.0,
@@ -1681,7 +1681,7 @@
  },
  {
   "id": "potion_2_ink",
-  "event": "potion_drunk:2",
+  "event": "potion_drunk:illumination",
   "exists_in_event_map": false,
   "file": "assets/audio/sfx/potion_2_ink.wav",
   "duration_s": 1.0,
@@ -1693,7 +1693,7 @@
  },
  {
   "id": "potion_3_speed",
-  "event": "potion_drunk:3",
+  "event": "potion_drunk:wine",
   "exists_in_event_map": false,
   "file": "assets/audio/sfx/potion_3_speed.wav",
   "duration_s": 1.0,
@@ -1705,7 +1705,7 @@
  },
  {
   "id": "potion_4_shield",
-  "event": "potion_drunk:4",
+  "event": "potion_drunk:holy_water",
   "exists_in_event_map": false,
   "file": "assets/audio/sfx/potion_4_shield.wav",
   "duration_s": 1.0,

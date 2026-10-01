@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_kun7g"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/page_degraded.wav" id="2_hupe7"]
+
+[resource]
+script = ExtResource("1_kun7g")
+id = &"page_degraded"
+event = &"page_degraded"
+stream = ExtResource("2_hupe7")
+max_voices = 2
+priority = 3
+note = "Página degradada."

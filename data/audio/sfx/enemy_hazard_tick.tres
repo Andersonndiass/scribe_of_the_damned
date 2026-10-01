@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_g7fnf"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/enemy_hazard_tick.wav" id="2_obfg7"]
+
+[resource]
+script = ExtResource("1_g7fnf")
+id = &"enemy_hazard_tick"
+event = &"hazard_damage"
+stream = ExtResource("2_obfg7")
+pitch_jitter = 0.08
+max_voices = 3
+cooldown_ms = 60
+priority = 2
+note = "Dano da poça (tique)."

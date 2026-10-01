@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_82dmh"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/grace_leveled.wav" id="2_oh1e1"]
+
+[resource]
+script = ExtResource("1_82dmh")
+id = &"grace_leveled"
+event = &"grace_leveled"
+stream = ExtResource("2_oh1e1")
+max_voices = 2
+priority = 2
+note = "Graça subiu de nível."

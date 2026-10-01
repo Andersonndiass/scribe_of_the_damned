@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_wsemb"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/shop_opened.wav" id="2_77b4q"]
+
+[resource]
+script = ExtResource("1_wsemb")
+id = &"shop_opened"
+event = &"shop_opened"
+stream = ExtResource("2_77b4q")
+bus = &"UI"
+pitch_jitter = 0.0
+max_voices = 2
+priority = 2
+note = "Loja abre."

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_lu7dp"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/letter_menu_choose.wav" id="2_iicfm"]
+
+[resource]
+script = ExtResource("1_lu7dp")
+id = &"letter_menu_choose"
+event = &"letter_chosen"
+stream = ExtResource("2_iicfm")
+bus = &"UI"
+pitch_jitter = 0.0
+max_voices = 2
+note = "Letra escolhida; tempo volta."

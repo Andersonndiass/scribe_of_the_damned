@@ -160,7 +160,10 @@ func pick(i: int) -> bool:
 
 func move_focus(step: int) -> void:
 	if phase == Phase.OPEN and not options.is_empty():
+		var before: int = focus
 		focus = clampi(focus + step, 0, options.size() - 1)
+		if focus != before:
+			EventBus.letter_menu_cursor_moved.emit(focus)
 
 
 func _expire() -> void:

@@ -29,6 +29,7 @@ func start(data: EnemyData, pos: Vector2, manager: EnemyManager, can_spawn: Call
 		t = manager.champion_tuning.spawn_telegraph
 	_total = maxf(t, 0.001)
 	_left = _total
+	EventBus.enemy_spawn_telegraphed.emit(champion)
 	queue_redraw()
 
 

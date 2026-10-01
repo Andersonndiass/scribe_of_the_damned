@@ -652,6 +652,18 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
   - Pena e Aspersório rendem ~0,6× das armas de área na onda 5 (a regra não tem piso).
 - Não medidos pela sonda: eficiência da Pena, acerto do Aspersório, campeão, banco com/sem, desempenho (o Crucifixo nv 5 dispara ~2,4× mais cruzes; conferir `?stress=arsenal`).
 
+### D-097 · 2026-10-01 · Áudio: os 101 efeitos do ElevenLabs ligados
+- **Gerador:** `tools/gen_audio_data.gd` lê `docs/audio/sfx_manifest.json` e cria o SoundData de cada efeito sem evento (categoria → vozes, recarga, barramento e tom).
+- **Sinais:** o `EventBus` ganhou um bloco "Áudio" com 21 sinais (armas, ataques do chefe, inimigos, UI, loja, menu da letra), emitidos onde o momento acontece.
+- **Loops e barramento:** o `AudioManager` liga os sinais, toca os loops com início e fim explícitos e manda falas e latim para o barramento novo `Voice`, que abaixa a música por compressor (sidechain).
+- **Poções:** os 4 sons foram mapeados pelo id da poção (o manifesto usava 1–4).
+- **Teste:** `tests/integration/test_audio_events_018.gd`.
+- **Pendente:**
+  - 13 falas em latim (o autor roda o script com `!`);
+  - volume do `Voice` nas Opções;
+  - passa-baixa da música no menu da letra;
+  - camadas 2–3 da música (plano pago).
+
 ## Conflitos abertos
 
 - ~~**C-008 · Menu de escolha da letra (D-085 item 2).**~~ Resolvido: autor "1a 2b 3b e mouse clicando 4a" —

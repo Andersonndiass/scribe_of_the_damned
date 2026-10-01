@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_yg01t"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/enemy_ink_blot_puddle.wav" id="2_p3ow5"]
+
+[resource]
+script = ExtResource("1_yg01t")
+id = &"enemy_ink_blot_puddle"
+event = &"enemy_attack:ink_blot"
+stream = ExtResource("2_p3ow5")
+pitch_jitter = 0.08
+max_voices = 2
+cooldown_ms = 150
+priority = 2
+note = "Borrão deixa poça."

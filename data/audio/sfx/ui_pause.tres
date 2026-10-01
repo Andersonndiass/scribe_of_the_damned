@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_rml1q"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/ui_pause.wav" id="2_pd55i"]
+
+[resource]
+script = ExtResource("1_rml1q")
+id = &"ui_pause"
+event = &"pause_menu_toggled:open"
+stream = ExtResource("2_pd55i")
+bus = &"UI"
+pitch_jitter = 0.0
+max_voices = 2
+priority = 3
+note = "Pausar."

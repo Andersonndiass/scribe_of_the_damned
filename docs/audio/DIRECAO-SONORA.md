@@ -131,7 +131,7 @@ O inventário completo está em `docs/audio/sfx_manifest.json` (145 itens). Camp
 ### 3.2 Orçamento
 Download web atual 11,2 MB (meta 25, D-069). Efeitos em QOA ≈ 1/4 do WAV: ~145 efeitos × ~1 s ≈ 6 MB. Falas MP3 ≈ 1,5 MB. Música 3 camadas × 60 s em OGG 96 kbps ≈ 2,2 MB. Cabe na meta.
 
-### 3.3 Barramentos (pedido ao code-agent)
+### 3.3 Barramentos ✅ (D-097)
 Hoje: Master → Music, SFX, UI. Proposta: adicionar **`Voice`** (falas e latim, com `AudioEffectReverb` leve só no Abade — sala 0,35, wet 0,15) e o ducking de §2.4 via `AudioEffectCompressor` com sidechain `Voice` no barramento Music.
 
 ### 3.4 Geração (reproduzível)
@@ -144,7 +144,21 @@ Scripts fora do repositório (a chave nunca entra no repo). Parâmetros: efeitos
 ### 4.1 Já ligado nesta passada
 Cada efeito gerado cujo evento já existe no `event_map` foi posto como `stream` do `data/audio/sfx/<id>.tres` (troca do provisório `assets/audio/placeholders/sfx_*.tres` pelo `assets/audio/sfx/<id>.wav`). As falas tocam sozinhas: o `AudioManager.voice_path()` procura `assets/audio/voice/<locale>/<id>.mp3`.
 
-### 4.2 Sinais que faltam no código (code-agent implementa)
+### 4.2 Sinais que faltavam ✅ (D-097)
+**Feito:** os 101 efeitos estão ligados.
+- O `tools/gen_audio_data.gd` lê este manifesto e grava um `data/audio/sfx/<id>.tres` para cada efeito sem `.tres`, com vozes, recarga, barramento e variação de tom pela categoria da §2.3.
+- O `AudioManager._connect_events_018()` liga os sinais que já existiam e o bloco "Áudio" do `EventBus`: `weapon_fired`/`weapon_hit`/`weapon_windup_started`/`weapon_beam_toggled`, `boss_attack_telegraphed`/`started`/`finished`, `boss_stunned`, `enemy_spawn_telegraphed`, `enemy_telegraphed`/`enemy_attacked`, `enemy_projectile_hit`, `hazard_entered`, `letter_menu_cursor_moved`, `shop_purchase_denied`, `shop_lock_toggled` e `ui_focus_changed`/`ui_confirmed`/`ui_backed`/`ui_slider_changed`/`ui_key_remapped`.
+- Loops com início e fim: `AudioManager.start_loop`/`stop_loop` para o raio da Bíblia, o aviso da rasura, a cruz giratória e a contagem do menu da letra.
+- Barramento `Voice` com compressor na Music (sidechain = Voice): é o ducking da §2.4.
+- Poções por id: Óleo → `potion_1_healing`, Água Benta → `potion_4_shield`, Vinho → `potion_3_speed`, Iluminura → `potion_2_ink`.
+- Arma ou inimigo sem som próprio fica mudo, sem cair no som base (Rosário, Turíbulo, Aspersório no disparo).
+
+**Não ligados:**
+- `weapon_ready` (opcional; tocaria o tempo todo).
+- O volume do `Voice` ainda não aparece nas Opções (segue o Master).
+- O filtro passa-baixa da Music no menu da letra (§2.4).
+
+Lista original:
 Itens do manifesto com `exists_in_event_map = false`: o arquivo já existe (quando gerado) mas não há `.tres` nem sinal. Agrupados:
 
 - **Armas (017):** `weapon_fired(weapon_id)`, `weapon_hit(weapon_id)`, `weapon_loop(weapon_id)` (início/fim do raio da Bíblia), `weapon_charge(weapon_id)`, `weapon_switched`, `weapon_equipped`, `weapon_leveled`, `weapon_cooldown_ready`.

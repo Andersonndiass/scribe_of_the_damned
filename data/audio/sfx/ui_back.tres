@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_5q2ja"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/ui_back.wav" id="2_3t33c"]
+
+[resource]
+script = ExtResource("1_5q2ja")
+id = &"ui_back"
+event = &"ui_back"
+stream = ExtResource("2_3t33c")
+bus = &"UI"
+pitch_jitter = 0.0
+max_voices = 2
+priority = 2
+note = "Menu: voltar."

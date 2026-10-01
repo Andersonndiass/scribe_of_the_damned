@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_4sjwh"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/cutscene_skipped.wav" id="2_gjxfa"]
+
+[resource]
+script = ExtResource("1_4sjwh")
+id = &"cutscene_skipped"
+event = &"cutscene_skipped"
+stream = ExtResource("2_gjxfa")
+bus = &"UI"
+pitch_jitter = 0.0
+max_voices = 2
+priority = 3
+note = "Pular cutscene."

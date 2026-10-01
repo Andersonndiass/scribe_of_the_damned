@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_hreyl"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/atril_erase.wav" id="2_srte2"]
+
+[resource]
+script = ExtResource("1_hreyl")
+id = &"atril_erase"
+event = &"atril_erase_requested"
+stream = ExtResource("2_srte2")
+max_voices = 2
+priority = 2
+note = "Chefe apaga uma letra do atril."

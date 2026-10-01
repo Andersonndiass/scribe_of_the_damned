@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_rnc7b"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/shop_rerolled.wav" id="2_toxhn"]
+
+[resource]
+script = ExtResource("1_rnc7b")
+id = &"shop_rerolled"
+event = &"shop_rerolled"
+stream = ExtResource("2_toxhn")
+bus = &"UI"
+pitch_jitter = 0.0
+max_voices = 2
+priority = 3
+note = "Reroll da loja."

@@ -25,6 +25,8 @@ var _ready_at: Dictionary[int, float] = {}
 var _carry: Dictionary[int, float] = {}
 ## Quantos acertos esta zona já deu (testes, sonda).
 var hits: int = 0
+## Arma dona (som do acerto, `EventBus.weapon_hit`); vazio = sem som.
+var weapon_id: StringName = &""
 
 
 func open(p_shape: Shape) -> void:
@@ -51,6 +53,8 @@ func take_hit(key: int, clock: float, elite: bool) -> int:
 		_prune(clock)
 	_ready_at[key] = clock + interval
 	hits += 1
+	if weapon_id != &"":
+		EventBus.weapon_hit.emit(weapon_id)
 	if not elite or is_equal_approx(precision_mul, 1.0):
 		return damage
 	var total: float = _carry.get(key, 0.0) + float(damage) * precision_mul

@@ -29,6 +29,8 @@ var _vel := PackedVector2Array()
 var _damage := PackedInt32Array()
 var _distance_left := PackedFloat32Array()
 var _kind := PackedInt32Array()
+## Arma de cada `projectile_kind` (som do acerto).
+const KIND_WEAPON: Array[StringName] = [&"pen", &"crucifix", &"aspergillum"]
 var _radius := PackedFloat32Array()
 ## Quantos inimigos ainda pode ferir (1 = para no primeiro).
 var _hits_left := PackedInt32Array()
@@ -96,6 +98,8 @@ func _physics_process(delta: float) -> void:
 		var spent: bool = false
 		if _hits_left[i] == 1 and _freeze[i] <= 0.0:
 			spent = EnemyQuery.hit(p, _radius[i], _damage[i])
+			if spent:
+				EventBus.weapon_hit.emit(KIND_WEAPON[_kind[i]])
 		else:
 			var got: PackedInt32Array = EnemyQuery.hit_pierce(p, _radius[i], _damage[i], _hit_uids[i], _freeze[i], _hits_left[i])
 			if not got.is_empty():
@@ -103,6 +107,7 @@ func _physics_process(delta: float) -> void:
 				seen.append_array(got)
 				_hit_uids[i] = seen
 				_hits_left[i] -= got.size()
+				EventBus.weapon_hit.emit(KIND_WEAPON[_kind[i]])
 				spent = _hits_left[i] <= 0
 		if spent or _distance_left[i] <= 0.0:
 			_remove(i)

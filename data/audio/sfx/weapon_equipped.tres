@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_bs2r6"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/weapon_equipped.wav" id="2_hjfss"]
+
+[resource]
+script = ExtResource("1_bs2r6")
+id = &"weapon_equipped"
+event = &"weapon_equipped"
+stream = ExtResource("2_hjfss")
+pitch_jitter = 0.06
+max_voices = 3
+cooldown_ms = 40
+priority = 3
+note = "Arma equipada (nova arma)."

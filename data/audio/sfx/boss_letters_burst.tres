@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_biuud"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/boss_letters_burst.wav" id="2_kpe7u"]
+
+[resource]
+script = ExtResource("1_biuud")
+id = &"boss_letters_burst"
+event = &"boss_letters_burst"
+stream = ExtResource("2_kpe7u")
+pitch_jitter = 0.03
+max_voices = 2
+cooldown_ms = 0
+priority = 2
+note = "Chefe lança letras em explosão."

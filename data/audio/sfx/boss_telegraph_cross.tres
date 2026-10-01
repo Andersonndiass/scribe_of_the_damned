@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_t3w1n"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/boss_telegraph_cross.wav" id="2_lq0px"]
+
+[resource]
+script = ExtResource("1_t3w1n")
+id = &"boss_telegraph_cross"
+event = &"boss_telegraph:rotating_cross"
+stream = ExtResource("2_lq0px")
+pitch_jitter = 0.03
+max_voices = 2
+cooldown_ms = 0
+note = "Telegrafia da cruz giratória."

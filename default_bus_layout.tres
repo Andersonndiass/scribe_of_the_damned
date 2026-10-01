@@ -1,4 +1,12 @@
-[gd_resource type="AudioBusLayout" format=3]
+[gd_resource type="AudioBusLayout" format=3 uid="uid://ch0ovsyobfndn"]
+
+[sub_resource type="AudioEffectCompressor" id="duck_voice"]
+resource_name = "DuckVoice"
+threshold = -26.0
+ratio = 6.0
+attack_us = 2000.0
+release_ms = 400.0
+sidechain = &"Voice"
 
 [resource]
 bus/1/name = &"Music"
@@ -7,6 +15,8 @@ bus/1/mute = false
 bus/1/bypass_fx = false
 bus/1/volume_db = 0.0
 bus/1/send = &"Master"
+bus/1/effect/0/effect = SubResource("duck_voice")
+bus/1/effect/0/enabled = true
 bus/2/name = &"SFX"
 bus/2/solo = false
 bus/2/mute = false
@@ -19,3 +29,9 @@ bus/3/mute = false
 bus/3/bypass_fx = false
 bus/3/volume_db = 0.0
 bus/3/send = &"Master"
+bus/4/name = &"Voice"
+bus/4/solo = false
+bus/4/mute = false
+bus/4/bypass_fx = false
+bus/4/volume_db = 0.0
+bus/4/send = &"Master"

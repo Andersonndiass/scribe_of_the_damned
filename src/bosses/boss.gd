@@ -134,6 +134,7 @@ func stun(seconds: float) -> void:
 	if state_name() in [&"Dead", &"PhaseShift", &"Enter"]:
 		return
 	machine.transition_to(&"Stunned", {"time": seconds * data.stun_mul})
+	EventBus.boss_stunned.emit(seconds * data.stun_mul)
 
 
 # --- laço -----------------------------------------------------------------------------------

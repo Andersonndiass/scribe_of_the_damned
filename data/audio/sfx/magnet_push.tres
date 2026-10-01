@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_kv1hg"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/magnet_push.wav" id="2_4l12g"]
+
+[resource]
+script = ExtResource("1_kv1hg")
+id = &"magnet_push"
+event = &"magnet_reverse_push"
+stream = ExtResource("2_4l12g")
+pitch_jitter = 0.08
+max_voices = 2
+cooldown_ms = 150
+priority = 2
+note = "Ímã reverso empurra letras (017)."

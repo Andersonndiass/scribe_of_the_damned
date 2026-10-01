@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_ufbry"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/verbum_failed.wav" id="2_yydqs"]
+
+[resource]
+script = ExtResource("1_ufbry")
+id = &"verbum_failed"
+event = &"verbum_failed"
+stream = ExtResource("2_yydqs")
+max_voices = 2
+priority = 3
+note = "VERBUM falha."

@@ -64,7 +64,10 @@ func reroll() -> bool:
 
 
 func toggle_lock(i: int) -> bool:
-	return offer.toggle_lock(i)
+	var ok: bool = offer.toggle_lock(i)
+	if ok:
+		EventBus.shop_lock_toggled.emit(offer.locked_slot() == i)
+	return ok
 
 
 func can_afford(i: int) -> bool:

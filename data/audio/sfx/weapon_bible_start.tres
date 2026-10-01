@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_u1l1y"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/weapon_bible_start.wav" id="2_lf0tb"]
+
+[resource]
+script = ExtResource("1_u1l1y")
+id = &"weapon_bible_start"
+event = &"weapon_fired:bible"
+stream = ExtResource("2_lf0tb")
+pitch_jitter = 0.06
+max_voices = 3
+cooldown_ms = 40
+priority = 2
+note = "Bíblia: início do raio."

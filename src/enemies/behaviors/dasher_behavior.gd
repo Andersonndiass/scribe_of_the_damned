@@ -34,6 +34,7 @@ func desired_velocity(m: EnemyManager, i: int, target: Vector2, _dt: float) -> V
 		m.state[i] = STATE_WINDUP
 		m.state_timer[i] = windup
 		m.aim[i] = (target - m.positions[i]).normalized()
+		EventBus.enemy_telegraphed.emit(m.data_of[i].id)
 		return Vector2.ZERO
 	return ChaseBehavior.seek(m, i, target)
 
@@ -48,6 +49,7 @@ func tick(m: EnemyManager, i: int, dt: float) -> void:
 		STATE_WINDUP:
 			m.state[i] = STATE_DASH
 			m.state_timer[i] = dash_time
+			EventBus.enemy_attacked.emit(m.data_of[i].id)
 		STATE_DASH:
 			m.state[i] = STATE_COOLDOWN
 			m.state_timer[i] = cooldown

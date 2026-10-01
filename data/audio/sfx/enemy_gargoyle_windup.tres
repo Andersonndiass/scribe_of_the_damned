@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_11msq"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/enemy_gargoyle_windup.wav" id="2_m3eer"]
+
+[resource]
+script = ExtResource("1_11msq")
+id = &"enemy_gargoyle_windup"
+event = &"enemy_telegraph:gargoyle"
+stream = ExtResource("2_m3eer")
+pitch_jitter = 0.08
+max_voices = 2
+cooldown_ms = 150
+priority = 2
+note = "Gárgula prepara o dash."

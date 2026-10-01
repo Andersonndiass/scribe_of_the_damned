@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_h0mwu"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/shop_lock.wav" id="2_0y6nc"]
+
+[resource]
+script = ExtResource("1_h0mwu")
+id = &"shop_lock"
+event = &"shop_lock_toggled"
+stream = ExtResource("2_0y6nc")
+bus = &"UI"
+pitch_jitter = 0.0
+max_voices = 2
+priority = 3
+note = "Travar item da loja."

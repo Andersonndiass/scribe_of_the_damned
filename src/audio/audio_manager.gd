@@ -12,6 +12,9 @@ const VOICES_SFX := 24
 const VOICES_UI := 4
 ## Vozes de efeito que tocam com a árvore parada (cutscenes com o jogo pausado atrás, 008 FR-806b).
 const VOICES_ALWAYS := 4
+## Sons em loop com início e fim explícitos (raio da Bíblia, aviso da rasura, cruz giratória,
+## contagem do menu da letra): um player para cada, por id.
+const LOOP_PLAYERS := 4
 ## Falas dubladas (008 FR-814, FR-816): `<pasta>/<idioma>/<id>.mp3` e `<pasta>/latin/<palavra>.mp3`.
 const VOICE_DIR := "res://assets/audio/voice"
 const VOICE_EXTS: PackedStringArray = ["mp3", "ogg", "wav"]
@@ -45,6 +48,9 @@ var _sfx_silent_end := PackedFloat64Array()
 var _ui_silent_end := PackedFloat64Array()
 var _rng := RandomNumberGenerator.new()
 var _atril_valid: bool = false
+var _loop_players: Array[AudioStreamPlayer] = []
+## id do SoundData tocando em cada player de loop (&"" = livre).
+var _loop_ids: Array[StringName] = []
 
 
 func _ready() -> void:
@@ -61,8 +67,13 @@ func _ready() -> void:
 	_ui_players = _make_players(VOICES_UI, &"UI", Node.PROCESS_MODE_ALWAYS)
 	_always = VoiceAllocator.new(VOICES_ALWAYS)
 	_always_players = _make_players(VOICES_ALWAYS, &"SFX", Node.PROCESS_MODE_ALWAYS)
-	_line_player = _make_players(1, &"SFX", Node.PROCESS_MODE_ALWAYS)[0]
-	_latin_player = _make_players(1, &"SFX", Node.PROCESS_MODE_ALWAYS)[0]
+	# Falas e latim no barramento Voice (o compressor da Music usa o Voice como sidechain: ducking §2.4).
+	var voice_bus: StringName = &"Voice" if AudioServer.get_bus_index(&"Voice") >= 0 else &"SFX"
+	_line_player = _make_players(1, voice_bus, Node.PROCESS_MODE_ALWAYS)[0]
+	_latin_player = _make_players(1, voice_bus, Node.PROCESS_MODE_ALWAYS)[0]
+	_loop_players = _make_players(LOOP_PLAYERS, &"SFX", Node.PROCESS_MODE_PAUSABLE)
+	for i: int in LOOP_PLAYERS:
+		_loop_ids.append(&"")
 	_sfx_silent_end.resize(VOICES_SFX)
 	_ui_silent_end.resize(VOICES_UI)
 	_always_silent_end.resize(VOICES_ALWAYS)
@@ -161,6 +172,54 @@ func play_sound(s: SoundData, always: bool = false) -> bool:
 	return true
 
 
+## Liga o loop do evento `key` (variante opcional) até `stop_loop` com a mesma chave. Retorna true
+## se começou (ou já tocava).
+func start_loop(key: StringName, variant: StringName = &"") -> bool:
+	if event_map == null or not _unlocked:
+		return false
+	var s: SoundData = event_map.resolve(key, variant)
+	if s == null or s.stream == null:
+		return false
+	if _loop_ids.has(s.id):
+		return true
+	var i: int = _loop_ids.find(&"")
+	if i < 0:
+		return false
+	_loop_ids[i] = s.id
+	var p: AudioStreamPlayer = _loop_players[i]
+	p.bus = s.bus
+	p.stream = s.stream
+	p.volume_db = s.volume_db
+	p.pitch_scale = 1.0
+	p.play()
+	last_played = s.id
+	sound_played.emit(s.id)
+	return true
+
+
+func stop_loop(key: StringName, variant: StringName = &"") -> void:
+	if event_map == null:
+		return
+	var s: SoundData = event_map.resolve(key, variant)
+	if s == null:
+		return
+	var i: int = _loop_ids.find(s.id)
+	if i >= 0:
+		_loop_players[i].stop()
+		_loop_ids[i] = &""
+
+
+func is_looping(key: StringName, variant: StringName = &"") -> bool:
+	var s: SoundData = event_map.resolve(key, variant) if event_map != null else null
+	return s != null and _loop_ids.has(s.id)
+
+
+func stop_all_loops() -> void:
+	for i: int in _loop_players.size():
+		_loop_players[i].stop()
+		_loop_ids[i] = &""
+
+
 ## Volume linear (0–1) do barramento (FR-901; a tela de Opções usa).
 func set_bus_volume(bus: StringName, linear: float) -> void:
 	var idx: int = AudioServer.get_bus_index(bus)
@@ -257,3 +316,124 @@ func _connect_events() -> void:
 	EventBus.atril_purged.connect(func(_l: PackedStringArray, _p: Vector2) -> void: play_event(&"atril_purged"))
 	EventBus.combo_window_opened.connect(func(_w: WordData, _d: float, _pa: PackedStringArray) -> void:
 		play_event(&"combo_window_opened"))
+	_connect_events_018()
+
+
+## 009/018: os efeitos do manifesto (ElevenLabs) ligados aos sinais que já existem (DIRECAO-SONORA §4.2).
+func _connect_events_018() -> void:
+	# Graça e level-up.
+	EventBus.grace_gained.connect(func(_a: int, _s: StringName, _p: Vector2) -> void: play_event(&"grace_gained"))
+	EventBus.grace_leveled.connect(func(_l: int, _q: int) -> void: play_event(&"grace_leveled"))
+	EventBus.seals_shown.connect(func(_b: Array[BlessingData], _l: int) -> void: play_event(&"seals_shown"))
+	EventBus.seals_hidden.connect(func() -> void: play_event(&"seals_hidden"))
+	EventBus.blessing_chosen.connect(func(b: BlessingData, _l: int) -> void: play_event(&"blessing_chosen", b.id))
+	EventBus.wax_drop_collected.connect(func(_p: Vector2) -> void: play_event(&"wax_drop_collected"))
+	# Menu da letra: a contagem toca em loop enquanto ele estiver aberto.
+	EventBus.letter_menu_opened.connect(func(_o: Array) -> void: start_loop(&"letter_menu_countdown"))
+	EventBus.letter_menu_closed.connect(func() -> void: stop_loop(&"letter_menu_countdown"))
+	EventBus.letter_chosen.connect(func(_l: String, _r: bool) -> void: play_event(&"letter_chosen"))
+	# Armas (017).
+	EventBus.weapon_switched.connect(func(_s: int, _w: WeaponData) -> void: play_event(&"weapon_switched"))
+	EventBus.weapon_equipped.connect(func(_s: int, _w: WeaponData, _l: int) -> void: play_event(&"weapon_equipped"))
+	EventBus.weapon_leveled.connect(func(_s: int, _w: WeaponData, _l: int) -> void: play_event(&"weapon_leveled"))
+	EventBus.repulse_pulsed.connect(func(_c: Vector2, _r: float, _l: int, pushed: int) -> void:
+		if pushed > 0:
+			play_event(&"magnet_reverse_push"))
+	# Poções (018): o som da poção (ou o gole genérico); recusa; compra.
+	EventBus.potion_drunk.connect(func(id: StringName, _l: int, _c: int) -> void: play_event(&"potion_drunk", id))
+	EventBus.potion_refused.connect(func(_id: StringName, _r: StringName) -> void: play_event(&"potion_denied"))
+	EventBus.potion_bought.connect(func(_id: StringName, _p: int) -> void: play_event(&"gold_ink_spent"))
+	# Palavras, combo e heresia.
+	EventBus.combo_window_closed.connect(func() -> void: play_event(&"combo_window_closed"))
+	EventBus.heresy_forgiven.connect(func(_p: Vector2) -> void: play_event(&"heresy_forgiven"))
+	EventBus.heresy_absolved.connect(func() -> void: play_event(&"heresy_absolved"))
+	EventBus.shield_broken.connect(func(_p: Vector2) -> void: play_event(&"shield_broken"))
+	EventBus.verbum_echoed.connect(func(_w: WordData) -> void: play_event(&"verbum_echoed"))
+	EventBus.verbum_failed.connect(func() -> void: play_event(&"verbum_failed"))
+	EventBus.word_unlocked.connect(func(_w: WordData) -> void: play_event(&"word_unlocked"))
+	# Inimigos.
+	EventBus.enemy_spawned.connect(func(_s: int, _d: EnemyData) -> void: play_event(&"enemy_spawned"))
+	EventBus.champion_spawned.connect(func(_s: int, _d: EnemyData) -> void: play_event(&"champion_spawned"))
+	# Página e ritmo.
+	EventBus.wave_closing.connect(func(_i: int, _s: float) -> void: play_event(&"wave_closing"))
+	EventBus.page_stage_changed.connect(func(_s: int, _n: int, animated: bool) -> void:
+		if animated:
+			play_event(&"page_stage_changed"))
+	EventBus.page_degraded.connect(func(_s: int) -> void: play_event(&"page_degraded"))
+	# Chefe.
+	EventBus.boss_spawned.connect(func(_b: BossData) -> void: play_event(&"boss_spawned"))
+	EventBus.boss_damaged.connect(func(_h: int, _m: int) -> void: play_event(&"boss_damaged"))
+	EventBus.boss_exposed.connect(func(_s: float) -> void: play_event(&"boss_exposed"))
+	EventBus.boss_phase_changed.connect(func(i: int) -> void:
+		if i > 0:
+			play_event(&"boss_phase_changed"))
+	EventBus.boss_defeated.connect(func(_b: BossData) -> void:
+		stop_all_loops()
+		play_event(&"boss_defeated"))
+	EventBus.atril_erase_requested.connect(func() -> void: play_event(&"atril_erase_requested"))
+	EventBus.letter_erased.connect(func(_l: String, _p: Vector2) -> void: play_event(&"letter_erased"))
+	EventBus.erasure_warned.connect(func(active: bool) -> void:
+		if active:
+			start_loop(&"erasure_warned")
+		else:
+			stop_loop(&"erasure_warned"))
+	EventBus.boss_letters_burst.connect(func(_p: Vector2, _c: int) -> void: play_event(&"boss_letters_burst"))
+	# Loja e telas.
+	EventBus.shop_opened.connect(func(_w: int) -> void: play_event(&"shop_opened"))
+	EventBus.shop_closed.connect(func() -> void: play_event(&"shop_closed"))
+	EventBus.item_bought.connect(func(_i: ShopItemData, _p: int) -> void: play_event(&"item_bought"))
+	EventBus.shop_rerolled.connect(func(_c: int) -> void: play_event(&"shop_rerolled"))
+	EventBus.pause_menu_toggled.connect(func(open: bool) -> void:
+		play_event(&"pause_menu_toggled", &"open" if open else &"close"))
+	EventBus.screen_changed.connect(func(screen: StringName) -> void:
+		if screen == &"options":
+			play_event(&"screen_changed", screen))
+	EventBus.codex_discovered.connect(func(_c: StringName, _i: StringName) -> void: play_event(&"codex_discovered"))
+	EventBus.game_restart_requested.connect(func() -> void:
+		stop_all_loops()
+		play_event(&"game_restart_requested"))
+	EventBus.cutscene_skipped.connect(func(_i: StringName) -> void: play_event(&"cutscene_skipped"))
+	EventBus.player_died.connect(func() -> void: stop_all_loops())
+	EventBus.wave_ended.connect(func(_i: int) -> void: stop_all_loops())
+	# Sinais só de áudio (EventBus, bloco "Áudio"). Armas sem som no manifesto ficam mudas (sem variante).
+	EventBus.weapon_fired.connect(func(id: StringName) -> void: _play_variant_only(&"weapon_fired", id))
+	EventBus.weapon_hit.connect(func(id: StringName) -> void: _play_variant_only(&"weapon_hit", id))
+	EventBus.weapon_windup_started.connect(func(id: StringName) -> void: _play_variant_only(&"weapon_charge", id))
+	EventBus.weapon_beam_toggled.connect(func(id: StringName, on: bool) -> void:
+		if on:
+			_play_variant_only(&"weapon_fired", id)
+			start_loop(&"weapon_loop", id)
+		else:
+			stop_loop(&"weapon_loop", id))
+	EventBus.boss_attack_telegraphed.connect(func(kind: StringName) -> void: play_event(&"boss_telegraph", kind))
+	EventBus.boss_attack_started.connect(func(kind: StringName) -> void:
+		var s: SoundData = event_map.resolve(&"boss_attack", kind) if event_map != null else null
+		if s != null and s.stream != null and s.stream.get(&"loop_mode") == AudioStreamWAV.LOOP_FORWARD:
+			start_loop(&"boss_attack", kind)
+		else:
+			play_event(&"boss_attack", kind))
+	EventBus.boss_attack_finished.connect(func(kind: StringName) -> void:
+		if is_looping(&"boss_attack", kind):
+			stop_loop(&"boss_attack", kind))
+	EventBus.boss_stunned.connect(func(_s: float) -> void: play_event(&"boss_stunned"))
+	EventBus.enemy_spawn_telegraphed.connect(func(_c: bool) -> void: play_event(&"enemy_spawn_telegraph"))
+	EventBus.enemy_telegraphed.connect(func(id: StringName) -> void: _play_variant_only(&"enemy_telegraph", id))
+	EventBus.enemy_attacked.connect(func(id: StringName) -> void: _play_variant_only(&"enemy_attack", id))
+	EventBus.enemy_projectile_hit.connect(func() -> void: play_event(&"enemy_projectile_hit"))
+	EventBus.hazard_entered.connect(func() -> void: play_event(&"hazard_damage"))
+	EventBus.letter_menu_cursor_moved.connect(func(_i: int) -> void: play_event(&"letter_menu_cursor"))
+	EventBus.shop_purchase_denied.connect(func() -> void: play_event(&"shop_purchase_denied"))
+	EventBus.shop_lock_toggled.connect(func(_l: bool) -> void: play_event(&"shop_lock_toggled"))
+	EventBus.ui_focus_changed.connect(func() -> void: play_event(&"ui_focus_changed"))
+	EventBus.ui_confirmed.connect(func() -> void: play_event(&"ui_confirm"))
+	EventBus.ui_backed.connect(func() -> void: play_event(&"ui_back"))
+	EventBus.ui_slider_changed.connect(func() -> void: play_event(&"ui_slider_changed"))
+	EventBus.ui_key_remapped.connect(func() -> void: play_event(&"ui_key_remapped"))
+
+
+## Só a variante (`key:variant`), sem cair no som base: arma ou inimigo sem som próprio fica mudo.
+func _play_variant_only(key: StringName, variant: StringName) -> bool:
+	if event_map == null:
+		return false
+	var s: SoundData = event_map.resolve(key, variant)
+	return play_sound(s) if s != null and s.event != key else false

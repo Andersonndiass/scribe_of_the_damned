@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_y82j2"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/combo_window_closed.wav" id="2_a08xp"]
+
+[resource]
+script = ExtResource("1_y82j2")
+id = &"combo_window_closed"
+event = &"combo_window_closed"
+stream = ExtResource("2_a08xp")
+max_voices = 2
+priority = 3
+note = "Janela de combo fecha."

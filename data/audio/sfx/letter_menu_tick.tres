@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_718x1"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/letter_menu_tick.wav" id="2_gf3ns"]
+
+[resource]
+script = ExtResource("1_718x1")
+id = &"letter_menu_tick"
+event = &"letter_menu_countdown"
+stream = ExtResource("2_gf3ns")
+bus = &"UI"
+pitch_jitter = 0.0
+max_voices = 2
+priority = 3
+note = "Contagem de 2,5 s no menu da letra (loop)."

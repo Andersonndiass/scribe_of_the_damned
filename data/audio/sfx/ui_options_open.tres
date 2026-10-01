@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_5dfu5"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/ui_options_open.wav" id="2_6s1mv"]
+
+[resource]
+script = ExtResource("1_5dfu5")
+id = &"ui_options_open"
+event = &"screen_changed:options"
+stream = ExtResource("2_6s1mv")
+bus = &"UI"
+pitch_jitter = 0.0
+max_voices = 2
+priority = 3
+note = "Abrir opções."

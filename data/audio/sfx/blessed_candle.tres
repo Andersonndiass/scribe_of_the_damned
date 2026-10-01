@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_qhfls"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/blessed_candle.wav" id="2_2lwgd"]
+
+[resource]
+script = ExtResource("1_qhfls")
+id = &"blessed_candle"
+event = &"blessing_chosen:blessed_candle"
+stream = ExtResource("2_2lwgd")
+bus = &"UI"
+pitch_jitter = 0.0
+max_voices = 2
+priority = 3
+note = "Vela da bênção (+1 vela máx.)."

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_8cfgx"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/weapon_crucifix_windup.wav" id="2_i8hsy"]
+
+[resource]
+script = ExtResource("1_8cfgx")
+id = &"weapon_crucifix_windup"
+event = &"weapon_charge:crucifix"
+stream = ExtResource("2_i8hsy")
+pitch_jitter = 0.06
+max_voices = 3
+cooldown_ms = 40
+priority = 2
+note = "Crucifixo: antecipação do arremesso."

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_co1p1"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/gold_spent.wav" id="2_1t5aq"]
+
+[resource]
+script = ExtResource("1_co1p1")
+id = &"gold_spent"
+event = &"gold_ink_spent"
+stream = ExtResource("2_1t5aq")
+bus = &"UI"
+pitch_jitter = 0.0
+max_voices = 2
+priority = 3
+note = "Gasto de tinta dourada."

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_ob78a"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/ui_restart.wav" id="2_6qmuu"]
+
+[resource]
+script = ExtResource("1_ob78a")
+id = &"ui_restart"
+event = &"game_restart_requested"
+stream = ExtResource("2_6qmuu")
+bus = &"UI"
+pitch_jitter = 0.0
+max_voices = 2
+priority = 3
+note = "Reiniciar partida."

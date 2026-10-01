@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_7o2kt"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/boss_attack_swipe.wav" id="2_vtn0f"]
+
+[resource]
+script = ExtResource("1_7o2kt")
+id = &"boss_attack_swipe"
+event = &"boss_attack:swipe"
+stream = ExtResource("2_vtn0f")
+pitch_jitter = 0.03
+max_voices = 2
+cooldown_ms = 0
+note = "Garra varre em arco."

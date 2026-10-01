@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_4eibg"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/letter_menu_move.wav" id="2_kgtba"]
+
+[resource]
+script = ExtResource("1_4eibg")
+id = &"letter_menu_move"
+event = &"letter_menu_cursor"
+stream = ExtResource("2_kgtba")
+bus = &"UI"
+pitch_jitter = 0.0
+max_voices = 2
+priority = 2
+note = "Mover entre opções da letra."

@@ -34,6 +34,7 @@ func begin(p_attack: AttackData, p_boss: Boss) -> void:
 	_t = 0.0
 	_stage = &"telegraph"
 	global_position = Vector2.ZERO
+	EventBus.boss_attack_telegraphed.emit(attack.kind)
 	_on_begin()
 	visible = true
 	queue_redraw()
@@ -42,11 +43,14 @@ func begin(p_attack: AttackData, p_boss: Boss) -> void:
 func activate() -> void:
 	_stage = &"active"
 	_t = 0.0
+	EventBus.boss_attack_started.emit(attack.kind)
 	_on_activate()
 	queue_redraw()
 
 
 func finish() -> void:
+	if _stage != &"off" and attack != null:
+		EventBus.boss_attack_finished.emit(attack.kind)
 	_stage = &"off"
 	visible = false
 

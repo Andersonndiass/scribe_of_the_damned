@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_hkxdo"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/grace_gained.wav" id="2_5yagt"]
+
+[resource]
+script = ExtResource("1_hkxdo")
+id = &"grace_gained"
+event = &"grace_gained"
+stream = ExtResource("2_5yagt")
+pitch_jitter = 0.1
+max_voices = 2
+cooldown_ms = 120
+note = "Graça ganha: tique leve."

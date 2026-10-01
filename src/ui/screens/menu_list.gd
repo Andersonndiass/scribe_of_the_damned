@@ -55,8 +55,10 @@ func handle_input(event: InputEvent) -> bool:
 		_move(-1)
 	elif event.is_action(&"cast") or event.is_action(&"shop_next") or event.is_action(&"ui_accept"):
 		if focus >= 0:
+			EventBus.ui_confirmed.emit()
 			chosen.emit(focused_id())
 	elif event.is_action(&"pause") or event.is_action(&"ui_cancel"):
+		EventBus.ui_backed.emit()
 		back.emit()
 	else:
 		return false
@@ -70,16 +72,19 @@ func _handle_mouse(event: InputEventMouse) -> bool:
 		if i >= 0 and i != focus:
 			focus = i
 			focus_changed.emit(focus)
+			EventBus.ui_focus_changed.emit()
 		return false  # passar por cima não consome o movimento
 	if not button.pressed:
 		return false
 	if button.button_index == MOUSE_BUTTON_RIGHT:
+		EventBus.ui_backed.emit()
 		back.emit()
 		return true
 	if button.button_index == MOUSE_BUTTON_LEFT and i >= 0:
 		if i != focus:
 			focus = i
 			focus_changed.emit(focus)
+		EventBus.ui_confirmed.emit()
 		chosen.emit(focused_id())
 		return true
 	return false
@@ -94,4 +99,5 @@ func _move(step: int) -> void:
 		if items[i]["enabled"]:
 			focus = i
 			focus_changed.emit(focus)
+			EventBus.ui_focus_changed.emit()
 			return

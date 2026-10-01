@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_25vaa"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/boss_telegraph_swipe.wav" id="2_legbr"]
+
+[resource]
+script = ExtResource("1_25vaa")
+id = &"boss_telegraph_swipe"
+event = &"boss_telegraph:swipe"
+stream = ExtResource("2_legbr")
+pitch_jitter = 0.03
+max_voices = 2
+cooldown_ms = 0
+note = "Telegrafia do golpe de garra."

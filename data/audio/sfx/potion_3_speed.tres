@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_5u73b"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/potion_3_speed.wav" id="2_wn5qv"]
+
+[resource]
+script = ExtResource("1_5u73b")
+id = &"potion_3_speed"
+event = &"potion_drunk:wine"
+stream = ExtResource("2_wn5qv")
+max_voices = 2
+priority = 2
+note = "Poção 3: velocidade."

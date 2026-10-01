@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_reb87"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/letter_dropped_rare.wav" id="2_rg7h5"]
+
+[resource]
+script = ExtResource("1_reb87")
+id = &"letter_dropped_rare"
+event = &"letter_dropped:rare"
+stream = ExtResource("2_rg7h5")
+max_voices = 2
+priority = 2
+note = "Vogal rara caindo: pingo com brilho metálico."

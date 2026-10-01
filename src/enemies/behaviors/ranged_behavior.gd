@@ -36,6 +36,7 @@ func tick(m: EnemyManager, i: int, dt: float) -> void:
 			var pm: EnemyProjectileManager = m.get_projectiles()
 			if pm != null and projectile != null:
 				pm.fire(projectile, m.positions[i] + Vector2(0, -8), m.aim[i])
+				EventBus.enemy_attacked.emit(m.data_of[i].id)
 			m.state[i] = STATE_IDLE
 			m.state_timer[i] = 0.0
 		return

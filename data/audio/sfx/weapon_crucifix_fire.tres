@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_htrpa"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/weapon_crucifix_fire.wav" id="2_cfbju"]
+
+[resource]
+script = ExtResource("1_htrpa")
+id = &"weapon_crucifix_fire"
+event = &"weapon_fired:crucifix"
+stream = ExtResource("2_cfbju")
+pitch_jitter = 0.06
+max_voices = 3
+cooldown_ms = 40
+note = "Crucifixo: disparo do projétil pesado."

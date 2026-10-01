@@ -167,6 +167,7 @@ func _mouse_input(m: InputEventMouse) -> bool:
 	if BUS_OF.has(row):
 		if p.x >= VALUE_X - 4 and p.x <= VALUE_X + SLIDER_W + 4:
 			Settings.set_volume(BUS_OF[row], clampf(roundf((p.x - VALUE_X) / 10.0) / 10.0, 0.0, 1.0))
+			EventBus.ui_slider_changed.emit()
 			Settings.commit()
 	elif row in TOGGLES or row == &"language":
 		_toggle(row)
@@ -183,6 +184,7 @@ func _change(dir: int) -> void:
 		var before: float = Settings.volume(bus)
 		Settings.set_volume(bus, snappedf(before + dir * VOLUME_STEP, VOLUME_STEP))
 		if not is_equal_approx(before, Settings.volume(bus)):
+			EventBus.ui_slider_changed.emit()
 			_step_left = STEP_FLASH
 			_step_dir = dir
 		Settings.commit()
@@ -271,6 +273,7 @@ func _capture_key(event: InputEvent) -> bool:
 	swapped_with.clear()
 	swapped_with.append_array(Settings.conflicts(action, code))  # só no mesmo contexto (017)
 	Settings.set_binding(action, code)
+	EventBus.ui_key_remapped.emit()
 	Settings.commit()
 	_swap_left = SWAP_NOTICE if not swapped_with.is_empty() else 0.0
 	return true

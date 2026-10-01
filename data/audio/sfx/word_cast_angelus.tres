@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_j51mk"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/word_cast_angelus.wav" id="2_mun88"]
+
+[resource]
+script = ExtResource("1_j51mk")
+id = &"word_cast_angelus"
+event = &"word_cast:angelus"
+stream = ExtResource("2_mun88")
+pitch_jitter = 0.02
+max_voices = 1
+cooldown_ms = 0
+priority = 2
+note = "ANGELUS: anjos que orbitam ao redor"

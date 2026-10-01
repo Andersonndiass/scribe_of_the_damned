@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_h7t1a"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/potion_empty.wav" id="2_box16"]
+
+[resource]
+script = ExtResource("1_h7t1a")
+id = &"potion_empty"
+event = &"potion_denied"
+stream = ExtResource("2_box16")
+bus = &"UI"
+pitch_jitter = 0.0
+max_voices = 2
+priority = 3
+note = "Poção sem estoque."

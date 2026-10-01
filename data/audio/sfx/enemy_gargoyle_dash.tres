@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_cersk"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/enemy_gargoyle_dash.wav" id="2_j75eb"]
+
+[resource]
+script = ExtResource("1_cersk")
+id = &"enemy_gargoyle_dash"
+event = &"enemy_attack:gargoyle"
+stream = ExtResource("2_j75eb")
+pitch_jitter = 0.08
+max_voices = 2
+cooldown_ms = 150
+note = "Gárgula investe em dash."

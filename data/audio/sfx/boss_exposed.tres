@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_cc1ty"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/boss_exposed.wav" id="2_qhu2f"]
+
+[resource]
+script = ExtResource("1_cc1ty")
+id = &"boss_exposed"
+event = &"boss_exposed"
+stream = ExtResource("2_qhu2f")
+pitch_jitter = 0.03
+max_voices = 2
+cooldown_ms = 0
+priority = 2
+note = "Chefe exposto (janela de dano)."

@@ -73,6 +73,7 @@ func _physics_process(delta: float) -> void:
 				or ObstacleQuery.blocks(p, ObstacleTypeData.Block.ENEMY_SHOT)
 		if not gone and can_hit and p.distance_to(body) <= d.radius + player_hurt_radius:
 			player.call(&"take_hit", d.damage, &"projectile")
+			EventBus.enemy_projectile_hit.emit()
 			gone = true
 		if gone:
 			_remove(i)

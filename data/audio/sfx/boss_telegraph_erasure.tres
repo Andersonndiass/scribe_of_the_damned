@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_b00rd"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/boss_telegraph_erasure.wav" id="2_2lu8u"]
+
+[resource]
+script = ExtResource("1_b00rd")
+id = &"boss_telegraph_erasure"
+event = &"boss_telegraph:erasure"
+stream = ExtResource("2_2lu8u")
+pitch_jitter = 0.03
+max_voices = 2
+cooldown_ms = 0
+priority = 2
+note = "Telegrafia do apagamento."

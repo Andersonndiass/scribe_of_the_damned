@@ -236,6 +236,7 @@ func _try_buy(i: int) -> void:
 	else:
 		_shake_left[i] = SHAKE_TIME
 		_alert_left[i] = ALERT_TIME
+		EventBus.shop_purchase_denied.emit()
 
 
 func shelf_rect(i: int) -> Rect2:
@@ -246,6 +247,8 @@ func _try_buy_potion(i: int) -> void:
 	if _shop.buy_potion(i):
 		_pop_left = INK_POP
 		_ink_rate = maxf(absf(_ink_shown - GameState.gold_ink) / INK_ROLL_MAX, 1.0 / INK_STEP)
+	else:
+		EventBus.shop_purchase_denied.emit()
 
 
 func _try_reroll() -> void:

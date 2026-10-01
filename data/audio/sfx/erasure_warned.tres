@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_16ca1"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/erasure_warned.wav" id="2_k874a"]
+
+[resource]
+script = ExtResource("1_16ca1")
+id = &"erasure_warned"
+event = &"erasure_warned"
+stream = ExtResource("2_k874a")
+max_voices = 2
+priority = 2
+note = "Aviso de apagamento (loop enquanto ativo)."
