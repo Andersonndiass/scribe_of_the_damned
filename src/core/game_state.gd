@@ -31,6 +31,8 @@ var shake_enabled: bool = true
 var aim_with_mouse: bool = true
 ## 017: menu da letra aberto (o escriba fica parado; Espaço e setas são do menu).
 var letter_menu_open: bool = false
+## 018: feixe do nível em curso (o menu da letra não abre por cima; ele espera na fila).
+var levelup_beam: bool = false
 ## Multiplicador de chance de letra da onda atual (WaveData.letter_drop_mul).
 var letter_drop_mul: float = 1.0
 ## Onde está o cursor no mundo; Vector2.INF = sem mouse nesta sessão (mira = direção do escriba).
@@ -94,6 +96,7 @@ func start_run(player: PlayerData, seed_value: int = -1) -> void:
 	wave_index = 0
 	letter_drop_mul = 1.0
 	letter_menu_open = false
+	levelup_beam = false
 	repulse_level = 0
 	gold_ink = 0
 	gold_fraction = 0.0

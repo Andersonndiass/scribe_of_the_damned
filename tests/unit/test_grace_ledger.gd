@@ -15,25 +15,25 @@ func test_curve_matches_the_rules_table() -> void:
 	var costs: Array[int] = []
 	for level: int in range(1, 6):
 		costs.append(TUNING.cost(level))
-	# 017 (rules-agent T1700 §4): o nível custa 40, 64, 88, 112…
-	assert_eq(costs, [40, 64, 88, 112, 136] as Array[int])
+	# 018 (rules-agent T1801, pedido D-094): o 1º nível é curto; depois 40, 64, 92, 120…
+	assert_eq(costs, [16, 40, 64, 92, 120] as Array[int])
 	var acc: int = 0
-	for level: int in range(1, 17):
+	for level: int in range(1, 18):
 		acc += TUNING.cost(level)
-	assert_eq(acc, 3520, "nível 17 com 3520 de Graça (~3900 no capítulo → nível ~18)")
+	assert_eq(acc, 3956, "nível 18 com 3956 de Graça (o total do capítulo continua)")
 
 
 func test_crossing_the_threshold_queues_a_level() -> void:
-	assert_eq(_g.add(39), 0)
+	assert_eq(_g.add(15), 0)
 	assert_eq(_g.level, 1)
-	assert_eq(_g.add(1), 1, "40 → nível 2")
+	assert_eq(_g.add(1), 1, "16 → nível 2 (D-094)")
 	assert_eq(_g.level, 2)
 	assert_eq(_g.pending, 1)
 	assert_eq(_g.progress, 0)
 
 
 func test_a_big_gain_queues_several_levels() -> void:
-	assert_eq(_g.add(40 + 64 + 5), 2, "um ganho grande pode subir 2 de uma vez")
+	assert_eq(_g.add(16 + 40 + 5), 2, "um ganho grande pode subir 2 de uma vez")
 	assert_eq(_g.pending, 2)
 	assert_eq(_g.progress, 5, "o que sobra fica no nível")
 	assert_true(_g.consume())

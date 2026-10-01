@@ -1,6 +1,6 @@
 # 018 — Poções, subir de nível com luz e passada de ritmo
 
-> Status: **Para aprovação** (2026-10-01). Direção: D-085 item 7, D-094, D-095.
+> Status: **Aprovada** (2026-10-01, o autor: "depois disso tudo pode seguir") · Fase 1 ✅. Direção: D-085 item 7, D-094, D-095.
 > Pareceres: `docs/reviews/T1800G-game-design-018.md` (direção) · `T1801-rules-parecer.md` (números) · `T1801-mechanics-parecer.md` (sistema) · `T1801-design-parecer.md` + `T1801-design-maps.json` + `T1801-potion-icons.json` (arte; ícones do HUD com a skill pixel-art-gen) · `T1801-animation-parecer.md` (tempos).
 > Depende de: 017 (armas, menu da letra, selos, loja, HUD T1800), 016 (Graça).
 

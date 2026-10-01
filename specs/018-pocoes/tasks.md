@@ -3,10 +3,12 @@
 > Ordem do mechanics-agent (T1801) + o subir de nível da D-095. Cada fase fecha com GUT + export web + commit. Agentes: tarefas simples com Sonnet, difíceis com Opus. Arte nova com a skill `pixel-art-gen`; telas/HUD conferidas com a skill `ui-ux-game`.
 
 ## Fase 1 — Subir de nível e banco
-- **T1801** Curva da Graça (`level_costs [16, 40]`, base 8, passo 28) + `validate()` checa `level_costs[0]`.
-- **T1802** Parecer curto do animation-agent e do design-agent para o feixe dourado e a barra da câmera lenta (2,5 s); desenho do feixe com a skill pixel-art-gen.
-- **T1803** `GraceFlow`: fase de feixe (câmera lenta pelo `TimeScale`, dono `level_up`) antes de pausar; barra; fila com 1 feixe só; testes.
-- **T1804** Banco (o6) em (184, 272) + sonda ARENA/STUCK.
+- ✅ **T1801** Curva da Graça (`level_costs [16, 40]`, base 8, passo 28) + `validate()` checa `level_costs[0]`.
+- ✅ **T1802** Parecer curto do animation-agent e do design-agent para o feixe dourado e a barra da câmera lenta (2,5 s); desenho do feixe com a skill pixel-art-gen.
+- ✅ **T1803** `GraceFlow`: fase de feixe (câmera lenta pelo `TimeScale`, dono `level_up`) antes de pausar; barra; fila com 1 feixe só; testes.
+- ✅ **T1804** Banco (o6) em (184, 272) + sonda ARENA/STUCK.
+
+**Checkpoint 018-A:** ✅ 2026-10-01 — curva nova (1º nível em 16), feixe dourado + 2,5 s de câmera lenta com barra, banco em (184, 272) (STUCK 0,24%/0,19%); GUT 519/519.
 
 ## Fase 2 — Poções: base, uso e HUD
 - **T1805** `PotionData`/`PotionLevelData`/`PotionTuning` + 4 `.tres` + validação.

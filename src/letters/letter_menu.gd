@@ -102,8 +102,8 @@ func _process(delta: float) -> void:
 
 
 func _can_open() -> bool:
-	if field == null or (player != null and not player.vitals.is_alive()):
-		return false
+	if field == null or (player != null and not player.vitals.is_alive()) or GameState.levelup_beam:
+		return false  # 018: durante o feixe do nível o pedido espera na fila
 	var st: Atril.Status = field.atril.state(field.lexicon)
 	return not field.atril.is_full() and st != Atril.Status.VALID
 

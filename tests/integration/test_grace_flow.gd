@@ -29,6 +29,7 @@ func before_each() -> void:
 	_main.get_node("WaveDirector").stop()
 	(_main.get_node("World/EnemyManager") as EnemyManager).dissolve_all()
 	_flow = _main.get_node("GraceFlow")
+	_flow.beam_enabled = false  # o feixe (018) tem teste próprio
 	_player = _main.get_node("World/Player")
 	_player.auto_attack.enabled = false
 	_overlays = _main.get_node("Overlays")
@@ -65,7 +66,7 @@ func _cast(word: WordData) -> void:
 	EventBus.word_cast.emit(word, 1.0, Vector2.ZERO, Vector2.RIGHT)
 
 
-## IGNIS = 5 letras × 6 = 30: exatamente o nível 2.
+## IGNIS = 5 letras × 10 = 50: sobe para o nível 2 (custa 16) e não chega ao 3 (16 + 40).
 func _level_up() -> void:
 	_cast(IGNIS)
 	await _wait(0.05)
@@ -74,6 +75,26 @@ func _level_up() -> void:
 func _to_choosing() -> void:
 	await _level_up()
 	await _wait(_flow.tuning.announce_time + 0.05)
+
+
+# --- Feixe do nível (018 D-095) --------------------------------------------------------------
+
+func test_level_up_beam_slows_time_then_opens_the_seals() -> void:
+	_flow.beam_enabled = true
+	await _level_up()
+	assert_eq(_flow.phase, GraceFlow.Phase.BEAM, "feixe antes dos selos")
+	assert_true(GameState.levelup_beam)
+	assert_false(get_tree().paused, "câmera lenta, não pausa")
+	await _wait(0.2)
+	assert_almost_eq(TimeScale.factor_product(), 0.2, 0.001, "câmera lenta ×0,2")
+	var menu: LetterMenu = (_main.get_node("World/LetterField") as LetterField).menu
+	assert_false(menu._can_open(), "o menu da letra espera o feixe")
+	assert_eq(_shown.size(), 0)
+	await _wait(_flow.tuning.levelup_slow_time)
+	assert_eq(_shown.size(), 1, "os selos aparecem depois dos 2,5 s")
+	assert_true(get_tree().paused)
+	assert_false(GameState.levelup_beam)
+	assert_almost_eq(TimeScale.factor_product(), 1.0, 0.001, "a câmera lenta sai")
 
 
 # --- Graça ---------------------------------------------------------------------------------
@@ -131,8 +152,7 @@ func test_the_guard_blocks_early_picks_then_the_blessing_applies() -> void:
 
 func test_queued_levels_show_one_offer_after_another_without_unpausing() -> void:
 	_cast(IGNIS)
-	_cast(IGNIS)
-	_cast(LUX)  # 30 + 30 + 18 = 78 ≥ 30 + 36: 2 níveis
+	_cast(IGNIS)  # 50 + 50 = 100: passa 16 + 40 e não chega a 120: 2 níveis (018)
 	assert_eq(GameState.grace.pending, 2)
 	await _wait(0.05)
 	await _wait(_flow.tuning.announce_time + _flow.tuning.pick_guard + 0.1)

@@ -115,6 +115,9 @@ signal wax_drop_collected(position: Vector2)
 signal weapon_equipped(slot: int, weapon: WeaponData, level: int)
 signal weapon_switched(slot: int, weapon: WeaponData)
 ## 017: ímã reverso subiu de nível (1 = comprado) e soltou um pulso (inimigos empurrados).
+## 018 (D-095): feixe do nível começou (duração da câmera lenta) e terminou.
+signal levelup_beam_started(duration: float)
+signal levelup_beam_ended()
 signal passive_leveled(id: StringName, level: int)
 signal repulse_pulsed(center: Vector2, radius: float, level: int, pushed: int)
 signal weapon_leveled(slot: int, weapon: WeaponData, level: int)

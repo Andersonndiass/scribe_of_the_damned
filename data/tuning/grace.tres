@@ -16,7 +16,8 @@
 [resource]
 script = ExtResource("1_gt")
 per_letter = 10.0
-level_base = 40
-level_step = 24
+level_base = 8
+level_step = 28
+level_costs = PackedInt32Array(16, 40)
 blessings = Array[ExtResource("2_bl")]([ExtResource("b0"), ExtResource("b2"), ExtResource("b3"), ExtResource("b4"), ExtResource("b5"), ExtResource("b6"), ExtResource("b7"), ExtResource("b9"), ExtResource("b10")])
 fallback = ExtResource("b8")

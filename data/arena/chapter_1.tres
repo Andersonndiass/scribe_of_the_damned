@@ -40,7 +40,7 @@ position = Vector2i(556, 172)
 [sub_resource type="Resource" id="o6"]
 script = ExtResource("2_od")
 type = ExtResource("t_bench")
-position = Vector2i(104, 328)
+position = Vector2i(184, 272)
 
 [resource]
 script = ExtResource("1_ad")

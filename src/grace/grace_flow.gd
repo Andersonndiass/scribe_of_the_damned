@@ -2,7 +2,8 @@ class_name GraceFlow
 extends Node
 ## Fluxo da Graça (016 FR-1601..FR-1610; mechanics-agent): soma a Graça das mortes e das palavras,
 ## e a cada nível pausa o jogo, oferece 3 selos e aplica a bênção escolhida. FSM:
-## IDLE → ARMED (espera o próximo quadro sem pausa alheia) → ANNOUNCING (pausa; selos entrando)
+## IDLE → ARMED (espera o próximo quadro sem pausa alheia nem menu da letra) → BEAM (018 D-095:
+## feixe dourado + câmera lenta por 2,5 s, com barra) → ANNOUNCING (pausa; selos entrando)
 ## → CHOOSING (trava de pick_guard) → STAMPING (carimbo) → CHOOSING (fila) ou IDLE (despausa).
 ## DEAD (morte) e SEALED (fim do capítulo) descartam a fila. Tempo sempre no relógio real: o
 ## hit-stop (Engine.time_scale 0) não pode travar a pausa. Fora do jogo de verdade (testes, sonda,
@@ -10,7 +11,9 @@ extends Node
 
 signal phase_changed(phase: Phase)
 
-enum Phase { IDLE, ARMED, ANNOUNCING, CHOOSING, STAMPING, DEAD, SEALED }
+enum Phase { IDLE, ARMED, BEAM, ANNOUNCING, CHOOSING, STAMPING, DEAD, SEALED }
+
+const SLOW_OWNER := &"levelup_slow"
 
 var tuning: GraceTuning
 var player: Player
@@ -19,6 +22,10 @@ var letter_field: LetterField
 var auto_pick: bool = false
 ## Desligado, não soma Graça (testes antigos não podem ganhar bênçãos por acaso).
 var active: bool = true
+## 018: feixe + câmera lenta antes dos selos (testes antigos desligam para não esperar 2,5 s).
+var beam_enabled: bool = true
+## Tempo do feixe já corrido (s, relógio que desconta a câmera lenta e o hit-stop).
+var beam_t: float = 0.0
 
 var phase: Phase = Phase.IDLE
 ## Os selos da oferta atual.
@@ -50,6 +57,15 @@ func _ready() -> void:
 	EventBus.boss_defeated.connect(func(_b: BossData) -> void: _seal())
 	EventBus.chapter_completed.connect(func(_c: int) -> void: _seal())
 	EventBus.pause_menu_toggled.connect(_on_pause_menu_toggled)
+	# O feixe fica atrás do escriba e dos inimigos (camada de efeitos do Main, se houver).
+	var view := LevelUpBeamView.new()
+	view.name = "LevelUpBeam"
+	view.flow = self
+	var host: Node = get_parent().get_node_or_null(^"FxLayer") if get_parent() != null else null
+	if host != null:
+		host.add_child.call_deferred(view)
+	else:
+		add_child(view)
 	_emit_changed()
 
 
@@ -95,7 +111,7 @@ func _emit_changed() -> void:
 
 # --- FSM -----------------------------------------------------------------------------------
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	match phase:
 		Phase.ARMED:
 			if not _can_open():
@@ -103,8 +119,12 @@ func _process(_delta: float) -> void:
 			if auto_pick:
 				_auto_pick_all()
 				return
-			get_tree().paused = true
-			_new_offer()
+			if beam_enabled and tuning.levelup_slow_time > 0.0:
+				_start_beam()
+			else:
+				_open_seals()
+		Phase.BEAM:
+			_tick_beam(delta)
 		Phase.ANNOUNCING:
 			if _elapsed() >= tuning.announce_time:
 				_guard_ms = Time.get_ticks_msec()
@@ -117,9 +137,56 @@ func _process(_delta: float) -> void:
 					_close(true)
 
 
-## Abre por cima de nada: sem outra pausa (Pausa, loja, cutscene) e com o escriba vivo.
+## Abre por cima de nada: sem outra pausa (Pausa, loja, cutscene), com o escriba vivo e sem o
+## menu da letra aberto ou no intervalo entre menus (animation-agent T1802).
 func _can_open() -> bool:
-	return not get_tree().paused and player != null and player.vitals.is_alive()
+	if get_tree().paused or player == null or not player.vitals.is_alive():
+		return false
+	return letter_field == null or letter_field.menu == null or letter_field.menu.phase == LetterMenu.Phase.IDLE
+
+
+func _open_seals() -> void:
+	get_tree().paused = true
+	_new_offer()
+
+
+# --- Feixe (018, D-095) ----------------------------------------------------------------------
+
+func _start_beam() -> void:
+	beam_t = 0.0
+	GameState.levelup_beam = true
+	_enter(Phase.BEAM)
+	_apply_beam_slow()
+	EventBus.levelup_beam_started.emit(tuning.levelup_slow_time)
+
+
+## O relógio desconta a câmera lenta e para no hit-stop e na Pausa (Esc).
+func _tick_beam(delta: float) -> void:
+	if get_tree().paused:
+		return
+	var product: float = TimeScale.factor_product()
+	if product > 0.001:
+		beam_t += delta / product
+	_apply_beam_slow()
+	if beam_t >= tuning.levelup_slow_time:
+		_end_beam()
+		_open_seals()
+
+
+func _apply_beam_slow() -> void:
+	var steps: PackedFloat32Array = tuning.levelup_slow_in_steps
+	if steps.is_empty():
+		return
+	var i: int = mini(int(beam_t / maxf(tuning.levelup_slow_in_step_time, 0.001)), steps.size() - 1)
+	TimeScale.set_factor(SLOW_OWNER, steps[i])
+
+
+## Sem rampa de saída: o jogo pausa para os selos logo em seguida (animation-agent).
+func _end_beam() -> void:
+	TimeScale.clear(SLOW_OWNER)
+	if GameState.levelup_beam:
+		GameState.levelup_beam = false
+		EventBus.levelup_beam_ended.emit()
 
 
 func _new_offer() -> void:
@@ -181,6 +248,7 @@ func _close(unpause: bool) -> void:
 
 
 func _on_player_died() -> void:
+	_end_beam()
 	if ledger() != null:
 		ledger().clear_pending()
 	var was_open: bool = seals_open
@@ -197,6 +265,7 @@ func _seal() -> void:
 		ledger().clear_pending()
 	if phase == Phase.DEAD or phase == Phase.SEALED:
 		return
+	_end_beam()
 	if seals_open:
 		_close(true)
 	_enter(Phase.SEALED)

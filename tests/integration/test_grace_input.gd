@@ -19,6 +19,7 @@ func before_each() -> void:
 	_main.get_node("WaveDirector").stop()
 	(_main.get_node("World/Player") as Player).auto_attack.enabled = false
 	_flow = _main.get_node("GraceFlow")
+	_flow.beam_enabled = false  # o feixe (018) tem teste próprio
 	_seals = _main.get_node("GraceSeals")
 	EventBus.blessing_chosen.connect(_on_chosen)
 

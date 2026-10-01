@@ -50,6 +50,29 @@ extends Resource
 @export var seal_weapon_reserve: float = 0.15
 @export var seal_status: float = 0.45
 @export var seal_passive: float = 0.10
+@export_group("Feixe do nível (018, D-095)")
+## Ao subir de nível: feixe dourado + câmera lenta por `levelup_slow_time` s (relógio que desconta
+## a câmera lenta e o hit-stop), depois a pausa com os selos (animation-agent T1802).
+@export var levelup_slow_time: float = 2.5
+@export var levelup_slow_in_steps: PackedFloat32Array = PackedFloat32Array([0.5, 0.2])
+@export var levelup_slow_in_step_time: float = 0.05
+@export var beam_enter_steps: int = 4
+@export var beam_enter_step: float = 0.05
+@export var beam_pulse_step: float = 0.2
+@export var beam_width: int = 16
+@export var beam_width_narrow: int = 12
+@export var beam_exit_widths: PackedInt32Array = PackedInt32Array([12, 8, 4])
+@export var beam_exit_step: float = 0.1
+@export var beam_flash: float = 0.05
+@export var levelup_bar_width: int = 25
+@export var levelup_bar_height: int = 3
+@export var levelup_bar_offset_y: int = 6
+@export var levelup_bar_step: float = 0.1
+@export var levelup_bar_blink_time: float = 0.7
+@export var levelup_bar_blink_step: float = 0.1
+@export var levelup_bar_blink_fast_time: float = 0.2
+@export var levelup_bar_blink_fast_step: float = 0.05
+@export_group("")
 ## Lista explícita (o build web não lista pastas).
 @export var blessings: Array[BlessingData] = []
 ## Reserva quando todas as bênçãos estão no teto.
@@ -81,7 +104,7 @@ func validate() -> String:
 		ids[b.id] = true
 		if b.stat == &"" and b.heal_candles <= 0:
 			return "bênção %s não faz nada" % b.id
-	for i: int in range(1, level_costs.size()):
+	for i: int in range(0, level_costs.size()):  # 018: o 1º custo também (D-094)
 		if level_costs[i] <= 0:
 			return "custo de nível inválido"
 	return ""
