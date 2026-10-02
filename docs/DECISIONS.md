@@ -715,6 +715,41 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
 - **Som:** ao guardar toca a nota de "palavra pronta"; o tique toca só quando há parceira de combo.
 - **HUD provisório:** `HudWordGuard` em (404,310) 60×28, latim em GOLD; moldura GOLD quando o combo está pronto. Falta a ficha do design-agent (o agente parou no limite da API).
 
+### D-101 · 2026-10-02 · 010 Personagens: decisões do autor ("1a2a3a4a5a6a6b7b8b9a10a")
+- **Pareceres:** game-design-agent (010).
+- **Passivas:**
+  - Hildegarda: guarda de palavra com 2 espaços.
+  - Tomé: sem atordoamento na heresia e 2 velas.
+  - Iluminador: letra dupla.
+  - Beda: atril 4 e +20% de velocidade.
+  - Anselmo: a base.
+- **Arma inicial:** Anselmo Pena, Hildegarda Aspersório, Tomé Turíbulo, Iluminador Bíblia, Beda Crucifixo. A Pena não vai para a loja (só o Anselmo a tem).
+- **Poção inicial:** Óleo, Água Benta, Óleo, Iluminura, Vinho.
+- **Desbloqueio misto com o Grimório (6b; o autor marcou 6a e 6b, valeu a última, a confirmar):** Hildegarda vencer o Cap. 1; Tomé 10 heresias sobrevividas; Iluminador 3 combos diferentes descobertos; Beda as 7 palavras-base descobertas.
+- **Abertura curta própria para cada escriba (7b)** e falas com voz para os 4 agora (8b).
+- **Na história, desbloquear = reescrever o nome do escriba no registro do mosteiro (10a).**
+- Os números vão para o rules-agent.
+
+### D-102 · 2026-10-02 · 012 Capítulo 2: decisões do autor ("1a2a3a4a5a6a")
+- **A Mãe das Traças é imune às armas.** As armas matam as crias, que soltam muitas letras na luta; só as palavras ferem a Mãe. Meta: ~1 palavra a cada 20–30 s e luta de 3–4 min.
+- **9 ondas + chefe;** a game bible §3.8 dizia 10.
+- **C2-01 na entrada do chefe;** o capítulo abre com a virada de página.
+- **Eat_Page:** uma palavra que acerta a Mãe durante o aviso cancela a mordida; a página não volta a crescer; a borda comida só empurra.
+- **Arena:** biblioteca roída, com os obstáculos atuais e mais furos.
+- **Inimigo novo:** Traça-Mãe pequena, que estoura em traças comuns.
+- **Ordem:** os capítulos antes da demo (pedido do autor).
+
+### D-103 · 2026-10-02 · 019 Relíquias e venda (pedido do autor; "1a2a3a" + "5a" lido como 4a)
+- **Relíquias:** passivos que disparam sozinhos, comprados na loja, em 2 espaços, que sobem por selos de atributo como as armas.
+- **As 5 relíquias:**
+  - Ímã Reverso: o pulso passa a ser a cada 5 s no nível base.
+  - Sino de Vésperas: atordoamento em pulso.
+  - Sal Bento: aura de lentidão.
+  - Relicário do Santo: explosão ao tomar dano.
+  - Selo de Cera: escudo de 1 golpe.
+- **Venda na loja:** poções, relíquias e armas; quanto mais upadas, mais valem.
+- **Ordem:** a 019 vem antes da 010 e da 012, porque as duas usam a loja e os selos.
+
 ## Conflitos abertos
 
 - ~~**C-008 · Menu de escolha da letra (D-085 item 2).**~~ Resolvido: autor "1a 2b 3b e mouse clicando 4a" —
