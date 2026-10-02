@@ -92,9 +92,27 @@ func goto(screen: StringName) -> void:
 
 
 func _input(event: InputEvent) -> void:
+	_fullscreen_input(event)
 	# Entrada travada durante a transição.
 	if transitioning and not event is InputEventMouseMotion:
 		get_viewport().set_input_as_handled()
+
+
+## Tela cheia (pedido do autor, 2026-10-02): o jogo abre em tela cheia (project.godot) e F11
+## alterna. No navegador só dá para pedir tela cheia dentro de um clique ou tecla: o primeiro
+## pedido sai na primeira entrada do jogador.
+var _web_fullscreen_asked: bool = false
+
+
+func _fullscreen_input(event: InputEvent) -> void:
+	if event.is_action_pressed(&"fullscreen", false):
+		var full: bool = DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED if full else DisplayServer.WINDOW_MODE_FULLSCREEN)
+		get_viewport().set_input_as_handled()
+		return
+	if OS.has_feature("web") and not _web_fullscreen_asked and event.is_pressed() 			and (event is InputEventKey or event is InputEventMouseButton):
+		_web_fullscreen_asked = true
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
 
 
 func _fade_to(target: float, duration: float) -> void:
