@@ -23,6 +23,7 @@
 | 015 | boss-semihaza (Cap. 5, final) | 014 | Tasked ✅ |
 | 016 | grace-levelup (XP "Graça" + subir de nível com 3 selos; pingo de cera) | 003, D-082 | **Complete** ✅ (2026-09-30, D-086) |
 | 017 | arsenal-sagrado (inventário de 2 armas trocáveis; Pena, Bíblia, Crucifixo, Rosário, Turíbulo, Aspersório; menu de escolha da letra; ímã reverso; selos melhoram armas/status) | 016, D-085 | **Complete** ✅ (2026-10-01, D-087…D-093 · playtest do autor e medição no Chrome pendentes) |
+| 019 | reliquias-venda (5 relíquias em 2 espaços, sobem por atributo; venda de armas, relíquias e poções) | 018 | **Complete** ✅ (2026-10-02, D-103/D-104 · aberto: relíquias reduzem as palavras, T1900) |
 | 018 | pocoes (Óleo da Unção, Água Benta, Vinho do Fervor, Tinta Iluminada; teclas 3–6; feixe de luz no level-up; passada de ritmo) | 017 | **Complete** ✅ (2026-10-01, D-094…D-096 · playtest do autor pendente) |
 
 **Ordem de execução sugerida:** 001 → (002, 003, 004, 005 em paralelo) → 006 → 007 → 008, 009, 010 → 011 (demo publicada) → 012 → 013 → 014 → 015.

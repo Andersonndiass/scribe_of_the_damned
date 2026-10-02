@@ -43,3 +43,9 @@ RECARGA/COOLDOWN · RAIO/RADIUS · EMPURRÃO/PUSH · DANO · ATORDOAMENTO/STUN T
 - **R4 (autor):** P1 — TROCAR com espaços cheios vira venda automática do que sai? P2 — com espaço de arma vazio, garantir 1 arma na próxima loja?
 - **R5:** "SINO DE VÉSPERAS" e "RELICÁRIO DO SANTO" passam de 14 caracteres no subtítulo do selo (formas curtas: SINO, RELICÁRIO).
 - **R6:** migrar `RepulseData`/`GameState.repulse_level` para `RelicData` + postos.
+
+## Medição da implementação (2026-10-02)
+- **S2 ✅:** onda 9 sem god, do zero, com cada relíquia no teto, é derrota: morre em 16–27 s (sem relíquia, 23 s). O Selo de Cera segurou 4 golpes.
+- **Capítulo ×3 (god), o bot compra relíquias só com espaço livre:** palavras/min 0,16 / 0,16 / 0,24 (média 0,19); letras 32–40; a Traça comeu 19–23; nível final 13–15; tinta 67–82; 5–7 compras.
+- **A/B sem relíquias (`norelics`):** palavras/min 0,32 / 0,64 / 0,24 (média 0,40); letras 27–45; nível 14–15.
+- **Leitura (aberto, para o rules-agent e o playtest):** com relíquias saem ~metade das palavras. Hipóteses: o Ímã e o Sal tiram os inimigos do alcance das armas curtas (menos mortes, menos menus de letra); as relíquias competem com os apócrifos (LUMEN) pela tinta e com as armas pelos selos. Alavancas possíveis: chance de letra por morte mais alta com relíquia de controle, ou relíquias mais caras. Com n = 3 o ruído é alto; medir com ×5.

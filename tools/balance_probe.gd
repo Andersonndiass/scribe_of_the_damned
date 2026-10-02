@@ -105,6 +105,8 @@ var _wlevel: int = 0
 ## 019: `relics=salt,bell` equipa relíquias; `rlevel=N` sobe N−1 postos pela ordem. Linha RELICS.
 var _relics_arg: String = ""
 var _rlevel: int = 0
+## `norelics`: o bot da loja nunca compra relíquia (A/B da 019).
+var _no_relics: bool = false
 var _relic_pulses: int = 0
 var _relic_hits: int = 0
 var _relic_absorbed: int = 0
@@ -181,6 +183,8 @@ func _initialize() -> void:
 			_swap = true
 		elif arg.begins_with("relics="):
 			_relics_arg = arg.substr(7)
+		elif arg == "norelics":
+			_no_relics = true
 		elif arg.begins_with("rlevel="):
 			_rlevel = int(arg.substr(7))
 	var bus: Node = root.get_node("EventBus")
@@ -344,6 +348,8 @@ func _on_shop_opened() -> void:
 				continue
 			if String((cards[i] as Resource).get("kind")) == "weapon" and full:
 				continue  # não troca a arma que já tem
+			if String((cards[i] as Resource).get("kind")) == "relic" and (_no_relics or bool(gs.get("loadout").call("relics_full"))):
+				continue  # 019: não troca relíquia (o jogador não compraria para trocar à toa)
 			if best < 0 or prices[i] < prices[best]:
 				best = i
 		if best < 0 or not bool(shop.call("buy", best)):

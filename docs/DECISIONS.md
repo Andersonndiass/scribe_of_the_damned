@@ -750,6 +750,15 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
 - **Venda na loja:** poções, relíquias e armas; quanto mais upadas, mais valem.
 - **Ordem:** a 019 vem antes da 010 e da 012, porque as duas usam a loja e os selos.
 
+### D-104 · 2026-10-02 · 019 Relíquias e venda implementada (respostas do autor "1b2a3a4a")
+- **Pareceres:** rules-agent T1900, mechanics-agent e design-agent (HUD, alforje, ícones).
+- **Relíquias:** `RankedSlot` (postos com cache) é compartilhado com as armas; `RelicData`/`RelicSlot`/`RelicTuning`; `RelicRunner` substitui o `RepulseAura`. Atordoamento do Sino com coroa CHALK. O Selo de Cera fica depois da FIDES no `take_hit`.
+- **Venda:** `Shop.sell_*`; trocar arma ou relíquia vende a que sai; com espaço de arma vazio, a loja garante uma arma.
+- **Respostas do autor:** 1b (Selo de Cera 25/22/20 s); 2a (troca = venda automática); 3a (garantia de arma); 4a (nomes curtos no selo).
+- **HUD e loja:** 2 células de relíquia; alforje com 8 células e escolha de qual relíquia sai.
+- **Ícones:** pixel-art-gen.
+- **Aberto:** com relíquias saem ~metade das palavras (T1900 §Medição) — rules-agent e playtest.
+
 ## Conflitos abertos
 
 - ~~**C-008 · Menu de escolha da letra (D-085 item 2).**~~ Resolvido: autor "1a 2b 3b e mouse clicando 4a" —
