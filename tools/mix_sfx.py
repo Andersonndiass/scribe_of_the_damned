@@ -36,7 +36,7 @@ def category(sid: str, event: str) -> str:
         return 'enemy'
     if event.startswith(('player_', 'potion_drunk', 'grace_leveled', 'heresy')):
         return 'player'
-    if event.startswith(('word_cast', 'combo_cast', 'atril_', 'verbum', 'combo_window')):
+    if event.startswith(('word_cast', 'combo_cast', 'atril_', 'verbum', 'word_stored', 'stored_word')):
         return 'word'
     if event.startswith(('boss', 'erasure', 'letter_erased')):
         return 'boss'

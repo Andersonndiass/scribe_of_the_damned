@@ -445,7 +445,7 @@
  },
  {
   "id": "combo_window_opened",
-  "event": "combo_window_opened",
+  "event": "word_stored",
   "exists_in_event_map": true,
   "file": "assets/audio/sfx/combo_window_opened.wav",
   "duration_s": 0.24,
@@ -1153,7 +1153,7 @@
  },
  {
   "id": "combo_window_closed",
-  "event": "combo_window_closed",
+  "event": "stored_word_released",
   "exists_in_event_map": false,
   "file": "assets/audio/sfx/combo_window_closed.wav",
   "duration_s": 0.4,

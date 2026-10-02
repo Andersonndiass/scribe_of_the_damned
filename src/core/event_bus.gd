@@ -46,8 +46,10 @@ signal atril_purged(letters: PackedStringArray, position: Vector2)
 signal combo_cast(combo: ComboData, power: float)
 ## 002: a palavra abriu a janela de combo; `duration` = segundos contados da 1ª letra;
 ## `partners` = latim das palavras que fecham combo com ela (dicas e COMBO_READY do HUD).
-signal combo_window_opened(word: WordData, duration: float, partners: PackedStringArray)
-signal combo_window_closed()
+## D-099: a palavra pronta foi para a guarda (`partners` = latim das que fecham combo com ela).
+signal word_stored(word: WordData, rare_count: int, partners: PackedStringArray)
+## D-099: a guardada saiu (`cause`: &"cast" = conjurada sozinha; &"combo" = gasta num combo).
+signal stored_word_released(word: WordData, cause: StringName)
 ## 002 FIDES: o escudo absorveu um golpe.
 signal shield_broken(position: Vector2)
 ## 002 VERBUM: repetiu `word` / não havia o que repetir (falha sem heresia, D-055).

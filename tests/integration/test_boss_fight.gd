@@ -147,7 +147,7 @@ func test_erasure_respects_the_protections() -> void:
 	_field.collect("X", false)
 	await wait_seconds(0.6)
 	EventBus.atril_erase_requested.emit()
-	assert_eq(_field.atril.text(), "LUX", "palavra pronta nunca é apagada")
+	assert_eq(_field.guard.word.id, &"lux", "palavra pronta (guardada, D-099) nunca é apagada")
 
 
 func test_letter_safety_opens_a_menu_when_none_opened_for_a_while() -> void:

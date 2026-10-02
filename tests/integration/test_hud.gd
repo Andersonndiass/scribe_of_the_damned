@@ -48,12 +48,16 @@ func test_hud_panels_keep_the_margin_and_do_not_overlap() -> void:
 	var kids: Array[Node] = _hud.get_children()
 	for a: Node in kids:
 		var ra: Rect2 = a.call(&"hud_rect")
+		if not ra.has_area():
+			continue  # sem área fixa (o nome do combo é no mundo)
 		assert_true(screen.encloses(ra), "%s %s fica a 6 px da borda" % [a.name, ra])
 		for b: Node in kids:
 			var pair: Array = [String(a.name), String(b.name)]
 			if a == b or together.has(pair) or together.has([pair[1], pair[0]]):
 				continue
 			var rb: Rect2 = b.call(&"hud_rect")
+			if not rb.has_area():
+				continue
 			assert_false(ra.intersects(rb), "%s %s cobre %s %s" % [a.name, ra, b.name, rb])
 	GameState.high_contrast = was_high
 
@@ -67,7 +71,8 @@ func test_atril_view_follows_atril_state_and_hints() -> void:
 	assert_eq(view.rare_mask, 0b10, "U é rara")
 	assert_has(view.hints, "LUX")
 	_field.collect("X", false)
-	assert_eq(view.status, Atril.Status.VALID)
+	assert_eq(view.letters.size(), 0, "D-099: pronta, a palavra foi para a guarda")
+	assert_eq(_field.guard.word.id, &"lux")
 
 
 func test_atril_view_slots_follow_capacity() -> void:
@@ -254,23 +259,9 @@ func _write(word: String) -> void:
 		_field.collect(ch, false)
 
 
-func test_combo_window_bar_waits_then_shrinks_in_steps() -> void:
-	var bar: HudComboWindow = _hud.get_node("ComboWindow")
-	_write("LUX")
-	assert_true(_caster.cast())
-	assert_true(bar.open)
-	assert_eq(bar.fill_width(), HudComboWindow.BAR.size.x, "cheia até a 1ª letra")
-	_field.collect("P", false)
-	bar._process(1.25)
-	var w: float = bar.fill_width()
-	assert_eq(w, HudComboWindow.BAR.size.x / 2.0, "metade em 1,25 s")
-	assert_eq(fmod(w, HudComboWindow.BAR.size.x / HudComboWindow.STEPS), 0.0, "passos de 4 px")
-
-
 func test_combo_ready_and_partner_hints() -> void:
 	var atril: HudAtril = _hud.get_node("Atril")
-	_write("LUX")
-	_caster.cast()
+	_write("LUX")  # D-099: vai para a guarda
 	assert_has(atril.combo_partners, "PAX")
 	assert_has(atril.combo_partners, "IGNIS")
 	assert_does_not_have(atril.combo_partners, "LUX")
@@ -281,10 +272,8 @@ func test_combo_ready_and_partner_hints() -> void:
 func test_combo_name_shows_and_window_closes() -> void:
 	var bar: HudComboWindow = _hud.get_node("ComboWindow")
 	_write("LUX")
-	_caster.cast()
 	_write("PAX")
 	_caster.cast()
 	assert_eq(bar.shown_name, "CAECITAS")
-	assert_false(bar.open, "combo não encadeia")
 	bar._process(HudComboWindow.NAME_TIME + 0.01)
 	assert_eq(bar.shown_name, "", "corte seco depois de 1 s")

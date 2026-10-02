@@ -50,6 +50,10 @@ func _ready() -> void:
 		_gain(roundi(d.grace * (tuning.champion_mul - 1.0)), &"champion", p))
 	EventBus.verbum_echoed.connect(_on_verbum_echoed)
 	EventBus.word_cast.connect(_on_word_cast)
+	# D-099: a guardada gasta num combo não passa por word_cast: as letras dela contam aqui.
+	EventBus.stored_word_released.connect(func(w: WordData, cause: StringName) -> void:
+		if cause == &"combo":
+			_gain(roundi(tuning.per_letter * w.latin.length()), &"word", _player_pos()))
 	EventBus.combo_cast.connect(func(_c: ComboData, _p: float) -> void:
 		_gain(roundi(_last_word_grace * tuning.combo_bonus), &"combo", _player_pos()))
 	EventBus.boss_spawned.connect(func(_b: BossData) -> void: _boss_fight = true)

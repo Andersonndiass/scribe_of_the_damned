@@ -40,8 +40,9 @@ func test_collected_letters_fill_the_atril_in_order() -> void:
 	assert_true(_field.collect("L", false))
 	assert_true(_field.collect("U", false))
 	assert_true(_field.collect("X", false))
-	assert_eq(_field.atril.text(), "LUX")
-	assert_eq(_field.atril.state(_field.lexicon), Atril.Status.VALID)
+	# D-099: pronta, a palavra sai do atril para a guarda.
+	assert_eq(_field.atril.size(), 0)
+	assert_eq(_field.guard.word.id, &"lux")
 
 
 func test_full_atril_rejects_the_letter() -> void:

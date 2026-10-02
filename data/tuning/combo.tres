@@ -4,6 +4,4 @@
 
 [resource]
 script = ExtResource("1_ct")
-window = 2.5
-max_open = 8.0
 hint_highlight = true

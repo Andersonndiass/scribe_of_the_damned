@@ -42,7 +42,7 @@ func test_cast_plays_collect_valid_and_word_sounds() -> void:
 	for ch: String in "LUX":
 		_field.collect(ch, false)
 	assert_has(_played, &"letter_collected")
-	assert_has(_played, &"atril_valid", "o atril ficou VALID")
+	assert_has(_played, &"atril_valid", "a palavra ficou pronta e foi para a guarda (D-099)")
 	_caster.cast()
 	assert_has(_played, &"word_cast_lux", "LUX usa o próprio som, não o genérico")
 	assert_does_not_have(_played, &"word_cast")

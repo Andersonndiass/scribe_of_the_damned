@@ -1,6 +1,7 @@
 extends GutTest
-## T211 SC-201: os 5 combos disparam só com o par certo, dentro da janela, em qualquer ordem, e o
-## milagre da 2ª palavra não acontece. T213: efeito principal de cada combo na cena real.
+## T211 SC-201 (D-099): os 5 combos disparam com a palavra guardada + a parceira pronta no atril,
+## em qualquer ordem, e o milagre da 2ª palavra não acontece. T213: efeito principal de cada combo
+## na cena real. A guardada sozinha sai com Espaço; a janela de 2,5 s não existe mais.
 
 const MAIN_SCENE := preload("res://src/main/main.tscn")
 const PAIRS: Array = [
@@ -56,6 +57,13 @@ func _cast(word: String) -> bool:
 	return _caster.cast()
 
 
+## Escreve as duas (a 1ª vai para a guarda) e aperta Espaço uma vez.
+func _combo(first: String, second: String) -> bool:
+	_write(first)
+	_write(second)
+	return _caster.cast()
+
+
 func _pen() -> Vector2:
 	return _player.global_position + Caster.PEN_OFFSET
 
@@ -66,45 +74,61 @@ func test_all_pairs_in_both_orders_replace_the_second_word() -> void:
 			var first: String = pair[1] if order == 0 else pair[2]
 			var second: String = pair[2] if order == 0 else pair[1]
 			var second_id: StringName = StringName(second.to_lower())
-			_caster.combo_book.close()
+			_field.guard.clear()
 			_combos.clear()
-			assert_true(_cast(first))
+			_write(first)
+			assert_true(_field.guard.is_held(), "%s foi para a guarda" % first)
+			_write(second)
 			var free_before: int = PoolManager.free_count(second_id)
-			assert_true(_cast(second))
+			assert_true(_caster.cast())
 			assert_eq(_combos, [pair[0]] as Array[StringName], "%s + %s" % [first, second])
 			assert_eq(PoolManager.free_count(second_id), free_before, "o milagre de %s não saiu" % second)
+			assert_false(_field.guard.is_held(), "o combo gasta a guardada")
 			await wait_physics_frames(2)
 	await wait_seconds(5.0)  # deixa os milagres voltarem ao pool
 
 
-func test_no_combo_outside_the_window() -> void:
-	assert_true(_cast("LUX"))
-	_field.collect("P", false)  # 1ª letra: os 2,5 s começam
-	_caster.combo_book.tick(2.6)
-	_field.collect("A", false)
-	_field.collect("X", false)
+## Resposta "1b": com guardada e o atril pela metade, Espaço solta a guardada e as letras ficam.
+func test_space_with_half_atril_releases_the_stored_word() -> void:
+	var heresies: Array[int] = [0]
+	var on_heresy := func(_p: Vector2) -> void: heresies[0] += 1
+	EventBus.heresy_committed.connect(on_heresy)
+	_write("LUX")
+	_write("PA")
+	assert_true(_caster.cast(), "solta o LUX")
+	EventBus.heresy_committed.disconnect(on_heresy)
+	assert_eq(heresies[0], 0, "sem heresia")
+	assert_eq(_field.atril.text(), "PA", "as letras do atril ficam")
+	assert_false(_field.guard.is_held())
+
+
+func test_heresy_and_moth_do_not_touch_the_stored_word() -> void:
+	_write("LUX")
+	_field.steal_last_letter()
+	assert_true(_field.guard.is_held(), "a Traça só rouba do atril")
+	_field.guard.clear()
+	_write("PQ")
+	assert_false(_caster.cast(), "sem guardada e atril inválido: heresia, como antes")
+
+
+func test_pair_without_combo_casts_the_atril_and_keeps_the_stored() -> void:
+	_write("CRUX")
+	_write("PAX")
 	assert_true(_caster.cast())
-	assert_eq(_combos.size(), 0, "janela vencida: sai PAX, não CAECITAS")
-
-
-func test_pair_without_combo_casts_normally() -> void:
-	assert_true(_cast("CRUX"))
-	assert_true(_cast("PAX"))
 	assert_eq(_combos.size(), 0)
+	assert_eq(_field.guard.word.id, &"crux", "a guardada fica")
 
 
 func test_combo_does_not_chain() -> void:
+	assert_true(_combo("LUX", "IGNIS"))
 	assert_true(_cast("LUX"))
-	assert_true(_cast("IGNIS"))
-	assert_true(_cast("LUX"))
-	assert_eq(_combos, [&"flamma"] as Array[StringName], "o IGNIS do combo não abre outro")
+	assert_eq(_combos, [&"flamma"] as Array[StringName], "o combo não encadeia; o LUX seguinte sai sozinho")
 
 
 func test_caecitas_blinds_and_damages() -> void:
 	var near: int = _manager.spawn(_imp, _pen() + Vector2(60, 0))
 	_manager.hp[near] = 100
-	_cast("LUX")
-	_cast("PAX")
+	_combo("LUX", "PAX")
 	assert_gt(_manager.blind_left[near], 0.0, "cego")
 	assert_lt(_manager.hp[near], 100, "levou o clarão")
 
@@ -121,8 +145,7 @@ func test_requiem_kills_and_only_guaranteed_deaths_ask_for_a_menu() -> void:
 	EventBus.letter_offer_dropped.connect(on_lost)
 	for i: int in 10:
 		_manager.spawn(_imp, Vector2(200 + i * 20, 100))
-	_cast("PAX")
-	_cast("MORTIS")
+	_combo("PAX", "MORTIS")
 	await wait_physics_frames(10)
 	EventBus.letter_menu_opened.disconnect(on_open)
 	EventBus.letter_offer_dropped.disconnect(on_lost)
@@ -134,15 +157,13 @@ func test_requiem_kills_and_only_guaranteed_deaths_ask_for_a_menu() -> void:
 
 
 func test_vapor_hides_the_scribe_from_enemies_outside() -> void:
-	_cast("IGNIS")
-	_cast("AQUA")
+	_combo("IGNIS", "AQUA")
 	await wait_physics_frames(3)
 	assert_true(_manager.is_player_hidden(), "escriba dentro da nuvem")
 
 
 func test_martyrium_follows_the_scribe() -> void:
-	_cast("LUX")
-	_cast("CRUX")
+	_combo("LUX", "CRUX")
 	await wait_physics_frames(2)
 	var target: Vector2 = _player.global_position + Vector2(40, 0)
 	_player.global_position = target

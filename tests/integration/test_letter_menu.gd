@@ -181,7 +181,7 @@ func test_wave_end_discards_the_menu() -> void:
 
 
 func test_full_or_ready_atril_waits_in_the_queue() -> void:
-	for ch: String in "LUX":
+	for ch: String in "LUXPAX":  # D-099: LUX vai para a guarda; PAX fica pronta no atril
 		_field.collect(ch, false)
 	assert_true(_menu.offer())
 	_advance(STEP)

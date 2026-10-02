@@ -34,16 +34,11 @@ func _ready() -> void:
 	heresy_pool = HeresyPool.new()
 	heresy_pool.name = "HeresyPool"
 	add_child(heresy_pool)
-	combo_book = ComboBook.new(combos, combo_tuning)
+	combo_book = ComboBook.new(combos)
 	EventBus.heresy_absolved.connect(_on_heresy_absolved)
-	EventBus.letter_collected.connect(func(_l: String, _r: bool) -> void: combo_book.on_letter_collected())
-
-
-func _process(delta: float) -> void:
-	var was_open: bool = combo_book.is_open()
-	combo_book.tick(delta)
-	if was_open and not combo_book.is_open():
-		EventBus.combo_window_closed.emit()
+	if letter_field != null:
+		letter_field.partners_of = func(w: WordData) -> PackedStringArray:
+			return combo_book.partners_of(w) if combo_tuning.hint_highlight else PackedStringArray()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -57,26 +52,43 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 
 
-## Tenta conjurar. Retorna true se um milagre foi disparado.
+## Tenta conjurar (D-099, respostas "1b2a3a"). Retorna true se um milagre foi disparado.
+##   atril com palavra pronta + guardada parceira → COMBO (gasta as duas);
+##   atril com palavra pronta sem par → conjura a do atril (a guardada fica);
+##   atril vazio ou pela metade com guardada → conjura a guardada (as letras do atril ficam);
+##   sem guardada e atril pela metade → heresia, como antes.
 func cast() -> bool:
 	if player == null or not player.vitals.is_alive():
 		return false
 	var atril: Atril = letter_field.atril
+	var guard: WordGuard = letter_field.guard
+	if atril.size() > 0 and atril.state(letter_field.lexicon) == Atril.Status.VALID:
+		var word: WordData = letter_field.lexicon.word_for(atril.text())
+		var combo: ComboData = combo_book.find(guard.word, word) if guard.is_held() else null
+		var taken: Dictionary = atril.take_all()
+		if combo != null:
+			var held: Dictionary = guard.take()
+			EventBus.stored_word_released.emit(held["word"], &"combo")
+		return _cast_word(word, int(taken["rare_count"]), combo)
+	if guard.is_held():
+		var stored: Dictionary = guard.take()
+		EventBus.stored_word_released.emit(stored["word"], &"cast")
+		return _cast_word(stored["word"], int(stored["rare_count"]), null)
 	if atril.size() == 0:
 		return false
-	if atril.state(letter_field.lexicon) != Atril.Status.VALID:
-		_commit_heresy()
-		return false
-	var word: WordData = letter_field.lexicon.word_for(atril.text())
-	var taken: Dictionary = atril.take_all()
-	if word.id == VERBUM_ID:
+	_commit_heresy()
+	return false
+
+
+## Dispara `word` com as raras dela; com `combo`, o combo substitui o milagre (FR-202; as raras
+## da palavra do atril valem para ele).
+func _cast_word(word: WordData, rare_count: int, combo: ComboData) -> bool:
+	if word.id == VERBUM_ID and combo == null:
 		return _cast_verbum()
-	var rare_mul: float = pow(letter_field.tuning.rare_power_bonus, taken["rare_count"])
+	var rare_mul: float = pow(letter_field.tuning.rare_power_bonus, rare_count)
 	var power: float = word.power_budget * rare_mul
 	var origin: Vector2 = player.global_position + PEN_OFFSET
 	var direction: Vector2 = aim_direction(origin)
-	var was_open: bool = combo_book.is_open()
-	var combo: ComboData = combo_book.on_cast(word)
 	if word.group == &"base" or word.group == &"apocrypha":
 		last_repeatable = word
 		last_repeatable_power = power
@@ -84,16 +96,11 @@ func cast() -> bool:
 	_feel(combo if combo != null else word)
 	player.pen_flash()
 	if combo != null:
-		# O combo substitui o milagre da 2ª palavra (FR-202); as vogais raras dela valem para ele.
 		var combo_power: float = combo.power_budget * rare_mul
 		EventBus.combo_cast.emit(combo, combo_power)
 		_start_miracle(combo, combo_power, origin, direction)
 	else:
 		_start_miracle(word, power, origin, direction)
-	if combo_book.is_open():
-		EventBus.combo_window_opened.emit(word, combo_tuning.window, _partner_latins())
-	elif was_open:
-		EventBus.combo_window_closed.emit()
 	letter_field.emit_atril()
 	return true
 
@@ -129,18 +136,6 @@ func _on_heresy_absolved() -> void:
 ## senão, para onde o escriba olha.
 func aim_direction(origin: Vector2) -> Vector2:
 	return Aim.direction(origin, player.facing)
-
-
-func _partner_latins() -> PackedStringArray:
-	var out := PackedStringArray()
-	if not combo_tuning.hint_highlight:
-		return out
-	var ids: Array[StringName] = combo_book.partner_ids()
-	for c: ComboData in combos:
-		for w: WordData in [c.word_a, c.word_b]:
-			if ids.has(w.id) and not out.has(w.latin):
-				out.append(w.latin)
-	return out
 
 
 func _feel(w: WordData) -> void:

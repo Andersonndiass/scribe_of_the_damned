@@ -6,7 +6,7 @@
 [resource]
 script = ExtResource("1_ui203")
 id = &"combo_window_opened"
-event = &"combo_window_opened"
+event = &"word_stored"
 stream = ExtResource("2_lrrif")
 volume_db = 4.5
 bus = &"UI"

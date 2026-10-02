@@ -94,7 +94,7 @@ func test_apocrypha_card_unlocks_the_word_at_once() -> void:
 	assert_true(_shop.buy(0))
 	for ch: String in "FIDES":
 		_field.collect(ch, false)
-	assert_eq(_field.atril.state(_field.lexicon), Atril.Status.VALID, "vale na hora (SC-303)")
+	assert_eq(_field.guard.word.id, &"fides", "vale na hora (SC-303): pronta, foi para a guarda")
 	GameState.unlocked_words.clear()
 
 

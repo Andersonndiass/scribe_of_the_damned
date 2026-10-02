@@ -6,7 +6,7 @@ const REQUIRED: Array[StringName] = [
 	&"wave_started", &"wave_ended", &"chapter_completed", &"enemy_killed", &"champion_killed",
 	&"player_damaged", &"player_healed", &"player_died", &"letter_menu_opened", &"letter_lost", &"letter_collected",
 	&"letter_rejected", &"letter_eaten", &"gold_ink_collected", &"atril_valid", &"word_cast",
-	&"combo_cast", &"heresy_committed", &"atril_purged", &"combo_window_opened",
+	&"combo_cast", &"heresy_committed", &"atril_purged", &"word_stored",
 ]
 
 

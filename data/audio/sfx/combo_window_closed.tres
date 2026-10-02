@@ -6,7 +6,7 @@
 [resource]
 script = ExtResource("1_y82j2")
 id = &"combo_window_closed"
-event = &"combo_window_closed"
+event = &"stored_word_released"
 stream = ExtResource("2_a08xp")
 volume_db = -4.5
 max_voices = 2

@@ -106,4 +106,4 @@ func test_game_input_is_ignored_while_shopping() -> void:
 	var caster: Caster = _main.get_node("Caster")
 	_press(&"cast")  # Espaço compra, não conjura
 	assert_eq(field.atril.size(), 1, "o atril não foi usado")
-	assert_false(caster.combo_book.is_open())
+	assert_false(field.guard.is_held())

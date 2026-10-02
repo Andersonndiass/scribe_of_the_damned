@@ -17,6 +17,10 @@ var _last_push_msec: int = -100000
 
 var lexicon := Lexicon.new()
 var atril: Atril
+## D-099: a palavra pronta guardada (1 espaço).
+var guard := WordGuard.new()
+## Latim das parceiras de combo de uma palavra (o Caster liga ao ComboBook); dicas da guarda.
+var partners_of: Callable = func(_w: WordData) -> PackedStringArray: return PackedStringArray()
 var dropper := LetterDropper.new()
 var menu: LetterMenu
 
@@ -93,8 +97,19 @@ func offer_safety() -> void:
 	menu.offer()
 
 
-## Publica o estado do atril e as dicas (FR-023) no EventBus.
+## D-099 (resposta "2a"): palavra pronta no atril e guarda vazia → a palavra vai para a guarda e o
+## atril fica livre. Invariante: com a guarda vazia o atril nunca fica VALID.
+func settle() -> void:
+	if guard.is_held() or atril.state(lexicon) != Atril.Status.VALID:
+		return
+	var word: WordData = lexicon.word_for(atril.text())
+	guard.store(atril.take_all(), word)
+	EventBus.word_stored.emit(word, guard.rare_count, partners_of.call(word))
+
+
+## Publica o estado do atril e as dicas (FR-023) no EventBus (antes, guarda a palavra pronta).
 func emit_atril() -> void:
+	settle()
 	var status: Atril.Status = atril.state(lexicon)
 	var hints := PackedStringArray()
 	if status == Atril.Status.EMPTY or status == Atril.Status.PARTIAL or status == Atril.Status.VALID:

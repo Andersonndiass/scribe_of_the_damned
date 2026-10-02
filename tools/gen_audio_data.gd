@@ -48,7 +48,7 @@ const EVENTS: Array = [
 	["combo_cast:requiem", 3, 1, 0, "SFX", "REQUIEM: coro de réquiem em onda, muitos sinos."],
 	["heresy_committed", 2, 1, 0, "SFX", "Heresia: coro desafinado + estalo sujo de tinta."],
 	["atril_purged", 1, 1, 0, "SFX", "Purge: letras sacudidas de volta ao chão, papel farfalhando."],
-	["combo_window_opened", 1, 1, 0, "UI", "Janela de combo aberta: tique de relógio de areia."],
+	["word_stored", 1, 1, 0, "UI", "Palavra guardada (D-099): tique de relógio de areia."],
 	# Cutscenes do Cap. 1 (008 FR-813): tocadas pelo roteiro (id), com o jogo parado.
 	["cs_fire", 2, 1, 0, "SFX", "C1-01: fogo abafado que apaga (as paredes perdem o desenho), loop curto."],
 	["cs_chest", 2, 1, 0, "SFX", "C1-01: arca de ferro rangendo, correntes."],

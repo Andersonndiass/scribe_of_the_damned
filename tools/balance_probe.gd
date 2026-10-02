@@ -264,7 +264,8 @@ func _physics_process(delta: float) -> bool:
 		# palavras por onda feitas antes disso estão contaminadas.)
 		var atril: RefCounted = _field.get("atril")
 		var st: int = atril.call("state", _field.get("lexicon"))
-		if st == 3:  # Atril.Status.VALID
+		var held: bool = bool((_field.get("guard") as RefCounted).call("is_held"))
+		if st == 3 or (held and st == 0):  # D-099: pronta no atril, ou guardada com o atril vazio
 			var boss: Node2D = _main.get_node_or_null("World/Boss")
 			if boss != null and bool(boss.get("fighting")):
 				# Palavras direcionais (LUX, FLAMMA…) saem para onde o escriba olha: mira o chefe.

@@ -698,8 +698,22 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
   - Stress no teto sem regressão (arsenal p95 55, crucifixo 51).
 - **Pendente:**
   - ficha do design-agent para o cartão do selo (hoje o texto fica nas linhas do nome e da descrição; a seta é ">");
-  - combo guardado (perguntas do mechanics-agent ao autor);
+  - ~~combo guardado~~ feito (abaixo);
   - remedir o ritmo com os atributos.
+
+### D-100 · 2026-10-01 · Combo pela palavra guardada (respostas do autor "1B2A3A")
+- **Regra:**
+  - A palavra pronta sai do atril sozinha para a guarda (1 espaço; `WordGuard` no `LetterField.settle()`).
+  - Espaço com a parceira pronta no atril → COMBO (gasta as duas).
+  - Espaço com uma palavra sem par no atril → conjura a do atril; a guardada fica.
+  - Espaço com o atril vazio ou pela metade → conjura a guardada; as letras ficam e não há heresia.
+  - Sem guardada, atril pela metade → heresia, como antes.
+- **A janela de 2,5 s saiu:** o `ComboBook` só resolve pares e parceiras; a barra 48×3 do HUD saiu e o nome do combo continua.
+- **Guarda imune:** heresia, Traça, Rasura e fim de onda não mexem na guardada.
+- **Graça e Códex:** a guardada gasta num combo dá a Graça das letras dela (`stored_word_released`); o Códex a descobre ao guardar.
+- **Sinais:** `word_stored(word, rare_count, partners)` e `stored_word_released(word, cause)` substituem `combo_window_opened/closed`.
+- **Som:** ao guardar toca a nota de "palavra pronta"; o tique toca só quando há parceira de combo.
+- **HUD provisório:** `HudWordGuard` em (404,310) 60×28, latim em GOLD; moldura GOLD quando o combo está pronto. Falta a ficha do design-agent (o agente parou no limite da API).
 
 ## Conflitos abertos
 

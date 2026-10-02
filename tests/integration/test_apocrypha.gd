@@ -106,17 +106,20 @@ func test_verbum_repeats_the_last_word_with_same_power() -> void:
 	assert_eq(_manager.hp[i], after_one - (100 - after_one), "o eco fere igual")
 
 
-func test_verbum_does_not_touch_the_combo_window() -> void:
+## D-099: VERBUM pronto no atril com uma guardada sem par: conjura o eco e a guardada fica.
+func test_verbum_does_not_touch_the_stored_word() -> void:
 	var combos: Array[StringName] = []
 	var on_combo := func(c: ComboData, _p: float) -> void: combos.append(c.id)
 	EventBus.combo_cast.connect(on_combo)
 	_cast("LUX")
+	for ch: String in "LUX":
+		_field.collect(ch, false)
+	assert_true(_field.guard.is_held(), "o 2º LUX foi para a guarda")
 	_cast("VERBUM")
-	assert_true(_caster.combo_book.is_open(), "a janela do LUX continua aberta")
-	assert_eq(_caster.combo_book.last_word.id, &"lux")
+	assert_eq(_field.guard.word.id, &"lux", "o eco não gasta a guardada")
 	_cast("PAX")
 	EventBus.combo_cast.disconnect(on_combo)
-	assert_eq(combos, [&"caecitas"] as Array[StringName], "LUX + PAX fecha depois do eco")
+	assert_eq(combos, [&"caecitas"] as Array[StringName], "LUX guardado + PAX fecha depois do eco")
 
 
 func test_verbum_without_anything_to_repeat_fizzles() -> void:

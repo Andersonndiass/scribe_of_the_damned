@@ -68,7 +68,7 @@ func _ready() -> void:
 	EventBus.atril_purged.connect(func(_l: PackedStringArray, _p: Vector2) -> void: _play(Anim.PURGE))
 	EventBus.heresy_committed.connect(func(_p: Vector2) -> void: _play(Anim.HERESY))
 	EventBus.letter_rejected.connect(func(_l: String) -> void: _play(Anim.REJECT))
-	EventBus.combo_window_opened.connect(func(_w: WordData, _d: float, partners: PackedStringArray) -> void:
+	EventBus.word_stored.connect(func(_w: WordData, _r: int, partners: PackedStringArray) -> void:
 		combo_partners = partners
 		queue_redraw())
 	EventBus.verbum_echoed.connect(func(w: WordData) -> void:
@@ -92,7 +92,7 @@ func _ready() -> void:
 		_cross_left = FORGIVEN_CROSS_TIME
 		_cross_at = pos
 		queue_redraw())
-	EventBus.combo_window_closed.connect(func() -> void:
+	EventBus.stored_word_released.connect(func(_w: WordData, _c: StringName) -> void:
 		combo_partners = PackedStringArray()
 		queue_redraw())
 

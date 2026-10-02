@@ -325,8 +325,10 @@ func _connect_events() -> void:
 		play_event(&"heresy_committed")
 		play_latin(HERESY_VOICE))
 	EventBus.atril_purged.connect(func(_l: PackedStringArray, _p: Vector2) -> void: play_event(&"atril_purged"))
-	EventBus.combo_window_opened.connect(func(_w: WordData, _d: float, _pa: PackedStringArray) -> void:
-		play_event(&"combo_window_opened"))
+	EventBus.word_stored.connect(func(_w: WordData, _r: int, partners: PackedStringArray) -> void:
+		play_event(&"atril_valid")  # D-099: a palavra pronta vai para a guarda
+		if not partners.is_empty():
+			play_event(&"word_stored"))  # e há combo possível com ela
 	_connect_events_018()
 
 
@@ -360,7 +362,9 @@ func _connect_events_018() -> void:
 	EventBus.potion_refused.connect(func(_id: StringName, _r: StringName) -> void: play_event(&"potion_denied"))
 	EventBus.potion_bought.connect(func(_id: StringName, _p: int) -> void: play_event(&"gold_ink_spent"))
 	# Palavras, combo e heresia.
-	EventBus.combo_window_closed.connect(func() -> void: play_event(&"combo_window_closed"))
+	EventBus.stored_word_released.connect(func(_w: WordData, cause: StringName) -> void:
+		if cause == &"cast":
+			play_event(&"stored_word_released"))
 	EventBus.heresy_forgiven.connect(func(_p: Vector2) -> void: play_event(&"heresy_forgiven"))
 	EventBus.heresy_absolved.connect(func() -> void: play_event(&"heresy_absolved"))
 	EventBus.shield_broken.connect(func(_p: Vector2) -> void: play_event(&"shield_broken"))
