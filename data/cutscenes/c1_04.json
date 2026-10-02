@@ -236,7 +236,7 @@
 		{
 			"t": 6.6,
 			"type": "line",
-			"speaker": "anselmo",
+			"speaker": "@player",
 			"expr": "relieved",
 			"key": "CS_C1_04_ANSELMO_1",
 			"end": 9.05

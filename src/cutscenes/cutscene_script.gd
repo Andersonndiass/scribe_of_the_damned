@@ -25,6 +25,10 @@ const LOCALES: PackedStringArray = ["pt_BR", "en"]
 var id: StringName = &""
 var duration: float = 0.0
 var play_mode: StringName = &"always"
+## 010 (D-101 6a): para qual escriba a cena é (vazio = qualquer). C1-01/C1-02 são do Anselmo.
+var for_speaker: StringName = &""
+## Falante que vira o escriba da partida (D-101 7a).
+const PLAYER_SPEAKER := "@player"
 ## Escala do palco (a C1-01 é desenhada em 320×180 e mostrada em 2×).
 var stage_scale: int = 1
 var actors: Dictionary = {}
@@ -103,10 +107,11 @@ func _read(d: Dictionary) -> void:
 	play_mode = StringName(str(d.get("play", "always")))
 	if not PLAY_MODES.has(String(play_mode)):
 		_err("play precisa ser once ou always")
+	for_speaker = StringName(str(d.get("for", "")))
 	_read_actors(d.get("actors", {}))
 	for raw: Variant in d.get("events", []):
 		if raw is Dictionary:
-			events.append(raw)
+			events.append(_resolve_player(raw))
 		else:
 			_err("evento que não é objeto")
 	events.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return float(a.get("t", 0.0)) < float(b.get("t", 0.0)))
@@ -218,3 +223,26 @@ func _check_speaker(e: Dictionary) -> void:
 	var closes: Dictionary = speakers[who].get("closes", {})
 	if not closes.has(str(e.get("expr", ""))):
 		_err("falante %s sem a expressão %s" % [who, e.get("expr", "")])
+
+
+## 010 (D-101 7a): a fala de "@player" vira do escriba da partida; o texto usa a variante
+## `<chave>_<ID>` se existir, senão a original (a do Anselmo); a expressão cai na 1ª do escriba
+## se ele não tiver a pedida.
+static func _resolve_player(e: Dictionary) -> Dictionary:
+	if str(e.get("speaker", "")) != PLAYER_SPEAKER:
+		return e
+	var out: Dictionary = e.duplicate()
+	var who: String = String(GameState.picked_character) if GameState.picked_character != &"" else "anselmo"
+	var roster: CharacterRoster = load("res://data/player/roster.tres")
+	var pd: PlayerData = roster.by_id(StringName(who))
+	var sid: String = String(pd.speaker_id) if pd != null and pd.speaker_id != &"" else "anselmo"
+	out["speaker"] = sid
+	var key: String = str(e.get("key", ""))
+	var variant: String = "%s_%s" % [key, sid.to_upper()]
+	if sid != "anselmo" and TranslationServer.translate(variant) != variant:
+		out["key"] = variant
+	var sp: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(DIR + "speakers.json")).get(sid, {})
+	var exprs: Array = sp.get("expressions", [])
+	if not exprs.is_empty() and not exprs.has(str(e.get("expr", ""))):
+		out["expr"] = exprs[0]
+	return out

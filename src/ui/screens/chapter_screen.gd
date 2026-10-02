@@ -38,7 +38,8 @@ func handle_input(event: InputEvent) -> bool:
 		if ch["unlocked"] and ch["data"] != "":
 			var data: ChapterData = load(ch["data"])
 			GameState.picked_chapter = data
-			var queue: Array[StringName] = CutsceneScreen.pending_intro(data)
+			var roster: CharacterRoster = load("res://data/player/roster.tres")
+			var queue: Array[StringName] = CutsceneScreen.pending_intro(data, roster.by_id(GameState.picked_character))
 			if queue.is_empty():
 				request(&"game")
 			else:

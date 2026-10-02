@@ -177,7 +177,7 @@ func test_every_chapter_1_line_fits_two_lines() -> void:
 			var lines: int = CutsceneBand.caption_lines(norm).size() if row[0].contains("CAPTION") \
 				else UiStyle.wrap_words(norm, CutsceneBand.chars_for("narrator" if row[0].contains("NARRATOR") else "anselmo")).size()
 			assert_lte(lines, 2, "%s cabe em 2 linhas" % row[0])
-	assert_eq(n, 12, "as 12 falas e legendas do Cap. 1")
+	assert_eq(n, 20, "as 12 falas e legendas do Cap. 1 + 8 variantes por escriba (D-101 7a)")
 
 
 # --- roteiros do projeto ----------------------------------------------------------------------

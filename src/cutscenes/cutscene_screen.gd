@@ -9,14 +9,22 @@ var player: CutscenePlayer
 var played: Array[StringName] = []
 
 
-## As cenas de abertura do capítulo que ainda devem tocar ("once" já vistas saem).
-static func pending_intro(chapter: ChapterData) -> Array[StringName]:
+## As cenas de abertura que ainda devem tocar ("once" já vistas saem). 010 (D-101 6a): o escriba
+## com abertura própria a vê no lugar das do capítulo marcadas para outro escriba (`"for"`).
+static func pending_intro(chapter: ChapterData, scribe: PlayerData = null) -> Array[StringName]:
 	var out: Array[StringName] = []
 	if chapter == null:
 		return out
+	var who: StringName = scribe.speaker_id if scribe != null and scribe.speaker_id != &"" else &"anselmo"
+	if scribe != null and scribe.intro_cutscene != &"":
+		var own: CutsceneScript = CutsceneScript.load_file(CutsceneScript.DIR + String(scribe.intro_cutscene) + ".json")
+		if not (own.play_mode == &"once" and Codex.cutscene_seen(scribe.intro_cutscene)):
+			out.append(scribe.intro_cutscene)
 	for id: StringName in chapter.intro_cutscenes:
 		var s: CutsceneScript = CutsceneScript.load_file(CutsceneScript.DIR + String(id) + ".json")
 		if s.play_mode == &"once" and Codex.cutscene_seen(id):
+			continue
+		if s.for_speaker != &"" and s.for_speaker != who:
 			continue
 		out.append(id)
 	return out
