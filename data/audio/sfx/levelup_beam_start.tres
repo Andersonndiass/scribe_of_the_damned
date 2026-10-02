@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_w5aq0"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/levelup_beam_start.wav" id="2_wsmnw"]
+
+[resource]
+script = ExtResource("1_w5aq0")
+id = &"levelup_beam_start"
+event = &"levelup_beam_started"
+stream = ExtResource("2_wsmnw")
+volume_db = -12.3
+max_voices = 2
+priority = 3
+note = "Feixe de luz do level-up: sobe, brilha e abre."

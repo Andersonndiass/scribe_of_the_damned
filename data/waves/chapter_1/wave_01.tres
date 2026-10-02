@@ -18,5 +18,5 @@ spawn_rate_end = 1.5
 
 [resource]
 script = ExtResource("1_wd")
-letter_drop_mul = 1.2
+letter_drop_mul = 0.75
 groups = Array[ExtResource("2_sg")]([SubResource("Group_early"), SubResource("Group_late")])

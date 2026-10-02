@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_lnq45"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/weapon_aspergillum_hit.wav" id="2_mkl2u"]
+
+[resource]
+script = ExtResource("1_lnq45")
+id = &"weapon_aspergillum_hit"
+event = &"weapon_hit:aspergillum"
+stream = ExtResource("2_mkl2u")
+volume_db = 0.2
+pitch_jitter = 0.08
+max_voices = 3
+cooldown_ms = 60
+note = "Aspersório acerta."

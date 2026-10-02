@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_i7n8v"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/potion_effect_ended.wav" id="2_6kykt"]
+
+[resource]
+script = ExtResource("1_i7n8v")
+id = &"potion_effect_ended"
+event = &"potion_effect_ended"
+stream = ExtResource("2_6kykt")
+volume_db = 6.0
+max_voices = 2
+priority = 2
+note = "Fim do efeito de uma poção (tempo ou fim da onda)."

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_g6ia4"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/potion_effect_ended_heresy.wav" id="2_17g43"]
+
+[resource]
+script = ExtResource("1_g6ia4")
+id = &"potion_effect_ended_heresy"
+event = &"potion_effect_ended:heresy"
+stream = ExtResource("2_17g43")
+volume_db = -17.3
+max_voices = 2
+priority = 3
+note = "Heresia dentro do círculo apaga a Água Benta."

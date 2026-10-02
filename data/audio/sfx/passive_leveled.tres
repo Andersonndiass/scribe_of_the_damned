@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_os5m1"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/passive_leveled.wav" id="2_jfrue"]
+
+[resource]
+script = ExtResource("1_os5m1")
+id = &"passive_leveled"
+event = &"passive_leveled"
+stream = ExtResource("2_jfrue")
+volume_db = -3.0
+max_voices = 2
+priority = 3
+note = "Ímã reverso sobe de nível."

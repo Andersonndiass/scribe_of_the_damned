@@ -63,6 +63,8 @@ var _menus_by_wave: Dictionary = {}
 var _words_total: int = 0
 var _illum_menus: int = 0
 var _weapon_lvls: Dictionary = {}
+## T1830 L3/L4: instantes (s) de cada palavra conjurada.
+var _word_times: PackedFloat32Array = []
 var _hit_chance: float = 0.9
 var _lost: int = 0
 var _overflow: int = 0
@@ -226,7 +228,8 @@ func _initialize() -> void:
 	bus.letter_collected.connect(func(l: String, _r: bool) -> void: _collected += l)
 	bus.word_cast.connect(func(w: Resource, _pw: float, _o: Vector2, _d: Vector2) -> void:
 		_casts[w.get("latin")] = _casts.get(w.get("latin"), 0) + 1
-		_words_total += 1)
+		_words_total += 1
+		_word_times.append(_time))
 	_player.get_node("Arsenal").fired.connect(func(_t: Vector2) -> void: _shots += 1)
 	root.get_node("TimeScale").call("set_base", TIME_SCALE)
 	Engine.physics_ticks_per_second = 60
@@ -531,3 +534,10 @@ func _print_rhythm() -> void:
 		int((gs.get("grace") as RefCounted).get("level")) if gs.get("grace") != null else -1,
 		_weapon_lvls, _ink_earned, _potion_ink, _bought.size()])
 	print("POTIONS bebidas=%s" % [_drunk])
+	var gap: float = 0.0
+	var prev: float = 0.0
+	for t: float in _word_times:
+		gap = maxf(gap, t - prev)
+		prev = t
+	gap = maxf(gap, _time - prev)
+	print("WORDS primeira=%s maior_intervalo=%.0fs" % [("%.0fs" % _word_times[0]) if _word_times.size() > 0 else "nenhuma", gap])

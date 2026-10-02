@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_7fx0i"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/potion_leveled.wav" id="2_tgl24"]
+
+[resource]
+script = ExtResource("1_7fx0i")
+id = &"potion_leveled"
+event = &"potion_leveled"
+stream = ExtResource("2_tgl24")
+volume_db = -1.4
+max_voices = 2
+priority = 3
+note = "Poção sobe de nível."

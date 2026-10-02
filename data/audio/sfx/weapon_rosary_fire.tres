@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_vtip0"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/weapon_rosary_fire.wav" id="2_ih73e"]
+
+[resource]
+script = ExtResource("1_vtip0")
+id = &"weapon_rosary_fire"
+event = &"weapon_fired:rosary"
+stream = ExtResource("2_ih73e")
+volume_db = -15.5
+pitch_jitter = 0.06
+max_voices = 3
+cooldown_ms = 40
+note = "Rosário lança: contas no ar."

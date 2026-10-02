@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_kj8xt"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/levelup_beam_end.wav" id="2_of88d"]
+
+[resource]
+script = ExtResource("1_kj8xt")
+id = &"levelup_beam_end"
+event = &"levelup_beam_ended"
+stream = ExtResource("2_of88d")
+volume_db = -14.9
+max_voices = 2
+priority = 3
+note = "Fim do feixe: a luz se apaga."

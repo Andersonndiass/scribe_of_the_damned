@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_ff1h7"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/weapon_censer_hit.wav" id="2_ii7gw"]
+
+[resource]
+script = ExtResource("1_ff1h7")
+id = &"weapon_censer_hit"
+event = &"weapon_hit:censer"
+stream = ExtResource("2_ii7gw")
+volume_db = -3.4
+pitch_jitter = 0.08
+max_voices = 3
+cooldown_ms = 60
+note = "Turíbulo acerta."

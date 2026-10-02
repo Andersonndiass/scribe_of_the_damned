@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_m5sye"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/weapon_censer_fire.wav" id="2_fyxj2"]
+
+[resource]
+script = ExtResource("1_m5sye")
+id = &"weapon_censer_fire"
+event = &"weapon_fired:censer"
+stream = ExtResource("2_fyxj2")
+volume_db = -10.8
+pitch_jitter = 0.06
+max_voices = 3
+cooldown_ms = 40
+note = "Turíbulo gira: corrente e fumaça."

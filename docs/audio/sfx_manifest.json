@@ -1761,7 +1761,7 @@
   "prompt_en": "A column of holy light descending: a rising airy shimmer of bowed glass and a soft swell of church organ, a bright resolving chime at the end, stone church reverb, no voice, no melody, no music.",
   "desc_pt": "Feixe de luz do level-up: sobe, brilha e abre.",
   "priority": 3,
-  "generated": false
+  "generated": true
  },
  {
   "id": "levelup_beam_end",
@@ -1773,7 +1773,7 @@
   "prompt_en": "Soft warm bell chime fading into a short breath of air, light fading out, church reverb, no voice, no music.",
   "desc_pt": "Fim do feixe: a luz se apaga.",
   "priority": 3,
-  "generated": false
+  "generated": true
  },
  {
   "id": "potion_effect_ended",
@@ -1785,7 +1785,7 @@
   "prompt_en": "Quiet liquid fizz dying away, a few tiny bubbles popping, a faint glass hum fading, dry, no voice, no music.",
   "desc_pt": "Fim do efeito de uma poção (tempo ou fim da onda).",
   "priority": 2,
-  "generated": false
+  "generated": true
  },
  {
   "id": "potion_effect_ended_heresy",
@@ -1797,7 +1797,7 @@
   "prompt_en": "A circle of holy light snuffed out: a sharp hiss of water on hot iron, a dull cracked glass clink, then silence, no voice, no music.",
   "desc_pt": "Heresia dentro do círculo apaga a Água Benta.",
   "priority": 3,
-  "generated": false
+  "generated": true
  },
  {
   "id": "potion_leveled",
@@ -1809,7 +1809,7 @@
   "prompt_en": "A glass vial clinking against a metal ring followed by a warm rising chime and a soft liquid swirl, short, no voice, no music.",
   "desc_pt": "Poção sobe de nível.",
   "priority": 3,
-  "generated": false
+  "generated": true
  },
  {
   "id": "passive_leveled",
@@ -1821,7 +1821,7 @@
   "prompt_en": "A heavy iron magnet humming up in pitch with a deep resonant metallic ring, a low pulse and a clean chime tail, no voice, no music.",
   "desc_pt": "Ímã reverso sobe de nível.",
   "priority": 3,
-  "generated": false
+  "generated": true
  },
  {
   "id": "weapon_aspergillum_fire",
@@ -1833,7 +1833,7 @@
   "prompt_en": "A short sprinkle of holy water flung from a metal brush, a wet whoosh with fine droplets splashing on stone, under 0.4 seconds, no voice.",
   "desc_pt": "Aspersório: borrifo de água benta.",
   "priority": 1,
-  "generated": false
+  "generated": true
  },
  {
   "id": "weapon_aspergillum_hit",
@@ -1845,7 +1845,7 @@
   "prompt_en": "A tiny wet sizzle of water on a dark creature, a soft hiss, under 0.2 seconds, no voice.",
   "desc_pt": "Aspersório acerta.",
   "priority": 1,
-  "generated": false
+  "generated": true
  },
  {
   "id": "weapon_censer_fire",
@@ -1857,7 +1857,7 @@
   "prompt_en": "A brass censer swinging on its chain with a soft metallic jingle and a puff of smoke whoosh, under 0.5 seconds, no voice.",
   "desc_pt": "Turíbulo gira: corrente e fumaça.",
   "priority": 1,
-  "generated": false
+  "generated": true
  },
  {
   "id": "weapon_censer_hit",
@@ -1869,7 +1869,7 @@
   "prompt_en": "A dull brass thud of a hanging censer against a body with a faint ember crackle, under 0.2 seconds, no voice.",
   "desc_pt": "Turíbulo acerta.",
   "priority": 1,
-  "generated": false
+  "generated": true
  },
  {
   "id": "weapon_rosary_fire",
@@ -1881,7 +1881,7 @@
   "prompt_en": "A string of wooden prayer beads whipped through the air, a quick clattering whoosh, under 0.4 seconds, no voice.",
   "desc_pt": "Rosário lança: contas no ar.",
   "priority": 1,
-  "generated": false
+  "generated": true
  },
  {
   "id": "weapon_rosary_hit",
@@ -1893,7 +1893,7 @@
   "prompt_en": "A sharp crack of a wooden bead hitting a hard body with a small click, under 0.2 seconds, no voice.",
   "desc_pt": "Rosário acerta.",
   "priority": 1,
-  "generated": false
+  "generated": true
  },
  {
   "id": "enemy_imp_attack",
@@ -1905,7 +1905,7 @@
   "prompt_en": "A small ink imp lunging with a high squeaky hiss and a wet slap of claws, under 0.4 seconds, no words.",
   "desc_pt": "Diabrete ataca.",
   "priority": 2,
-  "generated": false
+  "generated": true
  },
  {
   "id": "enemy_moth_attack",
@@ -1917,6 +1917,6 @@
   "prompt_en": "Fast dry fluttering of moth wings with a tiny papery bite crunch, under 0.4 seconds, no voice.",
   "desc_pt": "Traça ataca: asas e mordida.",
   "priority": 2,
-  "generated": false
+  "generated": true
  }
 ]

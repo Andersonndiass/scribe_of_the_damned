@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_wg2y1"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/weapon_rosary_hit.wav" id="2_0620l"]
+
+[resource]
+script = ExtResource("1_wg2y1")
+id = &"weapon_rosary_hit"
+event = &"weapon_hit:rosary"
+stream = ExtResource("2_0620l")
+volume_db = -19.5
+pitch_jitter = 0.08
+max_voices = 3
+cooldown_ms = 60
+note = "Rosário acerta."

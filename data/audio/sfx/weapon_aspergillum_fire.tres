@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_2coka"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/weapon_aspergillum_fire.wav" id="2_nbd1c"]
+
+[resource]
+script = ExtResource("1_2coka")
+id = &"weapon_aspergillum_fire"
+event = &"weapon_fired:aspergillum"
+stream = ExtResource("2_nbd1c")
+volume_db = -5.2
+pitch_jitter = 0.06
+max_voices = 3
+cooldown_ms = 40
+note = "Aspersório: borrifo de água benta."

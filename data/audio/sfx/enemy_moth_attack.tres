@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="SoundData" format=3]
+
+[ext_resource type="Script" path="res://src/data/sound_data.gd" id="1_qx3re"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/enemy_moth_attack.wav" id="2_pgvg6"]
+
+[resource]
+script = ExtResource("1_qx3re")
+id = &"enemy_moth_attack"
+event = &"enemy_attack:moth"
+stream = ExtResource("2_pgvg6")
+volume_db = -11.7
+pitch_jitter = 0.08
+max_voices = 2
+cooldown_ms = 150
+priority = 2
+note = "Traça ataca: asas e mordida."

@@ -11,6 +11,7 @@ Depois: /d/Godot/godot --headless --path . --import
 import csv
 import os
 import sys
+import time
 
 import requests
 
@@ -32,22 +33,35 @@ def main() -> None:
     headers = {'xi-api-key': api_key()}
 
     def balance() -> int:
-        s = requests.get(f'{API}/user/subscription', headers=headers, timeout=30).json()
-        return s['character_limit'] - s['character_count']
+        """Saldo de créditos; -1 se a API não respondeu direito (erro passageiro ou limite de
+        requisições) depois de 3 tentativas — aí segue sem checar."""
+        for attempt in range(3):
+            try:
+                s = requests.get(f'{API}/user/subscription', headers=headers, timeout=30).json()
+                return s['character_limit'] - s['character_count']
+            except (KeyError, ValueError, requests.RequestException):
+                time.sleep(2 * (attempt + 1))
+        return -1
 
     rows = list(csv.DictReader(open('docs/voice/voice_lines.csv', encoding='utf-8-sig')))
     todo = [(r, t, f, lang) for r in rows if r['personagem'] in VOICES
             for t, f, lang in LANGS if not os.path.exists(r[f])]
     print(f'{len(todo)} arquivos a gerar; saldo {balance()}')
-    for r, text_col, file_col, lang in todo:
-        if balance() < MIN_BALANCE:
-            print('PARE: saldo baixo')
-            break
+    for k, (r, text_col, file_col, lang) in enumerate(todo):
+        if k % 10 == 0:
+            left = balance()
+            if 0 <= left < MIN_BALANCE:
+                print('PARE: saldo baixo')
+                break
         vid, stab, sim, style, speed = VOICES[r['personagem']]
         body = {'text': r[text_col].strip(), 'model_id': 'eleven_multilingual_v2', 'language_code': lang,
                 'voice_settings': {'stability': stab, 'similarity_boost': sim, 'style': style, 'speed': speed}}
         res = requests.post(f'{API}/text-to-speech/{vid}?output_format=mp3_44100_128',
                             headers=headers, json=body, timeout=120)
+        if res.status_code == 429:
+            time.sleep(5)  # limite de requisições: espera e tenta esta de novo uma vez
+            res = requests.post(f'{API}/text-to-speech/{vid}?output_format=mp3_44100_128',
+                                headers=headers, json=body, timeout=120)
         if res.status_code != 200:
             print(r['id'], lang, res.status_code, res.text[:200])
             continue
