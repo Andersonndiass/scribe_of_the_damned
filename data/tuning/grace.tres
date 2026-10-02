@@ -15,6 +15,12 @@
 
 [resource]
 script = ExtResource("1_gt")
+seal_weapon_active = 0.3
+seal_weapon_reserve = 0.15
+seal_status = 0.37
+seal_relic = 0.12
+max_relic_seals = 1
+seal_potion = 0.08
 levelup_slow_time = 1.0
 per_letter = 16
 level_base = 8

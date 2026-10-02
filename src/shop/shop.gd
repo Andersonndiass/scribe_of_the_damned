@@ -24,12 +24,12 @@ func open(wave: int) -> void:
 	var lo: Loadout = GameState.loadout
 	if lo != null:
 		owned.append_array(lo.owned_ids())
-	if GameState.repulse_level > 0:
-		owned.append(GameState.repulse.id)
-	# 1ª loja com o espaço 2 vazio: as vagas de item são armas (rules-agent §7).
-	var first: bool = _visits == 0 and lo != null and not lo.is_full()
+	# 1ª loja com o espaço 2 vazio: as vagas de item são armas (rules-agent §7). Nas outras, com
+	# espaço vazio (depois de vender), 1 vaga é arma (D-103 resposta 3a).
+	var empty_slot: bool = lo != null and not lo.is_full()
+	var first: bool = _visits == 0 and empty_slot
 	_visits += 1
-	offer.open_visit(wave, GameState.run_stats, GameState.unlocked_words, GameState.rng, owned, first)
+	offer.open_visit(wave, GameState.run_stats, GameState.unlocked_words, GameState.rng, owned, first, empty_slot)
 	is_open = true
 	EventBus.shop_opened.emit(wave)
 
@@ -41,15 +41,97 @@ func close() -> void:
 	EventBus.shop_closed.emit()
 
 
-## Compra a carta `i`. Retorna true se comprou.
-func buy(i: int) -> bool:
+## Compra a carta `i`. Relíquia com os 2 espaços cheios: `relic_slot` diz qual sai (sem ele, a 1ª).
+## O que sai é vendido na hora (D-103 resposta 2a). Retorna true se comprou.
+func buy(i: int, relic_slot: int = -1) -> bool:
 	var price: int = offer.buy(i, GameState.gold_ink)
 	if price < 0:
 		return false
 	var card: ShopItemData = offer.cards[i]
 	GameState.gold_ink -= price
-	_apply(card)
+	_apply(card, price, relic_slot)
 	EventBus.item_bought.emit(card, price)
+	_refresh_owned()
+	return true
+
+
+func _refresh_owned() -> void:
+	if GameState.loadout != null:
+		offer.set_owned(GameState.loadout.owned_ids())
+
+
+# --- Venda (019; rules-agent T1900 §c): nunca dá lucro; vale mais com os postos ---
+
+## Preço de venda de algo que custou `paid` e tem `ranks` postos.
+func sell_value(paid: int, ranks: int) -> int:
+	var hi: int = maxi(tuning.sell_min, paid - tuning.sell_margin)
+	return clampi(floori(tuning.sell_rate * float(paid)) + tuning.sell_per_rank * ranks, tuning.sell_min, hi)
+
+
+func can_sell_weapon(slot: int) -> bool:
+	var lo: Loadout = GameState.loadout
+	return lo != null and slot >= 0 and slot < lo.slots.size() and lo.slots[slot] != null and lo.weapon_count() > 1
+
+
+func sell_price_weapon(slot: int) -> int:
+	if GameState.loadout == null or slot < 0 or slot >= GameState.loadout.slots.size() or GameState.loadout.slots[slot] == null:
+		return -1
+	var s: WeaponSlot = GameState.loadout.slots[slot]
+	return sell_value(s.paid if s.paid > 0 else tuning.starter_ref_price, s.bought())
+
+
+func sell_weapon(slot: int) -> bool:
+	if not can_sell_weapon(slot):
+		EventBus.shop_purchase_denied.emit()
+		return false
+	var price: int = sell_price_weapon(slot)
+	var w: WeaponData = GameState.loadout.slots[slot].weapon
+	RunUpgrade.remove_weapon(slot, &"sold")
+	GameState.gold_ink += price
+	EventBus.item_sold.emit(&"weapon", w.id, price)
+	_refresh_owned()
+	return true
+
+
+func can_sell_relic(slot: int) -> bool:
+	return GameState.loadout != null and GameState.loadout.relic(slot) != null
+
+
+func sell_price_relic(slot: int) -> int:
+	var r: RelicSlot = GameState.loadout.relic(slot) if GameState.loadout != null else null
+	return sell_value(r.paid, r.bought()) if r != null else -1
+
+
+func sell_relic(slot: int) -> bool:
+	if not can_sell_relic(slot):
+		EventBus.shop_purchase_denied.emit()
+		return false
+	var price: int = sell_price_relic(slot)
+	var rd: RelicData = GameState.loadout.relic(slot).relic
+	RunUpgrade.remove_relic(slot, &"sold")
+	GameState.gold_ink += price
+	EventBus.item_sold.emit(&"relic", rd.id, price)
+	_refresh_owned()
+	return true
+
+
+func can_sell_potion(i: int) -> bool:
+	return GameState.potions != null and i >= 0 and i < potion_count() and GameState.potions.charges(potion_at(i).id) > 0
+
+
+func sell_price_potion(i: int) -> int:
+	return maxi(tuning.sell_min, floori(tuning.potion_sell_rate * float(potion_price(i))))
+
+
+## Vende 1 carga da poção `i` (o nível fica).
+func sell_potion(i: int) -> bool:
+	if not can_sell_potion(i):
+		EventBus.shop_purchase_denied.emit()
+		return false
+	var price: int = sell_price_potion(i)
+	GameState.potions.remove_charge(potion_at(i).id)
+	GameState.gold_ink += price
+	EventBus.item_sold.emit(&"potion", potion_at(i).id, price)
 	return true
 
 
@@ -106,6 +188,13 @@ func buy_potion(i: int) -> bool:
 	return true
 
 
+## Comprar esta relíquia troca uma das 2 equipadas? (a tela pede qual)
+func replaces_relic(i: int) -> bool:
+	if i < 0 or i >= offer.cards.size() or offer.cards[i] == null or offer.cards[i].kind != &"relic":
+		return false
+	return GameState.loadout != null and GameState.loadout.relics_full()
+
+
 ## Comprar esta carta troca a arma ativa? (os 2 espaços cheios; a tela pede confirmação)
 func replaces_weapon(i: int) -> bool:
 	if i < 0 or i >= offer.cards.size() or offer.cards[i] == null or offer.cards[i].kind != &"weapon":
@@ -113,15 +202,25 @@ func replaces_weapon(i: int) -> bool:
 	return GameState.loadout != null and GameState.loadout.is_full()
 
 
-func _apply(card: ShopItemData) -> void:
-	if card.kind == &"weapon" or card.kind == &"passive":
-		GameState.run_stats.apply(card)  # sem stat: só conta a compra (max_buys)
+func _apply(card: ShopItemData, price: int = 0, relic_slot: int = -1) -> void:
+	if card.kind == &"weapon" or card.kind == &"relic":
+		GameState.run_stats.apply(card)  # sem stat: só conta a compra
+	var lo: Loadout = GameState.loadout
 	match card.kind:
 		&"weapon":
-			RunUpgrade.equip_weapon(card.weapon)
+			if lo != null and lo.is_full():
+				_sell_on_replace_weapon(lo.active)  # D-103 2a: a que sai é vendida
+			RunUpgrade.equip_weapon(card.weapon, price)
 			return
-		&"passive":
-			RunUpgrade.level_repulse()
+		&"relic":
+			var replace: int = -1
+			if lo != null and lo.relics_full():
+				replace = clampi(relic_slot, 0, lo.relics.size() - 1)
+				var gone: RelicSlot = lo.relic(replace)
+				var value: int = sell_value(gone.paid, gone.bought())
+				GameState.gold_ink += value
+				EventBus.item_sold.emit(&"relic", gone.relic.id, value)
+			RunUpgrade.equip_relic(card.relic, price, replace)
 			return
 	if card.kind == &"apocrypha":
 		# A palavra vale na hora (FR-311); o VERBUM libera o B no mesmo instante (D-057).
@@ -135,3 +234,11 @@ func _apply(card: ShopItemData) -> void:
 			player.heal(tuning.heal_only_candles)
 		return
 	RunUpgrade.apply(card, player, letter_field)
+
+
+func _sell_on_replace_weapon(slot: int) -> void:
+	var value: int = sell_price_weapon(slot)
+	if value <= 0:
+		return
+	GameState.gold_ink += value
+	EventBus.item_sold.emit(&"weapon", GameState.loadout.slots[slot].weapon.id, value)

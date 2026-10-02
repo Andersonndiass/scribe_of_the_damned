@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="RelicTuning" format=3]
+
+[ext_resource type="Script" path="res://src/data/relic_tuning.gd" id="1_rt"]
+[ext_resource type="Script" path="res://src/data/relic_data.gd" id="9_rd"]
+[ext_resource type="Resource" path="res://data/relics/reverse_magnet.tres" id="2_reverse_magnet"]
+[ext_resource type="Resource" path="res://data/relics/vespers_bell.tres" id="3_vespers_bell"]
+[ext_resource type="Resource" path="res://data/relics/blessed_salt.tres" id="4_blessed_salt"]
+[ext_resource type="Resource" path="res://data/relics/saint_reliquary.tres" id="5_saint_reliquary"]
+[ext_resource type="Resource" path="res://data/relics/wax_seal.tres" id="6_wax_seal"]
+
+[resource]
+script = ExtResource("1_rt")
+relics = Array[ExtResource("9_rd")]([ExtResource("2_reverse_magnet"), ExtResource("3_vespers_bell"), ExtResource("4_blessed_salt"), ExtResource("5_saint_reliquary"), ExtResource("6_wax_seal")])

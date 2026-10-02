@@ -49,7 +49,9 @@ extends Resource
 @export var seal_weapon_active: float = 0.30
 @export var seal_weapon_reserve: float = 0.15
 @export var seal_status: float = 0.37
-@export var seal_passive: float = 0.10
+## 019 (T1900): por relíquia com atributo livre (2 relíquias = 2×); no máximo `max_relic_seals` por oferta.
+@export var seal_relic: float = 0.12
+@export var max_relic_seals: int = 1
 ## 018 (rules-agent T1801): selo de poção, só com poção comprada abaixo do nível 3.
 @export var seal_potion: float = 0.08
 @export_group("Feixe do nível (018, D-095)")

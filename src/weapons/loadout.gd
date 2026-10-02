@@ -1,15 +1,16 @@
 class_name Loadout
 extends RefCounted
-## Inventário da partida (017 FR-1701, FR-1702, FR-1704): 2 espaços de arma, a ativa e os passivos
-## (id → nível). Lógica pura; vive em `GameState.loadout` e zera a cada partida.
+## Inventário da partida (017 FR-1701, FR-1702, FR-1704; 019 D-103): 2 espaços de arma, a ativa e
+## 2 espaços de relíquia. Lógica pura; vive em `GameState.loadout` e zera a cada partida.
 
 var slots: Array[WeaponSlot] = []
 var active: int = 0
-var passives: Dictionary[StringName, int] = {}
+var relics: Array[RelicSlot] = []
 
 
-func _init(slot_count: int = 2, start: WeaponData = null) -> void:
+func _init(slot_count: int = 2, start: WeaponData = null, relic_count: int = 2) -> void:
 	slots.resize(slot_count)
+	relics.resize(relic_count)
 	if start != null:
 		slots[0] = WeaponSlot.new(start)
 
@@ -57,10 +58,64 @@ func rank_up(i: int, uid: StringName) -> bool:
 
 
 func has(id: StringName) -> bool:
+	return owned_ids().has(id)
+
+
+func weapon_count() -> int:
+	var n: int = 0
 	for s: WeaponSlot in slots:
-		if s != null and s.weapon.id == id:
-			return true
-	return passives.get(id, 0) > 0
+		if s != null:
+			n += 1
+	return n
+
+
+## Tira a arma do espaço `i` (venda). Nunca a última; se era a ativa, a ativa vira a outra.
+func remove_weapon(i: int) -> WeaponSlot:
+	if i < 0 or i >= slots.size() or slots[i] == null or weapon_count() <= 1:
+		return null
+	var out: WeaponSlot = slots[i]
+	slots[i] = null
+	if active == i:
+		for k: int in slots.size():
+			if slots[k] != null:
+				active = k
+				break
+	return out
+
+
+func relic(i: int) -> RelicSlot:
+	return relics[i] if i >= 0 and i < relics.size() else null
+
+
+func relics_full() -> bool:
+	for r: RelicSlot in relics:
+		if r == null:
+			return false
+	return true
+
+
+## Põe a relíquia no 1º espaço vazio, ou no `replace` (cheio). Devolve o espaço, ou −1.
+func equip_relic(r: RelicData, replace: int = -1) -> int:
+	for i: int in relics.size():
+		if relics[i] == null:
+			relics[i] = RelicSlot.new(r)
+			return i
+	if replace >= 0 and replace < relics.size():
+		relics[replace] = RelicSlot.new(r)
+		return replace
+	return -1
+
+
+func remove_relic(i: int) -> RelicSlot:
+	if i < 0 or i >= relics.size() or relics[i] == null:
+		return null
+	var out: RelicSlot = relics[i]
+	relics[i] = null
+	return out
+
+
+func relic_rank_up(i: int, uid: StringName) -> bool:
+	return relic(i) != null and relic(i).rank_up(uid)
 
 
 func owned_ids() -> Array[StringName]:
@@ -68,7 +123,7 @@ func owned_ids() -> Array[StringName]:
 	for s: WeaponSlot in slots:
 		if s != null:
 			out.append(s.weapon.id)
-	for id: StringName in passives:
-		if passives[id] > 0:
-			out.append(id)
+	for r: RelicSlot in relics:
+		if r != null:
+			out.append(r.relic.id)
 	return out

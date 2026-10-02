@@ -22,7 +22,7 @@ func max_rank() -> int:
 
 
 ## O texto do selo: o valor de agora e o do próximo posto.
-func describe(now: WeaponLevelData, next: WeaponLevelData) -> String:
+func describe(now: Resource, next: Resource) -> String:
 	return "%s > %s" % [format_value(now.get(display_field)), format_value(next.get(display_field))]
 
 
@@ -37,12 +37,14 @@ func format_value(v: Variant) -> String:
 	return str(roundi(float(v))) if float(v) == roundf(float(v)) else ("%.2f" % float(v)).replace(".", ",")
 
 
-## "" se válido; senão, o motivo (os campos existem e as listas têm o mesmo tamanho ≥ 1).
-func validate() -> String:
+## "" se válido; senão, o motivo (os campos existem em `probe` — por padrão os de arma — e as
+## listas têm o mesmo tamanho ≥ 1).
+func validate(probe: Resource = null) -> String:
 	if id == &"" or effects.is_empty():
 		return "atributo sem id ou sem efeito"
 	var n: int = max_rank()
-	var probe := WeaponLevelData.new()
+	if probe == null:
+		probe = WeaponLevelData.new()
 	for f: StringName in effects:
 		if not f in probe:
 			return "%s: campo %s não existe" % [id, f]
@@ -51,3 +53,16 @@ func validate() -> String:
 	if display_field != &"" and not effects.has(display_field):
 		return "%s: display_field fora de effects" % id
 	return ""
+
+
+## `base` com os postos `ranks` de `ups` (valor do posto, não soma; int arredonda). Aloca.
+static func compose_into(base: Resource, ups: Array[WeaponUpgradeData], ranks: Dictionary) -> Resource:
+	var out: Resource = base.duplicate()
+	for u: WeaponUpgradeData in ups:
+		var r: int = int(ranks.get(u.id, 0))
+		if r <= 0:
+			continue
+		for f: StringName in u.effects:
+			var v: float = u.effects[f][mini(r, u.max_rank()) - 1]
+			out.set(f, roundi(v) if typeof(out.get(f)) == TYPE_INT else v)
+	return out

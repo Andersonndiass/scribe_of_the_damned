@@ -21,6 +21,8 @@ var _locked_price: int = 0
 var _rerolls: int = 0
 ## ids de armas e passivos que o jogador já tem (não aparecem na oferta).
 var _owned: Array[StringName] = []
+## D-103 resposta 3a: com espaço de arma vazio, a 1ª vaga de item é arma.
+var _guarantee_weapon: bool = false
 var _weapons_first: bool = false
 
 
@@ -35,10 +37,11 @@ func price_of(item: ShopItemData, p_wave: int) -> int:
 
 ## Abre a loja depois da onda `p_wave`. A travada (se houver) volta pelo preço antigo.
 func open_visit(p_wave: int, stats: RunStats, unlocked: Array[StringName], rng: RandomNumberGenerator,
-		owned: Array[StringName] = [], weapons_first: bool = false) -> void:
+		owned: Array[StringName] = [], weapons_first: bool = false, guarantee_weapon: bool = false) -> void:
 	wave = p_wave
 	_owned = owned
 	_weapons_first = weapons_first
+	_guarantee_weapon = guarantee_weapon
 	_rerolls = 0
 	var slots: int = tuning.item_slots + (1 if tuning.apocrypha_slot else 0)
 	cards.clear()
@@ -80,6 +83,12 @@ func buy(i: int, gold: int) -> int:
 	if i == _locked_slot:
 		_clear_lock()
 	return prices[i]
+
+
+## Depois de uma compra ou venda: o que o jogador tem (o reroll não oferece o que ele já tem e
+## volta a oferecer o que vendeu).
+func set_owned(ids: Array[StringName]) -> void:
+	_owned = ids
 
 
 ## Trava/destrava a carta `i` (só 1 travada). Retorna true se ficou travada.
@@ -128,8 +137,8 @@ func _fill(stats: RunStats, unlocked: Array[StringName], rng: RandomNumberGenera
 			if c.weapon != null and not _owned.has(c.weapon.id):
 				item_pool.append(c)
 				weapon_pool.append(c)
-		elif c.kind == &"passive":
-			if not _owned.has(c.passive) and stats.can_offer(c):
+		elif c.kind == &"relic":
+			if c.relic != null and not _owned.has(c.relic.id):
 				item_pool.append(c)
 		elif stats.can_offer(c):
 			item_pool.append(c)
@@ -138,7 +147,7 @@ func _fill(stats: RunStats, unlocked: Array[StringName], rng: RandomNumberGenera
 			continue
 		var is_apo_slot: bool = tuning.apocrypha_slot and i == cards.size() - 1
 		var pool: Array[ShopItemData] = apo_pool if (is_apo_slot and not apo_pool.is_empty()) else item_pool
-		if not is_apo_slot and _weapons_first and not weapon_pool.is_empty():
+		if not is_apo_slot and (_weapons_first or (_guarantee_weapon and i == 0)) and not weapon_pool.is_empty():
 			pool = weapon_pool
 		if pool.is_empty():
 			continue

@@ -93,3 +93,12 @@ func active(id: StringName) -> bool:
 ## Vinho: multiplicador do intervalo da arma no espaço `slot` (1 fora do efeito ou de outro espaço).
 func cadence_mul(slot: int) -> float:
 	return fervor_mul if active(&"wine") and slot == fervor_slot else 1.0
+
+
+## Venda (019): tira 1 carga; o nível fica.
+func remove_charge(id: StringName) -> bool:
+	if charges(id) <= 0:
+		return false
+	_charges[id] = charges(id) - 1
+	EventBus.potion_charges_changed.emit(id, charges(id), max_charges(id))
+	return true

@@ -36,26 +36,55 @@ static func apply_option(b: BlessingData) -> void:
 			if lo != null and lo.rank_up(b.slot, b.target):
 				var s: WeaponSlot = lo.slots[b.slot]
 				EventBus.weapon_leveled.emit(b.slot, s.weapon, s.level, b.target, s.rank(b.target))
-		&"passive_level":
-			level_repulse()
+		&"relic_level":
+			var lo2: Loadout = GameState.loadout
+			if lo2 != null and lo2.relic_rank_up(b.slot, b.target):
+				var r: RelicSlot = lo2.relic(b.slot)
+				EventBus.relic_leveled.emit(b.slot, r.relic, r.level, b.target, r.rank(b.target))
 		&"potion_level":
 			if GameState.potions != null:
 				GameState.potions.level_up(b.target)
 
 
-## Compra (nível 1) ou selo (+1) do ímã reverso, até o teto.
-static func level_repulse() -> bool:
-	if GameState.repulse_level >= GameState.repulse.max_level():
-		return false
-	GameState.repulse_level += 1
-	EventBus.passive_leveled.emit(GameState.repulse.id, GameState.repulse_level)
-	return true
+## Relíquia comprada (019): no espaço vazio ou no `replace`.
+static func equip_relic(r: RelicData, paid: int = 0, replace: int = -1) -> void:
+	var lo: Loadout = GameState.loadout
+	if lo == null:
+		return
+	if replace >= 0 and lo.relic(replace) != null:
+		EventBus.relic_removed.emit(replace, lo.relic(replace).relic, &"replaced")
+	var slot: int = lo.equip_relic(r, replace)
+	if slot < 0:
+		return
+	lo.relic(slot).paid = paid
+	EventBus.relic_equipped.emit(slot, r, 1)
+
+
+static func remove_relic(slot: int, cause: StringName) -> void:
+	var lo: Loadout = GameState.loadout
+	var gone: RelicSlot = lo.remove_relic(slot) if lo != null else null
+	if gone != null:
+		EventBus.relic_removed.emit(slot, gone.relic, cause)
+
+
+static func remove_weapon(slot: int, cause: StringName) -> void:
+	var lo: Loadout = GameState.loadout
+	var was_active: bool = lo != null and lo.active == slot
+	var gone: WeaponSlot = lo.remove_weapon(slot) if lo != null else null
+	if gone == null:
+		return
+	if GameState.potions != null and GameState.potions.fervor_slot == slot:
+		GameState.potions.fervor_slot = -1  # o Vinho some com a arma
+	EventBus.weapon_removed.emit(slot, gone.weapon, cause)
+	if was_active:
+		EventBus.weapon_switched.emit(lo.active, lo.weapon(lo.active))
 
 
 ## Compra de arma na loja (FR-1702): preenche o espaço vazio ou substitui a ativa.
-static func equip_weapon(w: WeaponData) -> void:
+static func equip_weapon(w: WeaponData, paid: int = 0) -> void:
 	var lo: Loadout = GameState.loadout
 	if lo == null:
 		return
 	var slot: int = lo.equip(w)
+	lo.slots[slot].paid = paid
 	EventBus.weapon_equipped.emit(slot, w, lo.slots[slot].level)

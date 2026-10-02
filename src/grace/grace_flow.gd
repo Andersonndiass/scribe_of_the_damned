@@ -246,8 +246,7 @@ func _auto_pick_all() -> void:
 
 ## 017 (T1729): selos de arma, status e ímã reverso.
 func _draw_seals() -> Array[BlessingData]:
-	return SealPool.draw(tuning, GameState.run_stats, GameState.loadout, GameState.repulse_level,
-		GameState.repulse.max_level(), GameState.grace_rng)
+	return SealPool.draw(tuning, GameState.run_stats, GameState.loadout, GameState.grace_rng)
 
 
 func _close(unpause: bool) -> void:

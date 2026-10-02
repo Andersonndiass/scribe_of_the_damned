@@ -69,15 +69,7 @@ func upgrade(uid: StringName) -> WeaponUpgradeData:
 
 ## Os números com os postos `ranks` (id do atributo → posto). Aloca: só na troca de posto.
 func compose(ranks: Dictionary) -> WeaponLevelData:
-	var out: WeaponLevelData = base.duplicate()
-	for u: WeaponUpgradeData in upgrades:
-		var r: int = int(ranks.get(u.id, 0))
-		if r <= 0:
-			continue
-		for f: StringName in u.effects:
-			var v: float = u.effects[f][mini(r, u.max_rank()) - 1]
-			out.set(f, roundi(v) if typeof(out.get(f)) == TYPE_INT else v)
-	return out
+	return WeaponUpgradeData.compose_into(base, upgrades, ranks)
 
 
 ## "" se a arma é válida; senão, o motivo. Com `limits`, confere também o pior caso (tudo no teto).

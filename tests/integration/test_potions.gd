@@ -262,7 +262,7 @@ func test_potion_seal_only_for_bought_potions_and_raises_the_level() -> void:
 	var seen := {}
 	for k: int in 120:
 		rng.seed = k
-		for b: BlessingData in SealPool.draw(GameState.grace_tuning, GameState.run_stats, GameState.loadout, 0, 5, rng):
+		for b: BlessingData in SealPool.draw(GameState.grace_tuning, GameState.run_stats, GameState.loadout, rng):
 			if b.kind == &"potion_level":
 				seen[b.target] = true
 	assert_eq(seen.keys(), [&"oil"], "só o Óleo (a única comprada)")

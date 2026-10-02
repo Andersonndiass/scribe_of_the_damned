@@ -4,7 +4,7 @@ extends StatUpgradeData
 ## palavra (D-017). Todo número mora aqui (Princípio IV). Os campos de número (stat, modo, valor,
 ## teto, cura) vêm de StatUpgradeData (016).
 
-## &"item", &"apocrypha", &"weapon" (017: entra no inventário) ou &"passive" (017: ímã reverso).
+## &"item", &"apocrypha", &"weapon" (017: entra no inventário) ou &"relic" (019: relíquia).
 @export var kind: StringName = &"item"
 @export var base_price: int = 5
 @export_group("Item")
@@ -14,7 +14,6 @@ extends StatUpgradeData
 @export var after_cap: StringName = &""
 @export_group("Apócrifo")
 @export var word: WordData
-@export_group("Arma e passivo (017)")
+@export_group("Arma e relíquia (017, 019)")
 @export var weapon: WeaponData
-## Passivo: id do que a compra liga (hoje só &"reverse_magnet").
-@export var passive: StringName = &""
+@export var relic: RelicData

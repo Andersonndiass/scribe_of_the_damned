@@ -1,0 +1,45 @@
+[gd_resource type="Resource" script_class="RelicData" format=3]
+
+[ext_resource type="Script" path="res://src/data/relic_data.gd" id="1_rd"]
+[ext_resource type="Script" path="res://src/data/relic_level_data.gd" id="2_rl"]
+[ext_resource type="Script" path="res://src/data/weapon_upgrade_data.gd" id="3_up"]
+[ext_resource type="Texture2D" path="res://assets/placeholders/itm_reverse_magnet.tres" id="4_icon"]
+
+[sub_resource type="Resource" id="base"]
+script = ExtResource("2_rl")
+interval = 0.1
+radius = 40.0
+slow_factor = 0.9
+slow_time = 0.25
+
+[sub_resource type="Resource" id="up_reach"]
+script = ExtResource("3_up")
+id = &"reach"
+label = "UPG_RADIUS"
+effects = Dictionary[StringName, PackedFloat64Array]({&"radius": PackedFloat64Array(48.0, 56.0, 64.0)})
+display_field = &"radius"
+display_unit = &"px"
+
+[sub_resource type="Resource" id="up_bind"]
+script = ExtResource("3_up")
+id = &"bind"
+label = "UPG_SLOW"
+effects = Dictionary[StringName, PackedFloat64Array]({&"slow_factor": PackedFloat64Array(0.85, 0.8)})
+display_field = &"slow_factor"
+display_unit = &"slow"
+
+[resource]
+script = ExtResource("1_rd")
+id = &"blessed_salt"
+display_name = "ITEM_BLESSED_SALT"
+short_name = "RELIC_SHORT_SALT"
+short_desc = "ITEM_BLESSED_SALT_DESC"
+icon = ExtResource("4_icon")
+shop_icon = ExtResource("4_icon")
+trigger = &"aura"
+effect = &"slow"
+hold_when_empty = false
+champion_mul = 0.5
+base = SubResource("base")
+upgrades = Array[ExtResource("3_up")]([SubResource("up_reach"), SubResource("up_bind")])
+max_upgrades = 4

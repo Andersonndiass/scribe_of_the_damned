@@ -24,7 +24,8 @@ var facing: Vector2 = Vector2.RIGHT
 @onready var flash: Flash = $Sprite/Flash
 @onready var hurtbox: Hurtbox = $Hurtbox
 @onready var arsenal: Arsenal = $Arsenal
-var repulse_aura: RepulseAura
+## Relíquias (019): roda as 2 equipadas.
+var relics: RelicRunner
 var potion_user: PotionUser
 ## Nome antigo (antes da 017) para o arsenal: `enabled`, `projectiles` e `fired` continuam.
 var auto_attack: Arsenal:
@@ -43,10 +44,10 @@ func _ready() -> void:
 	vitals.setup(data)
 	arsenal.data = data
 	# 017: ímã reverso (só age com o passivo comprado).
-	repulse_aura = RepulseAura.new()
-	repulse_aura.name = "RepulseAura"
-	repulse_aura.player = self
-	add_child(repulse_aura)
+	relics = RelicRunner.new()
+	relics.name = "Relics"
+	relics.player = self
+	add_child(relics)
 	# 018: poções nas teclas 3–6.
 	potion_user = PotionUser.new()
 	potion_user.name = "PotionUser"
@@ -122,6 +123,13 @@ func take_hit(amount: int, source_tag: StringName = &"") -> void:
 		vitals.grant_iframes()
 		EventBus.shield_broken.emit(global_position)
 		return
+	# Selo de Cera (019): depois da FIDES (ela expira), segura o golpe inteiro com 1 carga.
+	if amount > 0 and vitals.is_alive() and not vitals.is_invulnerable() and relics != null:
+		var slot: int = relics.absorb_hit()
+		if slot >= 0:
+			vitals.grant_iframes()
+			EventBus.relic_shield_absorbed.emit(slot, global_position)
+			return
 	var applied: int = vitals.damage(amount)
 	if applied == 0:
 		return

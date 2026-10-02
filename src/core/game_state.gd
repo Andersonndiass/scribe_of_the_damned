@@ -19,8 +19,8 @@ var grace: GraceLedger = null
 ## Inventário de armas da partida (017), zerado no start_run.
 var loadout: Loadout = null
 ## 017: ímã reverso (0 = não comprado; 1..5 = nível, subindo pelos selos).
-var repulse_level: int = 0
-var repulse: RepulseData = preload("res://data/weapons/reverse_magnet.tres")
+## Relíquias (019; D-103): a lista e os limites.
+var relic_tuning: RelicTuning = preload("res://data/tuning/relics.tres")
 ## 018: cargas e níveis das 4 poções (começa com 1 Óleo da Unção).
 var potion_tuning: PotionTuning = preload("res://data/tuning/potions.tres")
 var potions: PotionBelt = null
@@ -100,7 +100,6 @@ func start_run(player: PlayerData, seed_value: int = -1) -> void:
 	letter_drop_mul = 1.0
 	letter_menu_open = false
 	levelup_beam = false
-	repulse_level = 0
 	potions = PotionBelt.new(potion_tuning)
 	gold_ink = 0
 	gold_fraction = 0.0
@@ -121,7 +120,7 @@ func start_run(player: PlayerData, seed_value: int = -1) -> void:
 	else:
 		rng.randomize()
 	grace = GraceLedger.new(grace_tuning)
-	loadout = Loadout.new(2, player.start_weapon)
+	loadout = Loadout.new(2, player.start_weapon, relic_tuning.slots)
 	# Derivado da semente sem consumir o `rng` (a sequência de letras continua a mesma).
 	grace_rng.seed = rng.seed ^ GRACE_SEED_SALT
 

@@ -78,7 +78,7 @@ func test_buying_charges_the_price() -> void:
 	var price: int = _shop.offer.prices[0]
 	assert_true(_shop.buy(0))
 	assert_eq(GameState.gold_ink, 20 - price)
-	assert_eq(GameState.repulse_level, 1, "ímã reverso ligado")
+	assert_eq(GameState.loadout.relic(0).relic.id, &"reverse_magnet", "ímã reverso no 1º espaço de relíquia")
 
 
 func test_apocrypha_card_unlocks_the_word_at_once() -> void:

@@ -78,11 +78,11 @@ func test_unlocked_apocrypha_is_never_offered() -> void:
 		assert_has(_ids(), &"apocrypha_verbum", "só sobrou o VERBUM")
 
 
-func test_capped_item_leaves_the_deck() -> void:
-	# O ímã reverso é compra única (max_buys 1).
-	_stats.apply(_card(&"reverse_magnet"))
+func test_owned_relic_leaves_the_deck() -> void:
+	# 019: relíquia que o jogador tem não aparece (sai pelo `owned`, volta se vendida).
+	var owned: Array[StringName] = [&"reverse_magnet"]
 	for v: int in 20:
-		_offer.open_visit(1, _stats, _none, _rng)
+		_offer.open_visit(1, _stats, _none, _rng, owned)
 		assert_does_not_have(_ids(), &"reverse_magnet", "SC-302")
 
 

@@ -129,8 +129,17 @@ signal potion_effect_ended(id: StringName, reason: StringName)
 signal potion_charges_changed(id: StringName, charges: int, max_charges: int)
 signal potion_leveled(id: StringName, level: int)
 signal potion_bought(id: StringName, price: int)
-signal passive_leveled(id: StringName, level: int)
-signal repulse_pulsed(center: Vector2, radius: float, level: int, pushed: int)
+# --- Relíquias e venda (019; D-103) ---
+signal relic_equipped(slot: int, relic: RelicData, level: int)
+signal relic_leveled(slot: int, relic: RelicData, level: int, upgrade: StringName, rank: int)
+## cause: &"sold" | &"replaced".
+signal relic_removed(slot: int, relic: RelicData, cause: StringName)
+signal relic_pulsed(slot: int, id: StringName, center: Vector2, radius: float, hits: int)
+signal relic_shield_changed(slot: int, charges: int, max_charges: int)
+signal relic_shield_absorbed(slot: int, position: Vector2)
+signal weapon_removed(slot: int, weapon: WeaponData, cause: StringName)
+## kind: &"weapon" | &"relic" | &"potion".
+signal item_sold(kind: StringName, id: StringName, price: int)
 ## D-098: `upgrade` = o atributo que subiu e `rank` o posto novo dele.
 signal weapon_leveled(slot: int, weapon: WeaponData, level: int, upgrade: StringName, rank: int)
 

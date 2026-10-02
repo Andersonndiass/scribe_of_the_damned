@@ -277,7 +277,7 @@ func _draw_seal(c: CanvasItem, i: int, age: float, st: float) -> void:
 	if b.icon != null:
 		c.draw_texture_rect(b.icon, Rect2(o + ICON_POS, Vector2(48, 48)), false)
 	# L4 nome, divisor e frase.
-	var weapon_card: bool = b.kind == &"weapon_level" and b.value_now != ""
+	var weapon_card: bool = (b.kind == &"weapon_level" or b.kind == &"relic_level") and b.value_now != ""
 	var name_lines: PackedStringArray = UiStyle.wrap_words(tr(b.display_name), TEXT_W)
 	for n: int in mini(1 if weapon_card else 2, name_lines.size()):
 		PixelFont.draw_centered(c, name_lines[n], o.x + CARD.x / 2.0, o.y + 64 + n * 8, Palette.INK)
@@ -339,10 +339,12 @@ func _draw_beads(c: CanvasItem, b: BlessingData, o: Vector2) -> void:
 func _draw_weapon_lines(c: CanvasItem, b: BlessingData, o: Vector2) -> void:
 	_draw_change(c, b.value_now, b.value_next, o.x + CARD.x / 2.0, o.y + VALUE_Y)
 	var lo: Loadout = GameState.loadout
-	if lo != null and lo.slots[b.slot] != null:
-		var s: WeaponSlot = lo.slots[b.slot]
-		_draw_change(c, "%s %d" % [tr(&"SEAL_LEVEL_SHORT"), s.level],
-			"%d/%d" % [s.level + 1, s.weapon.max_level()], o.x + CARD.x / 2.0, o.y + LEVEL_Y)
+	if lo == null:
+		return
+	var rk: RankedSlot = lo.relic(b.slot) if b.kind == &"relic_level" else lo.slots[b.slot]
+	if rk != null:
+		_draw_change(c, "%s %d" % [tr(&"SEAL_LEVEL_SHORT"), rk.level],
+			"%d/%d" % [rk.level + 1, 1 + rk._max_upgrades()], o.x + CARD.x / 2.0, o.y + LEVEL_Y)
 
 
 func _draw_change(c: CanvasItem, now: String, next: String, cx: float, y: float) -> void:
@@ -359,8 +361,9 @@ func _done(b: BlessingData) -> int:
 		&"weapon_level":
 			var lo: Loadout = GameState.loadout
 			return lo.slots[b.slot].rank(b.target) if lo != null and lo.slots[b.slot] != null else 0
-		&"passive_level":
-			return GameState.repulse_level - 1
+		&"relic_level":
+			var rs: RelicSlot = GameState.loadout.relic(b.slot) if GameState.loadout != null else null
+			return rs.rank(b.target) if rs != null else 0
 		&"potion_level":
 			return GameState.potions.level(b.target) - 1 if GameState.potions != null else 0
 	return GameState.run_stats.buys_of(b.id)
@@ -373,8 +376,10 @@ func _choices_to_cap(b: BlessingData) -> int:
 			var lo: Loadout = GameState.loadout
 			var u: WeaponUpgradeData = lo.weapon(b.slot).upgrade(b.target) if lo != null and lo.weapon(b.slot) != null else null
 			return u.max_rank() if u != null else 0
-		&"passive_level":
-			return GameState.repulse.max_level() - 1
+		&"relic_level":
+			var rs: RelicSlot = GameState.loadout.relic(b.slot) if GameState.loadout != null else null
+			var u: WeaponUpgradeData = rs.upgrade(b.target) if rs != null else null
+			return u.max_rank() if u != null else 0
 		&"potion_level":
 			return GameState.potion_tuning.by_id(b.target).max_level() - 1
 	if b.stat == &"" or GameState.run_stats == null:

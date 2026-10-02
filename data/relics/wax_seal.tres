@@ -1,0 +1,44 @@
+[gd_resource type="Resource" script_class="RelicData" format=3]
+
+[ext_resource type="Script" path="res://src/data/relic_data.gd" id="1_rd"]
+[ext_resource type="Script" path="res://src/data/relic_level_data.gd" id="2_rl"]
+[ext_resource type="Script" path="res://src/data/weapon_upgrade_data.gd" id="3_up"]
+[ext_resource type="Texture2D" path="res://assets/placeholders/itm_reverse_magnet.tres" id="4_icon"]
+
+[sub_resource type="Resource" id="base"]
+script = ExtResource("2_rl")
+interval = 25.0
+radius = 1.0
+charges = 1
+
+[sub_resource type="Resource" id="up_recharge"]
+script = ExtResource("3_up")
+id = &"recharge"
+label = "UPG_COOLDOWN"
+effects = Dictionary[StringName, PackedFloat64Array]({&"interval": PackedFloat64Array(22.0, 20.0)})
+display_field = &"interval"
+display_unit = &"s"
+
+[sub_resource type="Resource" id="up_layers"]
+script = ExtResource("3_up")
+id = &"layers"
+label = "UPG_CHARGE"
+effects = Dictionary[StringName, PackedFloat64Array]({&"charges": PackedFloat64Array(2.0)})
+display_field = &"charges"
+display_unit = &""
+
+[resource]
+script = ExtResource("1_rd")
+id = &"wax_seal"
+display_name = "ITEM_WAX_SEAL"
+short_name = "RELIC_SHORT_WAX"
+short_desc = "ITEM_WAX_SEAL_DESC"
+icon = ExtResource("4_icon")
+shop_icon = ExtResource("4_icon")
+trigger = &"shield"
+effect = &"absorb"
+hold_when_empty = false
+champion_mul = 0.5
+base = SubResource("base")
+upgrades = Array[ExtResource("3_up")]([SubResource("up_recharge"), SubResource("up_layers")])
+max_upgrades = 3

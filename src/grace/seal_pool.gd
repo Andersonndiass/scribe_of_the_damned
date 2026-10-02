@@ -11,12 +11,12 @@ extends RefCounted
 const ACTIVE := &"weapon_active"
 const RESERVE := &"weapon_reserve"
 const STATUS := &"status"
-const PASSIVE := &"passive"
+const RELIC := &"relic"
 const POTION := &"potion"
 
 
-static func draw(tuning: GraceTuning, stats: RunStats, loadout: Loadout, repulse_level: int,
-		repulse_max: int, rng: RandomNumberGenerator, potions: PotionBelt = null) -> Array[BlessingData]:
+static func draw(tuning: GraceTuning, stats: RunStats, loadout: Loadout, rng: RandomNumberGenerator,
+		potions: PotionBelt = null) -> Array[BlessingData]:
 	if potions == null:
 		potions = GameState.potions
 	# 018: selo de poção = +1 nível de uma poção já comprada (D-094 item 2); 1 por oferta.
@@ -35,7 +35,15 @@ static func draw(tuning: GraceTuning, stats: RunStats, loadout: Loadout, repulse
 				reserve = i
 	var free := {ACTIVE: _free(loadout, active), RESERVE: _free(loadout, reserve)}
 	var slot_of := {ACTIVE: active, RESERVE: reserve}
-	var passive_ok: bool = repulse_level > 0 and repulse_level < repulse_max
+	# 019 (T1900): pares (espaço de relíquia, atributo) livres; no máximo `max_relic_seals` por oferta.
+	var relic_free: Array = []
+	if loadout != null:
+		for i: int in loadout.relics.size():
+			var rs: RelicSlot = loadout.relic(i)
+			if rs != null:
+				for u: WeaponUpgradeData in rs.free_upgrades():
+					relic_free.append([i, u])
+	var relic_seals: int = 0
 	var out: Array[BlessingData] = []
 	while out.size() < tuning.choices:
 		var kinds: Array[StringName] = []
@@ -49,9 +57,9 @@ static func draw(tuning: GraceTuning, stats: RunStats, loadout: Loadout, repulse
 		if not status_pool.is_empty():
 			kinds.append(STATUS)
 			weights.append(tuning.seal_status)
-		if passive_ok:
-			kinds.append(PASSIVE)
-			weights.append(tuning.seal_passive)
+		if not relic_free.is_empty() and relic_seals < tuning.max_relic_seals:
+			kinds.append(RELIC)
+			weights.append(tuning.seal_relic * float(_relic_slots_with_free(relic_free)))
 		if not potion_ids.is_empty():
 			kinds.append(POTION)
 			weights.append(tuning.seal_potion)
@@ -61,9 +69,11 @@ static func draw(tuning: GraceTuning, stats: RunStats, loadout: Loadout, repulse
 		match kind:
 			ACTIVE, RESERVE:
 				out.append(_pick_weapon_seal(loadout, slot_of[kind], free[kind], rng))
-			PASSIVE:
-				out.append(passive_seal(repulse_level))
-				passive_ok = false
+			RELIC:
+				var pick: Array = relic_free[rng.randi_range(0, relic_free.size() - 1)]
+				out.append(relic_seal(loadout, pick[0], pick[1]))
+				relic_free = relic_free.filter(func(e: Array) -> bool: return e[0] != pick[0])  # 1 por relíquia
+				relic_seals += 1
 			POTION:
 				out.append(potion_seal(potion_ids[rng.randi_range(0, potion_ids.size() - 1)]))
 				potion_ids.clear()
@@ -142,12 +152,28 @@ static func potion_seal(id: StringName) -> BlessingData:
 	return b
 
 
-## Selo "+1 nível" do ímã reverso.
-static func passive_seal(_level: int) -> BlessingData:
+## Quantos espaços de relíquia têm atributo livre (o peso é por relíquia, T1900).
+static func _relic_slots_with_free(relic_free: Array) -> int:
+	var seen := {}
+	for e: Array in relic_free:
+		seen[e[0]] = true
+	return seen.size()
+
+
+## Selo "+1 posto em `u`" da relíquia do espaço `slot` (019; cartão igual ao da arma, com o nome curto).
+static func relic_seal(loadout: Loadout, slot: int, u: WeaponUpgradeData) -> BlessingData:
+	var rs: RelicSlot = loadout.relic(slot)
+	var now: RelicLevelData = rs.stats()
+	var next: RelicLevelData = rs.preview(u.id)
 	var b := BlessingData.new()
-	b.id = &"passive_level_reverse_magnet"
-	b.kind = &"passive_level"
-	b.icon = load("res://assets/placeholders/itm_reverse_magnet.tres")
-	b.display_name = "ITEM_REVERSE_MAGNET"
-	b.short_desc = "SEAL_PASSIVE_LEVEL_DESC"
+	b.id = StringName("relic_level_%s_%s" % [rs.relic.id, u.id])
+	b.kind = &"relic_level"
+	b.slot = slot
+	b.target = u.id
+	b.icon = rs.relic.shop_icon
+	b.display_name = u.label
+	b.short_desc = "%s %s" % [TranslationServer.translate(rs.relic.short_name), u.describe(now, next)]
+	b.subtitle = rs.relic.short_name
+	b.value_now = u.format_value(now.get(u.display_field))
+	b.value_next = u.format_value(next.get(u.display_field))
 	return b

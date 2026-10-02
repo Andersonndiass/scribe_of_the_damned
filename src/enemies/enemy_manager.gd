@@ -57,6 +57,9 @@ var velocities := PackedVector2Array()
 var hp := PackedInt32Array()
 var flash_left := PackedFloat32Array()
 var stun_left := PackedFloat32Array()
+## O atordoamento atual veio de uma relíquia (Sino; D-103/T1900 R2): coroa CHALK, não GOLD
+## (GOLD é só das palavras).
+var stun_by_relic := PackedByteArray()
 ## Congelamento curto do golpe do Crucifixo (017; animation-agent: 50 ms), só em quem foi atingido.
 var freeze_left := PackedFloat32Array()
 ## Limites das armas (D-098): a lentidão de arma no campeão vale `champion_slow_mul`.
@@ -121,6 +124,7 @@ func _init() -> void:
 	hp.resize(CAPACITY)
 	flash_left.resize(CAPACITY)
 	stun_left.resize(CAPACITY)
+	stun_by_relic.resize(CAPACITY)
 	freeze_left.resize(CAPACITY)
 	slow_factor.resize(CAPACITY)
 	slow_left.resize(CAPACITY)
@@ -169,6 +173,7 @@ func spawn(data: EnemyData, pos: Vector2, is_champion: bool = false) -> int:
 	hp[i] = data.max_hp
 	flash_left[i] = 0.0
 	stun_left[i] = 0.0
+	stun_by_relic[i] = 0
 	freeze_left[i] = 0.0
 	slow_factor[i] = 1.0
 	slow_left[i] = 0.0
@@ -745,6 +750,7 @@ func stun_in_radius(center: Vector2, radius: float, stun: float, knockback: floa
 	var hits := _slots_in_radius(center, radius)
 	for i: int in hits:
 		stun_left[i] = maxf(stun_left[i], stun)
+		stun_by_relic[i] = 0
 		var away: Vector2 = positions[i] - center
 		if away.is_zero_approx():
 			away = Vector2.RIGHT.rotated(float(i) * 2.399)
@@ -776,6 +782,32 @@ func repulse(center: Vector2, radius: float, knockback: float, champion_mul: flo
 		_damage_descending(hits, damage)
 		DamageSource.clear()
 	return hits.size()
+
+
+## Sino de Vésperas (D-103; T1900): atordoa quem está no raio (campeão × `champion_mul`), sem
+## empurrar. O chefe é imune. O atordoamento não soma (maxf). Retorna quantos estavam no raio.
+func stun_pulse(center: Vector2, radius: float, stun: float, champion_mul: float) -> int:
+	var hits := _slots_in_radius(center, radius)
+	for i: int in hits:
+		var t: float = stun * (champion_mul if champion[i] == 1 else 1.0)
+		if t > stun_left[i]:
+			stun_left[i] = t
+			stun_by_relic[i] = 1
+	return hits.size()
+
+
+## Sal Bento (D-103; T1900): aura de lentidão pelo `apply_slow` (a mais forte vence; campeão pela
+## metade; o chefe não passa aqui). Usa o hash (tique de 0,1 s). Retorna quantos estavam no raio.
+func slow_aura(center: Vector2, radius: float, factor: float, time: float) -> int:
+	if count == 0:
+		return 0
+	_rebuild_hash_if_dirty()
+	var n: int = 0
+	for i: int in _hash.query_radius(center, radius + MAX_ENEMY_RADIUS):
+		if i < count and positions[i].distance_to(center) <= radius + radius_of[i]:
+			apply_slow(i, factor, time)
+			n += 1
+	return n
 
 
 ## Deixa lentos os inimigos no raio por `duration` s (AQUA). factor = multiplicador de velocidade.
@@ -842,6 +874,7 @@ func stun_damage_step(cursor: int, max_ops: int, stun: float, damage: int) -> in
 	var ops: int = 0
 	while i >= 0 and ops < max_ops:
 		stun_left[i] = maxf(stun_left[i], stun)
+		stun_by_relic[i] = 0
 		damage_at(i, damage)
 		i -= 1
 		ops += 1
@@ -951,7 +984,8 @@ func draw_telegraphs(canvas: CanvasItem, time: float = 0.0) -> void:
 			var head: Vector2 = render_position(i) - Vector2(0, radius_of[i] * 2.0 + CROWN_ABOVE)
 			for k: int in CROWN_POINTS:
 				var a: float = TAU * (time + float(k) / CROWN_POINTS)
-				canvas.draw_rect(Rect2((head + Vector2(cos(a) * CROWN_RADIUS, sin(a))).round(), Vector2.ONE), Palette.GOLD)
+				canvas.draw_rect(Rect2((head + Vector2(cos(a) * CROWN_RADIUS, sin(a))).round(), Vector2.ONE),
+					Palette.CHALK if stun_by_relic[i] == 1 else Palette.GOLD)
 		if blind_left[i] > 0.0:
 			# Venda CHALK 5×1 com contorno INK na linha dos olhos (CAECITAS).
 			var eye: Vector2 = (render_position(i) - Vector2(0, radius_of[i] * BLINDFOLD_Y_MUL)).round()
@@ -986,6 +1020,7 @@ func _remove(i: int) -> void:
 		hp[i] = hp[last]
 		flash_left[i] = flash_left[last]
 		stun_left[i] = stun_left[last]
+		stun_by_relic[i] = stun_by_relic[last]
 		freeze_left[i] = freeze_left[last]
 		slow_factor[i] = slow_factor[last]
 		slow_left[i] = slow_left[last]

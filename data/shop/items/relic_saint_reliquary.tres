@@ -2,14 +2,14 @@
 
 [ext_resource type="Script" path="res://src/data/shop_item_data.gd" id="1_si"]
 [ext_resource type="Texture2D" path="res://assets/placeholders/itm_reverse_magnet.tres" id="9_icon"]
-[ext_resource type="Resource" path="res://data/relics/reverse_magnet.tres" id="2_relic"]
+[ext_resource type="Resource" path="res://data/relics/saint_reliquary.tres" id="2_relic"]
 
 [resource]
 script = ExtResource("1_si")
-id = &"reverse_magnet"
+id = &"saint_reliquary"
 kind = &"relic"
-display_name = "ITEM_REVERSE_MAGNET"
-short_desc = "ITEM_REVERSE_MAGNET_DESC"
+display_name = "ITEM_SAINT_RELIQUARY"
+short_desc = "ITEM_SAINT_RELIQUARY_DESC"
 icon = ExtResource("9_icon")
 base_price = 8
 relic = ExtResource("2_relic")

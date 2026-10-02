@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ShopTuning" load_steps=14 format=3]
+[gd_resource type="Resource" script_class="ShopTuning" load_steps=18 format=3]
 
 [ext_resource type="Script" path="res://src/data/shop_tuning.gd" id="1_st"]
 [ext_resource type="Script" path="res://src/data/shop_item_data.gd" id="99_si"]
@@ -6,6 +6,10 @@
 [ext_resource type="Resource" path="res://data/shop/items/weapon_crucifix.tres" id="21_crucifix"]
 [ext_resource type="Resource" path="res://data/shop/items/reverse_magnet.tres" id="22_magnet"]
 [ext_resource type="Resource" path="res://data/shop/items/weapon_rosary.tres" id="23_rosary"]
+[ext_resource type="Resource" path="res://data/shop/items/relic_vespers_bell.tres" id="30_vespers_bell"]
+[ext_resource type="Resource" path="res://data/shop/items/relic_blessed_salt.tres" id="31_blessed_salt"]
+[ext_resource type="Resource" path="res://data/shop/items/relic_saint_reliquary.tres" id="32_saint_reliquary"]
+[ext_resource type="Resource" path="res://data/shop/items/relic_wax_seal.tres" id="33_wax_seal"]
 [ext_resource type="Resource" path="res://data/shop/items/weapon_censer.tres" id="24_censer"]
 [ext_resource type="Resource" path="res://data/shop/items/weapon_aspergillum.tres" id="25_asp"]
 [ext_resource type="Resource" path="res://data/shop/items/apocrypha_purgo.tres" id="11_apocrypha_purgo"]
@@ -16,7 +20,7 @@
 
 [resource]
 script = ExtResource("1_st")
-deck = Array[ExtResource("99_si")]([ExtResource("20_bible"), ExtResource("21_crucifix"), ExtResource("23_rosary"), ExtResource("24_censer"), ExtResource("25_asp"), ExtResource("22_magnet"), ExtResource("11_apocrypha_purgo"), ExtResource("12_apocrypha_fides"), ExtResource("13_apocrypha_lumen"), ExtResource("14_apocrypha_gloria"), ExtResource("15_apocrypha_verbum")])
+deck = Array[ExtResource("99_si")]([ExtResource("20_bible"), ExtResource("21_crucifix"), ExtResource("23_rosary"), ExtResource("24_censer"), ExtResource("25_asp"), ExtResource("22_magnet"), ExtResource("30_vespers_bell"), ExtResource("31_blessed_salt"), ExtResource("32_saint_reliquary"), ExtResource("33_wax_seal"), ExtResource("11_apocrypha_purgo"), ExtResource("12_apocrypha_fides"), ExtResource("13_apocrypha_lumen"), ExtResource("14_apocrypha_gloria"), ExtResource("15_apocrypha_verbum")])
 item_slots = 2
 apocrypha_slot = true
 price_growth = 0.08

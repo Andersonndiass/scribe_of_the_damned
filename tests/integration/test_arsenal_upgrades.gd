@@ -5,6 +5,7 @@ extends GutTest
 
 const MAIN_SCENE := preload("res://src/main/main.tscn")
 const PEN := preload("res://data/weapons/pen.tres")
+const MAGNET := preload("res://data/relics/reverse_magnet.tres")
 const BIBLE := preload("res://data/weapons/bible.tres")
 const CRUCIFIX := preload("res://data/weapons/crucifix.tres")
 const IMP := preload("res://data/enemies/imp.tres")
@@ -33,7 +34,6 @@ func before_each() -> void:
 func after_each() -> void:
 	get_tree().paused = false
 	TimeScale.reset()
-	GameState.repulse_level = 0
 
 
 func _draw_many(n: int) -> Array[BlessingData]:
@@ -41,8 +41,7 @@ func _draw_many(n: int) -> Array[BlessingData]:
 	var all: Array[BlessingData] = []
 	for k: int in n:
 		rng.seed = k
-		all.append_array(SealPool.draw(GameState.grace_tuning, GameState.run_stats, GameState.loadout,
-			GameState.repulse_level, GameState.repulse.max_level(), rng))
+		all.append_array(SealPool.draw(GameState.grace_tuning, GameState.run_stats, GameState.loadout, rng))
 	return all
 
 
@@ -52,7 +51,7 @@ func test_every_offer_has_a_weapon_seal_and_one_per_slot() -> void:
 	for k: int in 80:
 		rng.seed = k
 		var o: Array[BlessingData] = SealPool.draw(GameState.grace_tuning, GameState.run_stats,
-			GameState.loadout, 0, 5, rng)
+			GameState.loadout, rng)
 		assert_eq(o.size(), 3)
 		var slots: Array[int] = []
 		var seen: Array[String] = []
@@ -62,18 +61,18 @@ func test_every_offer_has_a_weapon_seal_and_one_per_slot() -> void:
 				assert_does_not_have(seen, key, "D-098: nunca o mesmo atributo 2× na oferta")
 				seen.append(key)
 				slots.append(b.slot)
-			assert_ne(b.kind, &"passive_level", "sem ímã comprado, sem selo de ímã")
+			assert_ne(b.kind, &"relic_level", "sem relíquia comprada, sem selo de relíquia")
 		assert_gt(slots.size(), 0, "pelo menos 1 selo de arma")
 
 
 func test_maxed_weapon_leaves_the_draw_and_magnet_joins_when_bought() -> void:
 	GameState.loadout.slots[0].auto_rank_up_times(PEN.max_upgrades)
-	GameState.repulse_level = 1
+	RunUpgrade.equip_relic(MAGNET)
 	var kinds := {}
 	for b: BlessingData in _draw_many(60):
 		kinds[b.kind] = true
 		assert_ne(b.kind, &"weapon_level", "Pena no nível máximo e sem outra arma: nenhum selo de arma")
-	assert_true(kinds.has(&"passive_level"), "com o ímã comprado, o selo do ímã aparece")
+	assert_true(kinds.has(&"relic_level"), "com a relíquia comprada, o selo dela aparece (019)")
 
 
 func test_weapon_seal_levels_the_slot_and_magnet_seal_the_magnet() -> void:
@@ -83,9 +82,10 @@ func test_weapon_seal_levels_the_slot_and_magnet_seal_the_magnet() -> void:
 	assert_eq(GameState.loadout.slots[0].level, 2)
 	assert_eq(GameState.loadout.slots[0].rank(&"rate"), 1, "D-098: o selo sobe o atributo dele")
 	assert_almost_eq(GameState.loadout.slots[0].stats().interval, 0.71, 0.0001)
-	GameState.repulse_level = 1
-	RunUpgrade.apply(SealPool.passive_seal(1), _player, null)
-	assert_eq(GameState.repulse_level, 2)
+	RunUpgrade.equip_relic(MAGNET)
+	RunUpgrade.apply(SealPool.relic_seal(GameState.loadout, 0, MAGNET.upgrade(&"rate")), _player, null)
+	assert_eq(GameState.loadout.relic(0).level, 2)
+	assert_almost_eq(GameState.loadout.relic(0).stats().interval, 4.5, 0.0001, "019: o selo sobe o atributo da relíquia")
 
 
 func test_first_shop_offers_weapons_and_hides_owned_ones() -> void:
@@ -127,27 +127,36 @@ func test_full_slots_replace_the_active_weapon_after_confirmation() -> void:
 	assert_eq(GameState.loadout.weapon(0), PEN, "a outra fica")
 
 
-func test_magnet_is_sold_once() -> void:
+func test_owned_relic_is_not_offered_until_sold() -> void:
 	_shop.open(2)
 	_shop.offer.cards[0] = _card(&"reverse_magnet")
 	_shop.offer.prices[0] = 8
 	GameState.gold_ink = 99
 	assert_true(_shop.buy(0))
-	assert_eq(GameState.repulse_level, 1)
+	assert_eq(GameState.loadout.relic(0).relic.id, &"reverse_magnet")
 	for k: int in 10:
 		_shop.open(3)
 		for c: ShopItemData in _shop.offer.cards:
-			assert_true(c == null or c.id != &"reverse_magnet", "comprado não volta")
+			assert_true(c == null or c.id != &"reverse_magnet", "a que tem não volta")
+	assert_true(_shop.sell_relic(0))
+	var back: bool = false
+	for k: int in 30:
+		_shop.open(4)
+		for c: ShopItemData in _shop.offer.cards:
+			back = back or (c != null and c.id == &"reverse_magnet")
+	assert_true(back, "vendida, volta a aparecer")
 
 
 func test_magnet_pulse_pushes_hurts_from_level_3_and_halves_champions() -> void:
-	var body: Vector2 = _player.global_position + RepulseAura.BODY
+	var body: Vector2 = _player.global_position + RelicRunner.BODY
 	var a: int = _manager.spawn(_tough, body + Vector2(20, 0))
 	var c: int = _manager.spawn(_tough, body + Vector2(-20, 0), true)
 	var uid_c: int = _manager.uid_of[c]
-	GameState.repulse_level = 3
-	var data: RepulseData = GameState.repulse
-	var pushed: int = _manager.repulse(body, data.at(data.radii, 3), data.at(data.knockbacks, 3), data.champion_knockback_mul, data.at(data.damages, 3))
+	var rs := RelicSlot.new(MAGNET)
+	rs.rank_up(&"push")
+	rs.rank_up(&"wound")
+	var s: RelicLevelData = rs.stats()
+	var pushed: int = _manager.repulse(body, s.radius, s.knockback, MAGNET.champion_mul, s.damage)
 	assert_eq(pushed, 2)
 	for i: int in _manager.count:
 		var d: float = _manager.positions[i].distance_to(body)
@@ -155,23 +164,23 @@ func test_magnet_pulse_pushes_hurts_from_level_3_and_halves_champions() -> void:
 			assert_almost_eq(d, 20.0 + 48.0 * 0.5, 0.5, "campeão: meio empurrão")
 		else:
 			assert_almost_eq(d, 20.0 + 48.0, 0.5)
-			assert_eq(_manager.hp[i], 99, "nível 3 fere 1")
+			assert_eq(_manager.hp[i], 99, "o 1º posto de DANO fere 1")
 
 
 func test_aura_waits_until_someone_is_in_range() -> void:
-	GameState.repulse_level = 1
-	var aura: RepulseAura = _player.repulse_aura
+	RunUpgrade.equip_relic(MAGNET)
+	var aura: RelicRunner = _player.relics
 	aura.set_physics_process(false)
 	var pulses: Array[int] = [0]
-	var on_pulse := func(_c: Vector2, _r: float, _l: int, _p: int) -> void: pulses[0] += 1
-	EventBus.repulse_pulsed.connect(on_pulse)
+	var on_pulse := func(_s: int, _id: StringName, _c: Vector2, _r: float, _h: int) -> void: pulses[0] += 1
+	EventBus.relic_pulsed.connect(on_pulse)
 	for k: int in 420:
 		aura._physics_process(1.0 / 60.0)
 	assert_eq(pulses[0], 0, "ninguém perto: segura o pulso")
 	_manager.spawn(_tough, _player.global_position + Vector2(10, 0))
 	aura._physics_process(1.0 / 60.0)
 	assert_eq(pulses[0], 1, "pronto há tempo: solta assim que alguém entra")
-	EventBus.repulse_pulsed.disconnect(on_pulse)
+	EventBus.relic_pulsed.disconnect(on_pulse)
 
 
 func _card(id: StringName) -> ShopItemData:

@@ -354,9 +354,11 @@ func _connect_events_018() -> void:
 	EventBus.weapon_switched.connect(func(_s: int, _w: WeaponData) -> void: play_event(&"weapon_switched"))
 	EventBus.weapon_equipped.connect(func(_s: int, _w: WeaponData, _l: int) -> void: play_event(&"weapon_equipped"))
 	EventBus.weapon_leveled.connect(func(_s: int, _w: WeaponData, _l: int, _u: StringName, _r: int) -> void: play_event(&"weapon_leveled"))
-	EventBus.repulse_pulsed.connect(func(_c: Vector2, _r: float, _l: int, pushed: int) -> void:
-		if pushed > 0:
+	EventBus.relic_pulsed.connect(func(_s: int, id: StringName, _c: Vector2, _r: float, hits: int) -> void:
+		if id == &"reverse_magnet" and hits > 0:
 			play_event(&"magnet_reverse_push"))
+	EventBus.relic_shield_absorbed.connect(func(_s: int, _p: Vector2) -> void: play_event(&"shield_broken"))
+	EventBus.item_sold.connect(func(_k: StringName, _i: StringName, _p: int) -> void: play_event(&"gold_ink_spent"))
 	# Poções (018): o som da poção (ou o gole genérico); recusa; compra.
 	EventBus.potion_drunk.connect(func(id: StringName, _l: int, _c: int) -> void: play_event(&"potion_drunk", id))
 	EventBus.potion_refused.connect(func(_id: StringName, _r: StringName) -> void: play_event(&"potion_denied"))
@@ -467,7 +469,7 @@ func _connect_events_018() -> void:
 	EventBus.potion_effect_ended.connect(func(_id: StringName, reason: StringName) -> void:
 		play_event(&"potion_effect_ended", reason))
 	EventBus.potion_leveled.connect(func(_id: StringName, _l: int) -> void: play_event(&"potion_leveled"))
-	EventBus.passive_leveled.connect(func(_id: StringName, _l: int) -> void: play_event(&"passive_leveled"))
+	EventBus.relic_leveled.connect(func(_s: int, _r: RelicData, _l: int, _u: StringName, _k: int) -> void: play_event(&"passive_leveled"))
 	EventBus.letter_offer_dropped.connect(func() -> void: play_event(&"letter_dropped"))
 
 
