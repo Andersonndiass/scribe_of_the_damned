@@ -38,8 +38,8 @@ func test_beam_toggles_the_bible_loop() -> void:
 
 func test_weapon_without_its_own_sound_stays_silent() -> void:
 	var before: int = AudioManager.plays_total
-	EventBus.weapon_fired.emit(&"rosary")
-	assert_eq(AudioManager.plays_total, before, "Rosário sem som de disparo no manifesto")
+	EventBus.weapon_hit.emit(&"inexistente")
+	assert_eq(AudioManager.plays_total, before, "arma sem som próprio: não cai no som base")
 	EventBus.weapon_fired.emit(&"pen")
 	assert_eq(AudioManager.last_played, &"weapon_pen_fire")
 
