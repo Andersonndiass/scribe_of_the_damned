@@ -102,6 +102,13 @@ var _g_picks: PackedStringArray = []
 ## de arma a cada SWAP_EVERY s. A Bíblia mira sozinha no inimigo mais próximo (mira "de mouse").
 var _weapons_arg: String = ""
 var _wlevel: int = 0
+## 019: `relics=salt,bell` equipa relíquias; `rlevel=N` sobe N−1 postos pela ordem. Linha RELICS.
+var _relics_arg: String = ""
+var _rlevel: int = 0
+var _relic_pulses: int = 0
+var _relic_hits: int = 0
+var _relic_absorbed: int = 0
+var _sold_ink: int = 0
 var _swap: bool = false
 var _swap_in: float = 0.0
 var _swaps: int = 0
@@ -172,7 +179,16 @@ func _initialize() -> void:
 			_wlevel = int(arg.substr(7))
 		elif arg == "swap":
 			_swap = true
+		elif arg.begins_with("relics="):
+			_relics_arg = arg.substr(7)
+		elif arg.begins_with("rlevel="):
+			_rlevel = int(arg.substr(7))
 	var bus: Node = root.get_node("EventBus")
+	bus.relic_pulsed.connect(func(_s: int, _id: StringName, _c: Vector2, _r: float, hits: int) -> void:
+		_relic_pulses += 1
+		_relic_hits += hits)
+	bus.relic_shield_absorbed.connect(func(_s: int, _p: Vector2) -> void: _relic_absorbed += 1)
+	bus.item_sold.connect(func(_k: StringName, _id: StringName, price: int) -> void: _sold_ink += price)
 	bus.enemy_killed.connect(func(_s: int, _d: Resource, _p: Vector2) -> void: _kills += 1)
 	bus.player_damaged.connect(func(_a: int, _c: int) -> void: _hits += 1)
 	bus.player_died.connect(func() -> void: _died_at = _time)
@@ -292,6 +308,7 @@ func _physics_process(delta: float) -> bool:
 		print("PROBE onda=%d still=%s tempo=%.1fs mortes=%d golpes_sofridos=%d morreu_em=%s max_vivos=%d onda_terminou=%s tiros=%d conjurações=%s letras_caídas=%d coletadas=%s" % [
 			GameState_wave(), _still, _time, _kills, _hits, ("%.1fs" % _died_at) if _died_at >= 0.0 else "não", _max_alive, _ended, _shots, _casts, _dropped, _collected])
 		_print_weapons()
+		_print_relics()
 		_print_rhythm()
 		var mins: float = maxf(_time / 60.0, 0.001)
 		print("LETTERS menus=%d menus/min=%.1f perdidas=%d fila_cheia=%d coletadas=%d react=%.2f acerto=%.2f" % [
@@ -445,6 +462,13 @@ func _drive_weapons(delta: float) -> void:
 			for slot: RefCounted in slots:
 				if slot != null:
 					slot.call("auto_rank_up_times", _wlevel - 1)  # D-098: nível N = N-1 postos pela ordem
+		var rt: Resource = gs.get("relic_tuning")
+		for rid: String in _relics_arg.split(",", false):
+			var rd: Resource = rt.call("by_id", StringName(rid))
+			if rd != null:
+				var at: int = int(lo.call("equip_relic", rd))
+				if at >= 0 and _rlevel > 1:
+					(lo.call("relic", at) as RefCounted).call("auto_rank_up_times", _rlevel - 1)
 	if _swap:
 		_swap_in -= delta
 		if _swap_in <= 0.0:
@@ -457,6 +481,17 @@ func _drive_weapons(delta: float) -> void:
 	var near: Vector2 = _manager.call("query_nearest", _player.global_position, 400.0)
 	gs.set("aim_with_mouse", true)
 	gs.set("aim_point", near if near != Vector2.INF else Vector2.INF)
+
+
+func _print_relics() -> void:
+	var lo: RefCounted = root.get_node("GameState").get("loadout")
+	var names: PackedStringArray = []
+	if lo != null:
+		for r: RefCounted in lo.get("relics"):
+			if r != null:
+				names.append("%s:%d" % [String((r.get("relic") as Resource).get("id")), int(r.get("level"))])
+	print("RELICS relíquias=%s pulsos=%d atingidos=%d absorvidos=%d tinta_de_venda=%d" % [
+		",".join(names), _relic_pulses, _relic_hits, _relic_absorbed, _sold_ink])
 
 
 func _print_weapons() -> void:

@@ -26,6 +26,16 @@ const BLOCKED_X := 0.1
 const GAP_FLASH := 0.05
 const PANEL := Rect2(7, 311, 66, 40)
 const PANEL_WITH_POTIONS := Rect2(7, 311, 160, 40)
+## 019 (design-agent): 2 relíquias depois das poções.
+const PANEL_WITH_RELICS := Rect2(7, 311, 210, 40)
+const RELIC_DIVIDER := Rect2(168, 314, 1, 35)
+const RELIC_X0 := 172
+const RELIC_STEP := 22
+const RELIC_SLOT := 20
+const RELIC_TAG_Y := 335
+const RELIC_BAR_Y := 345
+const RELIC_BAR_H := 4
+const DIM_RELIC: Dictionary = {"ink": "ink_soft", "chalk": "parchment", "blood_dark": "parchment_old"}
 const SLOT_X0 := 10
 const SLOT_STEP := 32
 const SLOT_Y := 314
@@ -46,6 +56,9 @@ var _charge_px := PackedInt32Array([-1, -1])
 var _deny := PackedFloat32Array([0, 0, 0, 0])
 var _blocked := PackedFloat32Array([0, 0, 0, 0])
 var _flash := PackedFloat32Array([0, 0, 0, 0])
+## Relíquias: flash do disparo e largura desenhada da barra.
+var _relic_flash := PackedFloat32Array([0, 0])
+var _relic_px := PackedInt32Array([-1, -1])
 
 
 func _ready() -> void:
@@ -55,6 +68,12 @@ func _ready() -> void:
 	EventBus.settings_applied.connect(queue_redraw)
 	EventBus.wave_started.connect(func(_i: int, _d: float) -> void: queue_redraw())
 	EventBus.potion_refused.connect(_on_potion_refused)
+	for sig: Signal in [EventBus.relic_equipped, EventBus.relic_leveled, EventBus.relic_removed,
+			EventBus.relic_shield_changed, EventBus.weapon_removed]:
+		sig.connect(func(_a = null, _b = null, _c = null, _d = null, _e = null) -> void: queue_redraw())
+	EventBus.relic_pulsed.connect(func(slot: int, _id: StringName, _c: Vector2, _r: float, _h: int) -> void:
+		if slot >= 0 and slot < 2:
+			_relic_flash[slot] = GAP_FLASH)
 	queue_redraw.call_deferred()
 
 
@@ -63,7 +82,7 @@ func hud_rect() -> Rect2:
 
 
 func _panel() -> Rect2:
-	return PANEL_WITH_POTIONS if POTION_SLOTS > 0 else PANEL
+	return PANEL_WITH_RELICS if POTION_SLOTS > 0 else PANEL
 
 
 func _on_potion_refused(id: StringName, reason: StringName) -> void:
@@ -99,6 +118,13 @@ func _process(delta: float) -> void:
 	var lo: Loadout = GameState.loadout
 	if lo == null:
 		return
+	for i: int in mini(2, lo.relics.size()):
+		_relic_flash[i] = maxf(0.0, _relic_flash[i] - delta)
+		var rs: RelicSlot = lo.relics[i]
+		var rpx: int = -1 if rs == null else floori((RELIC_SLOT - 2) * rs.charge) + 100 * rs.charges
+		if rpx != _relic_px[i] or _relic_flash[i] > 0.0:
+			_relic_px[i] = rpx
+			queue_redraw()
 	for i: int in mini(2, lo.slots.size()):
 		var px: int = -1 if lo.slots[i] == null else floori((SLOT - 2) * lo.slots[i].charge)
 		if px != _charge_px[i]:
@@ -117,6 +143,73 @@ func _draw() -> void:
 		draw_rect(DIVIDER, Palette.INK_SOFT)
 		for i: int in mini(POTION_SLOTS, GameState.potions.tuning.order.size()):
 			_draw_potion(i, GameState.potions.tuning.order[i])
+	draw_rect(RELIC_DIVIDER, Palette.INK_SOFT)
+	for i: int in mini(2, lo.relics.size()):
+		_draw_relic(i, lo.relics[i])
+
+
+## Espaço de relíquia `i` (design-agent 019): vazio, equipado (ícone, "NV n", barra por gatilho) e o
+## Selo de Cera sem carga (apagado). A barra do escudo é dividida pelas cargas máximas.
+func _draw_relic(i: int, rs: RelicSlot) -> void:
+	var x: float = RELIC_X0 + RELIC_STEP * i
+	var cell := Rect2(x, SLOT_Y, RELIC_SLOT, RELIC_SLOT)
+	if rs == null:
+		draw_rect(cell, Palette.INK_SOFT)
+		draw_rect(cell.grow(-1), Palette.PARCHMENT_OLD)
+		draw_rect(Rect2(x + 2, RELIC_BAR_Y + 1, 16, 1), Palette.INK_SOFT)
+		return
+	var s: RelicLevelData = rs.stats()
+	var empty_shield: bool = rs.relic.effect == &"absorb" and rs.charges <= 0
+	var edge: Color = Palette.INK_SOFT if empty_shield else Palette.INK
+	var fill: Color = Palette.PARCHMENT_OLD if empty_shield else Palette.PARCHMENT
+	if _relic_flash[i] > 0.0 and rs.relic.trigger != &"aura":
+		fill = Palette.CHALK
+	draw_rect(cell, edge)
+	draw_rect(cell.grow(-1), fill)
+	if rs.relic.icon != null:
+		draw_texture(_dim_relic(rs.relic) if empty_shield else rs.relic.icon, cell.position + Vector2(2, 2))
+	var tag := Rect2(x, RELIC_TAG_Y, RELIC_SLOT, 9)
+	draw_rect(tag, edge)
+	draw_rect(tag.grow(-1), fill if not empty_shield else Palette.PARCHMENT_OLD)
+	PixelFont.draw(self, "%s%d" % [tr(&"SEAL_LEVEL_SHORT"), rs.level], Vector2(x + 2, RELIC_TAG_Y + 2), edge)
+	var bar := Rect2(x, RELIC_BAR_Y, RELIC_SLOT, RELIC_BAR_H)
+	if rs.relic.effect == &"absorb" and s.charges > 1:
+		var seg: float = (RELIC_SLOT - 2 - 2) / float(s.charges)
+		draw_rect(bar, Palette.INK)
+		for k: int in s.charges:
+			var r := Rect2(x + 1 + k * (seg + 2), RELIC_BAR_Y + 1, seg, RELIC_BAR_H - 2)
+			draw_rect(r, Palette.PARCHMENT_OLD)
+			if k < rs.charges:
+				draw_rect(r, Palette.INK)
+				draw_rect(Rect2(r.position, Vector2(r.size.x, 1)), Palette.CHALK)
+			elif k == rs.charges:
+				draw_rect(Rect2(r.position, Vector2(floorf(r.size.x * rs.charge), r.size.y)), Palette.INK_SOFT)
+		return
+	var ready: bool = rs.charge >= 1.0
+	var c: Color = Palette.INK if ready else Palette.INK_SOFT
+	UiStyle.draw_bar(self, bar, rs.charge, Palette.PARCHMENT_OLD, c, Palette.CHALK if ready else null, 0, c)
+
+
+func _dim_relic(r: RelicData) -> Texture2D:
+	var key: String = "relic_" + String(r.id)
+	if _dim_cache.has(key):
+		return _dim_cache[key]
+	var img: Image = r.icon.get_image()
+	if img == null:
+		return r.icon
+	img.convert(Image.FORMAT_RGBA8)
+	var swap: Dictionary = {}
+	for from: String in DIM_RELIC:
+		if Palette.ALL.has(StringName(from)):
+			swap[Palette.ALL[StringName(from)].to_rgba32()] = Palette.ALL[StringName(DIM_RELIC[from])]
+	for py: int in img.get_height():
+		for px: int in img.get_width():
+			var col: Color = img.get_pixel(px, py)
+			if col.a8 > 0 and swap.has(Color(col.r, col.g, col.b, 1.0).to_rgba32()):
+				img.set_pixel(px, py, swap[Color(col.r, col.g, col.b, 1.0).to_rgba32()])
+	var tex := ImageTexture.create_from_image(img)
+	_dim_cache[key] = tex
+	return tex
 
 
 ## Espaço da poção `i` (design-agent T1801): pronta, em efeito (sobe 2 px), em intervalo, sem carga

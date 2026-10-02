@@ -26,6 +26,14 @@ const SHELF_X0 := 300.0
 const SHELF_STEP := 34.0
 const SHELF_Y := 223.0
 const SHELF_INFO := Rect2(298, 280, 138, 16)
+## Alforje para vender (019; design-agent): 2 armas | 2 relíquias | 4 poções, embaixo da mesa.
+const SELL_TITLE_POS := Vector2(16, 275)
+const SELL_PANEL := Rect2(16, 285, 240, 41)
+const SELL_CELL := Vector2(26, 26)
+const SELL_Y := 288.0
+const SELL_X: Array[float] = [20.0, 48.0, 81.0, 109.0, 142.0, 170.0, 198.0, 226.0]
+const SELL_DIVIDERS: Array[Rect2] = [Rect2(77, 288, 1, 36), Rect2(138, 288, 1, 36)]
+const BAG_CELLS := 8
 const PIP := 4.0
 const PIP_STEP := 5.0
 
@@ -52,6 +60,11 @@ const EXIT_STEPS := 4
 var selected: int = 0
 ## Poção em foco na prateleira (-1 = foco nas cartas). ↓/↑ alternam entre cartas e prateleira.
 var shelf_focus: int = -1
+## Célula do alforje em foco (−1 = fora); a que espera o 2º Espaço para vender; e a carta de
+## relíquia esperando a escolha de qual relíquia sai (D-103 2a: a que sai é vendida).
+var bag_focus: int = -1
+var confirm_sell: int = -1
+var pick_relic_card: int = -1
 
 var _shop: Shop
 var _canvas: Node2D
@@ -103,6 +116,9 @@ func _on_opened(_wave: int) -> void:
 
 func _on_closed() -> void:
 	confirm_replace = -1
+	bag_focus = -1
+	confirm_sell = -1
+	pick_relic_card = -1
 	# A onda já recomeçou por baixo; a tela sai em dithering (4 × 100 ms).
 	_exit_left = EXIT_TIME
 
@@ -125,7 +141,13 @@ func handle_input(event: InputEvent) -> bool:
 	if not event.is_pressed() or event.is_echo():
 		return false
 	var n: int = _shop.offer.cards.size()
-	if event.is_action(&"move_down") and shelf_focus < 0:
+	if bag_focus >= 0 and _bag_input(event):
+		_canvas.queue_redraw()
+		return true
+	if event.is_action(&"move_down") and shelf_focus >= 0:
+		shelf_focus = -1
+		bag_focus = _bag_next(-1, 1)
+	elif event.is_action(&"move_down") and shelf_focus < 0:
 		shelf_focus = 0
 	elif event.is_action(&"move_up") and shelf_focus >= 0:
 		shelf_focus = -1
@@ -165,6 +187,21 @@ func handle_input(event: InputEvent) -> bool:
 func _mouse_input(m: InputEventMouse) -> bool:
 	var b := m as InputEventMouseButton
 	var p: Vector2 = m.position
+	for k: int in BAG_CELLS:
+		if bag_rect(k).has_point(p) and _bag_has(k):
+			if pick_relic_card >= 0 and k != 2 and k != 3:
+				return b != null
+			if bag_focus != k:
+				confirm_sell = -1
+			bag_focus = k
+			shelf_focus = -1
+			if b != null and b.pressed:
+				if b.button_index == MOUSE_BUTTON_RIGHT:
+					_bag_cancel()
+				elif b.button_index == MOUSE_BUTTON_LEFT:
+					_bag_confirm()
+			_canvas.queue_redraw()
+			return b != null
 	for i: int in _shop.potion_count():
 		if shelf_rect(i).has_point(p):
 			shelf_focus = i
@@ -230,6 +267,11 @@ func _try_buy(i: int) -> void:
 	if _shop.replaces_weapon(i) and _shop.can_afford(i) and confirm_replace != i:
 		confirm_replace = i  # 1º Comprar só avisa qual arma sai
 		return
+	if _shop.replaces_relic(i) and _shop.can_afford(i):
+		pick_relic_card = i  # 019: escolher qual relíquia sai (no alforje)
+		shelf_focus = -1
+		bag_focus = 2
+		return
 	confirm_replace = -1
 	if _shop.buy(i):
 		_start_anim(i, &"buy", 0.0)
@@ -239,6 +281,177 @@ func _try_buy(i: int) -> void:
 		_shake_left[i] = SHAKE_TIME
 		_alert_left[i] = ALERT_TIME
 		EventBus.shop_purchase_denied.emit()
+
+
+# --- Alforje: vender (019) -------------------------------------------------------------------
+
+func bag_rect(k: int) -> Rect2:
+	return Rect2(SELL_X[k], SELL_Y, SELL_CELL.x, SELL_CELL.y)
+
+
+## A célula `k` tem algo (arma, relíquia; as poções sempre aparecem).
+func _bag_has(k: int) -> bool:
+	var lo: Loadout = GameState.loadout
+	if lo == null:
+		return false
+	if k < 2:
+		return k < lo.slots.size() and lo.slots[k] != null
+	if k < 4:
+		return lo.relic(k - 2) != null
+	return GameState.potions != null and k - 4 < _shop.potion_count()
+
+
+func _bag_can(k: int) -> bool:
+	if k < 2:
+		return _shop.can_sell_weapon(k)
+	if k < 4:
+		return _shop.can_sell_relic(k - 2)
+	return _shop.can_sell_potion(k - 4)
+
+
+func _bag_price(k: int) -> int:
+	if k < 2:
+		return _shop.sell_price_weapon(k)
+	if k < 4:
+		return _shop.sell_price_relic(k - 2)
+	return _shop.sell_price_potion(k - 4)
+
+
+func _bag_name(k: int) -> String:
+	var lo: Loadout = GameState.loadout
+	if k < 2:
+		return tr(lo.slots[k].weapon.display_name)
+	if k < 4:
+		return tr(lo.relic(k - 2).relic.short_name)
+	return tr(_shop.potion_at(k - 4).display_name)
+
+
+## A próxima célula com item a partir de `from` no sentido `dir` (no modo de escolha, só relíquias).
+func _bag_next(from: int, dir: int) -> int:
+	var k: int = from
+	for n: int in BAG_CELLS:
+		k = (k + dir + BAG_CELLS) % BAG_CELLS
+		if pick_relic_card >= 0 and k != 2 and k != 3:
+			continue
+		if _bag_has(k):
+			return k
+	return -1
+
+
+func _bag_input(event: InputEvent) -> bool:
+	if event.is_action(&"move_left") or event.is_action(&"move_right"):
+		confirm_sell = -1
+		bag_focus = _bag_next(bag_focus, 1 if event.is_action(&"move_right") else -1)
+	elif event.is_action(&"cast"):
+		_bag_confirm()
+	elif event.is_action(&"move_up") or event.is_action(&"pause") or event.is_action(&"ui_cancel"):
+		if confirm_sell >= 0 or pick_relic_card >= 0:
+			_bag_cancel()
+		else:
+			bag_focus = -1
+			shelf_focus = 0
+	elif event.is_action(&"move_down"):
+		pass
+	else:
+		return false
+	return true
+
+
+func _bag_cancel() -> void:
+	confirm_sell = -1
+	if pick_relic_card >= 0:
+		pick_relic_card = -1
+		bag_focus = -1
+
+
+## Espaço/clique: na escolha da relíquia, troca; senão, 1º pergunta e 2º vende.
+func _bag_confirm() -> void:
+	if bag_focus < 0:
+		return
+	if pick_relic_card >= 0:
+		var card: int = pick_relic_card
+		pick_relic_card = -1
+		var slot: int = bag_focus - 2
+		bag_focus = -1
+		if _shop.buy(card, slot):
+			_start_anim(card, &"buy", 0.0)
+			_bump_ink()
+		return
+	if not _bag_can(bag_focus):
+		EventBus.shop_purchase_denied.emit()
+		return
+	if confirm_sell != bag_focus:
+		confirm_sell = bag_focus
+		return
+	confirm_sell = -1
+	var k: int = bag_focus
+	var ok: bool = _shop.sell_weapon(k) if k < 2 else (_shop.sell_relic(k - 2) if k < 4 else _shop.sell_potion(k - 4))
+	if ok:
+		_bump_ink()
+		if not _bag_has(k) or (k >= 4 and not _bag_can(k)):
+			bag_focus = _bag_next(k, 1) if not _bag_has(k) else k
+
+
+func _bump_ink() -> void:
+	_pop_left = INK_POP
+	_ink_rate = maxf(absf(_ink_shown - GameState.gold_ink) / INK_ROLL_MAX, 1.0 / INK_STEP)
+
+
+func _draw_bag() -> void:
+	var c := _canvas
+	var lo: Loadout = GameState.loadout
+	if lo == null:
+		return
+	PixelFont.draw(c, tr(&"SHOP_SELL"), SELL_TITLE_POS, Palette.PARCHMENT_OLD)
+	UiStyle.draw_panel(c, SELL_PANEL)
+	for d: Rect2 in SELL_DIVIDERS:
+		c.draw_rect(d, Palette.INK_SOFT)
+	for k: int in BAG_CELLS:
+		var r: Rect2 = bag_rect(k)
+		var has: bool = _bag_has(k)
+		var focus: bool = k == bag_focus
+		if focus:
+			r.position.y -= 2.0
+			c.draw_rect(r, Palette.INK)
+			c.draw_rect(r.grow(-2), Palette.PARCHMENT)
+		else:
+			c.draw_rect(r, Palette.INK_SOFT)
+			c.draw_rect(r.grow(-1), Palette.PARCHMENT if has else Palette.PARCHMENT_OLD)
+		if not has:
+			continue
+		var can: bool = _bag_can(k)
+		var icon: Texture2D = null
+		var level: int = 0
+		if k < 2:
+			icon = lo.slots[k].weapon.icon
+			level = lo.slots[k].level
+		elif k < 4:
+			icon = lo.relic(k - 2).relic.shop_icon
+			level = lo.relic(k - 2).level
+		else:
+			var p: PotionData = _shop.potion_at(k - 4)
+			icon = p.shop_icon
+			level = GameState.potions.level(p.id) if GameState.potions.level(p.id) >= 2 else 0
+			var tag := Rect2(r.position.x + 1, r.position.y + 16, 8, 9)
+			var ch: int = GameState.potions.charges(p.id)
+			c.draw_rect(tag, Palette.INK if ch > 0 else Palette.INK_SOFT)
+			c.draw_rect(tag.grow(-1), Palette.PARCHMENT if ch > 0 else Palette.PARCHMENT_OLD)
+			PixelFont.draw(c, str(ch), tag.position + Vector2(2, 2), Palette.INK if ch > 0 else Palette.INK_SOFT)
+		if icon != null:
+			c.draw_texture_rect(icon, Rect2(r.position + Vector2(1, 1), Vector2(24, 24)), false)
+		if level > 0:
+			var lv := Rect2(r.position.x + 17, r.position.y + 1, 8, 9)
+			c.draw_rect(lv, Palette.INK)
+			c.draw_rect(lv.grow(-1), Palette.PARCHMENT)
+			PixelFont.draw_centered(c, str(level), lv.get_center().x, lv.position.y + 2, Palette.INK)
+		var price_y: float = 315.0
+		if not can:
+			c.draw_rect(Rect2(r.position.x + 4, price_y + 3, 18, 2), Palette.INK_SOFT)
+			continue
+		var asking: bool = focus and (k == confirm_sell or pick_relic_card >= 0)
+		if asking:
+			c.draw_rect(Rect2(r.position.x, price_y, SELL_CELL.x, 10), Palette.INK)
+		PixelFont.draw(c, "+%d" % _bag_price(k), Vector2(r.position.x + 4, price_y + 2), Palette.CHALK if asking else Palette.INK)
 
 
 func shelf_rect(i: int) -> Rect2:
@@ -447,10 +660,29 @@ func _draw_ui() -> void:
 		c.draw_rect(Rect2(side, RIBBON.end.y - 6, 6, 6), Palette.BLOOD_DARK)
 	PixelFont.draw_centered(c, tr(&"SHOP_NEXT").format({"next": Settings.key_label(&"shop_next")}), RIBBON.get_center().x, 237, Palette.CHALK)
 	_draw_shelf()
+	_draw_bag()
+	# 019 (design-agent): toda pergunta vai para a linha da legenda e a substitui enquanto aberta.
+	var keys: Dictionary = {"cast": Settings.key_label(&"cast"), "cancel": Settings.key_label(&"pause")}
+	var ask: String = ""
 	if confirm_replace >= 0 and GameState.loadout != null:
 		var leaving: WeaponData = GameState.loadout.weapon(GameState.loadout.active)
-		var ask: String = tr(&"SHOP_REPLACE_CONFIRM").format({"weapon": tr(leaving.display_name) if leaving != null else ""})
-		UiStyle.draw_tag(c, ask, 320.0, LEGEND_POS.y - 14.0)
+		ask = tr(&"SHOP_REPLACE_CONFIRM").format({"weapon": tr(leaving.display_name) if leaving != null else "",
+			"n": _shop.sell_price_weapon(GameState.loadout.active)})
+	elif pick_relic_card >= 0 and bag_focus >= 0:
+		ask = tr(&"SHOP_PICK_RELIC").format(keys.merged({"name": _bag_name(bag_focus), "n": _bag_price(bag_focus)}))
+	elif confirm_sell >= 0 and bag_focus >= 0 and _bag_has(bag_focus):
+		ask = tr(&"SHOP_SELL_CONFIRM").format(keys.merged({"name": _bag_name(bag_focus), "n": _bag_price(bag_focus)}))
+	if ask != "":
+		UiStyle.draw_tag(c, ask, LEGEND_POS.x + (PixelFont.width(ask) + 8) / 2.0 + 1.0, LEGEND_POS.y)
+		return
+	if bag_focus >= 0 and _bag_has(bag_focus):
+		var key: StringName = &"SHOP_SELL_LEGEND"
+		if bag_focus < 2 and not _bag_can(bag_focus):
+			key = &"SHOP_SELL_LAST_WEAPON"
+		elif bag_focus >= 4 and not _bag_can(bag_focus):
+			key = &"SHOP_SELL_NO_CHARGE"
+		PixelFont.draw(c, tr(key).format(keys.merged({"name": _bag_name(bag_focus), "up": Settings.key_label(&"move_up")})), LEGEND_POS, Palette.PARCHMENT_OLD)
+		return
 	PixelFont.draw(c, tr(&"SHOP_LEGEND").format({
 		"cast": Settings.key_label(&"cast"), "lock": Settings.key_label(&"shop_lock"),
 		"reroll": Settings.key_label(&"shop_reroll"), "next": Settings.key_label(&"shop_next")}), LEGEND_POS, Palette.PARCHMENT_OLD)

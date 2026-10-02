@@ -44,6 +44,6 @@ extends Resource
 ## HUD sobre a moldura: velas, cronômetro, tinta, lista de palavras, atril (design-agent).
 @export var hud_avoid: Array[Rect2] = [
 	Rect2(6, 6, 86, 35), Rect2(260, 6, 120, 28), Rect2(119, 6, 402, 30), Rect2(594, 6, 40, 15),
-	Rect2(244, 306, 152, 37), Rect2(6, 310, 163, 44), Rect2(8, 64, 140, 232), Rect2(6, 45, 134, 138), Rect2(390, 305, 70, 40),
+	Rect2(244, 306, 152, 37), Rect2(6, 310, 213, 44), Rect2(8, 64, 140, 232), Rect2(6, 45, 134, 138), Rect2(390, 305, 70, 40),
 ]
 @export var rng_seed: int = 1348

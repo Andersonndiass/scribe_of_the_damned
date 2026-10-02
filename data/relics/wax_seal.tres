@@ -3,7 +3,8 @@
 [ext_resource type="Script" path="res://src/data/relic_data.gd" id="1_rd"]
 [ext_resource type="Script" path="res://src/data/relic_level_data.gd" id="2_rl"]
 [ext_resource type="Script" path="res://src/data/weapon_upgrade_data.gd" id="3_up"]
-[ext_resource type="Texture2D" path="res://assets/placeholders/itm_reverse_magnet.tres" id="4_icon"]
+[ext_resource type="Texture2D" path="res://assets/placeholders/itm_relic_wax_seal_16.png" id="4_icon"]
+[ext_resource type="Texture2D" path="res://assets/placeholders/itm_relic_wax_seal_24.png" id="5_shop"]
 
 [sub_resource type="Resource" id="base"]
 script = ExtResource("2_rl")
@@ -34,7 +35,7 @@ display_name = "ITEM_WAX_SEAL"
 short_name = "RELIC_SHORT_WAX"
 short_desc = "ITEM_WAX_SEAL_DESC"
 icon = ExtResource("4_icon")
-shop_icon = ExtResource("4_icon")
+shop_icon = ExtResource("5_shop")
 trigger = &"shield"
 effect = &"absorb"
 hold_when_empty = false

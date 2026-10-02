@@ -107,3 +107,44 @@ func test_game_input_is_ignored_while_shopping() -> void:
 	_press(&"cast")  # Espaço compra, não conjura
 	assert_eq(field.atril.size(), 1, "o atril não foi usado")
 	assert_false(field.guard.is_held())
+
+
+## 019 (design-agent): ↓↓ chega ao alforje; Espaço pergunta e Espaço vende; a última arma não vende.
+func test_sell_from_the_bag_with_two_presses() -> void:
+	await _open_after_wave_1()
+	RunUpgrade.equip_weapon(load("res://data/weapons/bible.tres"), 6)
+	_press(&"move_down")
+	_press(&"move_down")
+	assert_eq(_screen.bag_focus, 0, "foco no alforje, na 1ª arma")
+	_press(&"move_right")
+	assert_eq(_screen.bag_focus, 1)
+	var ink: int = GameState.gold_ink
+	_press(&"cast")
+	assert_eq(_screen.confirm_sell, 1, "1º Espaço pergunta")
+	assert_eq(GameState.gold_ink, ink)
+	_press(&"cast")
+	assert_gt(GameState.gold_ink, ink, "2º Espaço vende")
+	assert_eq(GameState.loadout.weapon_count(), 1)
+	_screen.bag_focus = 0
+	_press(&"cast")
+	assert_eq(_screen.confirm_sell, -1, "a última arma não vende")
+
+
+## 019: relíquia com os 2 espaços cheios pede qual sai; a que sai é vendida (D-103 2a).
+func test_relic_purchase_with_full_slots_asks_which_leaves() -> void:
+	await _open_after_wave_1()
+	var rt: RelicTuning = GameState.relic_tuning
+	RunUpgrade.equip_relic(rt.by_id(&"reverse_magnet"), 8)
+	RunUpgrade.equip_relic(rt.by_id(&"blessed_salt"), 8)
+	for c: ShopItemData in _shop.tuning.deck:
+		if c.id == &"wax_seal":
+			_shop.offer.cards[0] = c
+	_shop.offer.prices[0] = 1
+	GameState.gold_ink = 50
+	_screen.selected = 0
+	_press(&"cast")
+	assert_eq(_screen.pick_relic_card, 0, "entra na escolha")
+	_press(&"move_right")
+	_press(&"cast")
+	assert_eq(GameState.loadout.relic(1).relic.id, &"wax_seal", "saiu a 2ª")
+	assert_eq(_screen.pick_relic_card, -1)

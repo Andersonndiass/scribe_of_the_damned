@@ -290,6 +290,16 @@ func _debug_weapons(args: String) -> void:
 			for w: WeaponData in tuning.weapons:
 				if w.id == StringName(ids[i]):
 					lo.slots[i] = WeaponSlot.new(w)
+	# 019: ?relics=blessed_salt,vespers_bell&rlevel=N
+	var rm: RegExMatch = RegEx.create_from_string("relics=([a-z_,]+)").search(args)
+	if rm != null:
+		for rid: String in rm.get_string(1).split(",", false):
+			var rd: RelicData = GameState.relic_tuning.by_id(StringName(rid))
+			if rd != null:
+				var at: int = lo.equip_relic(rd)
+				var rl: RegExMatch = RegEx.create_from_string("rlevel=([1-9])").search(args)
+				if at >= 0 and rl != null:
+					lo.relic(at).auto_rank_up_times(int(rl.get_string(1)) - 1)
 	var lv: RegExMatch = RegEx.create_from_string("wlevel=([1-9])").search(args)
 	if lv != null:
 		for s: WeaponSlot in lo.slots:
