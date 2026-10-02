@@ -49,6 +49,8 @@ var _pulse: float = 0.0
 var _last_letters := PackedStringArray()
 ## Latim das palavras que fecham combo com a última conjurada (vazio sem janela aberta).
 var combo_partners := PackedStringArray()
+## Parceiras de cada palavra guardada (do word_stored), para a união com 2 guardadas.
+var _partners_of: Dictionary = {}
 var echo_text: String = ""
 var forgiveness_ready: bool = false
 var _seal_blink_left: float = 0.0
@@ -68,8 +70,12 @@ func _ready() -> void:
 	EventBus.atril_purged.connect(func(_l: PackedStringArray, _p: Vector2) -> void: _play(Anim.PURGE))
 	EventBus.heresy_committed.connect(func(_p: Vector2) -> void: _play(Anim.HERESY))
 	EventBus.letter_rejected.connect(func(_l: String) -> void: _play(Anim.REJECT))
-	EventBus.word_stored.connect(func(_w: WordData, _r: int, partners: PackedStringArray, _m: int) -> void:
-		combo_partners = partners
+	EventBus.word_stored.connect(func(w: WordData, _r: int, partners: PackedStringArray, _m: int) -> void:
+		_partners_of[w.id] = partners)
+	EventBus.word_guard_changed.connect(func(words: Array[WordData], _m: PackedInt32Array, _c: int) -> void:
+		combo_partners = PackedStringArray()
+		for w: WordData in words:
+			combo_partners.append_array(_partners_of.get(w.id, PackedStringArray()))
 		queue_redraw())
 	EventBus.verbum_echoed.connect(func(w: WordData) -> void:
 		echo_text = w.latin
@@ -91,9 +97,6 @@ func _ready() -> void:
 		_seal_blink_left = SEAL_BLINK_TIME
 		_cross_left = FORGIVEN_CROSS_TIME
 		_cross_at = pos
-		queue_redraw())
-	EventBus.stored_word_released.connect(func(_w: WordData, _c: StringName) -> void:
-		combo_partners = PackedStringArray()
 		queue_redraw())
 
 

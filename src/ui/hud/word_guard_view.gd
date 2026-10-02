@@ -8,6 +8,8 @@ extends Node2D
 ## CHALK por 50 ms.
 
 const PLATE := Rect2(393, 308, 64, 32)
+## 010 (Hildegarda): a 2ª caixa fica à direita, no mesmo molde (passo de 60 px).
+const SLOT_STEP := 60.0
 const BOX := Rect2(396, 313, 58, 16)
 const TEXT_X := 425.0
 const TEXT_Y := 318.0
@@ -22,6 +24,10 @@ const CONSUME_TIME := 0.05
 
 var word: WordData = null
 var rare_mask: int = 0
+## Toda a guarda (da mais antiga para a mais nova) e quantos espaços (010).
+var words: Array[WordData] = []
+var masks := PackedInt32Array()
+var capacity: int = 1
 var combo_ready: bool = false
 ## Degrau do voo (−1 = parado) e o resto do consumo.
 var _fly: int = -1
@@ -43,6 +49,13 @@ func _ready() -> void:
 		_fly = -1
 		_consume_left = CONSUME_TIME
 		queue_redraw())
+	EventBus.word_guard_changed.connect(func(ws: Array[WordData], ms: PackedInt32Array, cap: int) -> void:
+		words = ws
+		masks = ms
+		capacity = cap
+		word = ws[-1] if not ws.is_empty() else null
+		rare_mask = ms[-1] if not ms.is_empty() else 0
+		queue_redraw())
 	EventBus.player_died.connect(func() -> void:
 		word = null
 		queue_redraw())
@@ -60,7 +73,7 @@ func _process(delta: float) -> void:
 	if _consume_left > 0.0:
 		_consume_left -= delta
 		queue_redraw()
-	var atril := get_parent().get_node_or_null(^"Atril") as HudAtril  # irmão no mesmo HUD
+	var atril: HudAtril = get_parent().get_node_or_null(^"Atril") as HudAtril  # irmão no mesmo HUD
 	var ready_now: bool = word != null and atril != null and atril.is_combo_ready()
 	if ready_now != combo_ready:
 		combo_ready = ready_now
@@ -68,30 +81,40 @@ func _process(delta: float) -> void:
 
 
 func hud_rect() -> Rect2:
-	return Rect2(390, 305, 70, 40)
+	return Rect2(390, 305, 70 + SLOT_STEP * (capacity - 1), 40)
 
 
 func _draw() -> void:
+	for k: int in capacity:
+		_draw_slot(k, Vector2(SLOT_STEP * k, 0))
+	if word != null and _fly >= 0:
+		var r := Rect2(FLY_X[_fly] + SLOT_STEP * maxi(0, words.size() - 1), BOX.position.y, BOX.size.x, BOX.size.y)
+		if _fly == FLY_X.size() - 1:
+			r = Rect2(r.position.x - 1, r.position.y + 2, r.size.x + 2, r.size.y - 2)  # squash, base presa
+		_box(r, Palette.INK, Palette.GOLD_LIGHT)
+		_word(word.latin, r.get_center().x, rare_mask)
+
+
+## Um espaço da guarda com deslocamento `off` (a 2ª caixa da Hildegarda).
+func _draw_slot(k: int, off: Vector2) -> void:
+	draw_set_transform(off)
 	UiStyle.draw_plate(self, PLATE)
-	var held: bool = word != null and _fly < 0
-	if held and combo_ready:
+	var newest: bool = k == words.size() - 1
+	var w: WordData = words[k] if k < words.size() else null
+	var held: bool = w != null and not (newest and _fly >= 0)
+	if held and combo_ready and newest:
 		_frame(Rect2(394, 311, 62, 20), Palette.INK)
 		_frame(Rect2(395, 312, 60, 18), Palette.GOLD)
 	var edge: Color = Palette.INK if held else Palette.INK_SOFT
 	var fill: Color = Palette.GOLD_LIGHT if held else Palette.PARCHMENT_OLD
-	if _consume_left > 0.0:
+	if _consume_left > 0.0 and w == null:
 		edge = Palette.INK
 		fill = Palette.CHALK
 	_box(BOX, edge, fill)
 	if held:
-		_word(word.latin, TEXT_X)
+		_word(w.latin, TEXT_X, masks[k] if k < masks.size() else 0)
 	_tail(edge, fill)
-	if word != null and _fly >= 0:
-		var r := Rect2(FLY_X[_fly], BOX.position.y, BOX.size.x, BOX.size.y)
-		if _fly == FLY_X.size() - 1:
-			r = Rect2(r.position.x - 1, r.position.y + 2, r.size.x + 2, r.size.y - 2)  # squash, base presa
-		_box(r, Palette.INK, Palette.GOLD_LIGHT)
-		_word(word.latin, r.get_center().x)
+	draw_set_transform(Vector2.ZERO)
 
 
 func _box(r: Rect2, edge: Color, fill: Color) -> void:
@@ -106,11 +129,11 @@ func _frame(r: Rect2, c: Color) -> void:
 	draw_rect(Rect2(r.end.x - 1, r.position.y, 1, r.size.y), c)
 
 
-func _word(latin: String, cx: float) -> void:
+func _word(latin: String, cx: float, mask: int) -> void:
 	PixelFont.draw_centered(self, latin, cx, TEXT_Y, Palette.INK)
 	var tx: float = roundf(cx - PixelFont.width(latin) / 2.0)
 	for i: int in latin.length():
-		if rare_mask & (1 << i):
+		if mask & (1 << i):
 			draw_rect(Rect2(tx + GLYPH_STEP * i, RARE_Y, 5, 1), Palette.INK)
 
 

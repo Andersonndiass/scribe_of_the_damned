@@ -64,14 +64,23 @@ func cast() -> bool:
 	var guard: WordGuard = letter_field.guard
 	if atril.size() > 0 and atril.state(letter_field.lexicon) == Atril.Status.VALID:
 		var word: WordData = letter_field.lexicon.word_for(atril.text())
-		var combo: ComboData = combo_book.find(guard.word, word) if guard.is_held() else null
+		var at: int = guard.find_partner(word, combo_book)
+		var combo: ComboData = combo_book.find(guard.entries[at]["word"], word) if at >= 0 else null
 		var taken: Dictionary = atril.take_all()
 		if combo != null:
-			var held: Dictionary = guard.take()
+			var held: Dictionary = guard.take_at(at)
 			EventBus.stored_word_released.emit(held["word"], &"combo")
 		return _cast_word(word, int(taken["rare_count"]), combo)
 	if guard.is_held():
-		var stored: Dictionary = guard.take()
+		# 010 (Hildegarda, resposta "2a"): as 2 guardadas parceiras fazem o combo; a mais nova é a 2ª.
+		var pair: ComboData = guard.pair_combo(combo_book)
+		if pair != null:
+			var old: Dictionary = guard.take_at(0)
+			var new: Dictionary = guard.take()
+			EventBus.stored_word_released.emit(old["word"], &"combo")
+			EventBus.stored_word_released.emit(new["word"], &"cast")
+			return _cast_word(new["word"], int(new["rare_count"]), pair)
+		var stored: Dictionary = guard.take()  # a mais nova (resposta "3a")
 		EventBus.stored_word_released.emit(stored["word"], &"cast")
 		return _cast_word(stored["word"], int(stored["rare_count"]), null)
 	if atril.size() == 0:

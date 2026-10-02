@@ -17,7 +17,7 @@ var _last_push_msec: int = -100000
 
 var lexicon := Lexicon.new()
 var atril: Atril
-## D-099: a palavra pronta guardada (1 espaço).
+## D-099: a palavra pronta guardada (1 espaço; a Hildegarda tem 2, D-101).
 var guard := WordGuard.new()
 ## Latim das parceiras de combo de uma palavra (o Caster liga ao ComboBook); dicas da guarda.
 var partners_of: Callable = func(_w: WordData) -> PackedStringArray: return PackedStringArray()
@@ -36,6 +36,8 @@ func _ready() -> void:
 		push_error("LetterField: dicionário inválido — %s" % lexicon.error)
 	lexicon.set_known_filter(GameState.is_word_known)
 	EventBus.word_unlocked.connect(func(_w: WordData) -> void: emit_atril())
+	if player != null:
+		guard = WordGuard.new(RunStats.of(player.data).int_value(&"word_guard_slots"))
 	# O LetterField fica pronto antes do Main chamar GameState.start_run: lê direto do jogador.
 	atril = Atril.new(RunStats.of(player.data).int_value(&"atril_capacity") if player != null else GameState.atril_capacity)
 	menu = LetterMenu.new()
@@ -100,7 +102,7 @@ func offer_safety() -> void:
 ## D-099 (resposta "2a"): palavra pronta no atril e guarda vazia → a palavra vai para a guarda e o
 ## atril fica livre. Invariante: com a guarda vazia o atril nunca fica VALID.
 func settle() -> void:
-	if guard.is_held() or atril.state(lexicon) != Atril.Status.VALID:
+	if not guard.has_room() or atril.state(lexicon) != Atril.Status.VALID:
 		return
 	var word: WordData = lexicon.word_for(atril.text())
 	guard.store(atril.take_all(), word)
@@ -117,6 +119,14 @@ func emit_atril() -> void:
 			hints.append(w.latin)
 	GameState.atril_capacity = atril.capacity
 	EventBus.atril_changed.emit(atril.letters(), status, hints, atril.rare_mask())
+	emit_guard()
+
+
+func emit_guard() -> void:
+	var masks := PackedInt32Array()
+	for e: Dictionary in guard.entries:
+		masks.append(e["rare_mask"])
+	EventBus.word_guard_changed.emit(guard.words(), masks, guard.capacity)
 
 
 func _on_enemy_killed(slot: int, data: EnemyData, _pos: Vector2) -> void:

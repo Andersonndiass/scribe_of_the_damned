@@ -50,6 +50,8 @@ signal combo_cast(combo: ComboData, power: float)
 signal word_stored(word: WordData, rare_count: int, partners: PackedStringArray, rare_mask: int)
 ## D-099: a guardada saiu (`cause`: &"cast" = conjurada sozinha; &"combo" = gasta num combo).
 signal stored_word_released(word: WordData, cause: StringName)
+## 010: o estado inteiro da guarda (1 ou 2 espaços), da mais antiga para a mais nova.
+signal word_guard_changed(words: Array[WordData], rare_masks: PackedInt32Array, capacity: int)
 ## 002 FIDES: o escudo absorveu um golpe.
 signal shield_broken(position: Vector2)
 ## 002 VERBUM: repetiu `word` / não havia o que repetir (falha sem heresia, D-055).
