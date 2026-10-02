@@ -759,6 +759,32 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
 - **Ícones:** pixel-art-gen.
 - **Aberto:** com relíquias saem ~metade das palavras (T1900 §Medição) — rules-agent e playtest.
 
+### D-105 · 2026-10-02 · 010 Personagens implementada (respostas do autor "1a…8a")
+- **Pareceres:** rules-agent T1000, mechanics-agent e story-agent.
+- **Respostas do autor:**
+  - Tomé com 2 velas e Óleo ×2;
+  - Hildegarda: as 2 guardadas parceiras fazem combo; sem par, sai a mais nova;
+  - Iluminador 24%;
+  - desbloqueio misto (6b confirmado);
+  - abertura própria no lugar da C1-01/C1-02;
+  - falas do escriba na C1-03/C1-04 (variantes);
+  - game bible §3.11 atualizada.
+- **Código:**
+  - `PlayerData` com nome, passiva, falante, abertura, guarda, poções e passivas; `UnlockData`; `CharacterRoster`.
+  - Passivas lidas pelo `RunStats`.
+  - O `Main._enter_tree` usa `GameState.picked_character`.
+  - `WordGuard` em lista.
+  - `Progress` (autoload) com latch e anúncio; só conta no jogo de verdade.
+  - Tela de Personagem pelo progresso.
+  - `pending_intro(chapter, scribe)`; falante `"@player"`.
+  - `BarkDirector` só faz falar o escriba da partida.
+  - `?char=<id>` e sonda `char=`.
+- **Save:** sonda, GUT e ferramentas não gravam no Grimório nem no progresso.
+- **Pendente:**
+  - sprites e closes próprios dos 4 (hoje usam o placeholder do Anselmo e os bustos por script);
+  - vozes das 92 falas novas (o autor roda `tools/gen_bark_voices.py`);
+  - medição por escriba (T1000 C1–C12).
+
 ## Conflitos abertos
 
 - ~~**C-008 · Menu de escolha da letra (D-085 item 2).**~~ Resolvido: autor "1a 2b 3b e mouse clicando 4a" —

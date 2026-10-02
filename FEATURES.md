@@ -15,7 +15,7 @@
 | 007 | ui-screens-menus | 001 | **Complete** ✅ (2026-09-29 · verbetes que faltam: autor, D-069) |
 | 008 | cutscenes-cap1 (**in-engine**, AnimationPlayer + roteiros) | 007 | **Complete** ✅ (2026-09-29 · vozes: autor, `docs/voice/`) |
 | 009 | audio | 001 | Tasked ✅ |
-| 010 | characters-unlocks | 003 | Tasked ✅ |
+| 010 | characters-unlocks (5 escribas, passivas, desbloqueio salvo, aberturas e falas próprias) | 003 | **Complete** ✅ (2026-10-02, D-101/D-105 · arte própria dos 4 e vozes pendentes) |
 | 011 | web-export-itch (demo) | 001–010 | Tasked ✅ |
 | 012 | boss-mae-das-tracas (Cap. 2) | 006 | Tasked ✅ |
 | 013 | boss-abade-caido (Cap. 3) | 012 | Tasked ✅ |

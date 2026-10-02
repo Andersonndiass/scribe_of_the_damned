@@ -2,7 +2,7 @@
 
 Roguelite 2D de ação em pixel art, feito em **Godot 4.7.2**. Ano de 1348, o ano da peste: o Irmão Anselmo, copista do Mosteiro de São Wendelino, abre o códice proibido e fica preso dentro dele. Para sair, luta com **armas sagradas** e escreve **palavras em latim** que viram milagres.
 
-> Autor: **Francisco**. Status: em desenvolvimento (Etapa 3). Última atualização deste README: 2026-10-01.
+> Autor: **Francisco**. Status: em desenvolvimento (Etapa 3). Última atualização deste README: 2026-10-02.
 
 ## Como se joga
 - **Armas sagradas** atacam o tempo todo. Você leva **2** e troca entre elas no meio da onda: Pena do Copista, Bíblia (raio que você mira), Crucifixo, Rosário, Turíbulo e Aspersório. Elas sobem de nível nos selos e as novas se compram na loja.
@@ -35,7 +35,9 @@ Roguelite 2D de ação em pixel art, feito em **Godot 4.7.2**. Ano de 1348, o an
 | T1800 | HUD novo (painéis em pixel art, recarga das armas) | ✅ |
 | 018 | Poções (Óleo da Unção, Água Benta, Vinho do Fervor, Tinta Iluminada), subir de nível com feixe de luz e câmera lenta, passada de ritmo | ✅ Complete (Crucifixo mais rápido, loja mais barata no fim, onda 1 mais leve, mais letras na onda 9; D-096) |
 | 009 | Áudio (efeitos e falas via ElevenLabs) | ✅ 146 efeitos ligados aos eventos do jogo (armas, chefe, inimigos, poções, loja, menus) e 46 falas; falas abaixam a música; as 24 palavras em latim faladas; falta a música (o autor manda pronta) |
-| 010–015 | Personagens, export para itch.io, capítulos 2–5 | planejado |
+| 010 | Personagens: 5 escribas (Anselmo, Hildegarda, Tomé, Iluminador, Beda) com passiva, arma e poção próprias; desbloqueio salvo | ✅ (arte própria e vozes pendentes) |
+| 019 | Relíquias (5, em 2 espaços) e venda na loja | ✅ |
+| 011–015 | Export para itch.io, capítulos 2–5 | planejado |
 
 Detalhes em [`FEATURES.md`](FEATURES.md) e nas decisões em [`docs/DECISIONS.md`](docs/DECISIONS.md).
 

@@ -194,15 +194,19 @@ GLORIA e PURGO não entram em combos. VERBUM não repete VERBUM. A Hildegarda te
 ### 3.10 Arena e degradação
 Página de 640×360 com margem de 24px. Degrada em 4 estágios ao longo das ondas. Obstáculos: furos, banco, vitral, altar. Virada de página entre capítulos; cratera no Cap. 5.
 
-### 3.11 Personagens [D-019]
+### 3.11 Personagens [D-019 → D-101]
 
-| Personagem | Passiva | Desbloqueio | Demo |
+Regra (T1000): "começo adiantado, mesmo teto": a passiva adianta o começo, e o teto é o mesmo das bênçãos para todos. Desbloqueio = **o nome reescrito no registro do mosteiro** (o Asmodeus apagou os nomes).
+
+| Personagem | Passiva | Arma / poção inicial | Desbloqueio |
 |---|---|---|---|
-| Irmão Anselmo | Padrão (sem passiva) | Inicial | ✅ |
-| Irmã Hildegarda | Janela de combo +50% | Vencer o Cap. 1 | ✅ |
-| Frei Tomé | Imune ao stun de heresia; começa com 2 velas | Sobreviver a 20 heresias | — |
-| O Iluminador | 25% de chance de letra dupla | Conjurar 10 combos | — |
-| Noviço Beda | +20% de velocidade; atril começa em 4 | Conjurar 100 palavras | — |
+| Irmão Anselmo | Base | Pena (só ele) / Óleo ×1 | Inicial |
+| Irmã Hildegarda | Guarda 2 palavras (combo entre as duas) | Aspersório / Água Benta ×1 | Vencer o Cap. 1 |
+| Frei Tomé | Sem atordoamento na heresia; começa com 2 velas | Turíbulo / Óleo ×2 | 10 heresias sobrevividas (3 s sem perder vela) |
+| O Iluminador | Letra dupla 24% | Bíblia / Iluminura ×1 | 3 combos diferentes no Grimório |
+| Noviço Beda | Atril 4; +20% de velocidade | Crucifixo / Vinho ×1 | As 7 palavras-base no Grimório |
+
+Cada escriba tem uma abertura própria (≤ 12 s) no lugar da C1-01/C1-02, e as falas de partida e das cenas do Cap. 1 são dele (D-101 7a/7b/8b). Dados: `data/player/*.tres` + `roster.tres`; progresso: `Progress` (`user://progress.save`).
 
 ### 3.12 Chefes
 Framework comum (feature 006): BossData, PhaseData, AttackData; FSM; escolha ponderada com anti-repetição; DamageFilter por `source_tag`; LetterSafety. Cada ataque declara o nível de dano (fraco ou forte).
