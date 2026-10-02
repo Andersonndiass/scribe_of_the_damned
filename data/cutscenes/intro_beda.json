@@ -1,0 +1,22 @@
+{
+	"id": "intro_beda", "version": 1, "duration": 8.2, "play": "once", "stage_scale": 1,
+	"_doc": "Abertura do Noviço Beda (010, D-101): a mais curta e a mais rápida (ele é o mais veloz): o nome do último da lista volta num piscar. Palco 640x360.",
+	"actors": {
+		"page": {"layer": "bg", "kind": "fx", "src": "res://src/cutscenes/fx/blank_page.gd"},
+		"strokes": {"layer": "bg", "kind": "fx", "src": "res://src/cutscenes/fx/erase_strokes.gd", "init": {"progress": 1.0}},
+		"letters": {"layer": "fx", "kind": "fx", "src": "res://src/cutscenes/fx/letter_leak.gd", "init": {"position": [276, 300], "progress": 0.0}},
+		"echo": {"layer": "fx", "kind": "fx", "src": "res://src/cutscenes/fx/letter_leak.gd", "init": {"position": [336, 300], "progress": 0.0}}
+	},
+	"events": [
+		{"t": 0.2, "type": "key", "target": "strokes", "prop": "progress", "value": 1.0, "ease": "linear"},
+		{"t": 0.9, "type": "key", "target": "strokes", "prop": "progress", "value": 0.0, "ease": "out"},
+		{"t": 0.3, "type": "sound", "id": "cs_page"},
+		{"t": 0.3, "type": "key", "target": "letters", "prop": "progress", "value": 0.0, "ease": "linear"},
+		{"t": 1.3, "type": "key", "target": "letters", "prop": "progress", "value": 1.0, "ease": "out"},
+		{"t": 0.7, "type": "key", "target": "echo", "prop": "progress", "value": 0.0, "ease": "linear"},
+		{"t": 1.7, "type": "key", "target": "echo", "prop": "progress", "value": 1.0, "ease": "out"},
+		{"t": 0.9, "type": "caption", "key": "CHAR_NAME_REWRITTEN", "end": 2.8},
+		{"t": 3.0, "type": "line", "speaker": "beda", "expr": "scared", "key": "CS_INTRO_BEDA_1", "end": 5.6},
+		{"t": 5.7, "type": "line", "speaker": "beda", "expr": "relieved", "key": "CS_INTRO_BEDA_2", "end": 8.0}
+	]
+}

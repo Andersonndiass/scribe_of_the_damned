@@ -1,0 +1,24 @@
+{
+	"id": "intro_tome", "version": 1, "duration": 10.8, "play": "once", "stage_scale": 1,
+	"_doc": "Abertura do Frei Tomé (010, D-101): a página escurece (fumaça de incenso) e o nome dele demora a voltar: ele desconfia do registro. Palco 640x360.",
+	"actors": {
+		"page": {"layer": "bg", "kind": "fx", "src": "res://src/cutscenes/fx/blank_page.gd"},
+		"smoke": {"layer": "bg", "kind": "fx", "src": "res://src/cutscenes/fx/page_darken.gd", "init": {"progress": 0.0}},
+		"strokes": {"layer": "bg", "kind": "fx", "src": "res://src/cutscenes/fx/erase_strokes.gd", "init": {"progress": 1.0}},
+		"letters": {"layer": "fx", "kind": "fx", "src": "res://src/cutscenes/fx/letter_leak.gd", "init": {"position": [296, 300], "progress": 0.0}}
+	},
+	"events": [
+		{"t": 0.3, "type": "key", "target": "smoke", "prop": "progress", "value": 0.0, "ease": "linear"},
+		{"t": 1.0, "type": "key", "target": "smoke", "prop": "progress", "value": 0.5, "ease": "out"},
+		{"t": 9.4, "type": "key", "target": "smoke", "prop": "progress", "value": 0.5, "ease": "linear"},
+		{"t": 10.6, "type": "key", "target": "smoke", "prop": "progress", "value": 0.0, "ease": "in"},
+		{"t": 0.4, "type": "key", "target": "strokes", "prop": "progress", "value": 1.0, "ease": "linear"},
+		{"t": 2.4, "type": "key", "target": "strokes", "prop": "progress", "value": 0.0, "ease": "in_out"},
+		{"t": 1.2, "type": "sound", "id": "cs_page"},
+		{"t": 1.2, "type": "key", "target": "letters", "prop": "progress", "value": 0.0, "ease": "linear"},
+		{"t": 2.8, "type": "key", "target": "letters", "prop": "progress", "value": 1.0, "ease": "out"},
+		{"t": 2.6, "type": "caption", "key": "CHAR_NAME_REWRITTEN", "end": 4.6},
+		{"t": 4.8, "type": "line", "speaker": "tome", "expr": "neutral", "key": "CS_INTRO_TOME_1", "end": 7.6},
+		{"t": 7.8, "type": "line", "speaker": "tome", "expr": "neutral", "key": "CS_INTRO_TOME_2", "end": 10.5}
+	]
+}

@@ -1,0 +1,27 @@
+{
+	"id": "intro_iluminador", "version": 1, "duration": 10.6, "play": "once", "stage_scale": 1,
+	"_doc": "Abertura do Iluminador (010, D-101): o nome volta com letra dupla (duas letras sobem, a segunda um passo atrás) e raios dourados. Palco 640x360.",
+	"actors": {
+		"page": {"layer": "bg", "kind": "fx", "src": "res://src/cutscenes/fx/blank_page.gd"},
+		"strokes": {"layer": "bg", "kind": "fx", "src": "res://src/cutscenes/fx/erase_strokes.gd", "init": {"progress": 1.0}},
+		"rays": {"layer": "bg", "kind": "fx", "src": "res://src/cutscenes/fx/light_rays.gd", "init": {"position": [320, 300], "progress": 0.0}},
+		"letters": {"layer": "fx", "kind": "fx", "src": "res://src/cutscenes/fx/letter_leak.gd", "init": {"position": [276, 300], "progress": 0.0}},
+		"double": {"layer": "fx", "kind": "fx", "src": "res://src/cutscenes/fx/letter_leak.gd", "init": {"position": [336, 300], "progress": 0.0}}
+	},
+	"events": [
+		{"t": 0.4, "type": "key", "target": "strokes", "prop": "progress", "value": 1.0, "ease": "linear"},
+		{"t": 1.8, "type": "key", "target": "strokes", "prop": "progress", "value": 0.0, "ease": "out"},
+		{"t": 0.6, "type": "sound", "id": "cs_page"},
+		{"t": 0.6, "type": "key", "target": "letters", "prop": "progress", "value": 0.0, "ease": "linear"},
+		{"t": 2.0, "type": "key", "target": "letters", "prop": "progress", "value": 1.0, "ease": "out"},
+		{"t": 1.0, "type": "key", "target": "double", "prop": "progress", "value": 0.0, "ease": "linear"},
+		{"t": 2.4, "type": "key", "target": "double", "prop": "progress", "value": 1.0, "ease": "out"},
+		{"t": 0.8, "type": "key", "target": "rays", "prop": "progress", "value": 0.0, "ease": "linear"},
+		{"t": 2.0, "type": "key", "target": "rays", "prop": "progress", "value": 0.6, "ease": "out"},
+		{"t": 4.2, "type": "key", "target": "rays", "prop": "progress", "value": 0.6, "ease": "linear"},
+		{"t": 5.2, "type": "key", "target": "rays", "prop": "progress", "value": 0.0, "ease": "in"},
+		{"t": 1.6, "type": "caption", "key": "CHAR_NAME_REWRITTEN", "end": 4.2},
+		{"t": 4.4, "type": "line", "speaker": "iluminador", "expr": "neutral", "key": "CS_INTRO_ILUMINADOR_1", "end": 7.0},
+		{"t": 7.2, "type": "line", "speaker": "iluminador", "expr": "smiling", "key": "CS_INTRO_ILUMINADOR_2", "end": 10.3}
+	]
+}

@@ -1,0 +1,24 @@
+{
+	"id": "intro_hildegarda", "version": 1, "duration": 10.4, "play": "once", "stage_scale": 1,
+	"_doc": "Abertura da Irmã Hildegarda (010, D-101): o nome dela, riscado do registro, é reescrito por Anselmo. Palco 640x360. Só usa atores que já existem (blank_page, erase_strokes, light_rays, letter_leak).",
+	"actors": {
+		"page": {"layer": "bg", "kind": "fx", "src": "res://src/cutscenes/fx/blank_page.gd"},
+		"strokes": {"layer": "bg", "kind": "fx", "src": "res://src/cutscenes/fx/erase_strokes.gd", "init": {"progress": 1.0}},
+		"rays": {"layer": "bg", "kind": "fx", "src": "res://src/cutscenes/fx/light_rays.gd", "init": {"position": [320, 300], "progress": 0.0}},
+		"letters": {"layer": "fx", "kind": "fx", "src": "res://src/cutscenes/fx/letter_leak.gd", "init": {"position": [296, 300], "progress": 0.0}}
+	},
+	"events": [
+		{"t": 0.4, "type": "key", "target": "strokes", "prop": "progress", "value": 1.0, "ease": "linear"},
+		{"t": 1.6, "type": "key", "target": "strokes", "prop": "progress", "value": 0.0, "ease": "out"},
+		{"t": 0.6, "type": "sound", "id": "cs_page"},
+		{"t": 0.6, "type": "key", "target": "letters", "prop": "progress", "value": 0.0, "ease": "linear"},
+		{"t": 2.0, "type": "key", "target": "letters", "prop": "progress", "value": 1.0, "ease": "out"},
+		{"t": 0.8, "type": "key", "target": "rays", "prop": "progress", "value": 0.0, "ease": "linear"},
+		{"t": 1.8, "type": "key", "target": "rays", "prop": "progress", "value": 0.35, "ease": "out"},
+		{"t": 3.8, "type": "key", "target": "rays", "prop": "progress", "value": 0.35, "ease": "linear"},
+		{"t": 4.6, "type": "key", "target": "rays", "prop": "progress", "value": 0.0, "ease": "in"},
+		{"t": 1.2, "type": "caption", "key": "CHAR_NAME_REWRITTEN", "end": 3.8},
+		{"t": 4.0, "type": "line", "speaker": "hildegarda", "expr": "neutral", "key": "CS_INTRO_HILDEGARDA_1", "end": 7.0},
+		{"t": 7.2, "type": "line", "speaker": "hildegarda", "expr": "smiling", "key": "CS_INTRO_HILDEGARDA_2", "end": 10.1}
+	]
+}

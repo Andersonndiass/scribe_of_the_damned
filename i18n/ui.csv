@@ -78,7 +78,7 @@ MENU_CREDITS,CRÉDITOS,CREDITS
 CHARACTER_TITLE,ESCOLHA O ESCRIBA,CHOOSE THE SCRIBE
 CHARACTER_LOCKED,BLOQUEADO,LOCKED
 CHAR_ANSELMO_PASSIVE,SEM PASSIVA,NO PASSIVE
-CHAR_HILDEGARDA_PASSIVE,JANELA DE COMBO +50%,COMBO WINDOW +50%
+CHAR_HILDEGARDA_PASSIVE,GUARDA 2 PALAVRAS,KEEPS 2 WORDS
 CHAR_TOME_PASSIVE,IMUNE AO ATORDOAMENTO; 2 VELAS,STUN IMMUNE; 2 CANDLES
 CHAR_ILUMINADOR_PASSIVE,25% DE LETRA DUPLA,25% DOUBLE LETTER
 CHAR_BEDA_PASSIVE,+20% VELOCIDADE; ATRIL 4,+20% SPEED; LECTERN 4
@@ -354,3 +354,101 @@ POTION_WINE,Vinho do Fervor,Wine of Fervor
 POTION_WINE_DESC,A arma ativa ataca mais rápido,Your active weapon strikes faster
 POTION_ILLUMINATION,Tinta Iluminada,Illuminated Ink
 POTION_ILLUMINATION_DESC,Abre um menu de letra agora,Opens a letter choice now
+CHAR_HILDEGARDA_UNLOCK,VENÇA O CAP. 1,WIN CHAPTER 1
+CHAR_TOME_UNLOCK,SOBREVIVA A 10 HERESIAS,SURVIVE 10 HERESIES
+CHAR_ILUMINADOR_UNLOCK,DESCUBRA 3 COMBOS DIFERENTES,DISCOVER 3 DIFFERENT COMBOS
+CHAR_BEDA_UNLOCK,DESCUBRA AS 7 PALAVRAS-BASE,DISCOVER THE 7 BASE WORDS
+CHAR_NAME_REWRITTEN,NOME REESCRITO NO REGISTRO,NAME REWRITTEN IN THE REGISTER
+CODEX_TAB_SCRIBES,ESCRIBAS,SCRIBES
+CS_SPEAKER_HILDEGARDA,IRMÃ HILDEGARDA,SISTER HILDEGARDA
+CS_SPEAKER_TOME,FREI TOMÉ,FRIAR TOMÉ
+CS_SPEAKER_ILUMINADOR,O ILUMINADOR,THE ILLUMINATOR
+CS_SPEAKER_BEDA,NOVIÇO BEDA,NOVICE BEDA
+LORE_SCRIBE_HILDEGARDA,COPISTA DE UM CONVENTO VIZINHO E HÓSPEDE DO MOSTEIRO DESDE A PESTE. DECOROU O ANTIFONÁRIO INTEIRO: O VAZIO NÃO APAGA O QUE ESTÁ NA MEMÓRIA.,COPYIST OF A NEIGHBOURING CONVENT AND GUEST OF THE MONASTERY SINCE THE PLAGUE. SHE MEMORIZED THE WHOLE ANTIPHONARY: THE VOID CANNOT ERASE WHAT LIVES IN MEMORY.
+LORE_SCRIBE_TOME,"SACRISTÃO DO TURÍBULO E DE UMA DÚVIDA ANTIGA. PARA ELE, A HERESIA É SÓ UM BARULHO QUE CHAMA ATENÇÃO. E ATENÇÃO SE USA.","SACRISTAN OF THE CENSER AND OF AN OLD DOUBT. TO HIM, HERESY IS JUST A NOISE THAT DRAWS ATTENTION. AND ATTENTION CAN BE USED."
+LORE_SCRIBE_ILUMINADOR,"O NOME VERDADEIRO FOI RISCADO DE TODOS OS REGISTROS; O OFÍCIO FICOU. DOURA CADA LETRA DUAS VEZES, POR VAIDADE E POR OFÍCIO.","HIS TRUE NAME WAS STRUCK FROM EVERY REGISTER; THE TRADE REMAINED. HE GILDS EVERY LETTER TWICE, OUT OF VANITY AND OUT OF DUTY."
+LORE_SCRIBE_BEDA,"O MAIS NOVO DOS 34. SEU NOME FOI O ÚLTIMO ESCRITO NO REGISTRO E O PRIMEIRO RISCADO. LEVA O CRUCIFIXO DA MÃE E CORRE MAIS DO QUE REZA.","THE YOUNGEST OF THE 34. HIS NAME WAS THE LAST WRITTEN IN THE REGISTER AND THE FIRST STRUCK OUT. HE CARRIES HIS MOTHER'S CRUCIFIX AND RUNS MORE THAN HE PRAYS."
+CS_INTRO_HILDEGARDA_1,Meu nome ficava na margem dos hóspedes. Obrigada.,My name was in the guests' margin. Thank you.
+CS_INTRO_HILDEGARDA_2,Deixe-me guardar o que você não puder.,Let me keep what you cannot.
+CS_INTRO_TOME_1,"Meu nome, riscado. Eu sempre desconfiei do registro.","My name, struck out. I always distrusted the register."
+CS_INTRO_TOME_2,"Se alguém vai errar, que olhem para mim.","If someone is going to err, let them look at me."
+CS_INTRO_ILUMINADOR_1,"Riscado do registro? Logo eu, que o enfeitei!","Struck from the register? I, who adorned it!"
+CS_INTRO_ILUMINADOR_2,"Escreva de novo, copista. Com capitular, de preferência.","Write it again, copyist. With an initial, preferably."
+CS_INTRO_BEDA_1,Eu era o último da lista! Por isso sumi primeiro?,I was last on the list! Is that why I vanished first?
+CS_INTRO_BEDA_2,"Eu corro, eu aprendo, eu não atrapalho. Prometo!","I run, I learn, I stay out of the way. I promise!"
+BARK_HILDEGARDA_HURT_01,Isso foi descortês.,That was uncivil.
+BARK_HILDEGARDA_HURT_02,Já vi pior na enfermaria.,I have seen worse in the infirmary.
+BARK_HILDEGARDA_HURT_03,Sangue na tinta. Que desperdício.,Blood in the ink. What a waste.
+BARK_HILDEGARDA_HURT_04,Doeu. Seguimos.,That hurt. We go on.
+BARK_HILDEGARDA_HURT_05,"Falta de modos, a sua.",You have no manners.
+BARK_HILDEGARDA_HURT_06,Eu lembro de tudo. Inclusive disso.,I remember everything. Even this.
+BARK_HILDEGARDA_HURT_07,Deus me guarde. Costuma guardar.,God keep me. He usually does.
+BARK_HILDEGARDA_HURT_08,"Prometi paciência, não resignação.","I vowed patience, not resignation."
+BARK_HILDEGARDA_LEVEL_01,A memória agradece.,Memory is grateful.
+BARK_HILDEGARDA_LEVEL_02,Mais uma lição guardada.,One more lesson kept.
+BARK_HILDEGARDA_LEVEL_03,"Eu sabia que viria. Só não quando.",I knew it would come. Just not when.
+BARK_HILDEGARDA_LEVEL_04,Que a luz seja bem usada.,May the light be well used.
+BARK_HILDEGARDA_LEVEL_05,"Anotado. Na memória, não na tinta.","Noted. In memory, not in ink."
+BARK_HILDEGARDA_LEVEL_06,Graças a Deus. E à prática.,Thanks be to God. And to practice.
+BARK_HILDEGARDA_DEATH_01,Guardem o meu lugar na estante.,Keep my place on the shelf.
+BARK_HILDEGARDA_DEATH_02,Tudo o que decorei... vai junto.,All I memorized... goes with me.
+BARK_HILDEGARDA_DEATH_03,Que alguém me copie.,Let someone copy me.
+BARK_HILDEGARDA_DEATH_04,Estava tudo na memória. Estava.,It was all in my memory. It was.
+BARK_HILDEGARDA_DEATH_05,Riscaram meu nome de novo.,They struck my name out again.
+BARK_TOME_HURT_01,Eu avisei que não ia dar certo.,I said this would not work.
+BARK_TOME_HURT_02,"Ah, claro. Sempre eu.","Ah, of course. Always me."
+BARK_TOME_HURT_03,Isso eu já esperava.,I expected that.
+BARK_TOME_HURT_04,Pelo menos o incenso cheira bem.,At least the incense smells good.
+BARK_TOME_HURT_05,Dói menos que da outra vez.,Hurts less than last time.
+BARK_TOME_HURT_06,"Da dor eu nunca duvidei. Ela existe.",I never doubted pain. It is real.
+BARK_TOME_HURT_07,Ai. Prova suficiente.,Ow. Proof enough.
+BARK_TOME_HURT_08,Já fui mais mal tratado.,I have been treated worse.
+BARK_TOME_LEVEL_01,Hm. Então era verdade.,Hm. So it was true.
+BARK_TOME_LEVEL_02,Vou fingir que não duvido.,I will pretend I have no doubts.
+BARK_TOME_LEVEL_03,"Aceito. Desconfiando, mas aceito.","I accept. Warily, but I accept."
+BARK_TOME_LEVEL_04,Luz de graça. Deve ter pegadinha.,Free light. There must be a catch.
+BARK_TOME_LEVEL_05,Ainda assim: obrigado.,Still: thank you.
+BARK_TOME_LEVEL_06,Meu turíbulo ficou mais leve.,My censer feels lighter.
+BARK_TOME_DEATH_01,"Eu disse. Eu sempre digo.",I said so. I always do.
+BARK_TOME_DEATH_02,"Fica a dúvida. Boa noite.",The doubt remains. Good night.
+BARK_TOME_DEATH_03,Apaguem o incenso ao sair.,Put out the incense on your way out.
+BARK_TOME_DEATH_04,Ao menos errei com convicção.,At least I erred with conviction.
+BARK_TOME_DEATH_05,Eu ainda tenho perguntas.,I still have questions.
+BARK_ILUMINADOR_HURT_01,Minhas mãos! O ouro está fresco!,My hands! The gold is still wet!
+BARK_ILUMINADOR_HURT_02,"Isso vai manchar. Em mim, logo!","That will stain. On me, of all things!"
+BARK_ILUMINADOR_HURT_03,Que traço grosseiro.,What a coarse stroke.
+BARK_ILUMINADOR_HURT_04,Sem respeito pela moldura.,No respect for the frame.
+BARK_ILUMINADOR_HURT_05,Eu sangro vermelho-cinábrio. Elegante.,I bleed vermilion. Elegant.
+BARK_ILUMINADOR_HURT_06,Cuidado com a folha de ouro!,Mind the gold leaf!
+BARK_ILUMINADOR_HURT_07,Que feio. Que feio mesmo.,How ugly. How truly ugly.
+BARK_ILUMINADOR_HURT_08,Ai. Isso não estava no esboço.,Ow. That was not in the sketch.
+BARK_ILUMINADOR_LEVEL_01,"Ah. Agora sim, uma capitular.","Ah. Now that is an initial."
+BARK_ILUMINADOR_LEVEL_02,Luz demais? Isso não existe.,Too much light? There is no such thing.
+BARK_ILUMINADOR_LEVEL_03,Dourado. O único acabamento digno.,Gold. The only worthy finish.
+BARK_ILUMINADOR_LEVEL_04,Fica mais bonito a cada página.,It grows lovelier by the page.
+BARK_ILUMINADOR_LEVEL_05,A graça é uma bela tinta.,Grace is a lovely ink.
+BARK_ILUMINADOR_LEVEL_06,Admirável. Falo de mim.,Admirable. I speak of myself.
+BARK_ILUMINADOR_DEATH_01,Não deixem o ouro escorrer.,Do not let the gold run.
+BARK_ILUMINADOR_DEATH_02,Que fim tão... sem acabamento.,What an... unfinished end.
+BARK_ILUMINADOR_DEATH_03,Digam que fui belo.,Say that I was beautiful.
+BARK_ILUMINADOR_DEATH_04,A última letra... sem ouro. Que pena.,The last letter... without gold. Pity.
+BARK_ILUMINADOR_DEATH_05,Minha obra-prima ficou pela metade.,My masterpiece is left half done.
+BARK_BEDA_HURT_01,Ai! Ai! Ai!,Ow! Ow! Ow!
+BARK_BEDA_HURT_02,Isso não estava na Regra!,That was not in the Rule!
+BARK_BEDA_HURT_03,Eu sou novo demais para isso!,I am too new for this!
+BARK_BEDA_HURT_04,Mamãe disse para eu ficar em casa.,Mother said to stay home.
+BARK_BEDA_HURT_05,Estou bem! Estou bem! ...Ai.,I am fine! I am fine! ...Ow.
+BARK_BEDA_HURT_06,Isso foi de propósito?,Was that on purpose?
+BARK_BEDA_HURT_07,Minha tonsura! Quase!,My tonsure! Nearly!
+BARK_BEDA_HURT_08,"Calma, calma, já passa.","Easy, easy, it will pass."
+BARK_BEDA_LEVEL_01,Funcionou! Funcionou mesmo!,It worked! It really worked!
+BARK_BEDA_LEVEL_02,Alguém viu isso? Eu vi!,Did anyone see that? I did!
+BARK_BEDA_LEVEL_03,"Estou ficando bom nisso, né?","I am getting good at this, right?"
+BARK_BEDA_LEVEL_04,Mais luz! Obrigado! Obrigado!,More light! Thank you! Thank you!
+BARK_BEDA_LEVEL_05,Eu aprendo rápido. Disseram.,I learn fast. They said so.
+BARK_BEDA_LEVEL_06,Isso é uma bênção ou um truque?,Is that a blessing or a trick?
+BARK_BEDA_DEATH_01,Eu nem terminei o noviciado...,I have not even finished my novitiate...
+BARK_BEDA_DEATH_02,Digam à mamãe que fui rápido.,Tell mother I was quick.
+BARK_BEDA_DEATH_03,Tão pouco tempo de hábito...,So little time in the habit...
+BARK_BEDA_DEATH_04,"Desculpe, Irmão Anselmo...","Sorry, Brother Anselmo..."
+BARK_BEDA_DEATH_05,Não me apaguem. Por favor.,Do not erase me. Please.

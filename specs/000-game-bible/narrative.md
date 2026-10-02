@@ -91,6 +91,24 @@ O prisioneiro original. Está no fundo do livro há séculos, vendado com o perg
 *O que quer:* nada. Ele não ataca por ódio; ataca porque não vê. Na fase final, para de lutar e só espera.
 *A verdade:* ele não é o vilão. É a vítima mais antiga. Vencê-lo é **devolver a luz** (LUX), não matá-lo.
 
+### 5.4 Os escribas que voltam [D-101, feature 010]
+Asmodeus apagou os nomes do **registro do mosteiro** (os 34 irmãos, mais a margem dos hóspedes). Um nome apagado é uma pessoa presa fora do texto. **Desbloquear um escriba é Anselmo reescrever o nome dele no registro** (legenda: NOME REESCRITO NO REGISTRO). Cada um volta com uma abertura curta (≤ 12 s, in-engine, `data/cutscenes/intro_<id>.json`). Todos fazem o mesmo gesto de Anselmo, copiar, mas cada um carrega o que o vazio não conseguiu apagar. Tom: curto, humor seco, nunca heroico; cada voz é diferente da de Anselmo.
+
+**Irmã Hildegarda** (passiva: guarda 2 palavras; arma: Aspersório)
+Cerca de 50 anos, copista do convento de Santa Valburga, no vale; o convento fechou na peste e o Abade Gerbrand a abrigou na ala dos hóspedes no inverno de 1347. Por ser hóspede, o nome dela não estava entre os 34: constava só na **margem do registro**, onde o Rasurador apagou primeiro, por ser o que menos pesava. Está no livro porque decorou o Antifonário inteiro e, para Asmodeus, o que se sabe de cor é a única coisa que ele não consegue riscar; por isso ela guarda palavras. O Aspersório vem da enfermaria. *Voz:* calma, firme, ironia seca; desdém no lugar de dor. É a única que Anselmo trata por "irmã" sem jeito.
+
+**Frei Tomé** (passiva: imune ao atordoamento da heresia, 2 velas; arma: Turíbulo)
+Cerca de 45 anos, sacristão; cuida do turíbulo e de uma dúvida antiga ("homem de pouca fé", diz o registro). Está no livro porque quem duvida do registro é o primeiro a perceber que ele mudou. Para ele a heresia não é pecado, é barulho: **chama atenção, e atenção se usa** (usa a heresia como isca). *Voz:* rouca, cansada, deadpan; a dor sai como constatação ("Eu disse. Eu sempre digo.").
+
+**O Iluminador** (passiva: letra dupla; arma: Bíblia)
+Cerca de 40 anos. O nome verdadeiro foi riscado de **todos** os registros por orgulho dele mesmo (assinava as capitulares maiores que o texto); sobrou o ofício, por isso é só "o Iluminador". Está no livro porque a tinta dourada (o que sobrou do valor das coisas, §9) o reconhece. Doura cada letra duas vezes: por isso a letra dupla. É o aviso vivo do verbete de GLORIA: escrever grande demais. *Voz:* teatral, elegante, vaidosa; o susto vira ofensa estética. Chama Anselmo de "copista", sem maldade.
+
+**Noviço Beda** (passiva: atril 4, +20% de velocidade; arma: Crucifixo)
+15 anos, o mais novo dos 34, noviço desde dezembro de 1347. O nome dele foi o **último** escrito no registro e por isso o primeiro riscado. Está no livro porque correu para dentro dele quando o fogo começou (o Crucifixo é da mãe, que não o queria no mosteiro). Aprende rápido, corre mais do que reza. *Voz:* jovem, rápida, atropelada, assustada e empolgada ao mesmo tempo; o humor é involuntário. A morte dele é a que mais pesa, e as falas de morte são baixas, não melodramáticas.
+
+**Desbloqueio (textos, D-101 6b):** Hildegarda vencer o Cap. 1 · Tomé sobreviver a 10 heresias · Iluminador descobrir 3 combos diferentes · Beda descobrir as 7 palavras-base.
+**Verbetes de Grimório (aba ESCRIBAS):** `LORE_SCRIBE_HILDEGARDA`, `LORE_SCRIBE_TOME`, `LORE_SCRIBE_ILUMINADOR`, `LORE_SCRIBE_BEDA` (em `i18n/ui.csv`).
+
 ## 6. Estrutura em cinco páginas
 
 | Cap. | Página | Tema | Pergunta |

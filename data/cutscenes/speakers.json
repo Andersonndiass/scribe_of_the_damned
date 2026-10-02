@@ -11,6 +11,26 @@
 			"art_dir": "res://assets/cutscenes/closes/abbot_ghost/",
 			"closes": {"neutral": "", "smiling": ""}
 		},
+		"hildegarda": {
+			"name_key": "CS_SPEAKER_HILDEGARDA",
+			"art_dir": "res://assets/cutscenes/closes/hildegarda/",
+			"closes": {"neutral": "", "smiling": ""}
+		},
+		"tome": {
+			"name_key": "CS_SPEAKER_TOME",
+			"art_dir": "res://assets/cutscenes/closes/tome/",
+			"closes": {"neutral": ""}
+		},
+		"iluminador": {
+			"name_key": "CS_SPEAKER_ILUMINADOR",
+			"art_dir": "res://assets/cutscenes/closes/iluminador/",
+			"closes": {"neutral": "", "smiling": ""}
+		},
+		"beda": {
+			"name_key": "CS_SPEAKER_BEDA",
+			"art_dir": "res://assets/cutscenes/closes/beda/",
+			"closes": {"scared": "", "relieved": ""}
+		},
 		"asmodeus": {
 			"name_key": "CS_SPEAKER_ASMODEUS",
 			"art_dir": "res://assets/cutscenes/closes/asmodeus/",

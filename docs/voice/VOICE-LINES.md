@@ -19,6 +19,10 @@ A mesma lista está em `docs/voice/voice_lines.csv` (abre no Excel/Sheets).
 | Abade Caído | A culpa do Abade com corpo: a mesma voz do fantasma, mais grave e cansada (§5.3). |
 | Frei Ambrósio, o Alfarrabista (vendedor do Scriptorium) | Homem de uns 70 anos, monge meio apagado que ficou no scriptorium noturno e vende os apócrifos. Voz seca e rouca de bibliotecário, ritmo vagaroso e mercantil, com esquecimentos e humor negro de quem já foi riscado. Nunca simpático demais; cobra com calma. Sugestão ElevenLabs: voz masculina idosa, grave e rouca, tipo velho arquivista/comerciante (buscar na biblioteca por "old man, raspy, dry"). |
 | Padre Malaquias, o Confessor | Padre acolhedor na superfície, ameaçador por baixo: voz macia e paciente demais (§5.3). |
+| Irmã Hildegarda (D-101) | Mulher de uns 50 anos, copista de um convento vizinho, hóspede do mosteiro. Voz de mezzo grave, calma e firme, de enfermeira que já viu tudo; ironia seca, nunca fria. Fala devagar, frases curtas, sem pressa; quase sem emoção quando leva dano (desdém, não dor). Sugestão ElevenLabs: mulher madura, grave, serena, autoridade doméstica. Expressões: neutral, smiling (leve). |
+| Frei Tomé (D-101) | Homem de uns 45 anos, sacristão do turíbulo. Voz rouca e cansada, resignada, humor negro de quem esperava o pior e acertou; monótono de propósito, sem drama. Nunca grita; a dor sai como constatação. Sugestão ElevenLabs: homem adulto, grave, áspero, deadpan. Expressão: neutral. |
+| O Iluminador (D-101) | Homem de uns 40 anos, vaidoso e elegante. Voz teatral, melodiosa, articulada demais; saboreia as palavras sobre ouro e beleza, indignação de estilo ao levar dano (ofensa estética, não medo). Sugestão ElevenLabs: homem adulto, barítono, refinado, levemente afetado. Expressões: neutral, smiling. |
+| Noviço Beda (D-101) | Rapaz de 15 anos, o mais novo dos 34. Voz aguda ou que ainda muda, rápida, atropelando as frases, entusiasmada e assustada ao mesmo tempo; humor involuntário. Na morte, baixa e trêmula, sem melodrama. Sugestão ElevenLabs: adolescente, voz jovem, ágil. Expressões: scared, relieved. |
 
 ## Capítulo 1 (spec 008)
 
@@ -135,3 +139,20 @@ Mesmo formato. A chave no jogo é o id em maiúsculas; o arquivo é o id em min�
 | `bark_vendor_close_02` | Frei Ambrósio | Fecha a loja | Volte, se ainda houver página. | Come back, if there is a page left. |
 | `bark_vendor_close_03` | Frei Ambrósio | Fecha a loja | Cuidado lá fora. Está tudo apagado. | Careful out there. Everything is erased. |
 | `bark_vendor_close_04` | Frei Ambrósio | Fecha a loja | Feche a porta. O vazio tem pressa. | Close the door. The void is in a hurry. |
+
+## Os quatro escribas novos (D-101, feature 010) — status "a gerar"
+
+Aberturas curtas (cenas `intro_<id>`, tocam ao desbloquear) e frases de partida (dano 8, nível 6, morte 5 por escriba, tocam só se o escriba da partida for aquele). A legenda "NOME REESCRITO NO REGISTRO" (`CHAR_NAME_REWRITTEN`) não tem voz. Os textos completos das 76 frases estão em `voice_lines.csv` (ids `bark_<id>_hurt_01..08`, `bark_<id>_level_01..06`, `bark_<id>_death_01..05`; chave no jogo = id em maiúsculas, ex. `BARK_TOME_HURT_03`); ids dos escribas: `hildegarda`, `tome`, `iluminador`, `beda`.
+
+| id | cena | personagem | expressão | PT-BR | EN |
+|---|---|---|---|---|---|
+| `cs_intro_hildegarda_1` | intro_hildegarda | Irmã Hildegarda | neutral | Meu nome ficava na margem dos hóspedes. Obrigada. | My name was in the guests' margin. Thank you. |
+| `cs_intro_hildegarda_2` | intro_hildegarda | Irmã Hildegarda | smiling | Deixe-me guardar o que você não puder. | Let me keep what you cannot. |
+| `cs_intro_tome_1` | intro_tome | Frei Tomé | neutral | Meu nome, riscado. Eu sempre desconfiei do registro. | My name, struck out. I always distrusted the register. |
+| `cs_intro_tome_2` | intro_tome | Frei Tomé | neutral | Se alguém vai errar, que olhem para mim. | If someone is going to err, let them look at me. |
+| `cs_intro_iluminador_1` | intro_iluminador | O Iluminador | neutral | Riscado do registro? Logo eu, que o enfeitei! | Struck from the register? I, who adorned it! |
+| `cs_intro_iluminador_2` | intro_iluminador | O Iluminador | smiling | Escreva de novo, copista. Com capitular, de preferência. | Write it again, copyist. With an initial, preferably. |
+| `cs_intro_beda_1` | intro_beda | Noviço Beda | scared | Eu era o último da lista! Por isso sumi primeiro? | I was last on the list! Is that why I vanished first? |
+| `cs_intro_beda_2` | intro_beda | Noviço Beda | relieved | Eu corro, eu aprendo, eu não atrapalho. Prometo! | I run, I learn, I stay out of the way. I promise! |
+
+Direção por situação: dano = reação curta, no tom do personagem (Hildegarda desdém, Tomé constatação, Iluminador ofensa estética, Beda susto); nível = alívio ou vaidade (Tomé desconfia, mesmo agradecendo); morte = a mais baixa e lenta de cada um (Hildegarda calma, Beda trêmulo, Iluminador teatral até o fim).
