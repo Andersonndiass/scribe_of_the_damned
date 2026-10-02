@@ -13,11 +13,14 @@ var fervor_slot: int = -1
 var fervor_mul: float = 1.0
 
 
-func _init(p_tuning: PotionTuning) -> void:
+func _init(p_tuning: PotionTuning, start: Dictionary[StringName, int] = {}) -> void:
 	tuning = p_tuning
-	for id: StringName in tuning.start:
+	var from: Dictionary = start if not start.is_empty() else tuning.start  # 010: o escriba manda
+	for id: StringName in from:
+		if tuning.by_id(id) == null:
+			continue
 		_level[id] = 1
-		_charges[id] = mini(tuning.start[id], tuning.by_id(id).max_charges)
+		_charges[id] = mini(from[id], tuning.by_id(id).max_charges)
 
 
 func charges(id: StringName) -> int:

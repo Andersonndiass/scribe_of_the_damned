@@ -19,6 +19,8 @@ const SHOP_DEBUG_DELAY := 0.5
 const STRESS_SCENE := "res://src/debug/stress_scene.tscn"
 const ROSTER_SCENE := "res://src/debug/roster_scene.tscn"
 @export var player_data: PlayerData
+## Os escribas (010): o escolhido entra no lugar do `player_data` antes dos filhos ficarem prontos.
+const ROSTER := preload("res://data/player/roster.tres")
 ## Sequência de ondas do capítulo (005 FR-513). O chefe entra depois da última (006).
 @export var chapter: ChapterData
 ## Sem a loja (shop_auto_close): pausa entre ondas, como antes da 003.
@@ -47,6 +49,18 @@ var boss_cutscene: CutscenePlayer
 ## Graça e subir de nível (016), criado no _ready (nada é criado durante a onda).
 var grace_flow: GraceFlow
 var outro_cutscene: CutscenePlayer
+
+
+## 010: o escriba escolhido (GameState.picked_character; vazio = Anselmo) vira o PlayerData do Main
+## e do Player (a MESMA instância: o RunStats compara `base == data`), antes do _ready dos filhos.
+func _enter_tree() -> void:
+	var pick: PlayerData = ROSTER.by_id(GameState.picked_character) if GameState.picked_character != &"" else null
+	if pick == null:
+		return
+	player_data = pick
+	var player := get_node_or_null(^"World/Player") as Player
+	if player != null:
+		player.data = pick
 
 
 func _ready() -> void:
@@ -135,6 +149,7 @@ func _ready() -> void:
 	var barks := BarkDirector.new()
 	barks.name = "Barks"
 	barks.player = $World/Player
+	barks.player_speaker = player_data.speaker_id if player_data.speaker_id != &"" else &"anselmo"
 	barks.boss = boss
 	add_child(barks)
 	start_wave(0)

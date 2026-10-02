@@ -26,7 +26,8 @@ const CONTEXT: Dictionary[StringName, StringName] = {
 }
 
 ## Rodando a suíte GUT, as telas não gravam no arquivo real do jogador.
-var persist: bool = not " ".join(OS.get_cmdline_args()).contains("gut_cmdln")
+## Só o jogo de verdade grava: GUT, sonda e ferramentas (`-s`) nunca (T1000 R1).
+var persist: bool = not (OS.get_cmdline_args().has("-s") or OS.get_cmdline_args().has("--script") or " ".join(OS.get_cmdline_args()).contains("gut_cmdln"))
 var shake_enabled: bool = true
 var aim_with_mouse: bool = true
 var high_contrast: bool = false

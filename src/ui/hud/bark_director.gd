@@ -32,6 +32,9 @@ const LAYER_SHOP := 21
 
 var player: Node2D
 var boss: Node2D
+## 010: o escriba da partida; as falas de OUTRO escriba do roster são ignoradas.
+var player_speaker: StringName = &"anselmo"
+const ROSTER := preload("res://data/player/roster.tres")
 var data: Dictionary = {}
 ## Balão atual: {"bark", "text_lines", "left", "total", "age"}; vazio = nenhum.
 var current: Dictionary = {}
@@ -90,6 +93,8 @@ func _trigger(trigger: String, info: Dictionary) -> void:
 	for bark: Dictionary in data.get("barks", []):
 		if bark["trigger"] != trigger:
 			continue
+		if _is_scribe(str(bark["speaker"])) and StringName(str(bark["speaker"])) != player_speaker:
+			continue
 		if bark.has("phase") and int(bark["phase"]) != int(info.get("phase", -1)):
 			continue
 		if bark.has("candles") and int(bark["candles"]) != int(info.get("candles", -1)):
@@ -136,10 +141,17 @@ func say(bark: Dictionary) -> bool:
 
 
 ## Retângulo do falante na tela (centro na posição do nó).
+func _is_scribe(speaker: String) -> bool:
+	for c: PlayerData in ROSTER.characters:
+		if String(c.speaker_id) == speaker:
+			return true
+	return false
+
+
 func _bounds(speaker: String) -> Rect2:
 	if speaker == "vendor":
 		return VENDOR_RECT
-	var node: Node2D = player if speaker == "anselmo" else boss
+	var node: Node2D = player if _is_scribe(speaker) else boss
 	var at: Vector2 = node.global_position if node != null else Vector2(320, 180)
 	var size: Vector2 = SPEAKER_SIZE.get(speaker, Vector2(16, 16))
 	return Rect2(at - size / 2.0, size)

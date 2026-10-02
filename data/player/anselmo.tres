@@ -20,3 +20,7 @@ magnet_radius = 40.0
 atril_capacity = 5
 hurtbox_radius = 5.0
 start_weapon = ExtResource("w_pen")
+display_name = "IRMAO ANSELMO"
+passive_key = &"CHAR_ANSELMO_PASSIVE"
+speaker_id = &"anselmo"
+start_potions = Dictionary[StringName, int]({&"oil": 1})

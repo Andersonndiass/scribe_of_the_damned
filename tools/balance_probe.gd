@@ -127,6 +127,8 @@ func _initialize() -> void:
 	_chapter = OS.get_cmdline_user_args().has("chapter")
 	_shop_bot = OS.get_cmdline_user_args().has("buy")
 	_boss_mode = OS.get_cmdline_user_args().has("boss")
+	# 010: char=<id> joga com o escriba (o Main lê o GameState no _enter_tree).
+	root.get_node("GameState").set("picked_character", StringName(String(_probe_player().get("id"))))
 	# Overrides só em memória, para simular propostas sem tocar nos .tres: hp=N drop=F
 	var imp: Resource = load("res://data/enemies/imp.tres")
 	for arg: String in OS.get_cmdline_user_args():
@@ -147,7 +149,7 @@ func _initialize() -> void:
 		elif arg.begins_with("acerto="):
 			_hit_chance = float(arg.substr(7))
 		elif arg.begins_with("magnet="):
-			(load("res://data/player/anselmo.tres") as Resource).set("magnet_radius", float(arg.substr(7)))
+			_probe_player().set("magnet_radius", float(arg.substr(7)))
 		elif arg.begins_with("dropall="):
 			for f: String in DirAccess.get_files_at("res://data/enemies/"):
 				if f.ends_with(".tres"):
@@ -584,3 +586,12 @@ func _print_rhythm() -> void:
 		prev = t
 	gap = maxf(gap, _time - prev)
 	print("WORDS primeira=%s maior_intervalo=%.0fs" % [("%.0fs" % _word_times[0]) if _word_times.size() > 0 else "nenhuma", gap])
+
+
+## 010: o PlayerData do escriba da sonda (`char=<id>`; padrão o Anselmo).
+func _probe_player() -> Resource:
+	var cid: String = "anselmo"
+	for arg: String in OS.get_cmdline_user_args():
+		if arg.begins_with("char="):
+			cid = arg.substr(5)
+	return load("res://data/player/%s.tres" % cid)

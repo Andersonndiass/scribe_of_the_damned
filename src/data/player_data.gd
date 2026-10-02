@@ -4,6 +4,24 @@ extends Resource
 ## Na feature 003 o RunStats passa a ser a fonte lida em runtime; este Resource vira a base.
 
 @export var id: StringName = &""
+@export_group("Escriba (010)")
+## Nome próprio (não traduz) e a passiva (chave).
+@export var display_name: String = ""
+@export var passive_key: StringName = &""
+## Quem fala nas falas da partida e nos closes (barks.json, speakers.json).
+@export var speaker_id: StringName = &""
+## Abertura própria (D-101 7b); vazio = as do capítulo (Anselmo).
+@export var intro_cutscene: StringName = &""
+@export var sprite_frames: SpriteFrames
+## Guarda de palavra (Hildegarda: 2; D-101).
+@export_range(1, 2) var word_guard_slots: int = 1
+## Poções iniciais (id → cargas); vazio = PotionTuning.start.
+@export var start_potions: Dictionary[StringName, int] = {}
+## Passivas que o RunStats semeia (T1000): letra dupla (Iluminador) e atordoamento da heresia (Tomé).
+@export var double_letter_chance: float = 0.0
+@export var heresy_stun_mul: float = 1.0
+## null = livre (Anselmo).
+@export var unlock: UnlockData
 @export_group("Movimento")
 @export var move_speed: float = 90.0
 @export_group("Ataque automático")

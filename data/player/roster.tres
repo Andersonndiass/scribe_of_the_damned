@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="CharacterRoster" format=3]
+
+[ext_resource type="Script" path="res://src/data/character_roster.gd" id="1_cr"]
+[ext_resource type="Script" path="res://src/data/player_data.gd" id="2_pd"]
+[ext_resource type="Resource" path="res://data/player/anselmo.tres" id="3_a"]
+[ext_resource type="Resource" path="res://data/player/hildegarda.tres" id="4_h"]
+[ext_resource type="Resource" path="res://data/player/tome.tres" id="5_t"]
+[ext_resource type="Resource" path="res://data/player/iluminador.tres" id="6_i"]
+[ext_resource type="Resource" path="res://data/player/beda.tres" id="7_b"]
+
+[resource]
+script = ExtResource("1_cr")
+characters = Array[ExtResource("2_pd")]([ExtResource("3_a"), ExtResource("4_h"), ExtResource("5_t"), ExtResource("6_i"), ExtResource("7_b")])

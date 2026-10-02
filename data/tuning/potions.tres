@@ -12,4 +12,4 @@ script = ExtResource("1_pt")
 order = Array[ExtResource("2_pd")]([ExtResource("3_oil"), ExtResource("4_water"), ExtResource("5_wine"), ExtResource("6_ink")])
 use_gap = 1.5
 cadence_floor = 0.55
-start = Dictionary[StringName, int]({&"oil": 1})
+start = Dictionary[StringName, int]({})

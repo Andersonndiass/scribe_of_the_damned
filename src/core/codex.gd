@@ -10,7 +10,8 @@ const CHAMPION_ID := &"champion"
 
 var save_path: String = "user://codex.save"
 ## Rodando a suíte GUT, o registro real não grava no save do jogador (os testes usam outro caminho).
-var persist: bool = not " ".join(OS.get_cmdline_args()).contains("gut_cmdln")
+## Só o jogo de verdade grava: GUT, sonda e ferramentas (`-s`) nunca (T1000 R1).
+var persist: bool = not (OS.get_cmdline_args().has("-s") or OS.get_cmdline_args().has("--script") or " ".join(OS.get_cmdline_args()).contains("gut_cmdln"))
 
 var _found: Dictionary[StringName, Dictionary] = {}
 ## Cutscenes já vistas (008 FR-810; seção própria do save: não é entrada nem "novidade").

@@ -22,8 +22,9 @@ func _init(p_base: PlayerData) -> void:
 		&"atril_capacity": float(base.atril_capacity),
 		&"max_candles": float(base.start_candles),
 		&"target_bonus_add": 0.0,
-		&"double_letter_chance": 0.0,
-		&"heresy_stun_mul": 1.0,
+		&"double_letter_chance": base.double_letter_chance,
+		&"heresy_stun_mul": base.heresy_stun_mul,
+		&"word_guard_slots": float(base.word_guard_slots),
 		&"gold_mul": 1.0,
 		# 016: bênção Tinta Consagrada (só dano das palavras; a cura não usa).
 		&"word_damage_mul": 1.0,
@@ -111,4 +112,10 @@ func _base_of(stat: StringName) -> float:
 			return float(base.atril_capacity)
 		&"max_candles":
 			return float(base.start_candles)
+		&"double_letter_chance":
+			return base.double_letter_chance
+		&"heresy_stun_mul":
+			return base.heresy_stun_mul
+		&"word_guard_slots":
+			return float(base.word_guard_slots)
 	return 1.0

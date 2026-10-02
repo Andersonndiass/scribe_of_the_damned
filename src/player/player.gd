@@ -57,6 +57,8 @@ func _ready() -> void:
 	hurtbox.hit.connect(take_hit)
 	EventBus.wave_ended.connect(func(_i: int) -> void: buffs.on_wave_ended())
 	sprite.frame_changed.connect(_on_frame_changed)
+	if data != null and data.sprite_frames != null:
+		sprite.sprite_frames = data.sprite_frames  # 010: o escriba escolhido
 	_pen_flash = ColorRect.new()
 	_pen_flash.size = PEN_FLASH_SIZE
 	_pen_flash.position = PEN_FLASH_POS

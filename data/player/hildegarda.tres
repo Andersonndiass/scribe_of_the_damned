@@ -1,0 +1,36 @@
+[gd_resource type="Resource" script_class="PlayerData" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://src/data/player_data.gd" id="1_pd"]
+[ext_resource type="Resource" path="res://data/weapons/aspergillum.tres" id="2_w"]
+[ext_resource type="Script" path="res://src/data/unlock_data.gd" id="3_ud"]
+
+[sub_resource type="Resource" id="unlock"]
+script = ExtResource("3_ud")
+kind = &"chapter_won"
+target = 1
+hint_key = &"UNLOCK_HINT_HILDEGARDA"
+
+[resource]
+script = ExtResource("1_pd")
+id = &"hildegarda"
+move_speed = 90.0
+attack_interval = 0.8
+attack_range = 160.0
+projectile_speed = 220.0
+projectile_damage = 1
+start_candles = 3
+max_candles = 8
+iframes = 1.0
+idle_regen_delay = 5.0
+idle_regen_interval = 3.0
+magnet_radius = 40.0
+atril_capacity = 5
+hurtbox_radius = 5.0
+start_weapon = ExtResource("2_w")
+display_name = "IRMA HILDEGARDA"
+passive_key = &"CHAR_HILDEGARDA_PASSIVE"
+speaker_id = &"hildegarda"
+intro_cutscene = &"intro_hildegarda"
+start_potions = Dictionary[StringName, int]({&"holy_water": 1})
+word_guard_slots = 2
+unlock = SubResource("unlock")

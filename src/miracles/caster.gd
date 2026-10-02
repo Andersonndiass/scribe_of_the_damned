@@ -187,7 +187,9 @@ func _commit_heresy() -> void:
 		letter_field.emit_atril()
 		return
 	letter_field.atril.take_all()
-	player.stun(tuning.heresy_stun * RunStats.of(player.data).value(&"heresy_stun_mul"))
+	var stun: float = tuning.heresy_stun * RunStats.of(player.data).value(&"heresy_stun_mul")
+	if stun > 0.0:  # Tomé (010): imune ao atordoamento; a poça e o atril limpo continuam
+		player.stun(stun)
 	var em := EnemyQuery.provider as EnemyManager
 	if em != null:
 		em.set_aggro(pos, tuning.heresy_pool_time, tuning.heresy_pool_radius)
