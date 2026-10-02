@@ -74,6 +74,12 @@ func _ready() -> void:
 	# Capítulo escolhido na tela (007). O personagem escolhido entra na 010 (só o Anselmo é livre).
 	if has_meta(&"app") and GameState.picked_chapter != null:
 		chapter = GameState.picked_chapter
+	# 010: só o jogo de verdade, sem atalhos de debug, conta para o progresso.
+	var dbg: String = _debug_args()
+	GameState.run_counts = is_real_game() and not ["boss", "shop", "unlock=all", "atril=", "weapons=", "relics=",
+		"wlevel=", "rlevel=", "char="].any(func(k: String) -> bool: return dbg.contains(k))
+	if dbg.contains("unlock=all"):
+		Progress.debug_all = true
 	GameState.start_run(player_data)
 	# Fora do jogo de verdade (testes, sonda, stress) a loja não pausa a árvore: abre e fecha
 	# sozinha. O teste da tela da loja liga a loja de verdade com a meta "shop_manual".
@@ -336,6 +342,7 @@ func _restart() -> void:
 
 
 func _exit_tree() -> void:
+	GameState.run_counts = false
 	PoolManager.clear_all()
 	KillZones.clear()
 	WeaponZones.clear()

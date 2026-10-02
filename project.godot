@@ -25,6 +25,7 @@ Hitstop="*res://src/core/hitstop.gd"
 AudioManager="*res://src/audio/audio_manager.gd"
 Settings="*res://src/core/settings.gd"
 Codex="*res://src/core/codex.gd"
+Progress="*res://src/core/progress.gd"
 
 [display]
 

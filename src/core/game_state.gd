@@ -44,6 +44,8 @@ var aim_point: Vector2 = Vector2.INF
 var high_contrast: bool = false
 ## Escolhas das telas de Personagem e Capítulo (007); vazio = o padrão da cena do jogo.
 var picked_character: StringName = &""
+## 010: esta partida conta para o progresso (jogo de verdade, sem debug). O Main liga.
+var run_counts: bool = false
 ## Cutscenes a tocar na rota "cutscene" e a tela que vem depois (008 FR-807).
 var cutscene_queue: Array[StringName] = []
 var after_cutscene: StringName = &"game"
@@ -114,6 +116,9 @@ func start_run(player: PlayerData, seed_value: int = -1) -> void:
 	var codex: Node = get_node_or_null(^"/root/Codex")
 	if codex != null:
 		codex.call(&"begin_run")  # a Vitória lista só as entradas novas desta partida
+	var progress: Node = get_node_or_null(^"/root/Progress")
+	if progress != null:
+		progress.call(&"begin_run")
 	unlocked_words.clear()
 	if seed_value >= 0:
 		rng.seed = seed_value

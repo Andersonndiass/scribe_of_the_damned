@@ -9,6 +9,8 @@ extends Resource
 @export var target: int = 1
 @export var chapter: int = 1
 @export var word_group: StringName = &"base"
+## Heresia sobrevivida: janela (s) sem perder vela depois da heresia (T1000).
+@export var window: float = 3.0
 ## Texto da dica no medalhão ("SOBREVIVA A {target} HERESIAS"), com o progresso n/alvo.
 @export var hint_key: StringName = &""
 

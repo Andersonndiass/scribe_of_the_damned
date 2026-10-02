@@ -183,6 +183,8 @@ func _set_mode(m: Mode) -> void:
 			if codex != null:
 				for e: Array in codex.new_this_run():
 					_entries.append(_entry_label(e[0], e[1]))
+			for cid: String in Progress.new_this_run():  # 010: o escriba liberado nesta partida
+				_entries.insert(0, tr(&"CHAR_UNLOCKED_LINE").format({"name": Progress.ROSTER.by_id(StringName(cid)).display_name}))
 			menu.add(&"menu", "VICTORY_CONTINUE")
 	_canvas.queue_redraw()
 
@@ -353,6 +355,10 @@ func _draw_game_over() -> void:
 		UiStyle.draw_ribbon(_canvas, Vector2(GO_BUTTON_X[i], GO_BUTTONS_Y), tr(menu.items[i]["label"]), state, GO_BUTTON_W)
 		menu.set_rect(i, UiStyle.ribbon_rect(Vector2(GO_BUTTON_X[i], GO_BUTTONS_Y), tr(menu.items[i]["label"]), GO_BUTTON_W))
 	_draw_plate_text(tr(&"GAMEOVER_HINT").format({"restart": Settings.key_label(&"restart")}), 300, Palette.CHALK)
+	# 010: liberou um escriba mesmo perdendo (as heresias contam na partida perdida).
+	var freed: PackedStringArray = Progress.new_this_run()
+	if not freed.is_empty():
+		_draw_plate_text(tr(&"CHAR_UNLOCKED_LINE").format({"name": Progress.ROSTER.by_id(StringName(freed[0])).display_name}), 316, Palette.GOLD_LIGHT)
 
 
 func _draw_victory() -> void:

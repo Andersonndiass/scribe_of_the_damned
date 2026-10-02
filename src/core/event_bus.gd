@@ -142,6 +142,8 @@ signal relic_shield_absorbed(slot: int, position: Vector2)
 signal weapon_removed(slot: int, weapon: WeaponData, cause: StringName)
 ## kind: &"weapon" | &"relic" | &"potion".
 signal item_sold(kind: StringName, id: StringName, price: int)
+## 010: um escriba foi liberado (o nome reescrito no registro).
+signal character_unlocked(id: StringName)
 ## D-098: `upgrade` = o atributo que subiu e `rank` o posto novo dele.
 signal weapon_leveled(slot: int, weapon: WeaponData, level: int, upgrade: StringName, rank: int)
 

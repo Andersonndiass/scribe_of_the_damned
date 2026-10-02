@@ -1,9 +1,12 @@
 extends UiScreen
-## Personagem (007 FR-703; ficha 27): 5 medalhões; só o Anselmo livre, os demais com cadeado (010).
-## ←/→ navegam; confirmar num livre carimba o selo de cera (5 quadros @50 ms) e vai ao Capítulo;
-## Esc volta ao Menu. Dados em `data/ui/characters.json`.
+## Personagem (007 FR-703; ficha 27; 010): 5 medalhões; o livre pelo `Progress` (o bloqueado mostra
+## a condição e o progresso n/alvo). ←/→ navegam; confirmar num livre carimba o selo de cera (5
+## quadros @50 ms) e vai ao Capítulo; Esc volta ao Menu. Escribas em `data/player/roster.tres`.
+## Ao entrar, anuncia quem foi liberado ("NOME REESCRITO NO REGISTRO", D-101 10a).
 
-const DATA_PATH := "res://data/ui/characters.json"
+const ROSTER := preload("res://data/player/roster.tres")
+const ANNOUNCE_TIME := 2.5
+const ANNOUNCE_Y := 286
 const MEDAL_X: Array[int] = [128, 224, 320, 416, 512]
 const MEDAL_Y := 150
 const MEDAL_R := 34
@@ -14,8 +17,12 @@ const STAMP_FRAMES := 5
 const STAMP_FRAME := 0.05
 const FOCUS_LIFT := 2
 
+## Cada um: {"id", "name", "passive", "unlocked", "data": PlayerData}.
 var characters: Array = []
 var index: int = 0
+## Anúncio do escriba liberado (id) e quanto falta.
+var announcing: StringName = &""
+var _announce_left: float = 0.0
 
 var _stamp_left: float = -1.0
 ## Um busto por medalhão, em camadas (CloseView), e a camada de cima com o selo de cera.
@@ -25,7 +32,11 @@ var _overlay: Node2D
 
 func _ready() -> void:
 	super()
-	characters = read_json(DATA_PATH).get("characters", [])
+	Progress.evaluate()  # pega quem já cumpria a condição (save antigo)
+	for c: PlayerData in ROSTER.characters:
+		characters.append({"id": String(c.id), "name": c.display_name, "passive": c.passive_key,
+			"unlocked": Progress.is_unlocked(c.id), "data": c})
+	_next_announcement()
 	for i: int in characters.size():
 		var view := CloseView.new()
 		view.show_layers(CharacterBusts.layers(str(characters[i]["id"]), not characters[i]["unlocked"]))
@@ -42,6 +53,11 @@ func _process(delta: float) -> void:
 		var lift: int = FOCUS_LIFT if i == index else 0
 		_busts[i].position = Vector2(MEDAL_X[i] - CharacterBusts.SIZE / 2.0, MEDAL_Y - lift - CharacterBusts.SIZE / 2.0).round()
 	_overlay.queue_redraw()
+	if _announce_left > 0.0:
+		_announce_left -= delta
+		if _announce_left <= 0.0:
+			Progress.mark_announced(announcing)
+			_next_announcement()
 	if _stamp_left > 0.0:
 		_stamp_left -= delta
 		if _stamp_left <= 0.0:
@@ -50,6 +66,9 @@ func _process(delta: float) -> void:
 
 func handle_input(event: InputEvent) -> bool:
 	if _stamp_left > 0.0 or characters.is_empty():
+		return true
+	if _announce_left > 0.0 and is_confirm(event):
+		_announce_left = 0.001  # adianta o anúncio
 		return true
 	var step: int = row_step(event, index, characters.size())
 	if step >= 0:
@@ -89,8 +108,11 @@ func _draw() -> void:
 		return
 	var cur: Dictionary = characters[index]
 	PixelFont.draw_centered(self, cur["name"], 320, NAME_Y, UiStyle.text_on_dark(), 2)
-	var passive: String = tr(cur["passive"]) if cur["unlocked"] else tr(&"CHARACTER_LOCKED")
+	var passive: String = tr(cur["passive"]) if cur["unlocked"] else _lock_hint(cur["data"])
 	PixelFont.draw_centered(self, passive, 320, PASSIVE_Y, UiStyle.text_on_dark(not cur["unlocked"]))
+	if _announce_left > 0.0:
+		var who: PlayerData = ROSTER.by_id(announcing)
+		UiStyle.draw_tag(self, tr(&"CHAR_UNLOCKED_LINE").format({"name": who.display_name}), 320, ANNOUNCE_Y)
 	PixelFont.draw_centered(self, tr(&"SCREEN_HINT_ROW").format({"cast": Settings.key_label(&"cast"), "back": Settings.key_label(&"pause")}), 320, 330, UiStyle.text_on_dark(true))
 
 
@@ -117,3 +139,24 @@ func _draw_overlay() -> void:
 	var seal_r: int = 4 + (STAMP_FRAMES - frame)
 	UiStyle.disc(_overlay, seal_c, seal_r + 1, Palette.INK)
 	UiStyle.disc(_overlay, seal_c, seal_r, Palette.GOLD)
+
+
+## Dica do bloqueado: a condição e o progresso ("SOBREVIVA A 10 HERESIAS 4/10").
+func _lock_hint(c: PlayerData) -> String:
+	if c.unlock == null:
+		return tr(&"CHARACTER_LOCKED")
+	var p: Vector2i = Progress.progress_of(c)
+	return tr(&"CHAR_LOCK_HINT").format({"hint": tr(c.unlock.hint_key).format({"target": c.unlock.target}), "n": p.x, "target": p.y})
+
+
+func _next_announcement() -> void:
+	var pend: PackedStringArray = Progress.pending_announcements()
+	if pend.is_empty():
+		announcing = &""
+		_announce_left = 0.0
+		return
+	announcing = StringName(pend[0])
+	_announce_left = ANNOUNCE_TIME
+	for i: int in characters.size():
+		if characters[i]["id"] == pend[0]:
+			index = i
