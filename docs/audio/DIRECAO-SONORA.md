@@ -74,6 +74,7 @@ Vozes **prontas (premade)** do ElevenLabs, as mesmas nos dois idiomas, modelo `e
 | Irmão Anselmo | **Chris** `iP95p4xoKVk53GoZ742B` | estabilidade 0,40 · semelhança 0,75 · estilo 0,15 · velocidade 0,95 | Homem de meia-idade, "pé no chão": contido, sem tom heroico; a estabilidade baixa dá o medo. |
 | Abade Gerbrand (fantasma) | **Bill** `pqHfZKP75CvOlQylNhV4` | estab. 0,55 · sem. 0,75 · estilo 0,25 · vel. 0,90 | Única voz premade "old/wise": gentil e paternal. O "etéreo" vem do motor (reverb no barramento de voz, §3.3). |
 | Abade Caído | **Bill** (mesma voz) | estab. 0,35 · sem. 0,80 · estilo 0,35 · vel. 0,80 | A mesma voz, mais lenta e instável: cansada e culpada. |
+| Frei Ambrósio, o Alfarrabista (vendedor, D-098) | **George** `JBFqnCBsd6RMkjVDRZzb` | estab. 0,30 · sem. 0,75 · estilo 0,40 · vel. 0,85 | O Bill já é o Abade; o George instável e lento soa seco e cansado de arquivista. |
 | Asmodeus, o Rasurador | **Callum** `N2lVS1w4EtoT3dr4eOWO` | estab. 0,30 · sem. 0,70 · estilo 0,55 · vel. 0,78 | Rouca e arranhada; lenta. A palavra em maiúsculas (APAGO/ERASE) vem forte. |
 | Narrador | **Daniel** `onwK4e9ZLuTAKqWW03F9` | estab. 0,70 · sem. 0,75 · estilo 0,05 · vel. 0,92 | Locutor formal e firme: lê a crônica sem drama. |
 | Padre Malaquias | **Eric** `cjVigY5qzO86Huf0OWal` | estab. 0,65 · sem. 0,75 · estilo 0,30 · vel. 0,85 | Macia e confiável demais; a lentidão a deixa ameaçadora. |
