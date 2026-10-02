@@ -66,10 +66,10 @@ func test_intro_plays_the_first_time_then_goes_straight_to_the_game() -> void:
 	await _wait(HOP_GAME)
 	assert_eq(_app.current_name, &"game")
 	assert_true(Codex.cutscene_seen(&"c1_01") and Codex.cutscene_seen(&"c1_02"), "vistas ficam gravadas")
-	# Segunda vez: direto para a partida.
+	# D-098: as cenas de abertura tocam sempre (o autor pediu); dá para pular.
 	await _choose_chapter_1()
-	await _wait(HOP_GAME)
-	assert_eq(_app.current_name, &"game", "segunda vez: sem as cenas 'once'")
+	await _wait(HOP)
+	assert_eq(_app.current_name, &"cutscene", "segunda vez: as cenas de novo")
 
 
 func test_boss_cutscene_releases_the_boss_fighting() -> void:

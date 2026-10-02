@@ -3,6 +3,18 @@ HUD_WAVE,ONDA {n},WAVE {n}
 HUD_WAVE_COMPLETE,ONDA COMPLETA,WAVE COMPLETE
 HUD_CHAPTER_COMPLETE,CAPÍTULO COMPLETO,CHAPTER COMPLETE
 HUD_WORDS,PALAVRAS,WORDS
+HUD_HELP_MOVE,MOVER,MOVE
+HUD_HELP_ARROWS,SETAS,ARROWS
+HUD_HELP_WEAPON,TROCAR ARMA,SWAP WEAPON
+HUD_HELP_POTION,BEBER POÇÃO,DRINK POTION
+HUD_HELP_LETTER_BROWSE,ESCOLHER LETRA,BROWSE LETTERS
+HUD_HELP_LETTER_PICK,PEGAR / CLIQUE,TAKE / CLICK
+HUD_HELP_CAST,CONJURAR,CAST
+HUD_HELP_PURGE,ESVAZIAR ATRIL,EMPTY LECTERN
+HUD_HELP_WORDS,PALAVRAS,WORD LIST
+HUD_HELP_PAUSE,PAUSA,PAUSE
+HUD_HELP_HIDE,ESCONDER AJUDA,HIDE HELP
+HUD_HELP_SHOW,AJUDA,HELP
 PAUSE_TITLE,PAUSA,PAUSED
 PAUSE_HINT,{pause} CONTINUAR   {restart} REINICIAR,{pause} RESUME   {restart} RESTART
 GAMEOVER_TITLE,A PÁGINA ARDEU,THE PAGE BURNED
@@ -231,6 +243,44 @@ BARK_ASMODEUS_DEATH,Alguém... sempre... erra...,Someone... always... errs...
 BARK_ANSELMO_HERESY,...Isso não era latim.,...That was not Latin.
 BARK_ANSELMO_LAST_CANDLE,Só mais uma vela...,Just one more candle...
 BARK_ANSELMO_WAVE_CLEAR,Mais uma linha no lugar.,One more line back in place.
+BARK_ANSELMO_HURT_01,Ai. Isso estava no contrato?,Ow. Was that in the contract?
+BARK_ANSELMO_HURT_02,Minha mão! Eu preciso dela.,My hand! I need it.
+BARK_ANSELMO_HURT_03,Tinta e sangue nunca combinam.,Ink and blood never mix.
+BARK_ANSELMO_HURT_04,Isso vai manchar o hábito.,That will stain the habit.
+BARK_ANSELMO_HURT_05,"Senhor, poupai-me.","Lord, spare me."
+BARK_ANSELMO_HURT_06,Eu só queria copiar em paz.,I only wanted to copy in peace.
+BARK_ANSELMO_HURT_07,Ainda bem que não sou o pergaminho.,Good thing I am not the parchment.
+BARK_ANSELMO_HURT_08,Isso doeu. Anotem aí.,That hurt. Write it down.
+BARK_ANSELMO_LEVEL_01,Algo se acendeu em mim.,Something lit up inside me.
+BARK_ANSELMO_LEVEL_02,A graça chegou. Sem avisar.,Grace arrived. Unannounced.
+BARK_ANSELMO_LEVEL_03,Sinto a mão do Abade... ou a de Deus.,I feel the Abbot's hand... or God's.
+BARK_ANSELMO_LEVEL_04,Mais luz. Aceito.,More light. I accept.
+BARK_ANSELMO_LEVEL_05,"Não mereço, mas aceito.","I do not deserve it, but I accept."
+BARK_ANSELMO_LEVEL_06,A página ficou um pouco mais clara.,The page grew a little brighter.
+BARK_ANSELMO_DEATH_01,"Perdoe a letra torta, Senhor.","Forgive the crooked letter, Lord."
+BARK_ANSELMO_DEATH_02,Então... é esse o fim da linha.,So... this is the end of the line.
+BARK_ANSELMO_DEATH_03,Eu avisei que ia errar.,I did say I would get it wrong.
+BARK_ANSELMO_DEATH_04,Riscado. Como todo o resto.,Struck out. Like everything else.
+BARK_ANSELMO_DEATH_05,Abade... eu não devia ter aberto.,Abbot... I should not have opened it.
+BARK_VENDOR_OPEN_01,"Entre, entre. Não toque nas páginas.",Come in. Do not touch the pages.
+BARK_VENDOR_OPEN_02,"Apócrifos frescos. Quer dizer, antigos.",Fresh apocrypha. I mean ancient.
+BARK_VENDOR_OPEN_03,Tenho o que o Abade escondeu. Por um preço.,I have what the Abbot hid. For a price.
+BARK_VENDOR_OPEN_04,Lembro de você. Acho. Compre algo.,I remember you. I think. Buy something.
+BARK_VENDOR_OPEN_05,O vazio não paga. Eu cobro.,The void pays nothing. I charge.
+BARK_VENDOR_OPEN_06,Bem-vindo ao scriptorium. Ainda estou aqui.,Welcome to the scriptorium. I am still here.
+BARK_VENDOR_BOUGHT_01,"Boa escolha. Ou, ao menos, cara.","Good choice. Or at least, costly."
+BARK_VENDOR_BOUGHT_02,Vendido! Que Deus o perdoe.,Sold! May God forgive you.
+BARK_VENDOR_BOUGHT_03,Sem devolução. Nem rasuras.,No returns. No erasures either.
+BARK_VENDOR_BOUGHT_04,Obrigado. É a tinta que me mantém.,Thank you. Ink is what keeps me.
+BARK_VENDOR_BOUGHT_05,Anotado no livro. Se o livro ficar.,Noted in the ledger. If it lasts.
+BARK_VENDOR_DENIED_01,"Sem tinta, sem apócrifo.","No ink, no apocrypha."
+BARK_VENDOR_DENIED_02,"Falta tinta, irmão.","You are short of ink, brother."
+BARK_VENDOR_DENIED_03,Fé não paga. Só tinta.,Faith does not pay. Only ink.
+BARK_VENDOR_DENIED_04,Volte com mais tinta.,Come back with more ink.
+BARK_VENDOR_CLOSE_01,Vá com Deus. Ou sem.,Go with God. Or without.
+BARK_VENDOR_CLOSE_02,"Volte, se ainda houver página.","Come back, if there is a page left."
+BARK_VENDOR_CLOSE_03,Cuidado lá fora. Está tudo apagado.,Careful out there. Everything is erased.
+BARK_VENDOR_CLOSE_04,Feche a porta. O vazio tem pressa.,Close the door. The void is in a hurry.
 BLESSING_CONSECRATED_INK,Tinta Consagrada,Consecrated Ink
 BLESSING_CONSECRATED_INK_DESC,Dano das palavras +15%,Word damage +15%
 BLESSING_GRACE_FULL,Graça Plena,Full Grace
@@ -246,6 +296,7 @@ ACTION_POTION_1,Poção 1,Potion 1
 ACTION_POTION_2,Poção 2,Potion 2
 ACTION_POTION_3,Poção 3,Potion 3
 ACTION_POTION_4,Poção 4,Potion 4
+ACTION_HELP_TOGGLE,Ajuda de teclas,Key help
 WPN_PEN,Pena do Copista,Copyist's Quill
 WPN_PEN_DESC,Gota de tinta no mais próximo,Ink drop at the nearest foe
 WPN_BIBLE,Bíblia,Bible

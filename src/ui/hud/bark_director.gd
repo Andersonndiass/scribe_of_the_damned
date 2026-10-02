@@ -16,13 +16,19 @@ const SINGLE_Y := 8
 const IN_TIME := 0.1
 const RISE := 2.0
 const CENTRAL := Rect2(160, 60, 320, 240)
-## Áreas do HUD que o balão nunca cobre (velas, cronômetro, barra do chefe, tinta, atril e dicas).
+## Áreas do HUD que o balão nunca cobre (velas, cronômetro, barra do chefe, tinta, atril, inventário e ajuda de teclas).
 const HUD_RECTS: Array[Rect2] = [
 	Rect2(6, 6, 86, 35), Rect2(260, 6, 120, 28), Rect2(119, 6, 402, 30), Rect2(594, 6, 40, 15),
-	Rect2(150, 306, 374, 37), Rect2(6, 310, 163, 44),
+	Rect2(244, 306, 152, 37), Rect2(6, 310, 163, 44), Rect2(6, 45, 134, 138),
 ]
 ## Tamanho de cada falante na tela (o balão fica fora dele).
 const SPEAKER_SIZE: Dictionary = {"anselmo": Vector2(16, 16), "asmodeus": Vector2(64, 64)}
+## Frei Ambrósio, o vendedor (D-098; story-agent): fala na tela da loja, saindo do ícone dela,
+## num balão fixo à esquerda das cartas e acima da loja (camada 20).
+const VENDOR_RECT := Rect2(26, 8, 48, 48)
+const VENDOR_BALLOON := Rect2(16, 64, 160, 22)
+const LAYER_GAME := 15
+const LAYER_SHOP := 21
 
 var player: Node2D
 var boss: Node2D
@@ -31,7 +37,11 @@ var data: Dictionary = {}
 var current: Dictionary = {}
 
 var _since_any: float = INF
+## Tempo desde a última frase de cada grupo (o grupo é o `group` da frase, ou o id dela).
 var _last_by_id: Dictionary = {}
+## Última frase de cada grupo (o sorteio evita repetir a mesma em seguida).
+var _last_in_group: Dictionary = {}
+var _rng := RandomNumberGenerator.new()
 var _canvas: Node2D
 var _side: StringName = &"above"
 
@@ -50,6 +60,13 @@ func _ready() -> void:
 	EventBus.heresy_committed.connect(func(_p: Vector2) -> void: _trigger("heresy_committed", {}))
 	EventBus.player_damaged.connect(func(_a: int, candles: int) -> void: _trigger("player_damaged", {"candles": candles}))
 	EventBus.wave_ended.connect(func(_i: int) -> void: _trigger("wave_ended", {}))
+	# D-098: falas do Anselmo no nível e na morte; o vendedor na loja.
+	EventBus.grace_leveled.connect(func(_l: int, _q: int) -> void: _trigger("grace_leveled", {}))
+	EventBus.player_died.connect(func() -> void: _trigger("player_died", {}))
+	EventBus.shop_opened.connect(func(_w: int) -> void: _trigger("shop_opened", {}))
+	EventBus.item_bought.connect(func(_i: ShopItemData, _p: int) -> void: _trigger("item_bought", {}))
+	EventBus.shop_purchase_denied.connect(func() -> void: _trigger("shop_purchase_denied", {}))
+	EventBus.shop_closed.connect(func() -> void: _trigger("shop_closed", {}))
 
 
 func _process(delta: float) -> void:
@@ -65,8 +82,11 @@ func _process(delta: float) -> void:
 	_canvas.queue_redraw()
 
 
-## Um gatilho aconteceu: acha a frase que casa com o filtro e tenta mostrar.
+## Um gatilho aconteceu: as frases com filtro que casa vêm antes (ex.: a última vela); entre as
+## que sobram, sorteia uma do grupo, sem repetir a última dele (D-098).
 func _trigger(trigger: String, info: Dictionary) -> void:
+	var filtered: Array[Dictionary] = []
+	var plain: Array[Dictionary] = []
 	for bark: Dictionary in data.get("barks", []):
 		if bark["trigger"] != trigger:
 			continue
@@ -74,13 +94,26 @@ func _trigger(trigger: String, info: Dictionary) -> void:
 			continue
 		if bark.has("candles") and int(bark["candles"]) != int(info.get("candles", -1)):
 			continue
-		say(bark)
+		if bark.has("phase") or bark.has("candles"):
+			filtered.append(bark)
+		else:
+			plain.append(bark)
+	var pool: Array[Dictionary] = filtered if not filtered.is_empty() else plain
+	if pool.is_empty():
 		return
+	var group: String = group_of(pool[0])
+	if pool.size() > 1 and _last_in_group.has(group):
+		pool = pool.filter(func(b: Dictionary) -> bool: return b["id"] != _last_in_group[group])
+	say(pool[_rng.randi_range(0, pool.size() - 1)])
+
+
+static func group_of(bark: Dictionary) -> String:
+	return str(bark.get("group", bark["id"]))
 
 
 ## Mostra a frase se os intervalos deixarem (a de prioridade ignora o intervalo global e corta a atual).
 func say(bark: Dictionary) -> bool:
-	var id: String = bark["id"]
+	var id: String = group_of(bark)
 	var priority: bool = bark.get("priority", false)
 	var repeat_gap: float = float(bark.get("repeat_gap", data.get("repeat_gap", 20.0)))
 	if _last_by_id.has(id) and _last_by_id[id] < repeat_gap:
@@ -96,12 +129,16 @@ func say(bark: Dictionary) -> bool:
 	current = {"bark": bark, "lines": lines, "total": total, "age": 0.0}
 	_since_any = 0.0
 	_last_by_id[id] = 0.0
+	_last_in_group[id] = bark["id"]
+	layer = LAYER_SHOP if bark["speaker"] == "vendor" else LAYER_GAME
 	_canvas.queue_redraw()
 	return true
 
 
 ## Retângulo do falante na tela (centro na posição do nó).
 func _bounds(speaker: String) -> Rect2:
+	if speaker == "vendor":
+		return VENDOR_RECT
 	var node: Node2D = player if speaker == "anselmo" else boss
 	var at: Vector2 = node.global_position if node != null else Vector2(320, 180)
 	var size: Vector2 = SPEAKER_SIZE.get(speaker, Vector2(16, 16))
@@ -157,7 +194,7 @@ func _draw_balloon() -> void:
 	var speaker: String = bark["speaker"]
 	var who: Rect2 = _bounds(speaker)
 	var anchor: Vector2 = who.get_center()
-	var placed: Dictionary = place(who)
+	var placed: Dictionary = {"side": &"below", "rect": VENDOR_BALLOON} if speaker == "vendor" else place(who)
 	var body: Rect2 = placed["rect"]
 	var k: float = clampf(current["age"] / IN_TIME, 0.0, 1.0)
 	body.position.y += roundf(RISE * (1.0 - k))

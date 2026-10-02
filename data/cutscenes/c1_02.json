@@ -1,5 +1,5 @@
 {
-	"id": "c1_02", "version": 1, "duration": 17.2, "play": "once",
+	"id": "c1_02", "version": 1, "duration": 17.2, "play": "always",
 	"_doc": "C1-02 A regra do livro (spec 008; tempos do animation-agent T810). Anselmo cai no ponto onde a onda 1 começa.",
 	"actors": {
 		"page": {"layer": "bg", "kind": "fx", "src": "res://src/cutscenes/fx/blank_page.gd", "init": {}},

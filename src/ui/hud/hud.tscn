@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=11 format=3]
 
 [ext_resource type="Script" path="res://src/ui/hud/candles.gd" id="1_candles"]
 [ext_resource type="Script" path="res://src/ui/hud/atril_view.gd" id="2_atril"]
@@ -9,6 +9,7 @@
 [ext_resource type="Script" path="res://src/ui/hud/boss_bar.gd" id="7_boss"]
 [ext_resource type="Script" path="res://src/ui/hud/grace_bar.gd" id="9_grace"]
 [ext_resource type="Script" path="res://src/ui/hud/weapon_bar.gd" id="10_weapons"]
+[ext_resource type="Script" path="res://src/ui/hud/help_keys.gd" id="11_help"]
 
 [node name="Hud" type="CanvasLayer"]
 layer = 5
@@ -39,3 +40,6 @@ script = ExtResource("9_grace")
 
 [node name="WeaponBar" type="Node2D" parent="."]
 script = ExtResource("10_weapons")
+
+[node name="HelpKeys" type="Node2D" parent="."]
+script = ExtResource("11_help")

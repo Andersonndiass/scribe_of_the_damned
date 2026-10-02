@@ -27,5 +27,8 @@ extends Resource
 ## Chance de rara nas 2 opções que não continuam a palavra (só vogais).
 @export_range(0.0, 1.0) var other_rare_chance: float = 0.05
 ## Barra do tempo: pisca nos últimos `blink_window` s; mais rápido nos últimos `blink_fast_window`.
+## Períodos do piscar da barra (s).
+@export var blink_slow: float = 0.1
+@export var blink_fast: float = 0.05
 @export var blink_window: float = 0.7
 @export var blink_fast_window: float = 0.2

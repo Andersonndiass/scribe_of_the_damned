@@ -66,10 +66,12 @@ func test_filters_pick_the_right_line() -> void:
 	assert_eq(_id(), "asmodeus_phase_3")
 	_d.current = {}
 	_age(30.0)
-	EventBus.player_damaged.emit(1, 2)
-	assert_eq(_id(), "", "com 2 velas não é a última vela")
 	EventBus.player_damaged.emit(1, 1)
-	assert_eq(_id(), "anselmo_last_candle")
+	assert_eq(_id(), "anselmo_last_candle", "o filtro (última vela) vem antes das falas de dano")
+	_d.current = {}
+	_age(30.0)
+	EventBus.player_damaged.emit(1, 2)
+	assert_true(_id().begins_with("anselmo_hurt_"), "com 2 velas: uma das falas de dano (D-098)")
 
 
 func test_line_disappears_after_its_time() -> void:
@@ -88,3 +90,36 @@ func test_balloon_never_covers_the_hud() -> void:
 		assert_true(r.position.x >= 8.0 and r.end.x <= 632.0, "dentro da tela")
 		if placed["side"] != &"above":
 			assert_false(r.intersects(who), "não cobre quem fala")
+
+
+## D-098: dano no máximo 1 a cada 20 s (o intervalo é do grupo, não da frase); sem repetir a última.
+func test_hurt_group_shares_the_gap_and_does_not_repeat() -> void:
+	EventBus.player_damaged.emit(1, 3)
+	var first: String = _id()
+	assert_true(first.begins_with("anselmo_hurt_"))
+	_d.current = {}
+	_age(10.0)
+	EventBus.player_damaged.emit(1, 3)
+	assert_eq(_id(), "", "outra fala do grupo antes de 20 s também espera")
+	_age(11.0)
+	EventBus.player_damaged.emit(1, 3)
+	assert_true(_id().begins_with("anselmo_hurt_") and _id() != first, "sorteia outra")
+
+
+## D-098: nível e morte sempre falam (prioridade, sem intervalo de repetição).
+func test_level_and_death_always_speak() -> void:
+	EventBus.grace_leveled.emit(2, 1)
+	assert_true(_id().begins_with("anselmo_level_"))
+	_age(0.5)
+	EventBus.grace_leveled.emit(3, 1)
+	assert_true(_id().begins_with("anselmo_level_"), "de novo meio segundo depois")
+	EventBus.player_died.emit()
+	assert_true(_id().begins_with("anselmo_death_"))
+
+
+## D-098: o vendedor fala na loja num balão fixo, acima da tela da loja.
+func test_vendor_speaks_in_the_shop() -> void:
+	EventBus.shop_opened.emit(1)
+	assert_true(_id().begins_with("vendor_open_"))
+	assert_eq(_d.layer, BarkDirector.LAYER_SHOP)
+	assert_false(BarkDirector.VENDOR_BALLOON.intersects(Rect2(192, 64, 100, 140)), "não cobre as cartas")

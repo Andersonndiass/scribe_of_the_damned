@@ -33,6 +33,9 @@ extends Resource
 @export var fire_shake_time: float = 0.0
 ## Direções possíveis da mira (Bíblia 32: o raio em pixel inteiro não treme); 0 = livre.
 @export var aim_steps: int = 0
+## Raio (Bíblia; D-098): com o mouse, o raio vai até o cursor, entre `beam_min_length` e o
+## alcance do nível; sem mouse, usa o alcance inteiro. 0 = sempre o alcance.
+@export var beam_min_length: float = 0.0
 @export_group("Turíbulo (swing_trail)")
 ## Arco do balanço (°), alternando os lados (rules-agent T1700).
 @export var swing_arc_deg: float = 150.0

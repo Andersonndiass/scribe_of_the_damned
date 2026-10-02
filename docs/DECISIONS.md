@@ -679,6 +679,12 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
 - **Fase 2, em andamento:**
   - `levelup_slow_time` 2,5 → 1,0.
   - Menu da letra com `pause_game`: pausa a árvore, conta em tempo real, só despausa o que pausou, congela com o Esc/selos/loja. Substitui a câmera lenta da D-090.
+  - Barra do tempo do menu (design-agent): 94×9, INK sobre CHALK, 23 degraus; no fim a moldura engrossa e o preenchimento pisca. O clique na carta funciona com o jogo pausado.
+  - Dicas de letra ao lado do atril removidas (o TAB continua); retângulos do HUD recalculados.
+  - Painel de teclas à esquerda (`HelpKeys`, ficha UI_HELP_KEYS): cheio nas ondas 1–2, recolhe na 3, tecla H (`help_toggle`, nas Opções) alterna; segue o remap.
+  - Cutscenes c1_01 e c1_02 tocam sempre (`"play": "always"`).
+  - Bíblia: o raio vai até o cursor, entre `beam_min_length` 32 e o alcance do nível.
+  - Falas (story-agent): 38 novas em `data/barks/barks.json` (Anselmo: dano, nível, morte; Frei Ambrósio, o vendedor: abrir, comprar, sem tinta, sair). `BarkDirector`: sorteio no grupo sem repetir, intervalo por grupo (dano 20 s; nível e morte sempre), balão fixo do vendedor na loja.
 
 ## Conflitos abertos
 

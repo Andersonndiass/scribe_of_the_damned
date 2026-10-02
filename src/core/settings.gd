@@ -14,6 +14,7 @@ const REBINDABLE: Array[StringName] = [
 	&"grace_pick_1", &"grace_pick_2", &"grace_pick_3",
 	&"weapon_1", &"weapon_2",
 	&"potion_1", &"potion_2", &"potion_3", &"potion_4",
+	&"help_toggle",
 ]
 ## Contexto de cada ação (017 T1702): a mesma tecla pode valer em contextos que nunca estão ativos
 ## ao mesmo tempo (1/2 = arma no jogo e selo com o jogo pausado). Trocar tecla só empurra a antiga

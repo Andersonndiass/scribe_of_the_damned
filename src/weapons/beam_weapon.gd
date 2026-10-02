@@ -45,9 +45,13 @@ func hold(p_from: Vector2, dir: Vector2, s: WeaponLevelData, w: WeaponData, inte
 		WeaponZones.register(zone)
 		zone.weapon_id = w.id
 		EventBus.weapon_beam_toggled.emit(w.id, true)
+	var length: float = s.range
+	var to_cursor: float = Aim.distance(p_from)
+	if w.beam_min_length > 0.0 and to_cursor >= 0.0:
+		length = clampf(to_cursor, w.beam_min_length, s.range)  # D-098: até a ponta do mouse
 	zone.origin = p_from
 	zone.dir = dir
-	zone.length = s.range
+	zone.length = length
 	zone.width = s.width
 	zone.damage = s.damage
 	zone.interval = interval
@@ -55,7 +59,7 @@ func hold(p_from: Vector2, dir: Vector2, s: WeaponLevelData, w: WeaponData, inte
 	zone.precision_mul = w.precision_mul
 	zone.tag = w.boss_tag
 	from = p_from
-	to = p_from + dir * s.range
+	to = p_from + dir * length
 
 
 ## Desliga na hora (troca de arma, morte): o dano acaba já; o desenho sai em 2 quadros.

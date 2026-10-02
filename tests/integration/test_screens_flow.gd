@@ -12,9 +12,8 @@ var _app: ScreenRouter
 func before_each() -> void:
 	Settings.reset_defaults()
 	Settings.apply()
-	# As cenas de abertura (008) têm teste próprio; aqui o jogador já as viu.
-	Codex.mark_cutscene_seen(&"c1_01")
-	Codex.mark_cutscene_seen(&"c1_02")
+	# As cenas de abertura (008) têm teste próprio; desde a D-098 elas tocam sempre, e este teste
+	# as pula (como o jogador faria).
 	_app = APP.instantiate()
 	add_child_autofree(_app)
 
@@ -56,6 +55,12 @@ func test_splash_to_first_wave_and_back_from_game_over() -> void:
 	await _wait(0.3 + HOP)
 	assert_eq(_app.current_name, &"chapter")
 	await _press(&"cast")  # Cap. 1
+	await _wait(HOP)
+	for k: int in 2:  # pula C1-01 e C1-02
+		if _app.current_name == &"cutscene":
+			(_app.current as CutsceneScreen).player.skip()
+			await get_tree().process_frame
+			await get_tree().process_frame
 	await _wait(HOP_GAME)
 	assert_eq(_app.current_name, &"game")
 	assert_eq(GameState.wave_index, 1, "primeira onda")

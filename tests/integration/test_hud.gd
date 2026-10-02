@@ -40,7 +40,8 @@ func test_hud_never_covers_the_central_area() -> void:
 
 ## T1800: todo painel a ≥ 6 px da borda da tela e sem cobrir outro (menos os que moram juntos).
 func test_hud_panels_keep_the_margin_and_do_not_overlap() -> void:
-	var together: Array = [["Candles", "GraceBar"], ["WaveTimer", "BossBar"], ["Atril", "ComboWindow"]]
+	# A lista de palavras (TAB) esconde a ajuda de teclas (D-098): nunca aparecem juntas.
+	var together: Array = [["Candles", "GraceBar"], ["WaveTimer", "BossBar"], ["Atril", "ComboWindow"], ["WordList", "HelpKeys"]]
 	var screen := Rect2(UiStyle.HUD_MARGIN, UiStyle.HUD_MARGIN, 640 - 2 * UiStyle.HUD_MARGIN, 360 - 2 * UiStyle.HUD_MARGIN)
 	var was_high: bool = GameState.high_contrast
 	GameState.high_contrast = false  # no alto contraste a borda tem 2 px (margem 5)

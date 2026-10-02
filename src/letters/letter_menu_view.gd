@@ -3,27 +3,27 @@ extends Node2D
 ## Desenho do menu da letra (017 T1720; design-agent T1700 e T1800; animation-agent T1700).
 ## Painel acima do escriba (abaixo quando falta espaço em cima), 3 cartas 28×28 com o losango da
 ## letra do atlas ampliado 2× (a rara usa a linha GOLD do atlas), foco = carta 2 px acima com
-## borda INK de 2 px, barra do tempo em 25 degraus (INK_SOFT; INK no fim, alternando nos últimos
-## 0,7 s), "+k" com menus na fila e moldura INK de 2 px na borda da tela durante a câmera lenta.
+## borda INK de 2 px, barra do tempo na borda de baixo (D-098, design-agent: 94×9, INK sobre
+## CHALK, 23 degraus de 4 px; no fim a moldura engrossa e o preenchimento pisca), "+k" com menus
+## na fila e moldura INK de 2 px na borda da tela durante a câmera lenta.
 ## Sem marca nas letras úteis (D-087 item 4). Clique numa carta escolhe; passar o mouse foca.
 
 const ATLAS := preload("res://assets/placeholders/ltr_atlas.tres")
 const ATLAS_ORDER := "ACDEFGILMNOPQRSTUVXB"
 const CELL := 10
-const SIZE := Vector2(100, 46)
+const SIZE := Vector2(100, 48)
 ## Painel relativo aos pés do escriba; limites da tela (T1800: My ≥ 44, margem 6 px).
-const ABOVE := Vector2(-50, -67)
+const ABOVE := Vector2(-50, -69)
 const BELOW_Y := 14.0
 const MIN_POS := Vector2(7, 44)
-const MAX_POS := Vector2(533, 252)
+const MAX_POS := Vector2(533, 250)
 const CARD := 28.0
 const CARD_STEP := 32.0
 const CARD_PAD := 4.0
 const CLICK_GROW := 2.0
 const LIFT := 2.0
-const BAR := Rect2(4, 37, 92, 5)
-const BAR_STEPS := 25
-const INK_LAST := 0.5
+const BAR := Rect2(3, 36, 94, 9)
+const BAR_STEPS := 23
 const SCREEN := Vector2(640, 360)
 ## Tinta Iluminada (design-agent T1801): cantoneiras INK nas 3 cartas (não marca a útil).
 const CORNER := preload("res://assets/placeholders/vfx_illum_corner_tl.png")
@@ -116,18 +116,24 @@ func _draw_corners(r: Rect2) -> void:
 	draw_texture_rect(CORNER, Rect2(r.end, -s), false)
 
 
-## Barra em 25 degraus que esvazia pela direita; INK no último meio segundo; nos últimos 0,7 s
-## alterna INK/INK_SOFT (a 100 ms; a 50 ms nos últimos 0,2 s) — pisca sem alpha.
+## Barra em 23 degraus de 4 px que esvazia pela direita, INK sobre CHALK. Nos últimos 0,7 s a
+## moldura passa a 2 px e o preenchimento liga/desliga (100 ms; 50 ms nos últimos 0,2 s).
 func _draw_timer() -> void:
 	var t: LetterMenuTuning = menu.tuning
 	var frac: float = clampf(menu.left / maxf(menu.total, 0.001), 0.0, 1.0)
 	frac = ceilf(frac * BAR_STEPS) / BAR_STEPS
-	var fill: Color = Palette.INK if menu.left <= INK_LAST else Palette.INK_SOFT
-	if menu.left <= t.blink_window:
-		var period: float = 0.05 if menu.left <= t.blink_fast_window else 0.1
-		if int(menu.left / period) % 2 == 1:
-			fill = Palette.INK_SOFT if fill == Palette.INK else Palette.INK
-	UiStyle.draw_bar(self, Rect2(_origin + BAR.position, BAR.size), frac, Palette.PARCHMENT_OLD, fill)
+	var outer := Rect2(_origin + BAR.position, BAR.size)
+	if menu.left > t.blink_window:
+		UiStyle.draw_bar(self, outer, frac, Palette.CHALK, Palette.INK)
+		return
+	var period: float = t.blink_fast if menu.left <= t.blink_fast_window else t.blink_slow
+	var lit: bool = int(menu.left / period) % 2 == 0
+	draw_rect(outer, Palette.INK)
+	var inner: Rect2 = outer.grow(-2)
+	draw_rect(inner, Palette.CHALK)
+	var w: int = floori(outer.grow(-1).size.x * frac) - 1
+	if lit and w > 0:
+		draw_rect(Rect2(inner.position, Vector2(mini(w, int(inner.size.x)), inner.size.y)), Palette.INK)
 
 
 ## Câmera lenta: moldura INK de 2 px na borda da tela (sem véu; o xadrez esconderia o escriba).

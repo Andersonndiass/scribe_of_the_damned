@@ -1,5 +1,5 @@
 {
-	"id": "c1_01", "version": 1, "duration": 15.65, "play": "once", "stage_scale": 2,
+	"id": "c1_01", "version": 1, "duration": 15.65, "play": "always", "stage_scale": 2,
 	"_doc": "C1-01 O mosteiro arde (spec 008; tempos do animation-agent T810; palco 320x180 em 2x).",
 	"actors": {
 		"crypt": {"layer": "bg", "kind": "fx", "src": "res://src/cutscenes/fx/crypt.gd", "init": {"progress": 0.0}},

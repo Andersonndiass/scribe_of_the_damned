@@ -12,19 +12,12 @@ const SLOT := Vector2(12, 14)
 const SLOT_GAP := 2
 const TOP := 314.0
 const CENTER_X := 320.0
-const HINTS_GAP := 22
 ## T1800: painel D (miolo) em volta dos espaços: 12 px de cada lado (cabe o selo), de y308 a y340
 ## (a janela de combo fica dentro, em y335).
 const PLATE_SIDE := 12.0
 const PLATE_TOP := 308.0
 const PLATE_H := 32.0
 const HERESY_Y := 298.0
-## Painel das dicas: respiro de 4 px em volta do texto, 14 de altura.
-const HINTS_PAD := 4.0
-const HINTS_H := 14.0
-const HINTS_TEXT_Y := 318.0
-## Largura reservada às dicas nos retângulos do HUD.
-const HINTS_RESERVE := 120.0
 ## Duração das animações (escala de durações do art bible §14 / ficha 26: frames × ms).
 const ANIM_TIME: Dictionary[int, float] = {
 	Anim.CAST: 0.3, Anim.PURGE: 0.2, Anim.HERESY: 0.36, Anim.REJECT: 0.15, Anim.FIZZLE: 0.2,
@@ -121,7 +114,8 @@ func slots_rect() -> Rect2:
 func hud_rect() -> Rect2:
 	var s: Rect2 = slots_rect()
 	var left: float = s.position.x - PLATE_SIDE - 1.0
-	return Rect2(left, PLATE_TOP - 1.0, s.end.x + HINTS_GAP + HINTS_RESERVE - left, PLATE_H + 3.0)
+	# D-098: sem as dicas, o retângulo é simétrico em volta dos espaços.
+	return Rect2(left, PLATE_TOP - 1.0, s.size.x + 2.0 * (PLATE_SIDE + 1.0), PLATE_H + 3.0)
 
 
 func _on_atril_changed(p_letters: PackedStringArray, p_status: int, p_hints: PackedStringArray, p_rare: int) -> void:
@@ -216,7 +210,7 @@ func _draw() -> void:
 		_draw_frame(rect.grow(3.0), Palette.GOLD)
 	if anim == Anim.HERESY:
 		PixelFont.draw_centered(self, HERESY_TEXT, CENTER_X, HERESY_Y, Palette.BLOOD)
-	_draw_hints(rect)
+	# D-098: sem dicas de letra ao lado do atril (o autor quer só a lista do TAB).
 
 
 ## Rasura: traço BLOOD na diagonal da última letra (nunca com a palavra pronta) e o rabisco
@@ -286,22 +280,3 @@ func _frame_color() -> Color:
 		Atril.Status.FULL_REJECT:
 			return Palette.BLOOD
 	return Palette.INK_SOFT
-
-
-func _draw_hints(rect: Rect2) -> void:
-	if hints.is_empty():
-		return
-	var x: float = rect.end.x + HINTS_GAP
-	var y: float = HINTS_TEXT_Y
-	var total: float = 0.0
-	for h: String in hints:
-		total += PixelFont.width(h) + 8
-	UiStyle.draw_plate(self, Rect2(x - HINTS_PAD, rect.position.y, total - 8 + HINTS_PAD * 2.0, HINTS_H))
-	for i: int in hints.size():
-		var first_valid: bool = status == Atril.Status.VALID and i == 0
-		var gold: bool = first_valid or combo_partners.has(hints[i])
-		if gold:
-			# Dica em destaque: texto INK sobre etiqueta GOLD_LIGHT (GOLD em texto dava 2.1:1).
-			draw_rect(Rect2(x - 2, y - 2, PixelFont.width(hints[i]) + 4, 10), Palette.GOLD_LIGHT)
-		PixelFont.draw(self, hints[i], Vector2(x, y), Palette.INK if gold else Palette.INK_SOFT)
-		x += PixelFont.width(hints[i]) + 8

@@ -63,5 +63,6 @@ mode = &"aimed"
 pattern = &"beam"
 precision_mul = 1.5
 aim_steps = 32
+beam_min_length = 32.0
 icon = ExtResource("3_icon")
 levels = Array[ExtResource("2_lv")]([SubResource("lv1"), SubResource("lv2"), SubResource("lv3"), SubResource("lv4"), SubResource("lv5")])

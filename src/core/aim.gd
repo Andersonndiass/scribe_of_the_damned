@@ -13,6 +13,13 @@ static func direction(origin: Vector2, facing: Vector2) -> Vector2:
 	return facing.normalized() if facing != Vector2.ZERO else Vector2.RIGHT
 
 
+## Distância até o cursor (o raio da Bíblia chega onde o mouse está, D-098); -1 = sem mouse.
+static func distance(origin: Vector2) -> float:
+	if GameState.aim_with_mouse and GameState.aim_point != Vector2.INF:
+		return origin.distance_to(GameState.aim_point)
+	return -1.0
+
+
 ## A direção presa a `steps` direções (32 na Bíblia: o raio em pixel inteiro não "treme").
 static func snapped(dir: Vector2, steps: int) -> Vector2:
 	if steps <= 0:
