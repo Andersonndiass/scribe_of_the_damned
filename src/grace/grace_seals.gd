@@ -329,7 +329,7 @@ func _done(b: BlessingData) -> int:
 	match b.kind:
 		&"weapon_level":
 			var lo: Loadout = GameState.loadout
-			return lo.slots[b.slot].level - 1 if lo != null and lo.slots[b.slot] != null else 0
+			return lo.slots[b.slot].rank(b.target) if lo != null and lo.slots[b.slot] != null else 0
 		&"passive_level":
 			return GameState.repulse_level - 1
 		&"potion_level":
@@ -342,7 +342,8 @@ func _choices_to_cap(b: BlessingData) -> int:
 	match b.kind:
 		&"weapon_level":
 			var lo: Loadout = GameState.loadout
-			return lo.weapon(b.slot).max_level() - 1 if lo != null and lo.weapon(b.slot) != null else 0
+			var u: WeaponUpgradeData = lo.weapon(b.slot).upgrade(b.target) if lo != null and lo.weapon(b.slot) != null else null
+			return u.max_rank() if u != null else 0
 		&"passive_level":
 			return GameState.repulse.max_level() - 1
 		&"potion_level":

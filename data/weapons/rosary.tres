@@ -1,10 +1,11 @@
-[gd_resource type="Resource" script_class="WeaponData" load_steps=9 format=3]
+[gd_resource type="Resource" script_class="WeaponData" load_steps=10 format=3]
 
 [ext_resource type="Script" path="res://src/data/weapon_data.gd" id="1_wd"]
 [ext_resource type="Script" path="res://src/data/weapon_level_data.gd" id="2_lv"]
 [ext_resource type="Texture2D" path="res://assets/placeholders/itm_weapon_rosary.tres" id="3_icon"]
+[ext_resource type="Script" path="res://src/data/weapon_upgrade_data.gd" id="9_up"]
 
-[sub_resource type="Resource" id="lv1"]
+[sub_resource type="Resource" id="base"]
 script = ExtResource("2_lv")
 damage = 1
 interval = 0.4
@@ -15,49 +16,37 @@ width = 6.0
 orbit_radius = 36.0
 orbit_period = 1.6
 
-[sub_resource type="Resource" id="lv2"]
-script = ExtResource("2_lv")
-damage = 1
-interval = 0.4
-range = 40.0
-speed = 0.0
-count = 3
-width = 6.0
-orbit_radius = 40.0
-orbit_period = 1.6
+[sub_resource type="Resource" id="up_bead"]
+script = ExtResource("9_up")
+id = &"bead"
+label = "UPG_BEAD"
+effects = Dictionary[StringName, PackedFloat64Array]({&"count": PackedFloat64Array(4.0, 5.0)})
+display_field = &"count"
+display_unit = &""
 
-[sub_resource type="Resource" id="lv3"]
-script = ExtResource("2_lv")
-damage = 1
-interval = 0.4
-range = 44.0
-speed = 0.0
-count = 3
-width = 6.0
-orbit_radius = 44.0
-orbit_period = 1.6
+[sub_resource type="Resource" id="up_size"]
+script = ExtResource("9_up")
+id = &"size"
+label = "UPG_SIZE"
+effects = Dictionary[StringName, PackedFloat64Array]({&"orbit_radius": PackedFloat64Array(40.0, 44.0, 48.0), &"range": PackedFloat64Array(40.0, 44.0, 48.0), &"width": PackedFloat64Array(6.0, 6.0, 8.0)})
+display_field = &"orbit_radius"
+display_unit = &"px"
 
-[sub_resource type="Resource" id="lv4"]
-script = ExtResource("2_lv")
-damage = 2
-interval = 0.4
-range = 44.0
-speed = 0.0
-count = 3
-width = 6.0
-orbit_radius = 44.0
-orbit_period = 1.6
+[sub_resource type="Resource" id="up_spin"]
+script = ExtResource("9_up")
+id = &"spin"
+label = "UPG_SPIN"
+effects = Dictionary[StringName, PackedFloat64Array]({&"orbit_period": PackedFloat64Array(1.45, 1.3)})
+display_field = &"orbit_period"
+display_unit = &"s"
 
-[sub_resource type="Resource" id="lv5"]
-script = ExtResource("2_lv")
-damage = 2
-interval = 0.4
-range = 44.0
-speed = 0.0
-count = 4
-width = 6.0
-orbit_radius = 44.0
-orbit_period = 1.3
+[sub_resource type="Resource" id="up_damage"]
+script = ExtResource("9_up")
+id = &"damage"
+label = "UPG_DAMAGE"
+effects = Dictionary[StringName, PackedFloat64Array]({&"damage": PackedFloat64Array(2.0)})
+display_field = &"damage"
+display_unit = &""
 
 [resource]
 script = ExtResource("1_wd")
@@ -67,4 +56,6 @@ short_desc = "WPN_ROSARY_DESC"
 mode = &"auto"
 pattern = &"orbit"
 icon = ExtResource("3_icon")
-levels = Array[ExtResource("2_lv")]([SubResource("lv1"), SubResource("lv2"), SubResource("lv3"), SubResource("lv4"), SubResource("lv5")])
+base = SubResource("base")
+upgrades = Array[ExtResource("9_up")]([SubResource("up_bead"), SubResource("up_size"), SubResource("up_spin"), SubResource("up_damage")])
+max_upgrades = 6

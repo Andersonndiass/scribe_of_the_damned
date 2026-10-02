@@ -3,8 +3,9 @@
 [ext_resource type="Script" path="res://src/data/weapon_data.gd" id="1_wd"]
 [ext_resource type="Script" path="res://src/data/weapon_level_data.gd" id="2_lv"]
 [ext_resource type="Texture2D" path="res://assets/placeholders/itm_weapon_bible.tres" id="3_icon"]
+[ext_resource type="Script" path="res://src/data/weapon_upgrade_data.gd" id="9_up"]
 
-[sub_resource type="Resource" id="lv1"]
+[sub_resource type="Resource" id="base"]
 script = ExtResource("2_lv")
 damage = 1
 interval = 0.7
@@ -14,45 +15,29 @@ count = 1
 pierce = 2
 width = 6.0
 
-[sub_resource type="Resource" id="lv2"]
-script = ExtResource("2_lv")
-damage = 1
-interval = 0.6
-range = 200.0
-speed = 0.0
-count = 1
-pierce = 2
-width = 6.0
+[sub_resource type="Resource" id="up_rate"]
+script = ExtResource("9_up")
+id = &"rate"
+label = "UPG_RATE"
+effects = Dictionary[StringName, PackedFloat64Array]({&"interval": PackedFloat64Array(0.6, 0.52, 0.46, 0.42)})
+display_field = &"interval"
+display_unit = &"s"
 
-[sub_resource type="Resource" id="lv3"]
-script = ExtResource("2_lv")
-damage = 1
-interval = 0.55
-range = 260.0
-speed = 0.0
-count = 1
-pierce = 2
-width = 10.0
+[sub_resource type="Resource" id="up_target"]
+script = ExtResource("9_up")
+id = &"target"
+label = "UPG_TARGET"
+effects = Dictionary[StringName, PackedFloat64Array]({&"pierce": PackedFloat64Array(3.0)})
+display_field = &"pierce"
+display_unit = &""
 
-[sub_resource type="Resource" id="lv4"]
-script = ExtResource("2_lv")
-damage = 1
-interval = 0.4
-range = 260.0
-speed = 0.0
-count = 1
-pierce = 2
-width = 10.0
-
-[sub_resource type="Resource" id="lv5"]
-script = ExtResource("2_lv")
-damage = 1
-interval = 0.33
-range = 260.0
-speed = 0.0
-count = 1
-pierce = 2
-width = 10.0
+[sub_resource type="Resource" id="up_size"]
+script = ExtResource("9_up")
+id = &"size"
+label = "UPG_SIZE"
+effects = Dictionary[StringName, PackedFloat64Array]({&"range": PackedFloat64Array(230.0, 260.0), &"width": PackedFloat64Array(8.0, 10.0)})
+display_field = &"range"
+display_unit = &"px"
 
 [resource]
 script = ExtResource("1_wd")
@@ -65,4 +50,6 @@ precision_mul = 1.5
 aim_steps = 32
 beam_min_length = 32.0
 icon = ExtResource("3_icon")
-levels = Array[ExtResource("2_lv")]([SubResource("lv1"), SubResource("lv2"), SubResource("lv3"), SubResource("lv4"), SubResource("lv5")])
+base = SubResource("base")
+upgrades = Array[ExtResource("9_up")]([SubResource("up_rate"), SubResource("up_target"), SubResource("up_size")])
+max_upgrades = 6

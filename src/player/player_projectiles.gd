@@ -29,6 +29,9 @@ var _vel := PackedVector2Array()
 var _damage := PackedInt32Array()
 var _distance_left := PackedFloat32Array()
 var _kind := PackedInt32Array()
+## Lentidão no acerto (D-098), por projétil.
+var _slow_f := PackedFloat32Array()
+var _slow_t := PackedFloat32Array()
 ## Arma de cada `projectile_kind` (som do acerto).
 const KIND_WEAPON: Array[StringName] = [&"pen", &"crucifix", &"aspergillum"]
 var _radius := PackedFloat32Array()
@@ -45,6 +48,8 @@ func _init() -> void:
 	_damage.resize(CAPACITY)
 	_distance_left.resize(CAPACITY)
 	_kind.resize(CAPACITY)
+	_slow_f.resize(CAPACITY)
+	_slow_t.resize(CAPACITY)
 	_radius.resize(CAPACITY)
 	_hits_left.resize(CAPACITY)
 	_freeze.resize(CAPACITY)
@@ -54,7 +59,8 @@ func _init() -> void:
 ## Dispara de `origin` na direção `direction` (normalizada aqui). `pierce` = quantos inimigos fere
 ## no máximo (0/1 = o primeiro). Retorna false se o teto foi atingido.
 func fire(origin: Vector2, direction: Vector2, speed: float, damage: int, max_distance: float,
-		kind: int = 0, radius: float = HIT_RADIUS, pierce: int = 1, freeze: float = 0.0) -> bool:
+		kind: int = 0, radius: float = HIT_RADIUS, pierce: int = 1, freeze: float = 0.0,
+		slow_f: float = 1.0, slow_t: float = 0.0) -> bool:
 	if count >= CAPACITY:
 		return false
 	var i: int = count
@@ -66,6 +72,8 @@ func fire(origin: Vector2, direction: Vector2, speed: float, damage: int, max_di
 	_radius[i] = radius
 	_hits_left[i] = maxi(pierce, 1)
 	_freeze[i] = freeze
+	_slow_f[i] = slow_f
+	_slow_t[i] = slow_t
 	_hit_uids[i] = PackedInt32Array()
 	count += 1
 	return true
@@ -97,11 +105,11 @@ func _physics_process(delta: float) -> void:
 		_distance_left[i] -= v.length() * delta
 		var spent: bool = false
 		if _hits_left[i] == 1 and _freeze[i] <= 0.0:
-			spent = EnemyQuery.hit(p, _radius[i], _damage[i])
+			spent = EnemyQuery.hit(p, _radius[i], _damage[i], _slow_f[i], _slow_t[i])
 			if spent:
 				EventBus.weapon_hit.emit(KIND_WEAPON[_kind[i]])
 		else:
-			var got: PackedInt32Array = EnemyQuery.hit_pierce(p, _radius[i], _damage[i], _hit_uids[i], _freeze[i], _hits_left[i])
+			var got: PackedInt32Array = EnemyQuery.hit_pierce(p, _radius[i], _damage[i], _hit_uids[i], _freeze[i], _hits_left[i], _slow_f[i], _slow_t[i])
 			if not got.is_empty():
 				var seen: PackedInt32Array = _hit_uids[i]
 				seen.append_array(got)
@@ -139,6 +147,8 @@ func _remove(i: int) -> void:
 		_radius[i] = _radius[last]
 		_hits_left[i] = _hits_left[last]
 		_freeze[i] = _freeze[last]
+		_slow_f[i] = _slow_f[last]
+		_slow_t[i] = _slow_t[last]
 		var spare: PackedInt32Array = _hit_uids[i]
 		_hit_uids[i] = _hit_uids[last]
 		_hit_uids[last] = spare

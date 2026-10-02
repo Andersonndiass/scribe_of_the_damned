@@ -68,11 +68,15 @@ func start_swing(owner_pos: Vector2, toward: Vector2, s: WeaponLevelData, w: Wea
 	WeaponZones.register(head)
 	head.radius = w.head_radius
 	head.damage = s.damage
+	head.slow_factor = s.slow_factor
+	head.slow_time = s.slow_time
 	head.interval = _swing_time  # cada inimigo 1× por balanço
 	head.precision_mul = w.precision_mul
 	head.tag = w.boss_tag
 	trail.radius = s.width / 2.0
 	trail.damage = s.damage
+	trail.slow_factor = s.slow_factor
+	trail.slow_time = s.slow_time
 	trail.interval = w.trail_tick * mul
 	trail.precision_mul = w.precision_mul
 	trail.tag = w.boss_tag

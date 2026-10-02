@@ -51,7 +51,7 @@ var _flash := PackedFloat32Array([0, 0, 0, 0])
 func _ready() -> void:
 	EventBus.weapon_switched.connect(func(_s: int, _w: WeaponData) -> void: queue_redraw())
 	EventBus.weapon_equipped.connect(func(_s: int, _w: WeaponData, _l: int) -> void: queue_redraw())
-	EventBus.weapon_leveled.connect(func(_s: int, _w: WeaponData, _l: int) -> void: queue_redraw())
+	EventBus.weapon_leveled.connect(func(_s: int, _w: WeaponData, _l: int, _u: StringName, _r: int) -> void: queue_redraw())
 	EventBus.settings_applied.connect(queue_redraw)
 	EventBus.wave_started.connect(func(_i: int, _d: float) -> void: queue_redraw())
 	EventBus.potion_refused.connect(_on_potion_refused)

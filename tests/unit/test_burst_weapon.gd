@@ -51,7 +51,7 @@ func _run(seconds: float) -> void:
 
 
 func test_pen_level_1_keeps_the_old_cadence() -> void:
-	var s: WeaponLevelData = PEN.stats(1)
+	var s: WeaponLevelData = PEN.base
 	# T1742 (rules-agent): 2 gotas desde o nível 1 (a cadência e o alcance são os de antes).
 	assert_eq([s.damage, s.interval, s.range, s.speed, s.count], [1, 0.8, 160.0, 220.0, 2], "2 gotas a cada 0,8 s")
 	_run(0.75)
@@ -82,10 +82,10 @@ func test_only_the_active_weapon_attacks_and_swap_waits_the_draw() -> void:
 	assert_eq(_shots, 1, "a recarga dela correu guardada: atira assim que o saque acaba")
 
 
-func test_level_3_fires_two_drops() -> void:
-	_arsenal.loadout.slots[0].level = 3
-	_run(0.71)
-	assert_eq(_proj.count, 2, "nível 3: 2 gotas (no mesmo alvo quando só há um)")
+func test_drop_upgrade_fires_three_drops() -> void:
+	_arsenal.loadout.slots[0].rank_up(&"drop")
+	_run(0.81)
+	assert_eq(_proj.count, 3, "+1 GOTA: 3 gotas (no mesmo alvo quando só há um)")
 
 
 func test_goose_quill_speeds_up_every_weapon() -> void:
@@ -100,7 +100,7 @@ func test_loadout_equip_fills_then_replaces_the_active() -> void:
 	var lo := Loadout.new(2, PEN)
 	assert_eq(lo.equip(PEN), 1, "preenche o vazio")
 	assert_true(lo.is_full())
-	lo.level_up(0)
+	lo.rank_up(0, &"rate")
 	lo.set_active(0)
 	assert_eq(lo.equip(PEN), 0, "cheio: substitui a ativa")
 	assert_eq(lo.slots[0].level, 1, "a arma nova começa no nível 1")
@@ -108,4 +108,5 @@ func test_loadout_equip_fills_then_replaces_the_active() -> void:
 
 func test_weapon_data_is_valid() -> void:
 	assert_eq(PEN.validate(), "")
-	assert_eq(PEN.max_level(), 5)
+	assert_eq(PEN.max_level(), 7, "D-098: 1 + 6 compras")
+	assert_eq(PEN.validate(load("res://data/weapons/arsenal_tuning.tres")), "", "no teto, dentro dos limites")

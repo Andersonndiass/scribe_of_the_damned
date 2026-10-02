@@ -1,10 +1,11 @@
-[gd_resource type="Resource" script_class="WeaponData" load_steps=9 format=3]
+[gd_resource type="Resource" script_class="WeaponData" load_steps=11 format=3]
 
 [ext_resource type="Script" path="res://src/data/weapon_data.gd" id="1_wd"]
 [ext_resource type="Script" path="res://src/data/weapon_level_data.gd" id="2_lv"]
 [ext_resource type="Texture2D" path="res://assets/placeholders/itm_weapon_aspergillum.tres" id="3_icon"]
+[ext_resource type="Script" path="res://src/data/weapon_upgrade_data.gd" id="9_up"]
 
-[sub_resource type="Resource" id="lv1"]
+[sub_resource type="Resource" id="base"]
 script = ExtResource("2_lv")
 damage = 1
 interval = 1.1
@@ -15,49 +16,45 @@ pierce = 1
 width = 4.0
 spread_deg = 50.0
 
-[sub_resource type="Resource" id="lv2"]
-script = ExtResource("2_lv")
-damage = 1
-interval = 1.1
-range = 64.0
-speed = 240.0
-count = 5
-pierce = 1
-width = 4.0
-spread_deg = 50.0
+[sub_resource type="Resource" id="up_rate"]
+script = ExtResource("9_up")
+id = &"rate"
+label = "UPG_RATE"
+effects = Dictionary[StringName, PackedFloat64Array]({&"interval": PackedFloat64Array(0.97, 0.85)})
+display_field = &"interval"
+display_unit = &"s"
 
-[sub_resource type="Resource" id="lv3"]
-script = ExtResource("2_lv")
-damage = 1
-interval = 1.1
-range = 80.0
-speed = 240.0
-count = 5
-pierce = 1
-width = 4.0
-spread_deg = 50.0
+[sub_resource type="Resource" id="up_drop"]
+script = ExtResource("9_up")
+id = &"drop"
+label = "UPG_DROP"
+effects = Dictionary[StringName, PackedFloat64Array]({&"count": PackedFloat64Array(5.0, 6.0)})
+display_field = &"count"
+display_unit = &""
 
-[sub_resource type="Resource" id="lv4"]
-script = ExtResource("2_lv")
-damage = 1
-interval = 0.85
-range = 80.0
-speed = 240.0
-count = 5
-pierce = 1
-width = 4.0
-spread_deg = 50.0
+[sub_resource type="Resource" id="up_size"]
+script = ExtResource("9_up")
+id = &"size"
+label = "UPG_SIZE"
+effects = Dictionary[StringName, PackedFloat64Array]({&"range": PackedFloat64Array(72.0, 80.0), &"width": PackedFloat64Array(5.0, 6.0)})
+display_field = &"range"
+display_unit = &"px"
 
-[sub_resource type="Resource" id="lv5"]
-script = ExtResource("2_lv")
-damage = 2
-interval = 0.85
-range = 80.0
-speed = 240.0
-count = 5
-pierce = 1
-width = 4.0
-spread_deg = 50.0
+[sub_resource type="Resource" id="up_damage"]
+script = ExtResource("9_up")
+id = &"damage"
+label = "UPG_DAMAGE"
+effects = Dictionary[StringName, PackedFloat64Array]({&"damage": PackedFloat64Array(2.0)})
+display_field = &"damage"
+display_unit = &""
+
+[sub_resource type="Resource" id="up_slow"]
+script = ExtResource("9_up")
+id = &"slow"
+label = "UPG_SLOW"
+effects = Dictionary[StringName, PackedFloat64Array]({&"slow_factor": PackedFloat64Array(0.85, 0.75), &"slow_time": PackedFloat64Array(1.0, 1.0)})
+display_field = &"slow_factor"
+display_unit = &"slow"
 
 [resource]
 script = ExtResource("1_wd")
@@ -69,4 +66,6 @@ pattern = &"fan"
 projectile_kind = 2
 travel_mul = 1.0
 icon = ExtResource("3_icon")
-levels = Array[ExtResource("2_lv")]([SubResource("lv1"), SubResource("lv2"), SubResource("lv3"), SubResource("lv4"), SubResource("lv5")])
+base = SubResource("base")
+upgrades = Array[ExtResource("9_up")]([SubResource("up_rate"), SubResource("up_drop"), SubResource("up_size"), SubResource("up_damage"), SubResource("up_slow")])
+max_upgrades = 6

@@ -52,7 +52,7 @@ func test_all_relic_weapons_are_valid_and_sold() -> void:
 func test_rosary_beads_orbit_and_hit_at_most_every_04s() -> void:
 	_arm(ROSARY)
 	var body: Vector2 = _player.global_position + OrbitWeapon.BODY
-	var i: int = _manager.spawn(_tough, body + Vector2(ROSARY.stats(1).orbit_radius, 0))
+	var i: int = _manager.spawn(_tough, body + Vector2(ROSARY.base.orbit_radius, 0))
 	await wait_physics_frames(100)  # ~1,67 s: uma volta
 	var taken: int = 100 - _manager.hp[i]
 	assert_gt(taken, 0, "as contas passaram por ele")
@@ -66,7 +66,7 @@ func test_rosary_beads_orbit_and_hit_at_most_every_04s() -> void:
 func test_censer_swings_hurts_and_its_trail_outlives_the_swap() -> void:
 	_arm(CENSER)
 	var body: Vector2 = _player.global_position + SwingTrailWeapon.BODY
-	var i: int = _manager.spawn(_tough, body + Vector2(CENSER.stats(1).range, 0))
+	var i: int = _manager.spawn(_tough, body + Vector2(CENSER.base.range, 0))
 	await wait_physics_frames(110)  # pronto em 1,2 s + balanço
 	assert_lt(_manager.hp[i], 100, "a cabeça do turíbulo feriu")
 	assert_true(_player.arsenal.swing.trail.live, "incenso no chão")
@@ -87,7 +87,7 @@ func test_aspergillum_fires_a_fan_toward_the_aim() -> void:
 	proj.set_physics_process(false)
 	proj.clear()
 	assert_true(_player.arsenal._fire(GameState.loadout.active_slot()))
-	assert_eq(proj.count, ASPERGILLUM.stats(1).count, "4 gotas no nível 1")
+	assert_eq(proj.count, ASPERGILLUM.base.count, "4 gotas no nível 1")
 	assert_eq(proj.kind_of(0), 2, "gota de água benta")
 	var first: Vector2 = proj.position_of(0)
 	GameState.aim_with_mouse = was_mouse

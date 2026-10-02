@@ -66,9 +66,9 @@ func _cast(word: WordData) -> void:
 	EventBus.word_cast.emit(word, 1.0, Vector2.ZERO, Vector2.RIGHT)
 
 
-## IGNIS = 5 letras × 10 = 50: sobe para o nível 2 (custa 16) e não chega ao 3 (16 + 40).
+## LUX = 3 letras × 16 = 48 (T1830): sobe para o nível 2 (custa 16) e não chega ao 3 (16 + 40).
 func _level_up() -> void:
-	_cast(IGNIS)
+	_cast(LUX)
 	await _wait(0.05)
 
 
@@ -101,19 +101,20 @@ func test_level_up_beam_slows_time_then_opens_the_seals() -> void:
 
 func test_grace_from_words_kills_combos_and_the_verbum_echo() -> void:
 	_cast(LUX)
-	assert_eq(_gains[-1], [30, &"word"], "10 por letra (017)")
+	var per: int = _flow.tuning.per_letter
+	assert_eq(_gains[-1], [3 * per, &"word"], "Graça por letra (16 desde a T1830)")
 	EventBus.enemy_killed.emit(0, IMP, Vector2.ZERO)
 	assert_eq(_gains[-1], [IMP.grace, &"kill"])
 	EventBus.champion_killed.emit(IMP, Vector2.ZERO)
 	assert_eq(_gains[-1][0], roundi(IMP.grace * (_flow.tuning.champion_mul - 1.0)), "campeão × 5 no total")
 	_cast(LUX)
 	EventBus.combo_cast.emit(load("res://data/combos/vapor.tres"), 1.0)
-	assert_eq(_gains[-1], [15, &"combo"], "a 2ª palavra vale × 1,5")
+	assert_eq(_gains[-1], [roundi(3 * per * 0.5), &"combo"], "a 2ª palavra vale × 1,5")
 	var before: int = _gains.size()
 	EventBus.verbum_echoed.emit(LUX)
 	_cast(LUX)  # o eco repete a palavra; não conta de novo
 	assert_eq(_gains.size(), before + 1)
-	assert_eq(_gains[-1], [60, &"word"], "o eco vale as 6 letras de VERBUM (10 cada)")
+	assert_eq(_gains[-1], [6 * per, &"word"], "o eco vale as 6 letras de VERBUM")
 
 
 # --- Subir de nível ------------------------------------------------------------------------
@@ -151,8 +152,8 @@ func test_the_guard_blocks_early_picks_then_the_blessing_applies() -> void:
 
 
 func test_queued_levels_show_one_offer_after_another_without_unpausing() -> void:
-	_cast(IGNIS)
-	_cast(IGNIS)  # 50 + 50 = 100: passa 16 + 40 e não chega a 120: 2 níveis (018)
+	_cast(LUX)
+	_cast(LUX)  # 48 + 48 = 96: passa 16 + 40 e não chega a 120: 2 níveis (018, T1830)
 	assert_eq(GameState.grace.pending, 2)
 	await _wait(0.05)
 	await _wait(_flow.tuning.announce_time + _flow.tuning.pick_guard + 0.1)

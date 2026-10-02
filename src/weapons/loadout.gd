@@ -51,11 +51,9 @@ func can_level(i: int) -> bool:
 	return i >= 0 and i < slots.size() and slots[i] != null and slots[i].can_level()
 
 
-func level_up(i: int) -> bool:
-	if not can_level(i):
-		return false
-	slots[i].level += 1
-	return true
+## Sobe 1 posto do atributo `uid` da arma do espaço `i` (D-098).
+func rank_up(i: int, uid: StringName) -> bool:
+	return can_level(i) and slots[i].rank_up(uid)
 
 
 func has(id: StringName) -> bool:

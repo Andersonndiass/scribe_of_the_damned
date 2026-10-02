@@ -230,7 +230,7 @@ func _fire_burst(slot: WeaponSlot) -> bool:
 	for k: int in s.count:
 		var t: Vector2 = targets[k % targets.size()]
 		if projectiles.fire(from, t - from, s.speed, s.damage, s.range * w.travel_mul,
-				w.projectile_kind, radius, s.pierce, w.hit_freeze):
+				w.projectile_kind, radius, s.pierce, w.hit_freeze, s.slow_factor, s.slow_time):
 			any = true
 	if any:
 		fired.emit(targets[0])
@@ -256,7 +256,8 @@ func _fire_fan(slot: WeaponSlot) -> bool:
 	for k: int in s.count:
 		var t: float = 0.5 if s.count == 1 else float(k) / float(s.count - 1)
 		var d: Vector2 = dir.rotated(-spread / 2.0 + spread * t)
-		if projectiles.fire(from, d, s.speed, s.damage, s.range * w.travel_mul, w.projectile_kind, radius, s.pierce):
+		if projectiles.fire(from, d, s.speed, s.damage, s.range * w.travel_mul, w.projectile_kind, radius, s.pierce,
+				0.0, s.slow_factor, s.slow_time):
 			any = true
 	if any:
 		fired.emit(from + dir * s.range)

@@ -33,6 +33,8 @@ func hold(owner_pos: Vector2, s: WeaponLevelData, w: WeaponData, mul: float, del
 	zone.radius = s.width / 2.0
 	zone.damage = s.damage
 	zone.interval = s.interval * mul
+	zone.slow_factor = s.slow_factor
+	zone.slow_time = s.slow_time
 	zone.max_targets = 0
 	zone.precision_mul = w.precision_mul
 	zone.tag = w.boss_tag

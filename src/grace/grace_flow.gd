@@ -227,10 +227,15 @@ func _auto_pick_all() -> void:
 		# Simula o jogador que sobe a arma: o selo de arma primeiro (a garantia o põe por último).
 		var o: Array[BlessingData] = _draw_seals()
 		var pick: BlessingData = o[0]
+		var best: int = 1 << 30
 		for b: BlessingData in o:
-			if b.kind == &"weapon_level":
+			if b.kind != &"weapon_level" or GameState.loadout == null:
+				continue
+			var w: WeaponData = GameState.loadout.weapon(b.slot)
+			var score: int = (0 if b.slot == GameState.loadout.active else 100) + w.upgrades.find(w.upgrade(b.target))
+			if score < best:
+				best = score
 				pick = b
-				break
 		_apply(pick)
 	_enter(Phase.IDLE)
 

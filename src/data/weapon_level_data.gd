@@ -21,3 +21,6 @@ extends Resource
 @export var orbit_radius: float = 0.0
 @export var orbit_period: float = 0.0
 @export var trail_life: float = 0.0
+## D-098 (T1830): lentidão no acerto (fator de velocidade e duração); 1 = nenhuma. Piso 0,75.
+@export var slow_factor: float = 1.0
+@export var slow_time: float = 0.0

@@ -28,9 +28,14 @@ static func apply_option(b: BlessingData) -> void:
 	GameState.run_stats.apply(b)  # sem stat: só conta a escolha, como as bênçãos
 	match b.kind:
 		&"weapon_level":
+			# D-098: o selo sobe 1 posto do atributo `target` da arma do espaço `slot`.
 			var lo: Loadout = GameState.loadout
-			if lo != null and lo.level_up(b.slot):
-				EventBus.weapon_leveled.emit(b.slot, lo.weapon(b.slot), lo.slots[b.slot].level)
+			if b.target == &"":
+				push_error("selo de arma sem atributo")
+				return
+			if lo != null and lo.rank_up(b.slot, b.target):
+				var s: WeaponSlot = lo.slots[b.slot]
+				EventBus.weapon_leveled.emit(b.slot, s.weapon, s.level, b.target, s.rank(b.target))
 		&"passive_level":
 			level_repulse()
 		&"potion_level":

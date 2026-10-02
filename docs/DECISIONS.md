@@ -686,6 +686,21 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
   - Bíblia: o raio vai até o cursor, entre `beam_min_length` 32 e o alcance do nível.
   - Falas (story-agent): 38 novas em `data/barks/barks.json` (Anselmo: dano, nível, morte; Frei Ambrósio, o vendedor: abrir, comprar, sem tinta, sair). `BarkDirector`: sorteio no grupo sem repetir, intervalo por grupo (dano 20 s; nível e morte sempre), balão fixo do vendedor na loja.
 
+### D-099 · 2026-10-01 · Letras raras, upgrades por atributo e combo guardado (respostas do autor)
+- **Respostas:** "1a2b3a4a" — Frei Ambrósio aprovado; combo com palavra guardada (2b); upgrades por atributo como a T1830 (3a); a voz do vendedor escolhida pelo Claude (George; o Bill já é o Abade).
+- **Letras (T1830 Parte 1):** `letter_drop_mul` ×0,55 (o1 0,75 e o2 0,56 pela reserva, porque a 1ª palavra chegava tarde); `per_letter` 16. Medido em 8 capítulos: 0,40–0,48 palavras/min, nível final 15–16.
+- **Upgrades (T1830 Parte 2; mechanics-agent):**
+  - `WeaponData` = `base` + `upgrades: Array[WeaponUpgradeData]` + `max_upgrades` 6.
+  - `WeaponSlot.ranks` com cache; nível = 1 + compras (teto 7).
+  - `SealPool` sorteia um atributo livre (até 3 selos da mesma arma, nunca o mesmo atributo 2×). O selo mostra o atributo e "ARMA AGORA > PRÓXIMO".
+  - Lentidão de arma por `EnemyManager.apply_slow`: a mais forte vence; metade no campeão; o chefe é imune.
+  - `?wlevel=N`, sonda e stress sobem N−1 postos pela ordem dos dados.
+  - Stress no teto sem regressão (arsenal p95 55, crucifixo 51).
+- **Pendente:**
+  - ficha do design-agent para o cartão do selo (hoje o texto fica nas linhas do nome e da descrição; a seta é ">");
+  - combo guardado (perguntas do mechanics-agent ao autor);
+  - remedir o ritmo com os atributos.
+
 ## Conflitos abertos
 
 - ~~**C-008 · Menu de escolha da letra (D-085 item 2).**~~ Resolvido: autor "1a 2b 3b e mouse clicando 4a" —

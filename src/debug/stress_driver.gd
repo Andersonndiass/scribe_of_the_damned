@@ -90,7 +90,7 @@ func setup(p_main: Node2D, p_mode: StringName = &"sc001") -> void:
 		for k: int in 2:
 			var w: WeaponData = load("res://data/weapons/%s.tres" % ["censer", "rosary"][k])
 			var ws := WeaponSlot.new(w)
-			ws.level = w.max_level()
+			ws.auto_rank_up_times(w.max_upgrades)
 			GameState.loadout.slots[k] = ws
 		_player.arsenal.enabled = true
 		_player.global_position = BIBLE_PLAYER_AT
@@ -98,7 +98,7 @@ func setup(p_main: Node2D, p_mode: StringName = &"sc001") -> void:
 		for k: int in 2:
 			var cw: WeaponData = load("res://data/weapons/%s.tres" % ["crucifix", "pen"][k])
 			var cs := WeaponSlot.new(cw)
-			cs.level = cw.max_level()
+			cs.auto_rank_up_times(cw.max_upgrades)
 			GameState.loadout.slots[k] = cs
 		GameState.loadout.set_active(0)
 		_player.arsenal.enabled = true
@@ -106,7 +106,7 @@ func setup(p_main: Node2D, p_mode: StringName = &"sc001") -> void:
 	if mode == &"bible":
 		var bible: WeaponData = load("res://data/weapons/bible.tres")
 		var slot := WeaponSlot.new(bible)
-		slot.level = bible.max_level()
+		slot.auto_rank_up_times(bible.max_upgrades)
 		GameState.loadout.slots[0] = slot
 		GameState.loadout.set_active(0)
 		_player.arsenal.enabled = true

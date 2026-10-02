@@ -54,6 +54,8 @@ func hold(p_from: Vector2, dir: Vector2, s: WeaponLevelData, w: WeaponData, inte
 	zone.length = length
 	zone.width = s.width
 	zone.damage = s.damage
+	zone.slow_factor = s.slow_factor
+	zone.slow_time = s.slow_time
 	zone.interval = interval
 	zone.max_targets = s.pierce
 	zone.precision_mul = w.precision_mul

@@ -63,9 +63,12 @@ func _run(seconds: float) -> void:
 func test_new_weapons_are_valid_data() -> void:
 	assert_eq(BIBLE.validate(), "")
 	assert_eq(CRUCIFIX.validate(), "")
-	assert_eq(BIBLE.stats(5).interval, 0.33, "rules-agent: 0,33 s no nível 5")
-	assert_eq(CRUCIFIX.stats(1).speed, 360.0)
-	assert_eq(CRUCIFIX.stats(1).pierce, 8)
+	var top := WeaponSlot.new(BIBLE)
+	for k: int in 4:
+		top.rank_up(&"rate")
+	assert_almost_eq(top.stats().interval, 0.42, 0.0001, "T1830: cadência no teto, 0,42 s")
+	assert_eq(CRUCIFIX.base.speed, 360.0)
+	assert_eq(CRUCIFIX.base.pierce, 8)
 
 
 func test_bible_beam_is_on_while_active_and_follows_the_aim() -> void:
@@ -96,7 +99,7 @@ func test_bible_beam_is_on_while_active_and_follows_the_aim() -> void:
 
 func test_crucifix_winds_up_inside_its_interval() -> void:
 	_arsenal.loadout = Loadout.new(2, CRUCIFIX)
-	var interval: float = CRUCIFIX.stats(1).interval
+	var interval: float = CRUCIFIX.base.interval
 	_run(interval + CRUCIFIX.windup - 0.03)
 	assert_eq(_shots, 0, "pronto no intervalo + 0,2 s de antecipação")
 	_run(0.05)
@@ -112,7 +115,7 @@ func test_swap_during_windup_cancels_without_spending() -> void:
 	_arsenal.loadout.equip(PEN)
 	var spy: Array[int] = [0]
 	_arsenal.windup_started.connect(func(_s: int) -> void: spy[0] += 1)
-	_run(CRUCIFIX.stats(1).interval + 0.1)
+	_run(CRUCIFIX.base.interval + 0.1)
 	assert_eq(spy[0], 1, "começou a subir")
 	_arsenal.switch_to(1)
 	_run(0.5)
@@ -135,7 +138,7 @@ func test_crucifix_projectile_pierces_the_line_once_each() -> void:
 	tough.move_speed = 0.0
 	for x: float in [140.0, 160.0, 180.0]:
 		manager.spawn(tough, Vector2(x, 100))
-	var s: WeaponLevelData = CRUCIFIX.stats(1)
+	var s: WeaponLevelData = CRUCIFIX.base
 	_proj.fire(Vector2(100, 100), Vector2.RIGHT, s.speed, s.damage, s.range * CRUCIFIX.travel_mul,
 		CRUCIFIX.projectile_kind, s.width / 2.0, s.pierce, CRUCIFIX.hit_freeze)
 	_proj.fire(Vector2(100, 100), Vector2.RIGHT, 220.0, 1, 200.0)  # gota da Pena: para no 1º
@@ -164,13 +167,14 @@ func test_charge_feeds_the_hud() -> void:
 
 
 func test_every_crucifix_level_fires() -> void:
-	# Regressão (017 T1742): no nível 3 (intervalo 1,4 s) a recarga em float de 32 bits travava
-	# em 1,39999998 < 1,4 e o Crucifixo nunca atirava.
-	for level: int in range(1, CRUCIFIX.max_level() + 1):
+	# Regressão (017 T1742): a recarga em float de 32 bits travava em 1,39999998 < 1,4 e o Crucifixo
+	# nunca atirava. Desde a D-098, cada posto de cadência (0..4) precisa atirar.
+	for r: int in CRUCIFIX.upgrade(&"rate").max_rank() + 1:
 		_shots = 0
 		_arsenal.loadout = Loadout.new(2, CRUCIFIX)
-		_arsenal.loadout.slots[0].level = level
+		for k: int in r:
+			_arsenal.loadout.slots[0].rank_up(&"rate")
 		_arsenal._timers.fill(0.0)
-		_run(CRUCIFIX.stats(level).interval + CRUCIFIX.windup + 0.1)
-		assert_eq(_shots, 1, "nível %d atira" % level)
+		_run(_arsenal.loadout.slots[0].stats().interval + CRUCIFIX.windup + 0.1)
+		assert_eq(_shots, 1, "cadência no posto %d atira" % r)
 

@@ -294,7 +294,7 @@ func _debug_weapons(args: String) -> void:
 	if lv != null:
 		for s: WeaponSlot in lo.slots:
 			if s != null:
-				s.level = mini(int(lv.get_string(1)), s.weapon.max_level())
+				s.auto_rank_up_times(int(lv.get_string(1)) - 1)  # D-098: nível N = N-1 postos pela ordem dos dados
 
 
 ## É a partida de verdade (hospedada pelo roteador ou aberta como cena), não um teste/sonda/stress.

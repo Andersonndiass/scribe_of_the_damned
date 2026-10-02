@@ -129,7 +129,8 @@ signal potion_leveled(id: StringName, level: int)
 signal potion_bought(id: StringName, price: int)
 signal passive_leveled(id: StringName, level: int)
 signal repulse_pulsed(center: Vector2, radius: float, level: int, pushed: int)
-signal weapon_leveled(slot: int, weapon: WeaponData, level: int)
+## D-098: `upgrade` = o atributo que subiu e `rank` o posto novo dele.
+signal weapon_leveled(slot: int, weapon: WeaponData, level: int, upgrade: StringName, rank: int)
 
 # Cutscenes (008): o fluxo do jogo escuta só o `cutscene_finished`, que sai sempre por último.
 signal cutscene_started(id: StringName)

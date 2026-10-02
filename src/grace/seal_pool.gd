@@ -2,8 +2,10 @@ class_name SealPool
 extends RefCounted
 ## Os 3 selos do level-up na 017 (T1729; rules-agent T1700 §5; mechanics-agent): cada selo sorteia
 ## um tipo pelos pesos do GraceTuning — nível da arma ativa, nível da arma guardada, bênção de
-## status ou nível do ímã reverso — e o tipo sem nada a oferecer sai do sorteio. No máximo 1 selo
-## por espaço de arma; pelo menos 1 selo de arma quando houver arma para subir. Sem nada, a reserva.
+## status ou nível do ímã reverso — e o tipo sem nada a oferecer sai do sorteio. D-098 (T1830): o
+## selo de arma sobe 1 posto de um atributo sorteado entre os livres; até os 3 selos podem ser da
+## mesma arma, nunca o mesmo atributo 2×; pelo menos 1 selo de arma quando houver o que subir.
+## Sem nada, a reserva.
 ## Usa o RNG que receber (o da Graça).
 
 const ACTIVE := &"weapon_active"
@@ -31,16 +33,17 @@ static func draw(tuning: GraceTuning, stats: RunStats, loadout: Loadout, repulse
 		for i: int in loadout.slots.size():
 			if i != active and loadout.slots[i] != null:
 				reserve = i
-	var weapon_ok := {ACTIVE: _can_level(loadout, active), RESERVE: _can_level(loadout, reserve)}
+	var free := {ACTIVE: _free(loadout, active), RESERVE: _free(loadout, reserve)}
+	var slot_of := {ACTIVE: active, RESERVE: reserve}
 	var passive_ok: bool = repulse_level > 0 and repulse_level < repulse_max
 	var out: Array[BlessingData] = []
 	while out.size() < tuning.choices:
 		var kinds: Array[StringName] = []
 		var weights := PackedFloat32Array()
-		if weapon_ok[ACTIVE]:
+		if not (free[ACTIVE] as Array).is_empty():
 			kinds.append(ACTIVE)
 			weights.append(tuning.seal_weapon_active)
-		if weapon_ok[RESERVE]:
+		if not (free[RESERVE] as Array).is_empty():
 			kinds.append(RESERVE)
 			weights.append(tuning.seal_weapon_reserve)
 		if not status_pool.is_empty():
@@ -54,13 +57,10 @@ static func draw(tuning: GraceTuning, stats: RunStats, loadout: Loadout, repulse
 			weights.append(tuning.seal_potion)
 		if kinds.is_empty():
 			break
-		match _weighted(kinds, weights, rng):
-			ACTIVE:
-				out.append(weapon_seal(loadout, active))
-				weapon_ok[ACTIVE] = false
-			RESERVE:
-				out.append(weapon_seal(loadout, reserve))
-				weapon_ok[RESERVE] = false
+		var kind: StringName = _weighted(kinds, weights, rng)
+		match kind:
+			ACTIVE, RESERVE:
+				out.append(_pick_weapon_seal(loadout, slot_of[kind], free[kind], rng))
 			PASSIVE:
 				out.append(passive_seal(repulse_level))
 				passive_ok = false
@@ -74,17 +74,26 @@ static func draw(tuning: GraceTuning, stats: RunStats, loadout: Loadout, repulse
 	# Garantia: com arma para subir e nenhum selo de arma, o último vira a arma (a ativa primeiro).
 	var has_weapon: bool = out.any(func(b: BlessingData) -> bool: return b.kind == &"weapon_level")
 	if not has_weapon and not out.is_empty():
-		var slot: int = active if weapon_ok[ACTIVE] else (reserve if weapon_ok[RESERVE] else -1)
-		if slot >= 0:
-			out[out.size() - 1] = weapon_seal(loadout, slot)
+		var k: StringName = ACTIVE if not (free[ACTIVE] as Array).is_empty() else RESERVE
+		if not (free[k] as Array).is_empty():
+			out[out.size() - 1] = _pick_weapon_seal(loadout, slot_of[k], free[k], rng)
 	if out.is_empty() and tuning.fallback != null:
 		out.append(tuning.fallback)
 	return out
 
 
-static func _can_level(loadout: Loadout, slot: int) -> bool:
-	return loadout != null and slot >= 0 and slot < loadout.slots.size() \
-		and loadout.slots[slot] != null and loadout.slots[slot].can_level()
+## Atributos livres da arma do espaço `slot` (vazio se não há arma ou nada a subir).
+static func _free(loadout: Loadout, slot: int) -> Array[WeaponUpgradeData]:
+	if loadout == null or slot < 0 or slot >= loadout.slots.size() or loadout.slots[slot] == null:
+		return []
+	return loadout.slots[slot].free_upgrades()
+
+
+## Sorteia um atributo livre e o tira da lista (nunca 2× na mesma oferta).
+static func _pick_weapon_seal(loadout: Loadout, slot: int, pool: Array, rng: RandomNumberGenerator) -> BlessingData:
+	var u: WeaponUpgradeData = pool[rng.randi_range(0, pool.size() - 1)]
+	pool.erase(u)
+	return weapon_seal(loadout, slot, u)
 
 
 static func _weighted(kinds: Array[StringName], weights: PackedFloat32Array, rng: RandomNumberGenerator) -> StringName:
@@ -99,16 +108,19 @@ static func _weighted(kinds: Array[StringName], weights: PackedFloat32Array, rng
 	return kinds[kinds.size() - 1]
 
 
-## Selo "+1 nível" da arma do espaço `slot` (ícone e nome da arma).
-static func weapon_seal(loadout: Loadout, slot: int) -> BlessingData:
-	var w: WeaponData = loadout.slots[slot].weapon
+## Selo "+1 posto em `u`" da arma do espaço `slot` (D-098): ícone da arma, o atributo como nome e,
+## embaixo, a arma com o valor de agora e o próximo ("PENA 0,80S > 0,71S").
+static func weapon_seal(loadout: Loadout, slot: int, u: WeaponUpgradeData) -> BlessingData:
+	var s: WeaponSlot = loadout.slots[slot]
+	var w: WeaponData = s.weapon
 	var b := BlessingData.new()
-	b.id = StringName("weapon_level_%s" % w.id)
+	b.id = StringName("weapon_level_%s_%s" % [w.id, u.id])
 	b.kind = &"weapon_level"
 	b.slot = slot
+	b.target = u.id
 	b.icon = w.icon
-	b.display_name = w.display_name
-	b.short_desc = "SEAL_WEAPON_LEVEL_DESC"
+	b.display_name = u.label
+	b.short_desc = "%s %s" % [TranslationServer.translate(w.display_name), u.describe(s.stats(), s.preview(u.id))]
 	return b
 
 

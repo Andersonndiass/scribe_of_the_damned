@@ -351,7 +351,7 @@ func _connect_events_018() -> void:
 	# Armas (017).
 	EventBus.weapon_switched.connect(func(_s: int, _w: WeaponData) -> void: play_event(&"weapon_switched"))
 	EventBus.weapon_equipped.connect(func(_s: int, _w: WeaponData, _l: int) -> void: play_event(&"weapon_equipped"))
-	EventBus.weapon_leveled.connect(func(_s: int, _w: WeaponData, _l: int) -> void: play_event(&"weapon_leveled"))
+	EventBus.weapon_leveled.connect(func(_s: int, _w: WeaponData, _l: int, _u: StringName, _r: int) -> void: play_event(&"weapon_leveled"))
 	EventBus.repulse_pulsed.connect(func(_c: Vector2, _r: float, _l: int, pushed: int) -> void:
 		if pushed > 0:
 			play_event(&"magnet_reverse_push"))

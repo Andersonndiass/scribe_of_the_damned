@@ -442,7 +442,7 @@ func _drive_weapons(delta: float) -> void:
 		if _wlevel > 0:
 			for slot: RefCounted in slots:
 				if slot != null:
-					slot.set("level", clampi(_wlevel, 1, int((slot.get("weapon") as Resource).call("max_level"))))
+					slot.call("auto_rank_up_times", _wlevel - 1)  # D-098: nível N = N-1 postos pela ordem
 	if _swap:
 		_swap_in -= delta
 		if _swap_in <= 0.0:

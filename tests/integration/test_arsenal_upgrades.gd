@@ -55,28 +55,34 @@ func test_every_offer_has_a_weapon_seal_and_one_per_slot() -> void:
 			GameState.loadout, 0, 5, rng)
 		assert_eq(o.size(), 3)
 		var slots: Array[int] = []
+		var seen: Array[String] = []
 		for b: BlessingData in o:
 			if b.kind == &"weapon_level":
-				assert_does_not_have(slots, b.slot, "no máximo 1 selo por espaço")
+				var key: String = "%d:%s" % [b.slot, b.target]
+				assert_does_not_have(seen, key, "D-098: nunca o mesmo atributo 2× na oferta")
+				seen.append(key)
 				slots.append(b.slot)
 			assert_ne(b.kind, &"passive_level", "sem ímã comprado, sem selo de ímã")
 		assert_gt(slots.size(), 0, "pelo menos 1 selo de arma")
 
 
 func test_maxed_weapon_leaves_the_draw_and_magnet_joins_when_bought() -> void:
-	GameState.loadout.slots[0].level = PEN.max_level()
+	GameState.loadout.slots[0].auto_rank_up_times(PEN.max_upgrades)
 	GameState.repulse_level = 1
 	var kinds := {}
 	for b: BlessingData in _draw_many(60):
 		kinds[b.kind] = true
-		assert_ne(b.kind, &"weapon_level", "Pena no nível 5 e sem outra arma: nenhum selo de arma")
+		assert_ne(b.kind, &"weapon_level", "Pena no nível máximo e sem outra arma: nenhum selo de arma")
 	assert_true(kinds.has(&"passive_level"), "com o ímã comprado, o selo do ímã aparece")
 
 
 func test_weapon_seal_levels_the_slot_and_magnet_seal_the_magnet() -> void:
-	var seal: BlessingData = SealPool.weapon_seal(GameState.loadout, 0)
+	var seal: BlessingData = SealPool.weapon_seal(GameState.loadout, 0, PEN.upgrade(&"rate"))
+	assert_eq(seal.target, &"rate")
 	RunUpgrade.apply(seal, _player, null)
 	assert_eq(GameState.loadout.slots[0].level, 2)
+	assert_eq(GameState.loadout.slots[0].rank(&"rate"), 1, "D-098: o selo sobe o atributo dele")
+	assert_almost_eq(GameState.loadout.slots[0].stats().interval, 0.71, 0.0001)
 	GameState.repulse_level = 1
 	RunUpgrade.apply(SealPool.passive_seal(1), _player, null)
 	assert_eq(GameState.repulse_level, 2)

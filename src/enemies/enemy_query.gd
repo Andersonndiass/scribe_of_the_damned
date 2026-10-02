@@ -33,18 +33,19 @@ static func nearest_list(pos: Vector2, radius: float, n: int) -> PackedVector2Ar
 	return PackedVector2Array() if one == Vector2.INF else PackedVector2Array([one])
 
 
-static func hit(pos: Vector2, radius: float, damage: int) -> bool:
+static func hit(pos: Vector2, radius: float, damage: int, slow_f: float = 1.0, slow_t: float = 0.0) -> bool:
 	if _manager != null:
-		return _manager.query_hit(pos, radius, damage)
+		return _manager.query_hit(pos, radius, damage, slow_f, slow_t)
 	if provider == null:
 		return false
 	return provider.call(&"query_hit", pos, radius, damage)
 
 
 ## Acerto que atravessa (017 Crucifixo): uids novos atingidos (-1 = chefe). Só com o EnemyManager.
-static func hit_pierce(pos: Vector2, radius: float, damage: int, already: PackedInt32Array, freeze: float, max_new: int) -> PackedInt32Array:
+static func hit_pierce(pos: Vector2, radius: float, damage: int, already: PackedInt32Array, freeze: float, max_new: int,
+		slow_f: float = 1.0, slow_t: float = 0.0) -> PackedInt32Array:
 	if _manager != null:
-		return _manager.query_hit_pierce(pos, radius, damage, already, freeze, max_new)
+		return _manager.query_hit_pierce(pos, radius, damage, already, freeze, max_new, slow_f, slow_t)
 	if provider != null and max_new > 0 and provider.call(&"query_hit", pos, radius, damage):
 		return PackedInt32Array([0])
 	return PackedInt32Array()

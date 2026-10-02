@@ -25,6 +25,9 @@ var _ready_at: Dictionary[int, float] = {}
 var _carry: Dictionary[int, float] = {}
 ## Quantos acertos esta zona já deu (testes, sonda).
 var hits: int = 0
+## Lentidão no acerto (D-098; 1 = nenhuma); o EnemyManager aplica em quem sobreviveu.
+var slow_factor: float = 1.0
+var slow_time: float = 0.0
 ## Arma dona (som do acerto, `EventBus.weapon_hit`); vazio = sem som.
 var weapon_id: StringName = &""
 

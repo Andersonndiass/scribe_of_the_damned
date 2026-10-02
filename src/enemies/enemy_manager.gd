@@ -59,6 +59,8 @@ var flash_left := PackedFloat32Array()
 var stun_left := PackedFloat32Array()
 ## Congelamento curto do golpe do Crucifixo (017; animation-agent: 50 ms), só em quem foi atingido.
 var freeze_left := PackedFloat32Array()
+## Limites das armas (D-098): a lentidão de arma no campeão vale `champion_slow_mul`.
+const ARSENAL_TUNING := preload("res://data/weapons/arsenal_tuning.tres")
 var slow_factor := PackedFloat32Array()
 var slow_left := PackedFloat32Array()
 var anim_phase := PackedFloat32Array()
@@ -477,15 +479,17 @@ func _apply_weapon_zones() -> void:
 			var uid: int = uid_of[i]
 			if zone.ready_for(uid, clock):
 				var amount: int = zone.take_hit(uid, clock, champion[i] == 1)
-				if amount > 0:
-					damage_at(i, amount)
+				var died: bool = amount > 0 and damage_at(i, amount)
+				if not died and zone.slow_factor < 1.0:
+					apply_slow(i, zone.slow_factor, zone.slow_time)
 	Prof.stop(&"inimigos_zonas_arma", t0)
 
 
 ## Acerto que atravessa (017 Crucifixo): fere todos os que o círculo toca e ainda não estão em
 ## `already` (uids; -1 = chefe), congela cada um `freeze` s e devolve os uids novos. O projétil
 ## guarda a lista para não ferir o mesmo inimigo duas vezes.
-func query_hit_pierce(pos: Vector2, radius: float, damage: int, already: PackedInt32Array, freeze: float, max_new: int) -> PackedInt32Array:
+func query_hit_pierce(pos: Vector2, radius: float, damage: int, already: PackedInt32Array, freeze: float, max_new: int,
+		slow_f: float = 1.0, slow_t: float = 0.0) -> PackedInt32Array:
 	var got := PackedInt32Array()
 	if max_new <= 0:
 		return got
@@ -509,7 +513,8 @@ func query_hit_pierce(pos: Vector2, radius: float, damage: int, already: PackedI
 		var i: int = hits[k]
 		got.append(uid_of[i])
 		freeze_left[i] = maxf(freeze_left[i], freeze)
-		damage_at(i, damage)
+		if not damage_at(i, damage) and slow_f < 1.0:
+			apply_slow(i, slow_f, slow_t)
 	return got
 
 
@@ -518,6 +523,21 @@ func _contact_damage(i: int, d: EnemyData) -> int:
 	if state[i] == EnemyBehavior.STATE_DASH and d.dash_contact_damage > 0:
 		return d.dash_contact_damage
 	return d.contact_damage
+
+
+## Lentidão de arma (D-098; mechanics-agent): a mais forte vence e o tempo recomeça; a igual
+## renova; a mais fraca é ignorada (não estende o AQUA). Campeão: metade. O chefe não passa aqui.
+func apply_slow(i: int, factor: float, time: float) -> void:
+	if i < 0 or i >= count or factor >= 1.0 or time <= 0.0:
+		return
+	var f: float = factor
+	if champion[i] == 1:
+		f = 1.0 - (1.0 - factor) * ARSENAL_TUNING.champion_slow_mul
+	if f < slow_factor[i] - 0.001:
+		slow_factor[i] = f
+		slow_left[i] = time
+	elif absf(f - slow_factor[i]) <= 0.001:
+		slow_left[i] = maxf(slow_left[i], time)
 
 
 ## Dano num slot. Retorna true se matou.
@@ -601,19 +621,19 @@ func query_nearest_list(pos: Vector2, radius: float, n: int) -> PackedVector2Arr
 	return out
 
 
-func query_hit(pos: Vector2, radius: float, damage: int) -> bool:
+func query_hit(pos: Vector2, radius: float, damage: int, slow_f: float = 1.0, slow_t: float = 0.0) -> bool:
 	if _boss_live() and _boss_in_circle(pos, radius):
 		_hit_boss(damage)
 		return true
 	if count == 0:
 		return false
 	var t0: int = Prof.start()
-	var hit: bool = _query_hit(pos, radius, damage)
+	var hit: bool = _query_hit(pos, radius, damage, slow_f, slow_t)
 	Prof.stop(&"projeteis_acerto", t0)
 	return hit
 
 
-func _query_hit(pos: Vector2, radius: float, damage: int) -> bool:
+func _query_hit(pos: Vector2, radius: float, damage: int, slow_f: float = 1.0, slow_t: float = 0.0) -> bool:
 	_rebuild_hash_if_dirty()
 	var reach: float = radius + MAX_ENEMY_RADIUS + QUERY_PAD
 	var cs: PackedInt32Array = _hash.cell_start()
@@ -635,7 +655,8 @@ func _query_hit(pos: Vector2, radius: float, damage: int) -> bool:
 					continue
 				var r: float = radius + radius_of[j]
 				if positions[j].distance_squared_to(pos) <= r * r:
-					damage_at(j, damage)
+					if not damage_at(j, damage) and slow_f < 1.0:
+						apply_slow(j, slow_f, slow_t)
 					return true
 	return false
 
