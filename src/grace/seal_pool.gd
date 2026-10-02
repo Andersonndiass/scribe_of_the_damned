@@ -120,7 +120,12 @@ static func weapon_seal(loadout: Loadout, slot: int, u: WeaponUpgradeData) -> Bl
 	b.target = u.id
 	b.icon = w.icon
 	b.display_name = u.label
-	b.short_desc = "%s %s" % [TranslationServer.translate(w.display_name), u.describe(s.stats(), s.preview(u.id))]
+	var now: WeaponLevelData = s.stats()
+	var next: WeaponLevelData = s.preview(u.id)
+	b.short_desc = "%s %s" % [TranslationServer.translate(w.display_name), u.describe(now, next)]  # reserva (testes, log)
+	b.subtitle = w.display_name
+	b.value_now = u.format_value(now.get(u.display_field))
+	b.value_next = u.format_value(next.get(u.display_field))
 	return b
 
 

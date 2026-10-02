@@ -12,6 +12,11 @@ const CLICK_H := 160.0
 const HOVER_LIFT := 4.0
 const TEXT_W := 20
 const ICON_POS := Vector2(40, 10)
+## Selo de arma (D-099; design-agent): arma, "agora → próximo" e o nível.
+const SUBTITLE_Y := 72.0
+const VALUE_Y := 88.0
+const LEVEL_Y := 100.0
+const ARROW_GAP := 3
 const SEAL_CENTER := Vector2(64, 138)
 const PICK_ACTIONS: Array[StringName] = [&"grace_pick_1", &"grace_pick_2", &"grace_pick_3"]
 const TITLE_Y := 47.0
@@ -272,13 +277,19 @@ func _draw_seal(c: CanvasItem, i: int, age: float, st: float) -> void:
 	if b.icon != null:
 		c.draw_texture_rect(b.icon, Rect2(o + ICON_POS, Vector2(48, 48)), false)
 	# L4 nome, divisor e frase.
+	var weapon_card: bool = b.kind == &"weapon_level" and b.value_now != ""
 	var name_lines: PackedStringArray = UiStyle.wrap_words(tr(b.display_name), TEXT_W)
-	for n: int in mini(2, name_lines.size()):
+	for n: int in mini(1 if weapon_card else 2, name_lines.size()):
 		PixelFont.draw_centered(c, name_lines[n], o.x + CARD.x / 2.0, o.y + 64 + n * 8, Palette.INK)
+	if weapon_card:
+		PixelFont.draw_centered(c, tr(b.subtitle), o.x + CARD.x / 2.0, o.y + SUBTITLE_Y, UiStyle.text_on_light(true))
 	c.draw_rect(Rect2(o.x + 12, o.y + 82, 104, 1), Palette.PARCHMENT_OLD)
-	var desc_lines: PackedStringArray = UiStyle.wrap_words(tr(b.short_desc), TEXT_W)
-	for n: int in mini(3, desc_lines.size()):
-		PixelFont.draw_centered(c, desc_lines[n], o.x + CARD.x / 2.0, o.y + 88 + n * 8, UiStyle.text_on_light(true))
+	if weapon_card:
+		_draw_weapon_lines(c, b, o)
+	else:
+		var desc_lines: PackedStringArray = UiStyle.wrap_words(tr(b.short_desc), TEXT_W)
+		for n: int in mini(3, desc_lines.size()):
+			PixelFont.draw_centered(c, desc_lines[n], o.x + CARD.x / 2.0, o.y + 88 + n * 8, UiStyle.text_on_light(true))
 	# L4b contas do teto.
 	_draw_beads(c, b, o)
 	# L5 etiqueta da tecla (travada até poder escolher e enquanto a tecla segue apertada).
@@ -322,6 +333,24 @@ func _draw_beads(c: CanvasItem, b: BlessingData, o: Vector2) -> void:
 		else:
 			c.draw_rect(r, Palette.INK if UiStyle.high() else Palette.INK_SOFT)
 			c.draw_rect(r.grow(-1), Palette.PARCHMENT_OLD)
+
+
+## Selo de arma (D-099; design-agent): "agora → próximo" e "NV n → n+1/7", centrados.
+func _draw_weapon_lines(c: CanvasItem, b: BlessingData, o: Vector2) -> void:
+	_draw_change(c, b.value_now, b.value_next, o.x + CARD.x / 2.0, o.y + VALUE_Y)
+	var lo: Loadout = GameState.loadout
+	if lo != null and lo.slots[b.slot] != null:
+		var s: WeaponSlot = lo.slots[b.slot]
+		_draw_change(c, "%s %d" % [tr(&"SEAL_LEVEL_SHORT"), s.level],
+			"%d/%d" % [s.level + 1, s.weapon.max_level()], o.x + CARD.x / 2.0, o.y + LEVEL_Y)
+
+
+func _draw_change(c: CanvasItem, now: String, next: String, cx: float, y: float) -> void:
+	var w: float = PixelFont.width(now) + ARROW_GAP + 5 + ARROW_GAP + PixelFont.width(next)
+	var x: float = roundf(cx - w / 2.0)
+	PixelFont.draw(c, now, Vector2(x, y), UiStyle.text_on_light(true))
+	UiStyle.draw_arrow(c, Vector2(x + PixelFont.width(now) + ARROW_GAP, y), Palette.INK)
+	PixelFont.draw(c, next, Vector2(x + PixelFont.width(now) + ARROW_GAP * 2 + 5, y), Palette.INK)
 
 
 ## Escolhas já feitas: compras da bênção, ou níveis acima do 1 da arma/do ímã.

@@ -7,6 +7,8 @@ extends RefCounted
 
 var word: WordData = null
 var rare_count: int = 0
+## Bit i = a letra i é rara (o HUD sublinha).
+var rare_mask: int = 0
 var letters := PackedStringArray()
 
 
@@ -18,6 +20,11 @@ func is_held() -> bool:
 func store(taken: Dictionary, p_word: WordData) -> void:
 	word = p_word
 	rare_count = int(taken.get("rare_count", 0))
+	rare_mask = 0
+	var rare: Array = taken.get("rare", [])
+	for i: int in rare.size():
+		if rare[i]:
+			rare_mask |= 1 << i
 	letters = taken.get("letters", PackedStringArray())
 
 
@@ -33,4 +40,5 @@ func take() -> Dictionary:
 func clear() -> void:
 	word = null
 	rare_count = 0
+	rare_mask = 0
 	letters = PackedStringArray()

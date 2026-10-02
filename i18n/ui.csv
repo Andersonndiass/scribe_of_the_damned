@@ -306,6 +306,7 @@ UPG_DAMAGE,DANO,DAMAGE
 UPG_SLOW,LENTIDÃO,SLOW
 UPG_SPIN,GIRO,SPIN
 UPG_INCENSE,INCENSO,INCENSE
+SEAL_LEVEL_SHORT,NV,LV
 WPN_PEN,Pena do Copista,Copyist's Quill
 WPN_PEN_DESC,Gota de tinta no mais próximo,Ink drop at the nearest foe
 WPN_BIBLE,Bíblia,Bible

@@ -23,10 +23,10 @@ func max_rank() -> int:
 
 ## O texto do selo: o valor de agora e o do próximo posto.
 func describe(now: WeaponLevelData, next: WeaponLevelData) -> String:
-	return "%s > %s" % [_fmt(now.get(display_field)), _fmt(next.get(display_field))]
+	return "%s > %s" % [format_value(now.get(display_field)), format_value(next.get(display_field))]
 
 
-func _fmt(v: Variant) -> String:
+func format_value(v: Variant) -> String:
 	match display_unit:
 		&"slow":
 			return "%d%%" % roundi((1.0 - float(v)) * 100.0)

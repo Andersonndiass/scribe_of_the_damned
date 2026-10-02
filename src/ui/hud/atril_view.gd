@@ -68,7 +68,7 @@ func _ready() -> void:
 	EventBus.atril_purged.connect(func(_l: PackedStringArray, _p: Vector2) -> void: _play(Anim.PURGE))
 	EventBus.heresy_committed.connect(func(_p: Vector2) -> void: _play(Anim.HERESY))
 	EventBus.letter_rejected.connect(func(_l: String) -> void: _play(Anim.REJECT))
-	EventBus.word_stored.connect(func(_w: WordData, _r: int, partners: PackedStringArray) -> void:
+	EventBus.word_stored.connect(func(_w: WordData, _r: int, partners: PackedStringArray, _m: int) -> void:
 		combo_partners = partners
 		queue_redraw())
 	EventBus.verbum_echoed.connect(func(w: WordData) -> void:

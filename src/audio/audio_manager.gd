@@ -325,7 +325,7 @@ func _connect_events() -> void:
 		play_event(&"heresy_committed")
 		play_latin(HERESY_VOICE))
 	EventBus.atril_purged.connect(func(_l: PackedStringArray, _p: Vector2) -> void: play_event(&"atril_purged"))
-	EventBus.word_stored.connect(func(_w: WordData, _r: int, partners: PackedStringArray) -> void:
+	EventBus.word_stored.connect(func(_w: WordData, _r: int, partners: PackedStringArray, _m: int) -> void:
 		play_event(&"atril_valid")  # D-099: a palavra pronta vai para a guarda
 		if not partners.is_empty():
 			play_event(&"word_stored"))  # e há combo possível com ela

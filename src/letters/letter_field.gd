@@ -104,7 +104,7 @@ func settle() -> void:
 		return
 	var word: WordData = lexicon.word_for(atril.text())
 	guard.store(atril.take_all(), word)
-	EventBus.word_stored.emit(word, guard.rare_count, partners_of.call(word))
+	EventBus.word_stored.emit(word, guard.rare_count, partners_of.call(word), guard.rare_mask)
 
 
 ## Publica o estado do atril e as dicas (FR-023) no EventBus (antes, guarda a palavra pronta).

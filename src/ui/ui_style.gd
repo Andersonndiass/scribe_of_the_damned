@@ -269,3 +269,13 @@ static func _dither_tex(color: Color, quarters: int) -> ImageTexture:
 					img.set_pixel(x, y, color)
 		_dither_cache[key] = ImageTexture.create_from_image(img)
 	return _dither_cache[key]
+
+
+## Seta 5×5 (design-agent, D-099): "agora → próximo" nos selos e na loja; a fonte não tem "→".
+const ARROW: Array[Vector2i] = [Vector2i(2, 0), Vector2i(3, 1), Vector2i(0, 2), Vector2i(1, 2),
+	Vector2i(2, 2), Vector2i(3, 2), Vector2i(4, 2), Vector2i(3, 3), Vector2i(2, 4)]
+
+
+static func draw_arrow(ci: CanvasItem, pos: Vector2, c: Color) -> void:
+	for p: Vector2i in ARROW:
+		ci.draw_rect(Rect2(pos + Vector2(p), Vector2.ONE), c)

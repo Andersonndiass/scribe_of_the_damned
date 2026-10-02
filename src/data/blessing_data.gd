@@ -13,3 +13,7 @@ extends StatUpgradeData
 var slot: int = -1
 ## 018: selo de poção — o id da poção que sobe (`kind == &"potion_level"`).
 var target: StringName = &""
+## Selo de arma (D-099; design-agent): a arma e o valor de agora → o próximo, montados na hora.
+var subtitle: String = ""
+var value_now: String = ""
+var value_next: String = ""

@@ -25,7 +25,7 @@ func _ready() -> void:
 	EventBus.word_cast.connect(func(w: WordData, _p: float, _o: Vector2, _d: Vector2) -> void:
 		discover(&"words", w.id))
 	EventBus.combo_cast.connect(func(c: ComboData, _p: float) -> void: discover(&"combos", c.id))
-	EventBus.word_stored.connect(func(w: WordData, _r: int, _pa: PackedStringArray) -> void: discover(&"words", w.id))
+	EventBus.word_stored.connect(func(w: WordData, _r: int, _pa: PackedStringArray, _m: int) -> void: discover(&"words", w.id))
 	EventBus.enemy_spawned.connect(func(_s: int, d: EnemyData) -> void: discover(&"enemies", d.id))
 	EventBus.boss_spawned.connect(func(b: BossData) -> void: discover(&"bosses", b.id))
 	EventBus.champion_spawned.connect(func(_s: int, _d: EnemyData) -> void: discover(&"enemies", CHAMPION_ID))
