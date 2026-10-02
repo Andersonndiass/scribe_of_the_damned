@@ -451,7 +451,7 @@ func _draw_bag() -> void:
 		var asking: bool = focus and (k == confirm_sell or pick_relic_card >= 0)
 		if asking:
 			c.draw_rect(Rect2(r.position.x, price_y, SELL_CELL.x, 10), Palette.INK)
-		PixelFont.draw(c, "+%d" % _bag_price(k), Vector2(r.position.x + 4, price_y + 2), Palette.CHALK if asking else Palette.INK)
+		PixelFont.draw(c, tr(&"SHOP_SELL_PRICE").format({"n": _bag_price(k)}), Vector2(r.position.x + 4, price_y + 2), Palette.CHALK if asking else Palette.INK)
 
 
 func shelf_rect(i: int) -> Rect2:

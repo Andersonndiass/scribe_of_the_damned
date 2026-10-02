@@ -171,7 +171,7 @@ func _draw_relic(i: int, rs: RelicSlot) -> void:
 	var tag := Rect2(x, RELIC_TAG_Y, RELIC_SLOT, 9)
 	draw_rect(tag, edge)
 	draw_rect(tag.grow(-1), fill if not empty_shield else Palette.PARCHMENT_OLD)
-	PixelFont.draw(self, "%s%d" % [tr(&"SEAL_LEVEL_SHORT"), rs.level], Vector2(x + 2, RELIC_TAG_Y + 2), edge)
+	PixelFont.draw(self, tr(&"HUD_RELIC_LEVEL").format({"n": rs.level}), Vector2(x + 2, RELIC_TAG_Y + 2), edge)
 	var bar := Rect2(x, RELIC_BAR_Y, RELIC_SLOT, RELIC_BAR_H)
 	if rs.relic.effect == &"absorb" and s.charges > 1:
 		var seg: float = (RELIC_SLOT - 2 - 2) / float(s.charges)
