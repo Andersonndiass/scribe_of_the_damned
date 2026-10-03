@@ -26,9 +26,10 @@ VOICES = {
     # D-098: Frei Ambrósio, o Alfarrabista. George (o Bill já é o Abade): instável e lento = seco, cansado.
     'Frei Ambrósio, o Alfarrabista': ('JBFqnCBsd6RMkjVDRZzb', 0.30, 0.75, 0.40, 0.85),
     # 010 (D-101): os 4 escribas, pelas fichas de voz do VOICE-LINES.md.
-    'Irmã Hildegarda': ('hFgOzpmS0CMtL2to8sAl', 0.60, 0.75, 0.15, 0.90),  # Camille: madura, grave, calma
+    # Plano grátis: só vozes prontas (premade) pela API; as da biblioteca dão 402.
+    'Irmã Hildegarda': ('pFZP5JQG7iQjIQuC4Bku', 0.60, 0.75, 0.15, 0.90),  # Lily: madura, aveludada, calma
     'Frei Tomé': ('nPczCjzI2devNBz1zQrb', 0.55, 0.75, 0.05, 0.88),        # Brian: grave, deadpan
-    'O Iluminador': ('GPrWfMLdMqObUgameh5J', 0.35, 0.75, 0.45, 0.95),     # Adolpho: teatral, PT nativo
+    'O Iluminador': ('N2lVS1w4EtoT3dr4eOWO', 0.35, 0.75, 0.45, 0.95),     # Callum: intenso, teatral
     'Noviço Beda': ('TX3LPaxmHKxFdv7VOQHJ', 0.30, 0.75, 0.30, 1.08),      # Liam: jovem, atropelado
 }
 LANGS = (('texto_pt_BR', 'arquivo_pt_BR', 'pt'), ('texto_en', 'arquivo_en', 'en'))
