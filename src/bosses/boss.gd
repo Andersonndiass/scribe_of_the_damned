@@ -7,11 +7,8 @@ extends BossHurtbox
 ## PhaseShift/Stunned/Dead. Os executores dos ataques são criados no _ready (nunca na luta).
 
 const FLASH_TIME := 0.06
-## Onde o chefe fica: faixa de cima da página (FR-610).
-const HOME := Vector2(320, 110)
-const MIN_Y := 70.0
-const MAX_Y := 150.0
-const SPRITE_HALF := Vector2(32, 32)
+## Quadro das camadas de fase animadas (o fogo da Asmodeus).
+const OVERLAY_FRAME := 0.1
 const SAFETY_CHECK := 0.25
 const EXECUTORS: Dictionary = {
 	&"beam": preload("res://src/bosses/attacks/beam_attack.gd"),
@@ -20,6 +17,8 @@ const EXECUTORS: Dictionary = {
 	&"rotating_cross": preload("res://src/bosses/attacks/cross_attack.gd"),
 	&"summon": preload("res://src/bosses/attacks/summon_attack.gd"),
 	&"erasure": preload("res://src/bosses/attacks/erasure_attack.gd"),
+	&"gust": preload("res://src/bosses/attacks/gust_attack.gd"),
+	&"dust": preload("res://src/bosses/attacks/dust_attack.gd"),
 }
 
 @export var data: BossData
@@ -71,7 +70,9 @@ func start_fight(skip_enter: bool = false) -> void:
 	clock = 0.0
 	if letter_field != null:
 		letter_field.erase_grace = data.erasure_grace
-	global_position = HOME
+	global_position = data.home
+	if data.letter_drop_mul >= 0.0:
+		GameState.letter_drop_mul = data.letter_drop_mul
 	manager.boss_target = self
 	fighting = true
 	visible = true
@@ -166,7 +167,7 @@ func _physics_process(delta: float) -> void:
 
 func _drift(delta: float) -> void:
 	var target := Vector2(clampf(manager.player_body().x, Arena.PLAYABLE.position.x + 40.0, Arena.PLAYABLE.end.x - 40.0),
-		clampf(global_position.y, MIN_Y, MAX_Y))
+		clampf(global_position.y, data.min_y, data.max_y))
 	global_position = global_position.move_toward(target, data.move_speed * delta)
 
 
@@ -212,16 +213,17 @@ func _draw() -> void:
 	elif st == &"Exposed":
 		frame = 0
 	var tex: Texture2D = frames.get_frame_texture(anim, frame)
-	var top_left: Vector2 = -SPRITE_HALF
+	var size := Vector2(data.sprite_size)
+	var top_left: Vector2 = -size / 2.0
 	if reveal < 1.0:
-		var h: float = roundf(64.0 * reveal)
-		draw_texture_rect_region(tex, Rect2(top_left + Vector2(0, 64.0 - h), Vector2(64, h)), Rect2(0, 64.0 - h, 64, h))
+		var h: float = roundf(size.y * reveal)
+		draw_texture_rect_region(tex, Rect2(top_left + Vector2(0, size.y - h), Vector2(size.x, h)), Rect2(0, size.y - h, size.x, h))
 		return
 	draw_texture(tex, top_left)
-	if filter != null and filter.phase_index >= 1 and st != &"Dead":
-		draw_texture(frames.get_frame_texture(&"crack", 0), top_left)
-	if filter != null and filter.phase_index >= 2 and st != &"Dead":
-		draw_texture(frames.get_frame_texture(&"flame", int(clock / 0.1) % 2), top_left)
+	for k: int in data.phase_overlays.size():
+		var ov: StringName = data.phase_overlays[k]
+		if filter != null and filter.phase_index >= k + 1 and st != &"Dead" and frames.has_animation(ov):
+			draw_texture(frames.get_frame_texture(ov, int(clock / OVERLAY_FRAME) % frames.get_frame_count(ov)), top_left)
 	if st == &"Exposed" and int(clock / 0.1) % 2 == 0:
 		draw_rect(Rect2(top_left + Vector2(20, 14), Vector2(24, 32)), Palette.CHALK, false, 1.0)
 	if _immune_left > 0.0:

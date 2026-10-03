@@ -1,5 +1,6 @@
-[gd_resource type="Resource" script_class="ChapterData" load_steps=12 format=3]
+[gd_resource type="Resource" script_class="ChapterData" load_steps=13 format=3]
 
+[ext_resource type="Resource" path="res://data/bosses/mae_tracas.tres" id="99_boss"]
 [ext_resource type="Script" path="res://src/data/chapter_data.gd" id="1_cd"]
 [ext_resource type="Script" path="res://src/data/wave_data.gd" id="2_wd"]
 [ext_resource type="Resource" path="res://data/waves/chapter_2/wave_01.tres" id="w1"]
@@ -18,6 +19,7 @@
 script = ExtResource("1_cd")
 chapter = 2
 waves = Array[ExtResource("2_wd")]([ExtResource("w1"), ExtResource("w2"), ExtResource("w3"), ExtResource("w4"), ExtResource("w5"), ExtResource("w6"), ExtResource("w7"), ExtResource("w8"), ExtResource("w9")])
+boss = ExtResource("99_boss")
 intro_cutscenes = Array[StringName]([&"c2_00"])
 arena = ExtResource("a_arena")
 boss_stage = 3

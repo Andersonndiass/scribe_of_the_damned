@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="AttackData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/data/attack_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"wing_gust"
+kind = &"gust"
+telegraph = 0.8
+active = 0.3
+recover = 0.5
+damage = 1
+reach = 128.0
+arc_degrees = 100.0
+push = 64.0
+push_time = 0.2

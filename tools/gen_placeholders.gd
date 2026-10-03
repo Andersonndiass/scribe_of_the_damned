@@ -251,6 +251,7 @@ func _init() -> void:
 	ok = _shop_icons() and ok
 	ok = _world_sprites() and ok
 	ok = _asmodeus() and ok
+	ok = _mae_tracas() and ok
 	quit(0 if ok else 1)
 
 
@@ -453,8 +454,8 @@ func _asm_body(phase: int, raised: bool) -> Image:
 
 func _asm_recolor(src: Image, c: Color) -> Image:
 	var img: Image = src.duplicate()
-	for y: int in 64:
-		for x: int in 64:
+	for y: int in img.get_height():
+		for x: int in img.get_width():
 			var p: Color = img.get_pixel(x, y)
 			if p.a > 0.5 and (p.is_equal_approx(COLORS["k"])):
 				img.set_pixel(x, y, c)
@@ -463,8 +464,8 @@ func _asm_recolor(src: Image, c: Color) -> Image:
 
 func _asm_dither(src: Image, parity: int) -> Image:
 	var img: Image = src.duplicate()
-	for y: int in 64:
-		for x: int in 64:
+	for y: int in img.get_height():
+		for x: int in img.get_width():
 			if img.get_pixel(x, y).a > 0.5 and (x + y + parity) % 2 == 0:
 				img.set_pixel(x, y, COLORS["P"])
 	return img
@@ -474,8 +475,8 @@ func _asm_dither(src: Image, parity: int) -> Image:
 func _asm_bayer(src: Image, level: int) -> Image:
 	var bayer: Array[int] = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5]
 	var img: Image = src.duplicate()
-	for y: int in 64:
-		for x: int in 64:
+	for y: int in img.get_height():
+		for x: int in img.get_width():
 			if bayer[(y % 4) * 4 + (x % 4)] < level * 4:
 				img.set_pixel(x, y, Color(0, 0, 0, 0))
 	return img
@@ -609,3 +610,80 @@ func _save(res: Resource, file: String) -> bool:
 		return false
 	print("gen_placeholders: %s" % file)
 	return true
+
+
+## 012 — A Mãe das Traças 80×64 (ficha 17; placeholder até a arte): asas PARCHMENT_OLD com contorno
+## INK e ocelo INK_SOFT/CHALK, corpo INK_SOFT, cabeça com 2 olhos CHALK e antenas. Idle = 3 batidas de
+## asa; telegrafia = asas erguidas. Camadas: "crack" (F2, rasgos nas asas) e "wings" (F3, nervuras
+## de asa esquelética).
+func _mae_tracas() -> bool:
+	var frames := SpriteFrames.new()
+	frames.remove_animation(&"default")
+	var body0: Image = _mae_body(18, 28)
+	var anims: Dictionary = {
+		&"idle": [body0, _mae_body(16, 28), _mae_body(18, 29)],
+		&"telegraph": [_mae_body(20, 25)],
+		&"hit": [_asm_recolor(body0, COLORS["C"])],
+		&"invuln": [_asm_dither(body0, 0), _asm_dither(body0, 1)],
+		&"death": [_asm_bayer(body0, 1), _asm_bayer(body0, 2), _asm_bayer(body0, 3), _asm_bayer(body0, 4)],
+		&"crack": [_mae_crack()],
+		&"wings": [_mae_veins()],
+	}
+	for anim: StringName in anims:
+		frames.add_animation(anim)
+		frames.set_animation_loop(anim, anim != &"death")
+		for img: Image in anims[anim]:
+			frames.add_frame(anim, ImageTexture.create_from_image(img))
+	body0.save_png(OUT + "bss_mae_tracas_idle.png")
+	return _save(frames, "bss_mae_tracas_frames.tres")
+
+
+func _mae_body(wing_ry: int, wing_cy: int) -> Image:
+	var img := Image.create_empty(80, 64, false, Image.FORMAT_RGBA8)
+	var K: Color = COLORS["K"]
+	var k: Color = COLORS["k"]
+	for side: int in [-1, 1]:
+		var cx: int = 40 + side * 19
+		_ellipse(img, cx, wing_cy, 19, wing_ry, K)
+		_ellipse(img, cx, wing_cy, 18, wing_ry - 1, COLORS["O"])
+		_ellipse(img, cx + side * 3, wing_cy, 5, 5, K)
+		_ellipse(img, cx + side * 3, wing_cy, 4, 4, k)
+		_box(img, cx + side * 3 - 1, wing_cy - 1, 2, 2, COLORS["C"])
+	# Corpo e cabeça.
+	_box(img, 34, 16, 12, 40, K)
+	_box(img, 35, 17, 10, 38, k)
+	for y: int in range(22, 54, 5):
+		_box(img, 35, y, 10, 1, K)
+	_ellipse(img, 40, 14, 7, 6, K)
+	_ellipse(img, 40, 14, 6, 5, k)
+	_box(img, 36, 12, 2, 2, COLORS["C"])
+	_box(img, 42, 12, 2, 2, COLORS["C"])
+	_line(img, Vector2i(37, 8), Vector2i(31, 1), K)
+	_line(img, Vector2i(43, 8), Vector2i(49, 1), K)
+	return img
+
+
+func _mae_crack() -> Image:
+	var img := Image.create_empty(80, 64, false, Image.FORMAT_RGBA8)
+	var K: Color = COLORS["K"]
+	for p: Array in [[Vector2i(6, 22), Vector2i(12, 26)], [Vector2i(74, 34), Vector2i(68, 30)], [Vector2i(14, 40), Vector2i(18, 36)], [Vector2i(66, 18), Vector2i(62, 23)]]:
+		_line(img, p[0], p[1], K)
+		_line(img, p[0] + Vector2i(0, 1), p[1] + Vector2i(0, 1), K)
+	return img
+
+
+func _mae_veins() -> Image:
+	var img := Image.create_empty(80, 64, false, Image.FORMAT_RGBA8)
+	var K: Color = COLORS["K"]
+	for side: int in [-1, 1]:
+		for a: int in [-30, 0, 30]:
+			var end := Vector2i(40 + side * roundi(36 * cos(deg_to_rad(a))), 28 + roundi(16 * sin(deg_to_rad(a))))
+			_line(img, Vector2i(40 + side * 6, 28), end, K)
+	return img
+
+
+func _ellipse(img: Image, cx: int, cy: int, rx: int, ry: int, c: Color) -> void:
+	for y: int in range(-ry, ry + 1):
+		for x: int in range(-rx, rx + 1):
+			if float(x * x) / float(rx * rx) + float(y * y) / float(ry * ry) <= 1.0:
+				_px(img, cx + x, cy + y, c)

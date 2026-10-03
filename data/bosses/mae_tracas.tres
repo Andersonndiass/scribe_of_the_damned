@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="BossData" load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://src/data/boss_data.gd" id="1_s"]
+[ext_resource type="Resource" path="res://data/bosses/mae_tracas_phase_1.tres" id="2_e"]
+[ext_resource type="Resource" path="res://data/bosses/mae_tracas_phase_2.tres" id="3_e"]
+[ext_resource type="Resource" path="res://data/bosses/mae_tracas_phase_3.tres" id="4_e"]
+[ext_resource type="Script" path="res://src/data/phase_data.gd" id="5_e"]
+[ext_resource type="SpriteFrames" path="res://assets/placeholders/bss_mae_tracas_frames.tres" id="6_e"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"mae_tracas"
+display_name = "BOSS_MAE_TRACAS"
+max_hp = 900
+phases = Array[ExtResource("5_e")]([ExtResource("2_e"), ExtResource("3_e"), ExtResource("4_e")])
+body_radius = 26.0
+contact_damage = 2
+move_speed = 16.0
+min_telegraph = 0.6
+phase_shift_invulnerable = 1.5
+exposed_time = 0.0
+exposed_word_bonus = 0.0
+stun_mul = 0.33
+erasure_grace = 0.5
+words_only = true
+letter_drop_mul = 1.0
+max_y = 130.0
+sprite_size = Vector2i(80, 64)
+phase_overlays = Array[StringName]([&"crack", &"wings"])
+sprite_frames = ExtResource("6_e")

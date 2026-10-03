@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="AttackData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://src/data/attack_data.gd" id="1_s"]
+[ext_resource type="Resource" path="res://data/hazards/dust_cloud.tres" id="2_e"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"dust_cloud"
+kind = &"dust"
+telegraph = 0.9
+active = 0.2
+recover = 0.5
+damage = 1
+radius = 40.0
+cooldown = 6.0
+hazard = ExtResource("2_e")

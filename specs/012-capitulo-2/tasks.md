@@ -22,10 +22,10 @@
 - [x] Testes: `test_boss_damage_filter` (SC-1202), `test_boss_immune_feedback`, `test_weapon_targeting_immune`.
 
 ## F4 — A Mãe (sem Eat_Page)
-- [ ] T1230 `mae_tracas.tres` + 3 fases + `wing_gust`, `swarm_f1`, `swarm_f2`, `dust_cloud` (rules §4); `summon_letter_drop`; `BossData.sprite_size/phase_overlays/max_y` (tira as `const` de `boss.gd`).
-- [ ] T1231 `GustAttack`, `DustAttack`, `Player.shove`.
-- [ ] T1232 Sprite placeholder 80×64 (ficha 17, design-agent + pixel-art-gen).
-- [ ] Testes: telegrafia ≥ 600 ms (SC-1206), vento sem atravessar parede, poça, teto do enxame, sem exposição.
+- [x] T1230 `mae_tracas.tres` + 3 fases + `wing_gust`, `swarm_f1`, `swarm_f2`, `dust_cloud` (rules §4); cria do enxame `moth_brood.tres` (Traça com chance 0,35) + `BossData.letter_drop_mul` 1,0 na luta (no lugar de `summon_letter_drop`); `BossData.sprite_size/phase_overlays/max_y` (tira as `const` de `boss.gd`).
+- [x] T1231 `GustAttack`, `DustAttack`, `Player.shove`.
+- [x] T1232 Sprite placeholder 80×64 (ficha 17, design-agent + pixel-art-gen).
+- [x] Testes: telegrafia ≥ 600 ms (SC-1206), vento sem atravessar parede, poça, teto do enxame, sem exposição.
 
 ## F5 — Eat_Page e área que encolhe
 - [ ] T1240 `PlayArea`; `EatPageAttack` (aviso 2,5 s, cancelamento por palavra/atordoamento, passo 48/46, mínimo 400×220, só F3 por relógio 15 s); sinais `page_bite_*`, `play_area_changed`.

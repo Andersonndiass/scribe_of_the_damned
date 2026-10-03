@@ -23,6 +23,17 @@ extends Resource
 @export var stun_mul: float = 0.33
 ## 012 (D-102/D-107 3a): só palavras ferem (armas, relíquias e poções dão 0 e o chefe sai da mira das armas).
 @export var words_only: bool = false
+## 012: chance de letra da luta (GameState.letter_drop_mul); −1 = mantém a da última onda.
+@export var letter_drop_mul: float = -1.0
+@export_group("Corpo na página (012: antes eram const no Boss)")
+## Onde o chefe fica e a faixa em que anda (FR-610).
+@export var home: Vector2 = Vector2(320, 110)
+@export var min_y: float = 70.0
+@export var max_y: float = 150.0
+## Tamanho do quadro (o sprite é centrado no corpo).
+@export var sprite_size: Vector2i = Vector2i(64, 64)
+## Camadas por fase: a k-ésima aparece a partir da fase k+1 (anima a 100 ms se tiver mais quadros).
+@export var phase_overlays: Array[StringName] = [&"crack", &"flame"]
 ## Intervalo mínimo do retorno "imune" (o raio bate a 60 Hz).
 @export var immune_feedback_interval: float = 0.25
 ## Quanto o anel "imune" fica na tela (escudo pontilhado CHALK em volta do corpo, sem número).

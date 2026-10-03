@@ -15,6 +15,9 @@ const PEN_FLASH_TIME := 0.034
 
 @export var data: PlayerData
 
+## Empurrão externo (012): velocidade e quanto falta.
+var _shove_v := Vector2.ZERO
+var _shove_left: float = 0.0
 var vitals := PlayerVitals.new()
 ## Apócrifos e orações (002): FIDES, LUMEN, GLORIA, SPIRITUS, MISERERE.
 var buffs := PlayerBuffs.new()
@@ -88,8 +91,17 @@ func input_direction() -> Vector2:
 	return Input.get_vector(&"move_left", &"move_right", &"move_up", &"move_down")
 
 
+## 012 (Wing_Gust): empurrão externo por `t` s, somado ao movimento (sem estado novo na FSM).
+func shove(v: Vector2, t: float) -> void:
+	_shove_v = v
+	_shove_left = t
+
+
 func move(direction: Vector2) -> void:
 	velocity = direction * RunStats.of(data).value(&"move_speed") * buffs.speed_mul() * _hazard_slow()
+	if _shove_left > 0.0:
+		_shove_left -= get_physics_process_delta_time()
+		velocity += _shove_v
 	if not direction.is_zero_approx():
 		facing = direction.normalized()
 		sprite.flip_h = facing.x < 0.0

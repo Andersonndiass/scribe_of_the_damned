@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="AttackData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://src/data/attack_data.gd" id="1_s"]
+[ext_resource type="Resource" path="res://data/enemies/moth_brood.tres" id="2_e"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"swarm_f2"
+kind = &"summon"
+telegraph = 0.8
+active = 0.1
+recover = 0.5
+damage = 0
+radius = 48.0
+cooldown = 7.0
+summon_enemy = ExtResource("2_e")
+summon_count = 6
+summon_max_alive = 10

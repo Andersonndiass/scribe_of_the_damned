@@ -29,6 +29,12 @@ extends Resource
 @export var cooldown: float = 0.0
 ## Só sai com o escriba a esta distância ou menos (0 = sem condição).
 @export var max_distance: float = 0.0
+@export_group("Empurrão e poça (012)")
+## Gust: distância (px) que o escriba é empurrado para longe do chefe, em `push_time` s.
+@export var push: float = 0.0
+@export var push_time: float = 0.2
+## Dust: a poça deixada no ponto do golpe.
+@export var hazard: PuddleData
 @export_group("Summon")
 @export var summon_enemy: EnemyData
 @export var summon_count: int = 0
