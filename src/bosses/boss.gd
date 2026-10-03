@@ -43,6 +43,9 @@ var clock: float = 0.0
 
 var _executors: Dictionary[StringName, BossAttack] = {}
 var _flash_left: float = 0.0
+## Próximo instante em que o retorno "imune" pode sair (012).
+var _immune_ready: float = 0.0
+var _immune_left: float = 0.0
 var _phase_seen: int = 0
 var _safety_timer: float = 0.0
 
@@ -115,11 +118,19 @@ func is_targetable() -> bool:
 	return fighting and targetable
 
 
+func is_weapon_target() -> bool:
+	return not data.words_only
+
+
 func take(amount: int, tag: StringName, cast_id: int) -> void:
 	if tag == &"":
 		push_warning("Boss: dano sem origem (DamageSource vazio)")
 	var got: int = filter.apply(amount, tag, cast_id)
 	if got <= 0:
+		if filter.last_block == &"immune" and _immune_ready <= clock:
+			_immune_ready = clock + data.immune_feedback_interval
+			_immune_left = data.immune_flash_time
+			EventBus.boss_immune_hit.emit(hurt_center(), tag)
 		return
 	_flash_left = FLASH_TIME
 	EventBus.boss_damaged.emit(filter.hp, data.max_hp)
@@ -145,6 +156,7 @@ func _physics_process(delta: float) -> void:
 	clock += delta
 	filter.tick(delta)
 	_flash_left = maxf(0.0, _flash_left - delta)
+	_immune_left = maxf(0.0, _immune_left - delta)
 	if targetable and state_name() != &"Dead":
 		_drift(delta)
 		_contact()
@@ -212,6 +224,11 @@ func _draw() -> void:
 		draw_texture(frames.get_frame_texture(&"flame", int(clock / 0.1) % 2), top_left)
 	if st == &"Exposed" and int(clock / 0.1) % 2 == 0:
 		draw_rect(Rect2(top_left + Vector2(20, 14), Vector2(24, 32)), Palette.CHALK, false, 1.0)
+	if _immune_left > 0.0:
+		# 012: anel pontilhado CHALK = "imune" (as armas não ferem; sem número para não parecer bug).
+		for k: int in 12:
+			if k % 2 == 0:
+				draw_arc(Vector2.ZERO, data.body_radius + 4.0, TAU * k / 12.0, TAU * (k + 1) / 12.0, 3, Palette.CHALK, 1.0)
 	if st == &"PhaseShift":
 		for k: int in 16:
 			if k % 2 == 0:

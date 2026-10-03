@@ -634,7 +634,7 @@ func dissolve_all() -> void:
 
 func query_nearest(pos: Vector2, radius: float) -> Vector2:
 	var boss_pos: Vector2 = Vector2.INF
-	if _boss_live() and boss_target.hurt_center().distance_to(pos) <= radius + boss_target.hurt_radius():
+	if _boss_live() and boss_target.is_weapon_target() and boss_target.hurt_center().distance_to(pos) <= radius + boss_target.hurt_radius():
 		boss_pos = boss_target.hurt_center()
 	if count == 0:
 		return boss_pos
@@ -659,7 +659,7 @@ func query_nearest_list(pos: Vector2, radius: float, n: int) -> PackedVector2Arr
 		var one: Vector2 = query_nearest(pos, radius)
 		return PackedVector2Array() if one == Vector2.INF else PackedVector2Array([one])
 	var cand: Array[Vector2] = []
-	if _boss_live() and boss_target.hurt_center().distance_to(pos) <= radius + boss_target.hurt_radius():
+	if _boss_live() and boss_target.is_weapon_target() and boss_target.hurt_center().distance_to(pos) <= radius + boss_target.hurt_radius():
 		cand.append(boss_target.hurt_center())
 	if count > 0:
 		_rebuild_hash_if_dirty()

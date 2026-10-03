@@ -17,6 +17,11 @@ func is_targetable() -> bool:
 	return false
 
 
+## As armas podem mirar? (012: o chefe que só leva palavra sai da mira das armas.)
+func is_weapon_target() -> bool:
+	return true
+
+
 ## Recebe `amount` de `tag` (id da palavra/combo, &"auto", &"purgo") da conjuração `cast_id`.
 func take(_amount: int, _tag: StringName, _cast_id: int) -> void:
 	pass

@@ -8,3 +8,4 @@ cast_soft_cap = 250.0
 cast_hard_cap = 500.0
 over_soft_mul = 0.5
 uncapped_tags = Array[StringName]([&"auto", &"purgo"])
+non_word_tags = Array[StringName]([&"auto", &"relic", &"potion"])

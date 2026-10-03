@@ -17,9 +17,9 @@
 - [x] Testes: `test_burst_on_death`.
 
 ## F3 — Imunidade (só palavras ferem)
-- [ ] T1220 `BossData.words_only`, `immune_feedback_interval`; `BossDamageFilterData.non_word_tags`; filtro e `last_block`; `boss_immune_hit`; chefe fora da mira das armas.
-- [ ] T1221 Retorno visual "imune" (design + animation).
-- [ ] Testes: `test_boss_damage_filter` (SC-1202), `test_boss_immune_feedback`, `test_weapon_targeting_immune`.
+- [x] T1220 `BossData.words_only`, `immune_feedback_interval`; `BossDamageFilterData.non_word_tags`; filtro e `last_block`; `boss_immune_hit`; chefe fora da mira das armas.
+- [x] T1221 Retorno visual "imune" (design + animation).
+- [x] Testes: `test_boss_damage_filter` (SC-1202), `test_boss_immune_feedback`, `test_weapon_targeting_immune`.
 
 ## F4 — A Mãe (sem Eat_Page)
 - [ ] T1230 `mae_tracas.tres` + 3 fases + `wing_gust`, `swarm_f1`, `swarm_f2`, `dust_cloud` (rules §4); `summon_letter_drop`; `BossData.sprite_size/phase_overlays/max_y` (tira as `const` de `boss.gd`).

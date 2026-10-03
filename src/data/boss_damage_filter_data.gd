@@ -9,3 +9,6 @@ extends Resource
 @export var over_soft_mul: float = 0.5
 ## Fontes sem teto por conjuração (ataque automático; PURGO já é literal).
 @export var uncapped_tags: Array[StringName] = [&"auto", &"purgo"]
+## 012 (D-107 3a): fontes que não são palavra (armas, relíquias, poções). A única lista da regra:
+## o chefe `words_only` não leva nada delas, e a exposição só vale fora delas.
+@export var non_word_tags: Array[StringName] = [&"auto", &"relic", &"potion"]

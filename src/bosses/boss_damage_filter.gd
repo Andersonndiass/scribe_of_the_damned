@@ -11,6 +11,9 @@ var boss: BossData
 var hp: int = 0
 var phase_index: int = 0
 
+## Por que o último golpe não entrou: &"immune", &"invulnerable", &"cap" ou &"" (entrou).
+var last_block: StringName = &""
+
 var _invulnerable_left: float = 0.0
 var _exposed_left: float = 0.0
 var _cast_raw: Dictionary[int, float] = {}
@@ -25,10 +28,17 @@ func _init(p_data: BossDamageFilterData, p_boss: BossData) -> void:
 
 ## Aplica `amount` de `tag`/`cast_id`. Retorna quanto a vida caiu de fato.
 func apply(amount: int, tag: StringName, cast_id: int) -> int:
-	if amount <= 0 or is_dead() or _invulnerable_left > 0.0:
+	last_block = &""
+	if amount <= 0 or is_dead():
+		return 0
+	var is_word: bool = is_word_tag(tag)
+	if boss.words_only and not is_word:
+		last_block = &"immune"
+		return 0
+	if _invulnerable_left > 0.0:
+		last_block = &"invulnerable"
 		return 0
 	var d: int = amount
-	var is_word: bool = tag != &"auto"
 	if is_word and _exposed_left > 0.0:
 		d = roundi(d * (1.0 + boss.exposed_word_bonus))
 	if not data.uncapped_tags.has(tag):
@@ -40,12 +50,18 @@ func apply(amount: int, tag: StringName, cast_id: int) -> int:
 	var floor_hp: int = _next_threshold_hp()
 	d = mini(d, hp - floor_hp)
 	if d <= 0:
+		last_block = &"cap"
 		return 0
 	hp -= d
 	if hp == floor_hp and phase_index < boss.phases.size() - 1:
 		phase_index += 1
 		_invulnerable_left = boss.phase_shift_invulnerable
 	return d
+
+
+## Palavra ou combo (inclui PURGO); vazio e as `non_word_tags` não são.
+func is_word_tag(tag: StringName) -> bool:
+	return tag != &"" and not data.non_word_tags.has(tag)
 
 
 func expose() -> void:

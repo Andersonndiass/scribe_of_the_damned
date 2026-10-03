@@ -13,6 +13,8 @@ signal enemy_spawned(slot: int, data: EnemyData)
 signal enemy_killed(slot: int, data: EnemyData, position: Vector2)
 ## 012: a Traça-Mãe pequena estourou (crias nascidas e abafadas por zona letal/teto).
 signal brood_burst(position: Vector2, spawned: int, smothered: int)
+## 012: golpe que não é palavra no chefe imune (D-107 3a); com intervalo mínimo.
+signal boss_immune_hit(position: Vector2, tag: StringName)
 
 signal champion_killed(data: EnemyData, position: Vector2)
 ## Um campeão entrou na página (o Grimório registra o verbete "Campeão").

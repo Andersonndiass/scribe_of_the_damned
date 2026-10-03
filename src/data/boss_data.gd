@@ -21,6 +21,12 @@ extends Resource
 @export var exposed_word_bonus: float = 0.25
 ## Stun recebido: multiplicador (DOMINUS 3 s → 1 s; D-062 3A).
 @export var stun_mul: float = 0.33
+## 012 (D-102/D-107 3a): só palavras ferem (armas, relíquias e poções dão 0 e o chefe sai da mira das armas).
+@export var words_only: bool = false
+## Intervalo mínimo do retorno "imune" (o raio bate a 60 Hz).
+@export var immune_feedback_interval: float = 0.25
+## Quanto o anel "imune" fica na tela (escudo pontilhado CHALK em volta do corpo, sem número).
+@export var immune_flash_time: float = 0.15
 ## Rasura: não apaga letra pega há menos disso.
 @export var erasure_grace: float = 0.5
 @export_group("Tempos (animation-agent, 006)")
