@@ -483,8 +483,12 @@ func _drive_weapons(delta: float) -> void:
 			_swap_in = SWAP_EVERY
 			if arsenal.call("switch_to", 1 - int(lo.get("active"))):
 				_swaps += 1
-	if _weapons_arg == "":
-		return  # sem armas pedidas, a sonda mira como sempre (direção do escriba)
+	var has_aimed: bool = false
+	for i: int in int(lo.call("weapon_count")):
+		var w: WeaponData = lo.call("weapon", i)
+		has_aimed = has_aimed or (w != null and w.mode == &"aimed")
+	if _weapons_arg == "" and not has_aimed:
+		return  # sem arma mirada, a sonda mira como sempre (direção do escriba)
 	# A Bíblia é mirada: o bot aponta o "mouse" para o inimigo mais próximo do escriba.
 	var near: Vector2 = _manager.call("query_nearest", _player.global_position, 400.0)
 	gs.set("aim_with_mouse", true)
