@@ -77,7 +77,7 @@ func _ready() -> void:
 	# 010: só o jogo de verdade, sem atalhos de debug, conta para o progresso.
 	var dbg: String = _debug_args()
 	GameState.run_counts = is_real_game() and not ["boss", "shop", "unlock=all", "atril=", "weapons=", "relics=",
-		"wlevel=", "rlevel=", "char="].any(func(k: String) -> bool: return dbg.contains(k))
+		"wlevel=", "rlevel=", "char=", "chapter="].any(func(k: String) -> bool: return dbg.contains(k))
 	if dbg.contains("unlock=all"):
 		Progress.debug_all = true
 	GameState.start_run(player_data)

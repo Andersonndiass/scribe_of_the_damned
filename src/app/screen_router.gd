@@ -24,7 +24,7 @@ const DEBUG_SCENES: Dictionary = {
 	"roster": "res://src/debug/roster_scene.tscn",
 }
 ## Argumentos que pulam os menus direto para a partida.
-const SKIP_TO_GAME: PackedStringArray = ["boss", "shop", "unlock=all", "atril=", "char="]
+const SKIP_TO_GAME: PackedStringArray = ["boss", "shop", "unlock=all", "atril=", "char=", "chapter="]
 const FIRST_SCREEN := &"splash"
 const FADE_MENU := 0.1
 const FADE_GAME := 0.2
@@ -53,6 +53,12 @@ func _ready() -> void:
 	var ch: RegExMatch = RegEx.create_from_string("char=([a-z]+)").search(args)
 	if ch != null:
 		GameState.picked_character = StringName(ch.get_string(1))
+	# 012: ?chapter=N joga o capítulo N (ignora o cadeado).
+	var cp: RegExMatch = RegEx.create_from_string("chapter=([1-9])").search(args)
+	if cp != null:
+		var path: String = "res://data/chapters/chapter_%s.tres" % cp.get_string(1)
+		if ResourceLoader.exists(path):
+			GameState.picked_chapter = load(path)
 	var cs: RegExMatch = RegEx.create_from_string("cutscene=([a-z0-9_]+)").search(args)
 	if cs != null:
 		GameState.cutscene_queue.clear()

@@ -1,0 +1,78 @@
+[gd_resource type="Resource" script_class="WaveData" load_steps=16 format=3]
+
+[ext_resource type="Script" path="res://src/data/wave_data.gd" id="1_wd"]
+[ext_resource type="Script" path="res://src/data/spawn_group.gd" id="2_sg"]
+[ext_resource type="Script" path="res://src/data/enemy_data.gd" id="3_ed"]
+[ext_resource type="Resource" path="res://data/enemies/ink_blot.tres" id="e_blot"]
+[ext_resource type="Resource" path="res://data/enemies/gargoyle.tres" id="e_garg"]
+[ext_resource type="Resource" path="res://data/enemies/imp.tres" id="e_imp"]
+[ext_resource type="Resource" path="res://data/enemies/moth_mother.tres" id="e_mae"]
+[ext_resource type="Resource" path="res://data/enemies/hollow_monk.tres" id="e_monk"]
+[ext_resource type="Resource" path="res://data/enemies/moth.tres" id="e_moth"]
+
+[sub_resource type="Resource" id="G0"]
+script = ExtResource("2_sg")
+enemy = ExtResource("e_imp")
+start_time = 0.0
+end_time = 90.0
+spawn_rate_start = 1.9
+spawn_rate_end = 3.1
+max_alive = 115
+
+[sub_resource type="Resource" id="G1"]
+script = ExtResource("2_sg")
+enemy = ExtResource("e_mae")
+start_time = 0.0
+end_time = 90.0
+spawn_rate_start = 0.35
+spawn_rate_end = 0.45
+max_alive = 12
+
+[sub_resource type="Resource" id="G2"]
+script = ExtResource("2_sg")
+enemy = ExtResource("e_moth")
+start_time = 0.0
+end_time = 90.0
+spawn_rate_start = 0.25
+spawn_rate_end = 0.25
+max_alive = 8
+
+[sub_resource type="Resource" id="G3"]
+script = ExtResource("2_sg")
+enemy = ExtResource("e_blot")
+start_time = 0.0
+end_time = 90.0
+spawn_rate_start = 0.3
+spawn_rate_end = 0.3
+max_alive = 15
+
+[sub_resource type="Resource" id="G4"]
+script = ExtResource("2_sg")
+enemy = ExtResource("e_garg")
+start_time = 0.0
+end_time = 90.0
+spawn_rate_start = 0.3
+spawn_rate_end = 0.3
+max_alive = 12
+
+[sub_resource type="Resource" id="G5"]
+script = ExtResource("2_sg")
+enemy = ExtResource("e_monk")
+start_time = 0.0
+end_time = 90.0
+spawn_rate_start = 0.3
+spawn_rate_end = 0.3
+max_alive = 12
+
+[resource]
+script = ExtResource("1_wd")
+letter_drop_mul = 0.18
+chapter = 2
+index = 9
+duration = 90.0
+groups = Array[ExtResource("2_sg")]([SubResource("G0"), SubResource("G1"), SubResource("G2"), SubResource("G3"), SubResource("G4"), SubResource("G5")])
+min_spawn_distance = 96.0
+degradation_stage = 3
+champions = 1
+champion_pool = Array[ExtResource("3_ed")]([ExtResource("e_imp"), ExtResource("e_blot"), ExtResource("e_garg"), ExtResource("e_monk")])
+champion_times = PackedFloat32Array(49.5)

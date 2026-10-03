@@ -5,11 +5,11 @@
 > Cada fase: GUT inteiro + export web + commit.
 
 ## F1 — Capítulo, liberação e abertura
-- [ ] T1201 `data/chapters/chapter_2.tres`, `data/waves/chapter_2/wave_01..09.tres` (rules §2), `data/arena/chapter_2.tres` (biblioteca roída: peças do Cap. 1 + mais furos) + camadas placeholder em `assets/arena/chapter_2/`.
-- [ ] T1202 `data/ui/chapters.json` `unlock_after`; `Progress.is_chapter_open(n)`; `chapter_screen.gd` abre o Cap. 2 depois de vencer o Cap. 1.
-- [ ] T1203 `pending_intro`: abertura do escriba só no Cap. 1; `c2_00.json` (virada de página, `ENV_PAGE_TURN` placeholder).
-- [ ] T1204 `screen_router.gd` `?chapter=N` (+ `?boss`, `?char=`); zera `run_counts`.
-- [ ] Testes: `test_chapter_2_data`, `test_chapter_unlock`, `test_pending_intro`.
+- [x] T1201 `data/chapters/chapter_2.tres`, `data/waves/chapter_2/wave_01..09.tres` (rules §2), `data/arena/chapter_2.tres` (biblioteca roída: peças do Cap. 1 + mais furos) + camadas placeholder em `assets/arena/chapter_2/`.
+- [x] T1202 `data/ui/chapters.json` `unlock_after`; `Progress.is_chapter_open(n)`; `chapter_screen.gd` abre o Cap. 2 depois de vencer o Cap. 1.
+- [x] T1203 `pending_intro`: abertura do escriba só no Cap. 1; `c2_00.json` (virada de página, `ENV_PAGE_TURN` placeholder).
+- [x] T1204 `screen_router.gd` `?chapter=N` (+ `?boss`, `?char=`); zera `run_counts`.
+- [x] Testes: `test_chapter_2_data`, `test_chapter_unlock`, `test_pending_intro`.
 
 ## F2 — Traça-Mãe pequena
 - [ ] T1210 `BurstOnDeathBehavior`, fila de estouro no `EnemyManager` (`queue_burst/_flush_bursts`), sinal `brood_burst`, `burst_grace`.

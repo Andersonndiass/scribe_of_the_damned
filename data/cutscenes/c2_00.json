@@ -1,0 +1,18 @@
+{
+	"id": "c2_00", "version": 1, "duration": 5.2, "play": "always", "stage_scale": 1,
+	"_doc": "Abertura do Cap. 2 (012 FR-1205): a página do Cap. 1 vira (a aba sobe) e uma traça rói a borda; o título do capítulo. Placeholder até a virada ENV_PAGE_TURN (animation-agent: 12F@60ms).",
+	"actors": {
+		"page": {"layer": "bg", "kind": "fx", "src": "res://src/cutscenes/fx/blank_page.gd"},
+		"curl": {"layer": "fx", "kind": "fx", "src": "res://src/cutscenes/fx/page_curl.gd", "init": {"position": [640, 0], "progress": 0.0}},
+		"moth": {"layer": "fx", "kind": "fx", "src": "res://src/cutscenes/fx/moth_gnaw.gd", "init": {"position": [612, 30], "progress": 0.0}}
+	},
+	"events": [
+		{"t": 0.4, "type": "sound", "id": "cs_page"},
+		{"t": 0.4, "type": "key", "target": "curl", "prop": "progress", "value": 0.0, "ease": "linear"},
+		{"t": 1.6, "type": "key", "target": "curl", "prop": "progress", "value": 1.0, "ease": "out"},
+		{"t": 1.8, "type": "sound", "id": "cs_gnaw"},
+		{"t": 1.8, "type": "key", "target": "moth", "prop": "progress", "value": 0.0, "ease": "linear"},
+		{"t": 3.4, "type": "key", "target": "moth", "prop": "progress", "value": 1.0, "ease": "linear"},
+		{"t": 2.0, "type": "caption", "key": "CHAPTER_2_TITLE", "end": 5.0}
+	]
+}

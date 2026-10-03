@@ -1,7 +1,7 @@
 extends UiScreen
-## Capítulo (007 FR-703; ficha 27): 5 páginas; só o Cap. 1 aberto, os demais acorrentados com
-## cadeado e "em breve". ←/→ navegam; confirmar no Cap. 1 começa a partida; Esc volta ao
-## Personagem. Dados em `data/ui/chapters.json`.
+## Capítulo (007 FR-703; ficha 27): 5 páginas; abertas pelo `Progress` (012, D-107 1a: vencer o
+## capítulo anterior), as demais acorrentadas com cadeado e "em breve". ←/→ navegam; confirmar num
+## aberto começa a partida; Esc volta ao Personagem. Dados em `data/ui/chapters.json`.
 
 const DATA_PATH := "res://data/ui/chapters.json"
 const PAGE_SIZE := Vector2(88, 120)
@@ -19,6 +19,8 @@ var index: int = 0
 func _ready() -> void:
 	super()
 	chapters = read_json(DATA_PATH).get("chapters", [])
+	for ch: Dictionary in chapters:
+		ch["unlocked"] = ch["data"] != "" and Progress.is_chapter_open(int(ch.get("unlock_after", 0)))
 
 
 func handle_input(event: InputEvent) -> bool:

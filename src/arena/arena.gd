@@ -58,7 +58,8 @@ var _obstacle_body: StaticBody2D
 const DEGRADATION_STAGES := 4
 ## Camadas geradas (tools/gen_arena_placeholders.gd); a arte do autor em `ArenaData.layer_dir`
 ## com o mesmo nome da camada (bg.png, ghost_0.png…) substitui cada uma (FR-407).
-const PLACEHOLDER_PAGE := "res://assets/placeholders/env_page_c1_%s.png"
+## 012: por capítulo (env_page_c<N>_…); cai na do Cap. 1 se o capítulo não tiver.
+const PLACEHOLDER_PAGE := "res://assets/placeholders/env_page_c%d_%s.png"
 const PLACEHOLDER_OBSTACLE := "res://assets/placeholders/env_obs_%s%s.png"
 const DEFAULT_LAYER_DIR := "res://assets/arena/chapter_1/"
 const SHADOW_OFFSET := Vector2(-2, 2)
@@ -242,7 +243,8 @@ func _layer_texture(layer: String) -> Texture2D:
 	var author: String = dir + layer + ".png"
 	if ResourceLoader.exists(author):
 		return load(author)
-	return load(PLACEHOLDER_PAGE % layer)
+	var own: String = PLACEHOLDER_PAGE % [data.chapter if data != null else 1, layer]
+	return load(own) if ResourceLoader.exists(own) else load(PLACEHOLDER_PAGE % [1, layer])
 
 
 ## Peças e sombras (FR-412), acima dos decals: criadas uma vez ao montar a página.

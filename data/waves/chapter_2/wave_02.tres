@@ -1,0 +1,45 @@
+[gd_resource type="Resource" script_class="WaveData" load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://src/data/wave_data.gd" id="1_wd"]
+[ext_resource type="Script" path="res://src/data/spawn_group.gd" id="2_sg"]
+[ext_resource type="Script" path="res://src/data/enemy_data.gd" id="3_ed"]
+[ext_resource type="Resource" path="res://data/enemies/ink_blot.tres" id="e_blot"]
+[ext_resource type="Resource" path="res://data/enemies/imp.tres" id="e_imp"]
+[ext_resource type="Resource" path="res://data/enemies/moth.tres" id="e_moth"]
+
+[sub_resource type="Resource" id="G0"]
+script = ExtResource("2_sg")
+enemy = ExtResource("e_imp")
+start_time = 0.0
+end_time = 65.0
+spawn_rate_start = 0.8
+spawn_rate_end = 2.0
+max_alive = 60
+
+[sub_resource type="Resource" id="G1"]
+script = ExtResource("2_sg")
+enemy = ExtResource("e_moth")
+start_time = 0.0
+end_time = 65.0
+spawn_rate_start = 0.15
+spawn_rate_end = 0.3
+max_alive = 8
+
+[sub_resource type="Resource" id="G2"]
+script = ExtResource("2_sg")
+enemy = ExtResource("e_blot")
+start_time = 0.0
+end_time = 65.0
+spawn_rate_start = 0.05
+spawn_rate_end = 0.15
+max_alive = 5
+
+[resource]
+script = ExtResource("1_wd")
+letter_drop_mul = 0.5
+chapter = 2
+index = 2
+duration = 65.0
+groups = Array[ExtResource("2_sg")]([SubResource("G0"), SubResource("G1"), SubResource("G2")])
+min_spawn_distance = 96.0
+degradation_stage = 0

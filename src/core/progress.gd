@@ -49,6 +49,11 @@ func is_unlocked(cid: StringName) -> bool:
 	return c != null and (c.unlock == null or debug_all or unlocked.has(String(cid)))
 
 
+## 012 (D-107 1a): um capítulo abre quando o anterior (`after`) foi vencido; 0 = sempre aberto.
+func is_chapter_open(after: int) -> bool:
+	return after <= 0 or debug_all or chapters_won.has(after)
+
+
 ## (atual, alvo) da condição de `c`; o atual trava no alvo.
 func progress_of(c: PlayerData) -> Vector2i:
 	if c.unlock == null:

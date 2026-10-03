@@ -16,7 +16,7 @@ static func pending_intro(chapter: ChapterData, scribe: PlayerData = null) -> Ar
 	if chapter == null:
 		return out
 	var who: StringName = scribe.speaker_id if scribe != null and scribe.speaker_id != &"" else &"anselmo"
-	if scribe != null and scribe.intro_cutscene != &"":
+	if scribe != null and scribe.intro_cutscene != &"" and chapter.chapter == 1:  # 012: só abre o Cap. 1
 		var own: CutsceneScript = CutsceneScript.load_file(CutsceneScript.DIR + String(scribe.intro_cutscene) + ".json")
 		if not (own.play_mode == &"once" and Codex.cutscene_seen(scribe.intro_cutscene)):
 			out.append(scribe.intro_cutscene)

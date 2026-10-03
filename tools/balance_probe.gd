@@ -160,6 +160,9 @@ func _initialize() -> void:
 		elif arg.begins_with("stage="):
 			_stage = int(arg.substr(6))
 	_main = (load(MAIN) as PackedScene).instantiate()
+	for arg: String in OS.get_cmdline_user_args():
+		if arg.begins_with("chapter="):  # 012: chapter=N joga o capítulo N (≠ `chapter`, que joga o capítulo todo)
+			_main.set("chapter", load("res://data/chapters/chapter_%d.tres" % int(arg.substr(8))))
 	_grace_on = OS.get_cmdline_user_args().has("grace")
 	if _grace_on:
 		_main.set_meta(&"grace_auto", true)

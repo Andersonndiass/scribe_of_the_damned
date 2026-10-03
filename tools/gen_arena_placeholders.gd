@@ -4,13 +4,14 @@ extends SceneTree
 ## (D-075/D-076). Saída: só PNG em assets/placeholders/ (importado comprimido sem perda: as
 ## camadas de 640×360 em .tres embutido ocupavam ~1 MB cada no build). Rodar --import depois.
 ## A arte do autor por camada, em assets/arena/chapter_1/<camada>.png, substitui estas (FR-407).
-## Uso: godot --headless --path . -s tools/gen_arena_placeholders.gd
+## Uso: godot --headless --path . -s tools/gen_arena_placeholders.gd [-- chapter=2]
+## 012: `chapter=N` gera só a página do capítulo N (env_page_cN_*, peças de `chapter_N.tres`).
 
 const OUT := "res://assets/placeholders/"
 const W := 640
 const H := 360
-const ARENA := "res://data/arena/chapter_1.tres"
-const SEED := 1348
+const ARENA := "res://data/arena/chapter_%d.tres"
+const BASE_SEED := 1348
 ## Texto-fantasma: % das palavras que ficam em cada estágio (a mesma palavra some e não volta).
 const GHOST_KEEP: Array[int] = [100, 70, 50, 15]
 ## Faixas do HUD de cima em que o queimado do estágio 3 fica raso (x0, x1).
@@ -22,19 +23,29 @@ var O := Palette.PARCHMENT_OLD
 var P := Palette.PARCHMENT
 var C := Palette.CHALK
 var _obstacles: Array[Rect2] = []
+var _chapter: int = 1
+var SEED: int = BASE_SEED
 
 
 func _initialize() -> void:
-	var arena: ArenaData = load(ARENA)
+	for a: String in OS.get_cmdline_user_args():
+		if a.begins_with("chapter="):
+			_chapter = int(a.substr(8))
+	SEED = BASE_SEED + 97 * (_chapter - 1)
+	var arena: ArenaData = load(ARENA % _chapter)
 	for o: ObstacleData in arena.obstacles:
 		_obstacles.append(Rect2(o.rect()))
-	_save(_bg(), "env_page_c1_bg")
+	var pre: String = "env_page_c%d_" % _chapter
+	_save(_bg(), pre + "bg")
 	for s: int in 4:
-		_save(_ghost(s), "env_page_c1_ghost_%d" % s)
-	_save(_ornaments(), "env_page_c1_ornaments")
-	_save(_stage_1(), "env_page_c1_stage_1")
-	_save(_stage_2(), "env_page_c1_stage_2")
-	_save(_stage_3(), "env_page_c1_stage_3")
+		_save(_ghost(s), pre + "ghost_%d" % s)
+	_save(_ornaments(), pre + "ornaments")
+	_save(_stage_1(), pre + "stage_1")
+	_save(_stage_2(), pre + "stage_2")
+	_save(_stage_3(), pre + "stage_3")
+	if _chapter != 1:
+		quit()
+		return
 	_save(_hole(), "env_obs_hole")
 	_save(_bench(), "env_obs_bench")
 	_save(_solid(Vector2i(32, 8), k), "env_obs_bench_shadow")
