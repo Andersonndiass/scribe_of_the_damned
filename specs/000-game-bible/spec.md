@@ -160,12 +160,12 @@ GLORIA e PURGO não entram em combos. VERBUM não repete VERBUM. A Hildegarda te
 | Gárgula-Marginália | Dash em linha com telegrafia tracejada; ataque forte | 1 |
 | Monge Oco | Mantém distância e atira | 1 |
 | Borrão de Tinta | Deixa poça de lentidão (24×10, 3s) | 1 |
-| Traça-Mãe pequena | Ao morrer, solta traças pequenas | 2 |
+| Traça-Mãe pequena | Ao morrer, estoura em 3 Traças comuns (teto de vivas; D-107) | 2 |
 | Noviço Espectral | Fantasma; atravessa obstáculos | 3 |
 | Coroinha Possuído | Anda em fila de 4 | 4 |
 | — (Pena Negra corrompe letras) | — | 5 |
 
-- **Ondas:** Cap. 1 tem 9; caps. 2–5 têm 10. A onda 1 dura **60s** e as seguintes crescem até **90s** [INICIAL].
+- **Ondas:** Caps. 1 e 2 têm 9 (D-102); caps. 3–5 têm 10. A onda 1 dura **60s** e as seguintes crescem até **90s** [INICIAL].
 - **Campeões:** **1 por onda a partir da onda 3**. Na morte: 3–5 gotas de tinta dourada e +1 vela.
 - Comportamentos são Resources stateless (feature 005).
 

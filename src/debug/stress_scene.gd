@@ -22,6 +22,8 @@ func _ready() -> void:
 	var mode: StringName = &"sc001"
 	if asked.contains("wave9"):
 		mode = &"wave9"
+	elif asked.contains("stress=boss2"):
+		mode = &"boss2"  # 012 SC-1209: a Mãe na F3, enxame no teto, estouros e a arena mínima
 	elif asked.contains("stress=boss"):
 		mode = &"boss"
 	elif asked.contains("stress=refuge"):

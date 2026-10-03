@@ -78,6 +78,19 @@ var _bought: PackedStringArray = []
 var _ink_earned: int = 0
 var _visits: int = 0
 var _boss_mode: bool = false
+## 012: Eat_Page e crias (linha EATPAGE).
+var _bites_warned: int = 0
+var _bites_cancelled: int = 0
+var _bites_eaten: int = 0
+var _immune_hits: int = 0
+var _brood_spawned: int = 0
+var _brood_smothered: int = 0
+var _outside: int = 0
+var _fight_start: float = -1.0
+## Palavras na luta: [tempo, vida do chefe na hora]; resolvidas 1 s depois (acertou = a vida caiu).
+var _word_checks: Array = []
+var _word_hits: int = 0
+var _word_misses: PackedStringArray = []
 var _boss_done: float = -1.0
 var _boss_hp: int = -1
 var _boss_phase: int = 0
@@ -225,6 +238,14 @@ func _initialize() -> void:
 		_boss_phase = i
 		print("BOSS fase %d aos %.2f min" % [i + 1, _time / 60.0]))
 	bus.boss_defeated.connect(func(_b: Resource) -> void: _boss_done = _time)
+	bus.boss_spawned.connect(func(_b: Resource) -> void: _fight_start = _time)
+	bus.page_bite_warned.connect(func(_s: StringName, _r: Rect2) -> void: _bites_warned += 1)
+	bus.page_bite_cancelled.connect(func(_s: StringName, _why: StringName) -> void: _bites_cancelled += 1)
+	bus.page_bite_finished.connect(func(_r: Rect2) -> void: _bites_eaten += 1)
+	bus.boss_immune_hit.connect(func(_p: Vector2, _t: StringName) -> void: _immune_hits += 1)
+	bus.brood_burst.connect(func(_p: Vector2, sp: int, sm: int) -> void:
+		_brood_spawned += sp
+		_brood_smothered += sm)
 	if _boss_mode:
 		_limit = 12.0 * 60.0
 	if _chapter:
@@ -254,7 +275,9 @@ func _initialize() -> void:
 	bus.word_cast.connect(func(w: Resource, _pw: float, _o: Vector2, _d: Vector2) -> void:
 		_casts[w.get("latin")] = _casts.get(w.get("latin"), 0) + 1
 		_words_total += 1
-		_word_times.append(_time))
+		_word_times.append(_time)
+		if _boss_mode and _fight_start >= 0.0:
+			_word_checks.append([_time, _boss_hp, String(w.get("latin"))]))
 	_player.get_node("Arsenal").fired.connect(func(_t: Vector2) -> void: _shots += 1)
 	root.get_node("TimeScale").call("set_base", TIME_SCALE)
 	Engine.physics_ticks_per_second = 60
@@ -299,10 +322,19 @@ func _physics_process(delta: float) -> bool:
 			_caster.call("cast")
 		elif st in [1, 4]:  # FILL / FULL_REJECT: beco sem saída → purge
 			_caster.call("purge")
+	if _boss_mode and int(_time * 2.0) != int((_time - delta) * 2.0):
+		_sample_outside()
+	while not _word_checks.is_empty() and _time - float(_word_checks[0][0]) >= 1.0:
+		var c: Array = _word_checks.pop_front()
+		if _boss_hp < int(c[1]):
+			_word_hits += 1
+		else:
+			_word_misses.append(c[2])
 	if _boss_mode and int(_time) % 30 == 0 and int(_time - delta) % 30 != 0:
 		var b: Node = _main.get_node_or_null("World/Boss")
 		print("BOSS t=%.0fs hp=%d estado=%s pausado=%s palavras=%s" % [_time, _boss_hp, b.call("state_name") if b != null else "-", paused, _casts])
 	if _boss_mode and (_boss_done >= 0.0 or _died_at >= 0.0 or _time > _limit):
+		_print_eatpage()
 		print("BOSS resultado venceu=%s tempo=%.2fmin hp_restante=%d fase=%d conjurações=%s" % [
 			_boss_done >= 0.0, (_boss_done if _boss_done >= 0.0 else _time) / 60.0, _boss_hp, _boss_phase + 1, _casts])
 		return true
@@ -602,3 +634,32 @@ func _probe_player() -> Resource:
 		if arg.begins_with("char="):
 			cid = arg.substr(5)
 	return load("res://data/player/%s.tres" % cid)
+
+
+## 012 (FR-1216): mordidas, área final, gente fora da área, golpes imunes, crias e o ritmo de
+## palavras na luta (mediana entre palavras, contada da entrada do chefe).
+func _print_eatpage() -> void:
+	var area: Rect2 = PlayArea.rect
+	var gaps: Array[float] = []
+	var last: float = _fight_start
+	for t: float in _word_times:
+		if _fight_start >= 0.0 and t >= _fight_start:
+			gaps.append(t - last)
+			last = t
+	gaps.sort()
+	var med: float = gaps[gaps.size() / 2] if not gaps.is_empty() else -1.0
+	print("EATPAGE tentadas=%d canceladas=%d comidas=%d área=%dx%d fora=%d imunes=%d crias=%d abafadas=%d palavras_luta=%d mediana_entre_palavras=%.1fs acertos=%d sem_dano=%s" % [
+		_bites_warned, _bites_cancelled, _bites_eaten, int(area.size.x), int(area.size.y), _outside, _immune_hits,
+		_brood_spawned, _brood_smothered, gaps.size(), med, _word_hits, ",".join(_word_misses)])
+
+
+## Amostra: escriba ou inimigo fora da área viva (deveria ser sempre 0; SC-1204).
+func _sample_outside() -> void:
+	var r: Rect2 = PlayArea.rect.grow(1.0)
+	if not r.has_point(_player.global_position):
+		_outside += 1
+	var count: int = int(_manager.get("count"))
+	var pos: PackedVector2Array = _manager.get("positions")
+	for i: int in count:
+		if not r.has_point(pos[i]):
+			_outside += 1

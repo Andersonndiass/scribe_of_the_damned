@@ -1,20 +1,28 @@
 class_name PlayArea
 extends RefCounted
 ## Área jogável viva (012 FR-1212; mechanics-agent T1200): começa na página inteira
-## (`Arena.PLAYABLE`) e só encolhe — `shrink_to` faz a interseção, então nunca cresce por
+## (`ArenaData.PLAYABLE`) e só encolhe — `shrink_to` faz a interseção, então nunca cresce por
 ## construção. A Mãe das Traças come as bordas (EatPageAttack); escriba, inimigos, chefe, mapa
 ## de peças e gotas leem `rect`. A borda de cima nunca é comida (é onde o chefe fica).
 
-static var rect: Rect2 = Arena.PLAYABLE
+static var rect: Rect2 = ArenaData.PLAYABLE
 
 
 static func reset() -> void:
-	rect = Arena.PLAYABLE
-	EventBus.play_area_changed.emit(rect)
+	rect = ArenaData.PLAYABLE
+	_emit()
+
+
+## Pelo nó (não pelo identificador): scripts `-s` (sonda) não enxergam autoloads em class_name.
+static func _emit() -> void:
+	var tree: SceneTree = Engine.get_main_loop() as SceneTree
+	var bus: Node = tree.root.get_node_or_null(^"EventBus") if tree != null else null
+	if bus != null:
+		bus.emit_signal(&"play_area_changed", rect)
 
 
 static func is_shrunk() -> bool:
-	return rect != Arena.PLAYABLE
+	return rect != ArenaData.PLAYABLE
 
 
 ## Encolhe para a interseção com `r` (nunca cresce) e avisa quem usa a área.
@@ -23,7 +31,7 @@ static func shrink_to(r: Rect2) -> void:
 	if next == rect or not next.has_area():
 		return
 	rect = next
-	EventBus.play_area_changed.emit(rect)
+	_emit()
 
 
 ## O ponto empurrado para dentro (círculo de raio `r`).
@@ -34,7 +42,7 @@ static func push_inside(p: Vector2, r: float) -> Vector2:
 
 ## A menor área permitida: `min_size` centrada na largura da página, presa no topo.
 static func min_rect(min_size: Vector2) -> Rect2:
-	return Rect2(Arena.PLAYABLE.get_center().x - min_size.x / 2.0, Arena.PLAYABLE.position.y, min_size.x, min_size.y)
+	return Rect2(ArenaData.PLAYABLE.get_center().x - min_size.x / 2.0, ArenaData.PLAYABLE.position.y, min_size.x, min_size.y)
 
 
 ## A área depois de morder `depth` px da borda `side` (&"left", &"right", &"bottom"), sem passar do mínimo.

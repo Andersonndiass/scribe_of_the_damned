@@ -1918,5 +1918,113 @@
   "desc_pt": "Traça ataca: asas e mordida.",
   "priority": 2,
   "generated": true
+ },
+ {
+  "id": "boss_telegraph_gust",
+  "event": "boss_telegraph:gust",
+  "exists_in_event_map": false,
+  "file": "assets/audio/sfx/boss_telegraph_gust.wav",
+  "duration_s": 1.0,
+  "loop": false,
+  "prompt_en": "Huge moth wings slowly rising and creaking, dry papery rustle building up, dusty, no music.",
+  "desc_pt": "Asas da Mãe se erguendo antes da rajada.",
+  "priority": 2,
+  "generated": false
+ },
+ {
+  "id": "boss_attack_gust",
+  "event": "boss_attack:gust",
+  "exists_in_event_map": false,
+  "file": "assets/audio/sfx/boss_attack_gust.wav",
+  "duration_s": 0.8,
+  "loop": false,
+  "prompt_en": "Single powerful whoosh of giant papery moth wings, gust of wind with dust and fluttering paper scraps, no music.",
+  "desc_pt": "Rajada das asas que empurra o escriba.",
+  "priority": 1,
+  "generated": false
+ },
+ {
+  "id": "boss_telegraph_dust",
+  "event": "boss_telegraph:dust",
+  "exists_in_event_map": false,
+  "file": "assets/audio/sfx/boss_telegraph_dust.wav",
+  "duration_s": 1.0,
+  "loop": false,
+  "prompt_en": "Fine dust and old paper powder falling from above, soft hiss, dry, medieval library, no music.",
+  "desc_pt": "Pó caindo: aviso da nuvem.",
+  "priority": 2,
+  "generated": false
+ },
+ {
+  "id": "boss_attack_dust",
+  "event": "boss_attack:dust",
+  "exists_in_event_map": false,
+  "file": "assets/audio/sfx/boss_attack_dust.wav",
+  "duration_s": 0.8,
+  "loop": false,
+  "prompt_en": "Soft heavy thump of a cloud of dust landing on parchment, puff, muffled burst, no music.",
+  "desc_pt": "Nuvem de pó caindo (deixa poça).",
+  "priority": 2,
+  "generated": false
+ },
+ {
+  "id": "boss_telegraph_eat_page",
+  "event": "boss_telegraph:eat_page",
+  "exists_in_event_map": false,
+  "file": "assets/audio/sfx/boss_telegraph_eat_page.wav",
+  "duration_s": 2.5,
+  "loop": false,
+  "prompt_en": "Wet chittering mandibles and slow gnawing on thick parchment, ominous, building, close and dry, no music.",
+  "desc_pt": "Aviso da mordida: a Mãe vai comer a borda.",
+  "priority": 1,
+  "generated": false
+ },
+ {
+  "id": "boss_attack_eat_page",
+  "event": "boss_attack:eat_page",
+  "exists_in_event_map": false,
+  "file": "assets/audio/sfx/boss_attack_eat_page.wav",
+  "duration_s": 0.8,
+  "loop": false,
+  "prompt_en": "Large tearing and crunching bite of thick old parchment, paper ripping, crumbs, no music.",
+  "desc_pt": "A mordida: a borda da página é comida.",
+  "priority": 1,
+  "generated": false
+ },
+ {
+  "id": "page_bite_cancelled",
+  "event": "page_bite_cancelled",
+  "exists_in_event_map": false,
+  "file": "assets/audio/sfx/page_bite_cancelled.wav",
+  "duration_s": 0.7,
+  "loop": false,
+  "prompt_en": "Sharp gold chime with a startled papery flutter backing away, short, satisfying, no music.",
+  "desc_pt": "Palavra cancelou a mordida.",
+  "priority": 1,
+  "generated": false
+ },
+ {
+  "id": "brood_burst",
+  "event": "brood_burst",
+  "exists_in_event_map": false,
+  "file": "assets/audio/sfx/brood_burst.wav",
+  "duration_s": 0.6,
+  "loop": false,
+  "prompt_en": "Small soft pop of an egg sac followed by a burst of tiny fluttering moth wings, short, no music.",
+  "desc_pt": "A Traça-Mãe pequena estoura em traças.",
+  "priority": 2,
+  "generated": false
+ },
+ {
+  "id": "boss_immune_hit",
+  "event": "boss_immune_hit",
+  "exists_in_event_map": false,
+  "file": "assets/audio/sfx/boss_immune_hit.wav",
+  "duration_s": 0.3,
+  "loop": false,
+  "prompt_en": "Dull muted tap on a thick dusty surface, deflected, low and soft, no impact, no music.",
+  "desc_pt": "Arma batendo na Mãe imune.",
+  "priority": 3,
+  "generated": false
  }
 ]

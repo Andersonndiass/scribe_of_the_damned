@@ -5,6 +5,8 @@ extends Node
 ##                 ativos, mais 60 projéteis inimigos e 20 poças mantidos no ar/chão (SC-503).
 ##   modo "boss": a luta contra o chefe do capítulo com o Summon ativo e 200 projéteis
 ##                do jogador; o chefe tem vida enorme e o escriba é invulnerável (006 SC-607).
+##   modo "boss2": a Mãe das Traças (Cap. 2) na F3, a página já no mínimo (400×220) e Traças-Mãe
+##                 repostas (as balas as matam e elas estouram), além dos 200 projéteis (012 SC-1209).
 ##   modo "sweep": a carga do SC-001 e, a cada SWEEP_CYCLE s, uma varredura de tela (sweep_word:
 ##                 PURGO, DOMINUS ou MISERERE; vazio = controle, não conjura). Registra os frames nos
 ##                 SWEEP_WINDOW s seguintes e repõe os inimigos (002 SC-202).
@@ -24,6 +26,8 @@ const PROJECTILES := 200
 const ENEMY_PROJECTILES := 60
 const PUDDLES := 20
 const STRESS_HP := 1_000_000
+## boss2: Traças-Mãe vivas o tempo todo (cada morte estoura em 3 Traças, teto 14).
+const BOSS2_MOTHERS := 6
 const ORBIT_RADIUS := 80.0
 const ORBIT_SPEED := 0.8
 const PROJECTILE_RANGE := 900.0
@@ -48,6 +52,7 @@ const WAVE9_MIX: Array = [
 
 var main: Node2D
 var mode: StringName = &"sc001"
+var _mother: EnemyData = preload("res://data/enemies/moth_mother.tres")
 var _manager: EnemyManager
 var _field: LetterField
 var _player: Player
@@ -115,7 +120,9 @@ func setup(p_main: Node2D, p_mode: StringName = &"sc001") -> void:
 	_manager.player = _target
 	_manager.dissolve_all()
 
-	if mode == &"boss":
+	if mode == &"boss2":
+		main.set("chapter", load("res://data/chapters/chapter_2.tres"))
+	if mode == &"boss" or mode == &"boss2":
 		# O chefe de verdade, com vida enorme; o alvo do EnemyManager continua sendo o escriba
 		# (os Diabretes do Summon o perseguem) e o escriba fica no meio, invulnerável.
 		_manager.player = _player
@@ -127,6 +134,8 @@ func setup(p_main: Node2D, p_mode: StringName = &"sc001") -> void:
 		ch.boss = tough_boss
 		main.set("chapter", ch)
 		main.call("start_boss")
+		if mode == &"boss2":
+			PlayArea.shrink_to(PlayArea.min_rect(Vector2(400, 220)))
 	elif mode == &"wave9":
 		for entry: Array in WAVE9_MIX:
 			var d: EnemyData = _tough(load(entry[0]))
@@ -166,7 +175,10 @@ func _physics_process(delta: float) -> void:
 		_player.global_position = BIBLE_PLAYER_AT
 		GameState.aim_with_mouse = true
 		GameState.aim_point = BIBLE_PLAYER_AT + Vector2.RIGHT.rotated(_time * TAU / BIBLE_AIM_PERIOD) * 100.0
-	if mode == &"boss":
+	if mode == &"boss2":
+		while _manager.count_of(_mother) < BOSS2_MOTHERS:
+			_manager.spawn(_mother, _random_point())
+	if mode == &"boss" or mode == &"boss2":
 		# Fase 3 (Cruz giratória + Summon): o pior caso da luta.
 		var boss: Boss = main.get_node("World/Boss")
 		if boss.filter != null and boss.filter.phase_index < boss.data.phases.size() - 1:

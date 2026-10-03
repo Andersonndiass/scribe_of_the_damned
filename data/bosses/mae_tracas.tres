@@ -11,7 +11,7 @@
 script = ExtResource("1_s")
 id = &"mae_tracas"
 display_name = "BOSS_MAE_TRACAS"
-max_hp = 900
+max_hp = 550
 phases = Array[ExtResource("5_e")]([ExtResource("2_e"), ExtResource("3_e"), ExtResource("4_e")])
 body_radius = 26.0
 contact_damage = 2

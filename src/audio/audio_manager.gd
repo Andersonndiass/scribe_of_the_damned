@@ -449,6 +449,12 @@ func _connect_events_018() -> void:
 		if is_looping(&"boss_attack", kind):
 			stop_loop(&"boss_attack", kind))
 	EventBus.boss_stunned.connect(func(_s: float) -> void: play_event(&"boss_stunned"))
+	# 012: a Mãe das Traças (sons "a gerar" no manifesto; sem arquivo, ficam mudos).
+	EventBus.page_bite_cancelled.connect(func(_side: StringName, _why: StringName) -> void: play_event(&"page_bite_cancelled"))
+	EventBus.brood_burst.connect(func(_p: Vector2, spawned: int, _sm: int) -> void:
+		if spawned > 0:
+			play_event(&"brood_burst"))
+	EventBus.boss_immune_hit.connect(func(_p: Vector2, _t: StringName) -> void: play_event(&"boss_immune_hit"))
 	EventBus.enemy_spawn_telegraphed.connect(func(_c: bool) -> void: play_event(&"enemy_spawn_telegraph"))
 	EventBus.enemy_telegraphed.connect(func(id: StringName) -> void: _play_variant_only(&"enemy_telegraph", id))
 	EventBus.enemy_attacked.connect(func(id: StringName) -> void: _play_variant_only(&"enemy_attack", id))
