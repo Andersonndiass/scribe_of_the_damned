@@ -793,6 +793,14 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
 - **Remedido (10 rodadas):** 4 velas = **7/10**; 4 velas + `iframes` 1.25 = 5/10 (ruído; o iframes não ajuda e foi revertido). C2 ok: onda 9 sem god perde 3/3, tempo vivo 19–26 s (igual ao Anselmo). Fica 4 velas; C1 do Beda segue **aberto** (playtest do autor / rules-agent).
 - **Sonda:** passou a mirar sozinha a arma mirada inicial (Bíblia, Aspersório); antes o Iluminador e a Hildegarda morriam sem abater nada.
 
+### D-107 · 2026-10-03 · 012 Capítulo 2: respostas do autor à spec ("1a2a3a4a5a6a")
+- **Entrada:** partida nova pela tela de Capítulo, liberada ao vencer o Cap. 1; o escriba começa do zero.
+- **Traças:** a Traça do Cap. 1 como é (rouba do atril), com teto baixo de vivas.
+- **Imunidade:** tudo que não é palavra é imune na Mãe (armas, poções, relíquias).
+- **Eat_Page:** só na fase 3.
+- **Menu da letra:** pausa também no chefe (D-098); medir no playtest.
+- **C2-02:** entra na 012, curta, fechando o capítulo.
+
 ## Conflitos abertos
 
 - ~~**C-008 · Menu de escolha da letra (D-085 item 2).**~~ Resolvido: autor "1a 2b 3b e mouse clicando 4a" —

@@ -1,6 +1,6 @@
 # 012 — Capítulo 2: A Mãe das Traças
 
-> Status: **Rascunho** (2026-10-02). Decisões do autor: **D-102** ("1a2a3a4a5a6a") — vinculantes.
+> Status: **Aprovada pelo autor** (2026-10-03, "1a2a3a4a5a6a" → D-107; as perguntas abaixo ficam respondidas pela opção a). Decisões do autor: **D-102** ("1a2a3a4a5a6a") — vinculantes.
 > Pareceres: game-design-agent **AJUSTAR** (perguntas no fim). Faltam: rules-agent (números), mechanics-agent (Eat_Page, arena que encolhe, filtro), design-agent (fichas 12 e 17, arena), animation-agent (virada de página, mordida), story-agent (C2-01, verbetes).
 > Depende de: 004, 005, 006 (framework de chefes), 008 (cutscenes), 010, 016–019 (Complete). Game bible §3.8, §3.10, §3.12; asset catalog §5 (Mãe das Traças), fichas 12 (`ENM_TRACA_MAE`) e 17 (`BSS_MAE_TRACAS`); narrativa §5.3, §6 ("A página roída: o tempo") e §12 (C2-01); D-084, D-085, D-098, D-100.
 > Legenda: **[RULES]** = número que o rules-agent define (sempre em `.tres`; nada aqui é valor final). **[P?]** = decisão do autor.
@@ -20,7 +20,6 @@ O segundo capítulo do roguelite: **a página roída**. 9 ondas numa biblioteca 
 | Inimigos de outros capítulos (Noviço Espectral, Coroinha) | 013/014 |
 | Mudanças nas armas, poções, relíquias ou na loja | — (só reuso) |
 | Demo publicada (011) | depois dos capítulos (D-102) |
-| C2-02 | **[P?]** pergunta 6 |
 
 ## Reusado do Cap. 1 × novo
 
