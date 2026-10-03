@@ -59,8 +59,9 @@ var _pause_menu_open: bool = false
 var _record: Dictionary = {}
 var _entries: Array[String] = []
 var _entries_all: bool = false
-## Numeral do próximo capítulo (selado) na Vitória, de `data/ui/chapters.json`.
+## Numeral do próximo capítulo na Vitória, de `data/ui/chapters.json`; aberto se já tem dados (012).
 var _next_numeral: String = ""
+var _next_open: bool = false
 
 
 func _ready() -> void:
@@ -74,9 +75,8 @@ func _ready() -> void:
 	EventBus.player_died.connect(func() -> void: _death_left = GAME_OVER_DELAY)
 	EventBus.seals_shown.connect(func(_b: Array[BlessingData], _l: int) -> void: _seals_open = true)
 	EventBus.seals_hidden.connect(func() -> void: _seals_open = false)
-	var chapters: Array = UiScreen.read_json(CHAPTERS_PATH).get("chapters", [])
-	if chapters.size() > 1:
-		_next_numeral = chapters[1]["numeral"]
+	_set_next_chapter(1)
+	EventBus.chapter_completed.connect(_set_next_chapter)
 
 
 func _process(delta: float) -> void:
@@ -381,13 +381,22 @@ func _draw_victory() -> void:
 		PixelFont.draw(_canvas, tr(&"MORE_COUNT").format({"n": shown - MAX_ENTRIES}), VIC_ENTRIES + Vector2(8, 14 + MAX_ENTRIES * 12), UiStyle.text_on_light(true))
 	if _entries.is_empty():
 		PixelFont.draw(_canvas, tr(&"VICTORY_NO_ENTRIES"), VIC_ENTRIES + Vector2(8, 14), UiStyle.text_on_light(true))
-	# Cap. 2 selado: página acorrentada com selo BLOOD.
-	_canvas.draw_rect(VIC_SEAL, Palette.PARCHMENT_OLD)
+	# Próximo capítulo: aberto (página limpa, "novo capítulo") ou selado (correntes e selo BLOOD).
+	_canvas.draw_rect(VIC_SEAL, Palette.PARCHMENT if _next_open else Palette.PARCHMENT_OLD)
 	PixelFont.draw_centered(_canvas, _next_numeral, VIC_SEAL.get_center().x, VIC_SEAL.position.y + 10, Palette.INK, 2)
-	_canvas.draw_rect(Rect2(VIC_SEAL.position.x, VIC_SEAL.get_center().y - 1, VIC_SEAL.size.x, 3), Palette.INK_SOFT)
-	UiStyle.disc(_canvas, VIC_SEAL.get_center() + Vector2(0, 12), 8, Palette.INK)
-	UiStyle.disc(_canvas, VIC_SEAL.get_center() + Vector2(0, 12), 7, Palette.BLOOD)
-	PixelFont.draw_centered(_canvas, tr(&"COMING_SOON"), VIC_SEAL.get_center().x, VIC_SEAL.end.y + 6, UiStyle.text_on_light(true))
+	if not _next_open:
+		_canvas.draw_rect(Rect2(VIC_SEAL.position.x, VIC_SEAL.get_center().y - 1, VIC_SEAL.size.x, 3), Palette.INK_SOFT)
+		UiStyle.disc(_canvas, VIC_SEAL.get_center() + Vector2(0, 12), 8, Palette.INK)
+		UiStyle.disc(_canvas, VIC_SEAL.get_center() + Vector2(0, 12), 7, Palette.BLOOD)
+	PixelFont.draw_centered(_canvas, tr(&"CHAPTER_NEW_OPEN" if _next_open else &"COMING_SOON"), VIC_SEAL.get_center().x, VIC_SEAL.end.y + 6, UiStyle.text_on_light(true))
 	if buttons_shown:
 		UiStyle.draw_ribbon(_canvas, Vector2(320, VIC_BUTTON_Y), tr(menu.items[0]["label"]), &"focus")
 		menu.set_rect(0, UiStyle.ribbon_rect(Vector2(320, VIC_BUTTON_Y), tr(menu.items[0]["label"])))
+
+
+## O capítulo seguinte ao `done` (o índice `done` no chapters.json é o capítulo done+1).
+func _set_next_chapter(done: int) -> void:
+	var chapters: Array = UiScreen.read_json(CHAPTERS_PATH).get("chapters", [])
+	if done < chapters.size():
+		_next_numeral = chapters[done]["numeral"]
+		_next_open = chapters[done].get("data", "") != ""

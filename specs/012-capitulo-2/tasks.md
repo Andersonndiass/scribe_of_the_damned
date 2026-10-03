@@ -33,9 +33,9 @@
 - [x] Testes: `test_play_area` (SC-1203), `test_eat_page_cancel`, `test_eat_page_obstacles`, `test_eat_page_push`.
 
 ## F6 — Cutscenes e fim do capítulo
-- [ ] T1250 `c2_01.json` e `c2_02.json` com `@player` e variantes (story-agent); verbete da Traça-Mãe pequena; i18n.
-- [ ] T1251 Vitória → `chapter_completed(2)`, Cap. 3 selado "em breve".
-- [ ] Testes: `test_chapter_2_flow` (SC-1201), cutscenes com os 5 escribas (SC-1210).
+- [x] T1250 `c2_01.json` e `c2_02.json` com `@player` e variantes (story-agent); verbete da Traça-Mãe pequena; i18n.
+- [x] T1251 Vitória → `chapter_completed(2)`, Cap. 3 selado "em breve".
+- [x] Testes: `test_chapter_2_flow` (SC-1201), cutscenes com os 5 escribas (SC-1210).
 
 ## F7 — Sonda, stress e fechamento
 - [ ] T1260 Corrigir a trava da sonda do chefe na F3 (D-081, R2).

@@ -21,5 +21,7 @@ chapter = 2
 waves = Array[ExtResource("2_wd")]([ExtResource("w1"), ExtResource("w2"), ExtResource("w3"), ExtResource("w4"), ExtResource("w5"), ExtResource("w6"), ExtResource("w7"), ExtResource("w8"), ExtResource("w9")])
 boss = ExtResource("99_boss")
 intro_cutscenes = Array[StringName]([&"c2_00"])
+boss_cutscene = &"c2_01"
+outro_cutscene = &"c2_02"
 arena = ExtResource("a_arena")
 boss_stage = 3

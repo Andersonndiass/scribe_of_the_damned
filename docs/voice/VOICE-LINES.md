@@ -155,4 +155,27 @@ Aberturas curtas (cenas `intro_<id>`, tocam ao desbloquear) e frases de partida 
 | `cs_intro_beda_1` | intro_beda | Noviço Beda | scared | Eu era o último da lista! Por isso sumi primeiro? | I was last on the list! Is that why I vanished first? |
 | `cs_intro_beda_2` | intro_beda | Noviço Beda | relieved | Eu corro, eu aprendo, eu não atrapalho. Prometo! | I run, I learn, I stay out of the way. I promise! |
 
-Direção por situação: dano = reação curta, no tom do personagem (Hildegarda desdém, Tomé constatação, Iluminador ofensa estética, Beda susto); nível = alívio ou vaidade (Tomé desconfia, mesmo agradecendo); morte = a mais baixa e lenta de cada um (Hildegarda calma, Beda trêmulo, Iluminador teatral até o fim).
+## Capítulo 2 (spec 012, F6) — status "a gerar"
+
+Cenas `c2_01` (entrada da Mãe das Traças; ela não fala, só o roer) e `c2_02` (a letra dourada). As falas de Anselmo têm uma variante por escriba (`_hildegarda`, `_tome`, `_iluminador`, `_beda`); sem variante, vale a de Anselmo.
+
+| id | cena | personagem | expressão | PT-BR | EN |
+|---|---|---|---|---|---|
+| `cs_c2_01_anselmo_1` | C2-01 | Irmão Anselmo | scared | …Ela não está com raiva. Está só comendo. | …She is not angry. She is just eating. |
+| `cs_c2_01_anselmo_1_hildegarda` | C2-01 | Irmã Hildegarda | neutral | …Sem rancor. Só fome. Isso eu entendo. | …No malice. Only hunger. That I understand. |
+| `cs_c2_01_anselmo_1_tome` | C2-01 | Frei Tomé | neutral | …Nem maldade tem. Pior. | …Not even malice. Worse. |
+| `cs_c2_01_anselmo_1_iluminador` | C2-01 | O Iluminador | neutral | …Roendo os fólios. Sem critério algum. | …Gnawing the folios. Without any discernment. |
+| `cs_c2_01_anselmo_1_beda` | C2-01 | Noviço Beda | scared | …Ela só está com fome? Eu também estou! | …She is just hungry? So am I! |
+| `cs_c2_01_anselmo_2` | C2-01 | Irmão Anselmo | scared | …Com raiva eu sei lidar. Com fome não. | …Anger I can handle. Hunger, no. |
+| `cs_c2_01_anselmo_2_hildegarda` | C2-01 | Irmã Hildegarda | neutral | …Fome não se negocia. Só se impede. | …Hunger cannot be bargained with. Only stopped. |
+| `cs_c2_01_anselmo_2_tome` | C2-01 | Frei Tomé | neutral | …Não dá para conversar com isso. Ótimo. | …You cannot talk to that. Wonderful. |
+| `cs_c2_01_anselmo_2_iluminador` | C2-01 | O Iluminador | neutral | …Nem ouro nem glória. Só página. Bárbara. | …No gold, no glory. Only page. Barbaric. |
+| `cs_c2_01_anselmo_2_beda` | C2-01 | Noviço Beda | scared | …Dá para pedir desculpa para ela? | …Can I apologize to her? |
+| `cs_c2_02_anselmo_1` | C2-02 | Irmão Anselmo | relieved | …Uma letra dourada. Ainda está quente. | …A golden letter. It is still warm. |
+| `cs_c2_02_anselmo_1_hildegarda` | C2-02 | Irmã Hildegarda | neutral | …Uma letra de ouro. Eu guardo. | …A letter of gold. I will keep it. |
+| `cs_c2_02_anselmo_1_tome` | C2-02 | Frei Tomé | neutral | …Ouro. Alguém vai querer tirar de mim. | …Gold. Someone will want to take it from me. |
+| `cs_c2_02_anselmo_1_iluminador` | C2-02 | O Iluminador | smiling | …Ouro de verdade! Enfim algo com gosto. | …Real gold! At last, something with taste. |
+| `cs_c2_02_anselmo_1_beda` | C2-02 | Noviço Beda | relieved | …Brilha! Posso segurar? Prometo não derrubar. | …It shines! May I hold it? I promise not to drop it. |
+| `cs_c2_02_abbot_1` | C2-02 | Abade Gerbrand (fantasma) | neutral | A página seguinte já está negra. | The next page is already black. |
+
+Direção por situação (frases dos escribas da D-101): dano = reação curta, no tom do personagem (Hildegarda desdém, Tomé constatação, Iluminador ofensa estética, Beda susto); nível = alívio ou vaidade (Tomé desconfia, mesmo agradecendo); morte = a mais baixa e lenta de cada um (Hildegarda calma, Beda trêmulo, Iluminador teatral até o fim).

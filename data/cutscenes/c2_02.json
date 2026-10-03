@@ -1,0 +1,33 @@
+{
+	"id": "c2_02", "version": 1, "duration": 9.5, "play": "always",
+	"_doc": "C2-02 A letra dourada (spec 012 FR-1217; narrativa §12: Anselmo recolhe a letra dourada; a página seguinte já está negra). Depois da morte da Mãe, antes da Vitória; fecha o Cap. 2 e abre a pergunta do Cap. 3.",
+	"actors": {
+		"unravel": {"layer": "actors", "kind": "fx", "src": "res://src/cutscenes/fx/ink_unravel.gd", "init": {"position": [320, 110], "progress": 0.0}},
+		"cleanse": {"layer": "bg", "kind": "fx", "src": "res://src/cutscenes/fx/page_cleanse.gd", "init": {"position": [320, 110], "progress": 0.0}},
+		"rays": {"layer": "bg", "kind": "fx", "src": "res://src/cutscenes/fx/light_rays.gd", "init": {"position": [320, 110], "progress": 0.0}},
+		"ghost": {"layer": "actors", "kind": "fx", "src": "res://src/cutscenes/fx/ghost_abbot.gd", "init": {"position": [380, 190], "progress": 0.0}},
+		"darken": {"layer": "bg", "kind": "fx", "src": "res://src/cutscenes/fx/page_darken.gd", "init": {"progress": 0.0}},
+		"curl": {"layer": "fx", "kind": "fx", "src": "res://src/cutscenes/fx/page_curl.gd", "init": {"position": [640, 0], "progress": 0.0}}
+	},
+	"events": [
+		{"t": 0.0, "type": "key", "target": "unravel", "prop": "progress", "value": 0.0, "ease": "linear"},
+		{"t": 0.7, "type": "key", "target": "unravel", "prop": "progress", "value": 1.0, "ease": "out"},
+		{"t": 0.4, "type": "key", "target": "cleanse", "prop": "progress", "value": 0.0, "ease": "linear"},
+		{"t": 1.1, "type": "key", "target": "cleanse", "prop": "progress", "value": 1.0, "ease": "linear"},
+		{"t": 0.6, "type": "key", "target": "rays", "prop": "progress", "value": 0.0, "ease": "linear"},
+		{"t": 1.3, "type": "key", "target": "rays", "prop": "progress", "value": 1.0, "ease": "out"},
+		{"t": 1.2, "type": "line", "speaker": "@player", "expr": "relieved", "key": "CS_C2_02_ANSELMO_1", "end": 4.0},
+		{"t": 4.2, "type": "key", "target": "ghost", "prop": "progress", "value": 0.0, "ease": "linear"},
+		{"t": 4.6, "type": "key", "target": "ghost", "prop": "progress", "value": 1.0, "ease": "linear"},
+		{"t": 4.7, "type": "line", "speaker": "abbot_ghost", "expr": "neutral", "key": "CS_C2_02_ABBOT_1", "end": 7.2},
+		{"t": 7.3, "type": "key", "target": "ghost", "prop": "progress", "value": 1.0, "ease": "linear"},
+		{"t": 7.7, "type": "key", "target": "ghost", "prop": "progress", "value": 0.0, "ease": "linear"},
+		{"t": 7.3, "type": "key", "target": "rays", "prop": "progress", "value": 1.0, "ease": "linear"},
+		{"t": 7.8, "type": "key", "target": "rays", "prop": "progress", "value": 0.0, "ease": "linear"},
+		{"t": 7.3, "type": "sound", "id": "cs_page"},
+		{"t": 7.3, "type": "key", "target": "curl", "prop": "progress", "value": 0.0, "ease": "linear"},
+		{"t": 8.1, "type": "key", "target": "curl", "prop": "progress", "value": 1.0, "ease": "in_out"},
+		{"t": 7.8, "type": "key", "target": "darken", "prop": "progress", "value": 0.0, "ease": "linear"},
+		{"t": 9.4, "type": "key", "target": "darken", "prop": "progress", "value": 1.0, "ease": "in"}
+	]
+}

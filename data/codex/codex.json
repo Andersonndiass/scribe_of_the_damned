@@ -166,6 +166,11 @@
 					"lore": "LORE_MOTH"
 				},
 				{
+					"id": "moth_mother",
+					"name_key": "ENEMY_MOTH_MOTHER",
+					"lore": "LORE_MOTH_MOTHER_SMALL"
+				},
+				{
 					"id": "gargoyle",
 					"name_key": "ENEMY_GARGOYLE",
 					"lore": "LORE_GARGOYLE"

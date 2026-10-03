@@ -1,0 +1,24 @@
+{
+	"id": "c2_01", "version": 1, "duration": 12.5, "play": "always",
+	"_doc": "C2-01 A Mãe das Traças (spec 012 FR-1206; narrativa §12: a página está sendo comida, e não por malícia). Roda por cima do jogo parado, na entrada do chefe; a Mãe não fala (só o ruído do roer). O fim da cena solta o chefe já lutando.",
+	"actors": {
+		"darken": {"layer": "bg", "kind": "fx", "src": "res://src/cutscenes/fx/page_darken.gd", "init": {"progress": 0.0}},
+		"moth_a": {"layer": "fx", "kind": "fx", "src": "res://src/cutscenes/fx/moth_gnaw.gd", "init": {"position": [612, 40], "progress": 0.0}},
+		"moth_b": {"layer": "fx", "kind": "fx", "src": "res://src/cutscenes/fx/moth_gnaw.gd", "init": {"position": [612, 170], "progress": 0.0}}
+	},
+	"events": [
+		{"t": 0.0, "type": "key", "target": "darken", "prop": "progress", "value": 0.0, "ease": "linear"},
+		{"t": 1.0, "type": "key", "target": "darken", "prop": "progress", "value": 0.4, "ease": "out"},
+		{"t": 0.4, "type": "sound", "id": "cs_gnaw"},
+		{"t": 0.4, "type": "key", "target": "moth_a", "prop": "progress", "value": 0.05, "ease": "linear"},
+		{"t": 3.4, "type": "key", "target": "moth_a", "prop": "progress", "value": 1.0, "ease": "linear"},
+		{"t": 2.6, "type": "line", "speaker": "@player", "expr": "scared", "key": "CS_C2_01_ANSELMO_1", "end": 6.4},
+		{"t": 6.6, "type": "sound", "id": "cs_gnaw"},
+		{"t": 6.6, "type": "key", "target": "moth_b", "prop": "progress", "value": 0.05, "ease": "linear"},
+		{"t": 9.6, "type": "key", "target": "moth_b", "prop": "progress", "value": 1.0, "ease": "linear"},
+		{"t": 7.2, "type": "line", "speaker": "@player", "expr": "scared", "key": "CS_C2_01_ANSELMO_2", "end": 11.2},
+		{"t": 11.6, "type": "key", "target": "darken", "prop": "progress", "value": 0.4, "ease": "linear"},
+		{"t": 12.4, "type": "key", "target": "darken", "prop": "progress", "value": 0.0, "ease": "in"},
+		{"t": 12.4, "type": "mark", "id": "boss_bar_shown"}
+	]
+}

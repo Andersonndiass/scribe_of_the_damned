@@ -90,6 +90,7 @@ CHAPTER_3_TITLE,A PÁGINA NEGRA,THE BLACK PAGE
 CHAPTER_4_TITLE,A PÁGINA MARGINAL,THE MARGINAL PAGE
 CHAPTER_5_TITLE,A ÚLTIMA PÁGINA,THE LAST PAGE
 COMING_SOON,EM BREVE,COMING SOON
+CHAPTER_NEW_OPEN,NOVO CAPÍTULO,NEW CHAPTER
 SCREEN_HINT_ROW,{cast} ESCOLHE   {back} VOLTA,{cast} CHOOSE   {back} BACK
 PAUSE_RESUME,CONTINUAR,RESUME
 PAUSE_ABANDON,ABANDONAR,ABANDON
@@ -467,3 +468,21 @@ BARK_BEDA_DEATH_02,Digam à mamãe que fui rápido.,Tell mother I was quick.
 BARK_BEDA_DEATH_03,Tão pouco tempo de hábito...,So little time in the habit...
 BARK_BEDA_DEATH_04,"Desculpe, Irmão Anselmo...","Sorry, Brother Anselmo..."
 BARK_BEDA_DEATH_05,Não me apaguem. Por favor.,Do not erase me. Please.
+CS_C2_01_ANSELMO_1,...Ela não está com raiva. Está só comendo.,...She is not angry. She is just eating.
+CS_C2_01_ANSELMO_1_HILDEGARDA,...Sem rancor. Só fome. Isso eu entendo.,...No malice. Only hunger. That I understand.
+CS_C2_01_ANSELMO_1_TOME,...Nem maldade tem. Pior.,...Not even malice. Worse.
+CS_C2_01_ANSELMO_1_ILUMINADOR,...Roendo os fólios. Sem critério algum.,...Gnawing the folios. Without any discernment.
+CS_C2_01_ANSELMO_1_BEDA,...Ela só está com fome? Eu também estou!,...She is just hungry? So am I!
+CS_C2_01_ANSELMO_2,...Com raiva eu sei lidar. Com fome não.,"...Anger I can handle. Hunger, no."
+CS_C2_01_ANSELMO_2_HILDEGARDA,...Fome não se negocia. Só se impede.,...Hunger cannot be bargained with. Only stopped.
+CS_C2_01_ANSELMO_2_TOME,...Não dá para conversar com isso. Ótimo.,...You cannot talk to that. Wonderful.
+CS_C2_01_ANSELMO_2_ILUMINADOR,...Nem ouro nem glória. Só página. Bárbara.,"...No gold, no glory. Only page. Barbaric."
+CS_C2_01_ANSELMO_2_BEDA,...Dá para pedir desculpa para ela?,...Can I apologize to her?
+CS_C2_02_ANSELMO_1,...Uma letra dourada. Ainda está quente.,...A golden letter. It is still warm.
+CS_C2_02_ANSELMO_1_HILDEGARDA,...Uma letra de ouro. Eu guardo.,...A letter of gold. I will keep it.
+CS_C2_02_ANSELMO_1_TOME,...Ouro. Alguém vai querer tirar de mim.,...Gold. Someone will want to take it from me.
+CS_C2_02_ANSELMO_1_ILUMINADOR,...Ouro de verdade! Enfim algo com gosto.,"...Real gold! At last, something with taste."
+CS_C2_02_ANSELMO_1_BEDA,...Brilha! Posso segurar? Prometo não derrubar.,...It shines! May I hold it? I promise not to drop it.
+CS_C2_02_ABBOT_1,A página seguinte já está negra.,The next page is already black.
+ENEMY_MOTH_MOTHER,TRAÇA-MÃE PEQUENA,SMALL MOTH MOTHER
+LORE_MOTH_MOTHER_SMALL,UMA CRIA QUE ENGORDOU DEMAIS. ESTOURA EM TRAÇAS AO CAIR; MATE-A LONGE DE ONDE VOCÊ ESCREVE.,A BROOD THAT GREW TOO FAT. IT BURSTS INTO MOTHS WHEN IT FALLS; KILL IT FAR FROM WHERE YOU WRITE.
