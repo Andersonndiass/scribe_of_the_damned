@@ -11,6 +11,8 @@ signal wave_ended(index: int)
 # Inimigos
 signal enemy_spawned(slot: int, data: EnemyData)
 signal enemy_killed(slot: int, data: EnemyData, position: Vector2)
+## 012: a Traça-Mãe pequena estourou (crias nascidas e abafadas por zona letal/teto).
+signal brood_burst(position: Vector2, spawned: int, smothered: int)
 
 signal champion_killed(data: EnemyData, position: Vector2)
 ## Um campeão entrou na página (o Grimório registra o verbete "Campeão").

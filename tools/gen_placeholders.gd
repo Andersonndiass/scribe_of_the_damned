@@ -147,6 +147,27 @@ const MOTH_A: Array[String] = [
 	"................",
 ]
 const MOTH_B_ROWS: Dictionary[int, String] = {3: "..OO.KkkkkK.OO..", 4: ".OOOOKkCkCKOOOO.", 5: ".OOOOKkkkkKOOOO.", 6: "..kOOKkkkkKOOk.."}
+## 012 — Traça-Mãe pequena 20×16, pivot (10,15) (ficha 12): a traça com a bolsa de ovos PARCHMENT
+## (ovos CHALK em blocos 2×2) no lugar do abdome; a bolsa é o ponto de leitura.
+const MOTH_MOTHER_A: Array[String] = [
+	"...K............K...",
+	"....K..........K....",
+	".....K.KKKKKK.K.....",
+	".OOOOOKkkkkkkKOOOOO.",
+	"OOOOOOKkCkkCkKOOOOOO",
+	"OOOOOOKkkkkkkKOOOOOO",
+	".kOOOOKkkkkkkKOOOOk.",
+	"..kkkkKkkkkkkKkkkk..",
+	"...kk.KPPPPPPK.kk...",
+	"......KPCCPPPK......",
+	"......KPCCPPPK......",
+	"......KPPPCCPK......",
+	"......KPPPCCPK......",
+	"......KPPPPPPK......",
+	".......KKKKKK.......",
+	"....................",
+]
+const MOTH_MOTHER_B_ROWS: Dictionary[int, String] = {3: "...OOOKkkkkkkKOOO...", 4: "..OOOOKkCkkCkKOOOO..", 5: "..OOOOKkkkkkkKOOOO..", 6: "...kOOKkkkkkkKOOk..."}
 const GARGOYLE_A: Array[String] = [
 	"................",
 	"...K......K.....",
@@ -326,6 +347,7 @@ func _enemies_ch1() -> bool:
 		["enm_gargula", GARGOYLE_A, GARGOYLE_B_ROWS, 6.0],
 		["enm_monge_oco", MONK_A, MONK_B_ROWS, 5.0],
 		["enm_borrao", BLOT_A, BLOT_B_ROWS, 6.0],
+		["enm_traca_mae", MOTH_MOTHER_A, MOTH_MOTHER_B_ROWS, 8.0],
 	]
 	for s: Array in specs:
 		var a: Array[String] = (s[1] as Array[String]).duplicate()

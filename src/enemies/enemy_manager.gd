@@ -6,6 +6,8 @@ extends Node2D
 ## É o provider do EnemyQuery (AutoAttack, projéteis, milagres).
 
 const CAPACITY := 400
+## 012: estouros pendentes por tick (Traça-Mãe pequena); o que passar disso se perde com aviso.
+const BURST_QUEUE := 16
 ## Raio de separação = raio do inimigo × este fator.
 const SEPARATION_RADIUS_MUL := 2.2
 ## Força máxima da separação, em múltiplos da velocidade do inimigo.
@@ -92,6 +94,9 @@ var guaranteed_drop := PackedByteArray()
 ## Toques com intervalo por inimigo (ANGELUS, SPIRITUS): instante (relógio da física) em que o
 ## slot pode ser tocado de novo.
 var touch_ready := PackedFloat32Array()
+## Fila de estouro (012): posição e comportamento de cada morte que estoura.
+var _burst_pos := PackedVector2Array()
+var _burst_src: Array[BurstOnDeathBehavior] = []
 ## Relógio da física (s), para os intervalos por inimigo.
 var clock: float = 0.0
 ## Chefe na página (006): testado em cada função de dano, com a origem do DamageSource.
@@ -250,6 +255,7 @@ func _physics_process(delta: float) -> void:
 	if count == 0:
 		_apply_kill_zones(delta)  # as zonas contam o tempo mesmo com a tela vazia
 		_apply_weapon_zones()  # o chefe sozinho ainda leva o raio
+		_flush_bursts()
 		return
 	var step_dt: float = delta * STEER_STRIDE
 	var t_hash: int = Prof.start()
@@ -358,6 +364,7 @@ func _physics_process(delta: float) -> void:
 	Prof.stop(&"inimigos_mover_separar", t_move)
 	_apply_kill_zones(delta)
 	_apply_weapon_zones()
+	_flush_bursts()
 
 
 ## Zonas letais (D-084): 1× por tick, depois do movimento. Comum dentro morre; campeão leva o golpe
@@ -574,8 +581,49 @@ func kill(i: int) -> void:
 	_remove(i)
 
 
+## 012: guarda um estouro para o fim do tick (matar no meio dos laços não pode criar slots).
+func queue_burst(pos: Vector2, src: BurstOnDeathBehavior) -> void:
+	if _burst_pos.size() >= BURST_QUEUE:
+		push_warning("EnemyManager: fila de estouro cheia")
+		return
+	_burst_pos.append(pos)
+	_burst_src.append(src)
+
+
+## Solta as crias da fila: até `burst_count`, dentro do teto de vivas do tipo e da capacidade;
+## dentro de uma zona letal viva, nenhuma (abafadas). As crias nascem congeladas `burst_grace` s.
+func _flush_bursts() -> void:
+	if _burst_pos.is_empty():
+		return
+	var zones: Array[KillZone] = KillZones.active()
+	for k: int in _burst_pos.size():
+		var pos: Vector2 = _burst_pos[k]
+		var b: BurstOnDeathBehavior = _burst_src[k]
+		if b.burst_enemy == null:
+			continue
+		var smothered: bool = false
+		for z: KillZone in zones:
+			if z.is_live() and z.contains(pos, b.burst_enemy.radius):
+				smothered = true
+				break
+		var n: int = 0
+		if not smothered:
+			n = mini(b.burst_count, mini(b.burst_max_alive - count_of(b.burst_enemy), CAPACITY - count))
+		var a0: float = GameState.rng.randf() * TAU
+		for c: int in maxi(n, 0):
+			var off: Vector2 = Vector2.RIGHT.rotated(a0 + TAU * c / maxf(n, 1)) * b.burst_radius
+			var j: int = spawn(b.burst_enemy, pos + off)
+			if j >= 0:
+				freeze_left[j] = b.burst_grace
+		EventBus.brood_burst.emit(pos, maxi(n, 0), b.burst_count - maxi(n, 0))
+	_burst_pos.clear()
+	_burst_src.clear()
+
+
 ## Fim de onda (FR-010): todos se dissolvem, sem recompensa.
 func dissolve_all() -> void:
+	_burst_pos.clear()
+	_burst_src.clear()
 	while count > 0:
 		var last: int = count - 1
 		_spawn_dissolve(data_of[last], positions[last])

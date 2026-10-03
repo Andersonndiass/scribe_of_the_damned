@@ -12,9 +12,9 @@
 - [x] Testes: `test_chapter_2_data`, `test_chapter_unlock`, `test_pending_intro`.
 
 ## F2 — Traça-Mãe pequena
-- [ ] T1210 `BurstOnDeathBehavior`, fila de estouro no `EnemyManager` (`queue_burst/_flush_bursts`), sinal `brood_burst`, `burst_grace`.
-- [ ] T1211 `data/enemies/moth_mother.tres` (rules §3) + sprite placeholder (ficha 12, design-agent).
-- [ ] Testes: `test_burst_on_death`.
+- [x] T1210 `BurstOnDeathBehavior`, fila de estouro no `EnemyManager` (`queue_burst/_flush_bursts`), sinal `brood_burst`, `burst_grace`.
+- [x] T1211 `data/enemies/moth_mother.tres` (rules §3) + sprite placeholder (ficha 12, design-agent).
+- [x] Testes: `test_burst_on_death`.
 
 ## F3 — Imunidade (só palavras ferem)
 - [ ] T1220 `BossData.words_only`, `immune_feedback_interval`; `BossDamageFilterData.non_word_tags`; filtro e `last_block`; `boss_immune_hit`; chefe fora da mira das armas.
