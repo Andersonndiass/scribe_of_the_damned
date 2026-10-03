@@ -10,6 +10,10 @@ func _on_enter(_msg: Dictionary) -> void:
 func _tick(_delta: float) -> void:
 	if elapsed < boss.phase().interval:
 		return
+	var timed: AttackData = boss.take_timed_attack()
+	if timed != null:
+		transition_requested.emit(&"Telegraph", {"attack": timed})
+		return
 	var attack: AttackData = boss.picker.pick(boss.phase(), boss.clock, boss.distance_to_player())
 	if attack == null:
 		elapsed = 0.0

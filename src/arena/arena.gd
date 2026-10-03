@@ -82,6 +82,11 @@ var _stage_images: Array[Image] = []
 var _stage_textures: Array[Texture2D] = []
 var _reveal_material := ShaderMaterial.new()
 var _obstacle_sprites: Array[Sprite2D] = []
+## 012 (Eat_Page): peças fora desta área saem; e o layout atual.
+var _bite_bounds: Rect2 = PLAYABLE
+var _boss_layout: bool = false
+var _walls: StaticBody2D
+var _eaten: EatenEdgeView
 var ambience: FrameAmbience
 var ambience_tuning: ArenaAmbienceTuning = preload("res://data/tuning/arena_ambience.tres")
 
@@ -109,6 +114,13 @@ func _ready() -> void:
 		page.snap()
 		_update_layers())
 	EventBus.arena_layout_changed.connect(_on_layout_changed)
+	EventBus.page_bite_started.connect(func(_s: StringName, _strip: Rect2, target: Rect2) -> void:
+		_bite_bounds = target
+		_on_layout_changed(_boss_layout))
+	EventBus.play_area_changed.connect(_on_play_area_changed)
+	_eaten = EatenEdgeView.new()
+	_eaten.name = "EatenEdge"
+	add_child(_eaten)
 	EventBus.enemy_killed.connect(func(_s: int, _d: EnemyData, p: Vector2) -> void: stamp(&"stain", p, 0.0))
 
 
@@ -132,12 +144,24 @@ func load_page(arena_data: ArenaData) -> void:
 
 
 func _on_layout_changed(boss_layout: bool) -> void:
-	_map = ObstacleMap.from_arena(data, boss_layout)
+	_boss_layout = boss_layout
+	_map = ObstacleMap.from_arena(data, boss_layout, _bite_bounds)
 	ObstacleQuery.map = _map
 	_sync_obstacle_bodies(boss_layout)
 	for k: int in _obstacle_sprites.size():
 		var o: ObstacleData = data.obstacles[k]
-		_obstacle_sprites[k].visible = o.in_boss if boss_layout else o.in_waves
+		_obstacle_sprites[k].visible = (o.in_boss if boss_layout else o.in_waves) and data.fits(o, _bite_bounds)
+
+
+## 012: as paredes seguem a área viva; voltar à página inteira (nova luta) devolve as peças.
+func _on_play_area_changed(r: Rect2) -> void:
+	_place_walls(r)
+	if _eaten != null:
+		_eaten.queue_redraw()
+	if r == PLAYABLE and _bite_bounds != PLAYABLE:
+		_bite_bounds = PLAYABLE
+		if data != null:
+			_on_layout_changed(_boss_layout)
 
 
 ## Paredes das peças para o escriba (004 FR-410): criadas uma vez ao montar a página; a troca de
@@ -161,7 +185,7 @@ func _sync_obstacle_bodies(boss_layout: bool) -> void:
 	for k: int in data.obstacles.size():
 		var o: ObstacleData = data.obstacles[k]
 		var blocks_walk: bool = o.type.blocks & ObstacleTypeData.Block.WALK != 0
-		var on: bool = blocks_walk and (o.in_boss if boss_layout else o.in_waves)
+		var on: bool = blocks_walk and (o.in_boss if boss_layout else o.in_waves) and data.fits(o, _bite_bounds)
 		(_obstacle_body.get_child(k) as CollisionShape2D).set_deferred(&"disabled", not on)
 
 
@@ -297,24 +321,32 @@ func _flush_stamps() -> void:
 
 
 func _build_walls() -> void:
-	var body := StaticBody2D.new()
-	body.name = "Walls"
-	body.collision_layer = 1
-	body.collision_mask = 0
-	add_child(body)
+	_walls = StaticBody2D.new()
+	_walls.name = "Walls"
+	_walls.collision_layer = 1
+	_walls.collision_mask = 0
+	add_child(_walls)
+	for k: int in 4:
+		var col := CollisionShape2D.new()
+		col.shape = RectangleShape2D.new()
+		_walls.add_child(col)
+	_place_walls(PLAYABLE)
+
+
+## As 4 paredes em volta de `r` (a página inteira, ou a área que a Mãe deixou; 012).
+func _place_walls(r: Rect2) -> void:
+	if _walls == null:
+		return
 	var w: float = PAGE_SIZE.x
 	var h: float = PAGE_SIZE.y
 	var rects: Array[Rect2] = [
-		Rect2(0, 0, w, MARGIN), Rect2(0, h - MARGIN, w, MARGIN),
-		Rect2(0, 0, MARGIN, h), Rect2(w - MARGIN, 0, MARGIN, h),
+		Rect2(0, 0, w, r.position.y), Rect2(0, r.end.y, w, h - r.end.y),
+		Rect2(0, 0, r.position.x, h), Rect2(r.end.x, 0, w - r.end.x, h),
 	]
-	for rect: Rect2 in rects:
-		var shape := RectangleShape2D.new()
-		shape.size = rect.size
-		var col := CollisionShape2D.new()
-		col.shape = shape
-		col.position = rect.get_center()
-		body.add_child(col)
+	for k: int in 4:
+		var col: CollisionShape2D = _walls.get_child(k)
+		(col.shape as RectangleShape2D).size = rects[k].size.max(Vector2.ONE)
+		col.position = rects[k].get_center()
 
 
 func _build_decal_layer() -> void:

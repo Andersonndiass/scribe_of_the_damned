@@ -35,6 +35,13 @@ extends Resource
 @export var push_time: float = 0.2
 ## Dust: a poça deixada no ponto do golpe.
 @export var hazard: PuddleData
+@export_group("Eat_Page (012)")
+## Bordas que podem ser comidas; a de mais folga sai primeiro (empate alterna esquerda/direita).
+@export var bite_sides: Array[StringName] = [&"left", &"right", &"bottom"]
+@export var bite_depth_side: float = 48.0
+@export var bite_depth_bottom: float = 46.0
+## A área nunca fica menor que isto (centrada, presa no topo).
+@export var bite_min_size: Vector2 = Vector2(400, 220)
 @export_group("Summon")
 @export var summon_enemy: EnemyData
 @export var summon_count: int = 0

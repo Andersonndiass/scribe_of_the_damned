@@ -19,12 +19,26 @@ const PLAYABLE := Rect2(24, 24, 592, 312)
 
 
 ## Os obstáculos ativos no layout das ondas ou do chefe.
-func active(boss_layout: bool) -> Array[ObstacleData]:
+func active(boss_layout: bool, bounds: Rect2 = PLAYABLE) -> Array[ObstacleData]:
 	var out: Array[ObstacleData] = []
 	for o: ObstacleData in obstacles:
-		if (o.in_boss if boss_layout else o.in_waves):
+		if (o.in_boss if boss_layout else o.in_waves) and fits(o, bounds):
 			out.append(o)
 	return out
+
+
+## 012 (Eat_Page): a peça fica se cabe inteira em `bounds` e a folga até cada borda é 0 ou
+## ≥ `min_corridor` (sem fresta onde prender). Com a página inteira, toda peça válida fica.
+func fits(o: ObstacleData, bounds: Rect2) -> bool:
+	if bounds == PLAYABLE:
+		return true
+	var r := Rect2(o.rect())
+	if not bounds.encloses(r):
+		return false
+	for g: float in [r.position.x - bounds.position.x, bounds.end.x - r.end.x, r.position.y - bounds.position.y, bounds.end.y - r.end.y]:
+		if g > 0.01 and g < min_corridor:
+			return false
+	return true
 
 
 ## "" se o layout é válido: dentro da área jogável, sem sobreposição, folgas 0 ou ≥ min_corridor.

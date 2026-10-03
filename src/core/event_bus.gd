@@ -15,6 +15,13 @@ signal enemy_killed(slot: int, data: EnemyData, position: Vector2)
 signal brood_burst(position: Vector2, spawned: int, smothered: int)
 ## 012: golpe que não é palavra no chefe imune (D-107 3a); com intervalo mínimo.
 signal boss_immune_hit(position: Vector2, tag: StringName)
+## 012 Eat_Page: aviso na borda, cancelado (&"word"/&"stun"), mordida começando, terminada.
+signal page_bite_warned(side: StringName, strip: Rect2)
+signal page_bite_cancelled(side: StringName, reason: StringName)
+signal page_bite_started(side: StringName, strip: Rect2, target: Rect2)
+signal page_bite_finished(rect: Rect2)
+## A área jogável mudou (PlayArea): escriba, inimigos, mapa e gotas se ajustam.
+signal play_area_changed(rect: Rect2)
 
 signal champion_killed(data: EnemyData, position: Vector2)
 ## Um campeão entrou na página (o Grimório registra o verbete "Campeão").

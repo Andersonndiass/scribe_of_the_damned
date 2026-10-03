@@ -19,6 +19,9 @@ func _ready() -> void:
 	EventBus.enemy_killed.connect(_on_enemy_killed)
 	EventBus.wave_ended.connect(func(_i: int) -> void: clear())
 	EventBus.boss_spawned.connect(func(_b: BossData) -> void: clear())
+	EventBus.play_area_changed.connect(func(_r: Rect2) -> void:
+		for w: WaxDrop in _active:
+			w.global_position = PlayArea.push_inside(w.global_position, 2.0))
 
 
 func active_count() -> int:

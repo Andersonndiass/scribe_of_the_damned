@@ -28,9 +28,9 @@
 - [x] Testes: telegrafia ≥ 600 ms (SC-1206), vento sem atravessar parede, poça, teto do enxame, sem exposição.
 
 ## F5 — Eat_Page e área que encolhe
-- [ ] T1240 `PlayArea`; `EatPageAttack` (aviso 2,5 s, cancelamento por palavra/atordoamento, passo 48/46, mínimo 400×220, só F3 por relógio 15 s); sinais `page_bite_*`, `play_area_changed`.
-- [ ] T1241 Usuários da área: Player (`push_inside`), paredes do Arena, EnemyManager, ObstacleMap (peças da faixa somem), Boss `_drift`, SummonAttack, tinta/cera; `EatenEdgeView`.
-- [ ] Testes: `test_play_area` (SC-1203), `test_eat_page_cancel`, `test_eat_page_obstacles`, `test_eat_page_push`.
+- [x] T1240 `PlayArea`; `EatPageAttack` (aviso 2,5 s, cancelamento por palavra/atordoamento, passo 48/46, mínimo 400×220, só F3 por relógio 15 s); sinais `page_bite_*`, `play_area_changed`.
+- [x] T1241 Usuários da área: Player (`push_inside`), paredes do Arena, EnemyManager, ObstacleMap (peças da faixa somem), Boss `_drift`, SummonAttack, tinta/cera; `EatenEdgeView`.
+- [x] Testes: `test_play_area` (SC-1203), `test_eat_page_cancel`, `test_eat_page_obstacles`, `test_eat_page_push`.
 
 ## F6 — Cutscenes e fim do capítulo
 - [ ] T1250 `c2_01.json` e `c2_02.json` com `@player` e variantes (story-agent); verbete da Traça-Mãe pequena; i18n.

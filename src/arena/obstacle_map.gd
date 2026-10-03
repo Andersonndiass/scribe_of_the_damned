@@ -26,13 +26,13 @@ var drop_clearance: float = 0.0
 var spawn_clearance: float = 0.0
 
 
-static func from_arena(arena: ArenaData, boss_layout: bool) -> ObstacleMap:
+static func from_arena(arena: ArenaData, boss_layout: bool, bounds: Rect2 = ArenaData.PLAYABLE) -> ObstacleMap:
 	var m := ObstacleMap.new()
 	if arena != null:
 		m.drop_margin = arena.drop_margin
 		m.drop_clearance = arena.drop_clearance
 		m.spawn_clearance = arena.spawn_clearance
-		for o: ObstacleData in arena.active(boss_layout):
+		for o: ObstacleData in arena.active(boss_layout, bounds):
 			m.rects.append(o.rect())
 			m.masks.append(o.type.blocks)
 			m.dash_stops.append(1 if o.type.stops_dash else 0)
@@ -90,7 +90,7 @@ func constrain(p: Vector2, r: float, mask: int = ObstacleTypeData.Block.WALK) ->
 		if not g.has_point(q):
 			continue
 		# Lados que dão para fora da página (peça encostada na parede) não contam: sairia na margem.
-		var inner: Rect2 = ArenaData.PLAYABLE.grow(-r)
+		var inner: Rect2 = PlayArea.rect.grow(-r)
 		var left: float = q.x - g.position.x if g.position.x >= inner.position.x else INF
 		var right: float = g.end.x - q.x if g.end.x <= inner.end.x else INF
 		var up: float = q.y - g.position.y if g.position.y >= inner.position.y else INF
@@ -111,8 +111,8 @@ func constrain(p: Vector2, r: float, mask: int = ObstacleTypeData.Block.WALK) ->
 
 ## O ponto livre mais próximo (para letras, tinta e nascimentos): empurra e, se ainda não servir,
 ## procura em anéis de 4 px dentro da área jogável.
-func nearest_free(p: Vector2, r: float, bounds: Rect2 = ArenaData.PLAYABLE) -> Vector2:
-	var inner: Rect2 = bounds.grow(-r)
+func nearest_free(p: Vector2, r: float, bounds: Rect2 = Rect2()) -> Vector2:
+	var inner: Rect2 = (bounds if bounds.has_area() else PlayArea.rect).grow(-r)
 	var q: Vector2 = constrain(p, r)
 	q = q.clamp(inner.position, inner.end)
 	if is_free(q, r):
@@ -156,7 +156,7 @@ func slide(p: Vector2, v: Vector2, r: float, mask: int = ObstacleTypeData.Block.
 
 ## Seguir a face na direção `dir` termina na margem da página (peça encostada na parede)?
 func _dead_end(p: Vector2, g: Rect2, dir: Vector2, r: float) -> bool:
-	var inner: Rect2 = ArenaData.PLAYABLE.grow(-r)
+	var inner: Rect2 = PlayArea.rect.grow(-r)
 	return not inner.has_point(_face_end(p, g, dir) + dir)
 
 
@@ -169,7 +169,7 @@ static func _face_end(p: Vector2, g: Rect2, dir: Vector2) -> Vector2:
 
 ## Lado (+1/−1 em `t`) da ponta da face mais perto de `p`; a outra se essa encosta na parede.
 func _corner_side(p: Vector2, g: Rect2, t: Vector2, r: float) -> float:
-	var inner: Rect2 = ArenaData.PLAYABLE.grow(-r)
+	var inner: Rect2 = PlayArea.rect.grow(-r)
 	var lo: Vector2 = g.position if t.x + t.y > 0.0 else g.end
 	var hi: Vector2 = g.end if t.x + t.y > 0.0 else g.position
 	# Pontas ao longo de t: `lo` fica atrás (−t), `hi` à frente (+t).

@@ -19,6 +19,7 @@ const EXECUTORS: Dictionary = {
 	&"erasure": preload("res://src/bosses/attacks/erasure_attack.gd"),
 	&"gust": preload("res://src/bosses/attacks/gust_attack.gd"),
 	&"dust": preload("res://src/bosses/attacks/dust_attack.gd"),
+	&"eat_page": preload("res://src/bosses/attacks/eat_page_attack.gd"),
 }
 
 @export var data: BossData
@@ -46,6 +47,8 @@ var _flash_left: float = 0.0
 var _immune_ready: float = 0.0
 var _immune_left: float = 0.0
 var _phase_seen: int = 0
+## Relógio do ataque por relógio da fase (012: Eat_Page); −1 = a fase não tem.
+var _timed_left: float = -1.0
 var _safety_timer: float = 0.0
 
 @onready var machine: StateMachine = $StateMachine
@@ -68,6 +71,7 @@ func start_fight(skip_enter: bool = false) -> void:
 	safety = LetterSafety.new(safety_tuning)
 	_phase_seen = 0
 	clock = 0.0
+	_reset_timed()
 	if letter_field != null:
 		letter_field.erase_grace = data.erasure_grace
 	global_position = data.home
@@ -84,6 +88,35 @@ func start_fight(skip_enter: bool = false) -> void:
 		machine.transition_to(&"Idle")
 	else:
 		machine.transition_to(&"Enter")
+
+
+## 012: o ataque por relógio da fase, se chegou a hora e ainda pode sair (o Idle chama).
+func take_timed_attack() -> AttackData:
+	var ph: PhaseData = phase()
+	if ph.timed_attack == null or _timed_left > 0.0 or _timed_left < -0.5:
+		return null
+	var ex: BossAttack = executor_for(ph.timed_attack)
+	if ex is EatPageAttack and not (ex as EatPageAttack).is_available_for(ph.timed_attack):
+		return null
+	_timed_left = ph.timed_interval
+	return ph.timed_attack
+
+
+func _reset_timed() -> void:
+	var ph: PhaseData = data.phases[filter.phase_index] if filter != null else null
+	_timed_left = ph.timed_first_delay if ph != null and ph.timed_attack != null else -1.0
+
+
+## 012 (FR-1212): palavra que acerta a Mãe no aviso da mordida cancela (antes do filtro: vale com o
+## teto da conjuração cheio).
+func _word_cancels_bite(amount: int, tag: StringName) -> void:
+	var ex: EatPageAttack = current_executor as EatPageAttack
+	if ex == null or not ex.is_telegraphing() or amount <= 0 or not filter.is_word_tag(tag):
+		return
+	ex.cancel_reason = &"word"
+	ex.cancel()
+	current_executor = null
+	machine.transition_to(&"Recover")
 
 
 func executor_for(attack: AttackData) -> BossAttack:
@@ -126,6 +159,7 @@ func is_weapon_target() -> bool:
 func take(amount: int, tag: StringName, cast_id: int) -> void:
 	if tag == &"":
 		push_warning("Boss: dano sem origem (DamageSource vazio)")
+	_word_cancels_bite(amount, tag)
 	var got: int = filter.apply(amount, tag, cast_id)
 	if got <= 0:
 		if filter.last_block == &"immune" and _immune_ready <= clock:
@@ -139,6 +173,7 @@ func take(amount: int, tag: StringName, cast_id: int) -> void:
 		machine.transition_to(&"Dead")
 	elif filter.phase_index != _phase_seen:
 		_phase_seen = filter.phase_index
+		_reset_timed()
 		machine.transition_to(&"PhaseShift")
 
 
@@ -156,6 +191,8 @@ func _physics_process(delta: float) -> void:
 		return
 	clock += delta
 	filter.tick(delta)
+	if _timed_left > 0.0:
+		_timed_left -= delta
 	_flash_left = maxf(0.0, _flash_left - delta)
 	_immune_left = maxf(0.0, _immune_left - delta)
 	if targetable and state_name() != &"Dead":
@@ -166,8 +203,9 @@ func _physics_process(delta: float) -> void:
 
 
 func _drift(delta: float) -> void:
-	var target := Vector2(clampf(manager.player_body().x, Arena.PLAYABLE.position.x + 40.0, Arena.PLAYABLE.end.x - 40.0),
-		clampf(global_position.y, data.min_y, data.max_y))
+	var area: Rect2 = PlayArea.rect
+	var target := Vector2(clampf(manager.player_body().x, area.position.x + 40.0, area.end.x - 40.0),
+		clampf(global_position.y, maxf(data.min_y, area.position.y + data.body_radius), minf(data.max_y, area.end.y - data.body_radius)))
 	global_position = global_position.move_toward(target, data.move_speed * delta)
 
 

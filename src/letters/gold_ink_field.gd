@@ -18,6 +18,9 @@ func _ready() -> void:
 	add_to_group(&"gold_ink_field")
 	_rng.seed = 1348
 	EventBus.wave_ended.connect(func(_i: int) -> void: collect_all())
+	EventBus.play_area_changed.connect(func(_r: Rect2) -> void:
+		for g: GoldInk in _active:
+			g.global_position = PlayArea.push_inside(g.global_position, 2.0))
 
 
 func active_count() -> int:

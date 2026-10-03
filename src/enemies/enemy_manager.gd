@@ -158,11 +158,25 @@ func _init() -> void:
 
 func _enter_tree() -> void:
 	EnemyQuery.provider = self
+	if not EventBus.play_area_changed.is_connected(_on_play_area_changed):
+		EventBus.play_area_changed.connect(_on_play_area_changed)
 
 
 func _exit_tree() -> void:
 	if EnemyQuery.provider == self:
 		EnemyQuery.provider = null
+	if EventBus.play_area_changed.is_connected(_on_play_area_changed):
+		EventBus.play_area_changed.disconnect(_on_play_area_changed)
+
+
+## 012 (Eat_Page): a página encolheu — todos (até atordoados e congelados) vão para dentro e para
+## fora das peças; os voadores também ficam na área.
+func _on_play_area_changed(r: Rect2) -> void:
+	world_rect = r
+	for i: int in count:
+		positions[i] = _place(i, positions[i])
+		prev_positions[i] = positions[i]
+	_hash_dirty = true
 
 
 ## Cria um inimigo no slot livre. Retorna o slot, ou -1 se a capacidade acabou.

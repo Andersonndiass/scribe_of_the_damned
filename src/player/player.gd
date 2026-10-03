@@ -106,6 +106,13 @@ func move(direction: Vector2) -> void:
 		facing = direction.normalized()
 		sprite.flip_h = facing.x < 0.0
 	move_and_slide()
+	if PlayArea.is_shrunk():
+		# 012: a borda comida empurra (sem dano); se cair numa peça, vai ao ponto livre mais perto.
+		var r: float = data.hurtbox_radius
+		var p: Vector2 = PlayArea.push_inside(global_position, r)
+		if not ObstacleQuery.is_free(p, r):
+			p = ObstacleQuery.nearest_free(p, r)
+		global_position = p
 
 
 ## Lentidão das poças do Borrão no ponto do jogador (005 FR-507). 1.0 = normal.
