@@ -25,7 +25,8 @@ var _hurt_gen: int = 0
 
 
 func _ready() -> void:
-	load_saved()
+	if persist:
+		load_saved()  # GUT e sonda não leem o save do jogador (nem gravam)
 	EventBus.heresy_committed.connect(_on_heresy)
 	EventBus.player_damaged.connect(func(_a: int, _c: int) -> void: _hurt_gen += 1)
 	EventBus.player_died.connect(func() -> void: _hurt_gen += 1)

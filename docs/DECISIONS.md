@@ -785,6 +785,14 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
   - vozes das 92 falas novas (o autor roda `tools/gen_bark_voices.py`);
   - medição por escriba (T1000 C1–C12).
 
+### D-106 · 2026-10-02 · Beda começa com 4 velas (rules-agent; autor "1a")
+
+- **Medido** (sonda `cast wave=1 kite potions`, sem god): Anselmo 3/3, Iluminador 3/3, Hildegarda 3/3, Tomé 2/3, **Beda 3/6** (morre aos 49–55 s por 3 golpes; a onda acaba em ~61 s). As kills/min dele (~46) estão na faixa, então o problema é o dano recebido.
+- **Decisão:** `data/player/beda.tres` `start_candles` 3 → 4. Arma, atril e velocidade não mudam.
+- **Aceitação:** ≥ 8/10 na onda 1 sem god (C1). C2 (onda 9 sem god: derrota 3/3, tempo vivo ≤ 1,5× o Anselmo). Se der < 8/10: `iframes` 1.25.
+- **Remedido (10 rodadas):** 4 velas = **7/10**; 4 velas + `iframes` 1.25 = 5/10 (ruído; o iframes não ajuda e foi revertido). C2 ok: onda 9 sem god perde 3/3, tempo vivo 19–26 s (igual ao Anselmo). Fica 4 velas; C1 do Beda segue **aberto** (playtest do autor / rules-agent).
+- **Sonda:** passou a mirar sozinha a arma mirada inicial (Bíblia, Aspersório); antes o Iluminador e a Hildegarda morriam sem abater nada.
+
 ## Conflitos abertos
 
 - ~~**C-008 · Menu de escolha da letra (D-085 item 2).**~~ Resolvido: autor "1a 2b 3b e mouse clicando 4a" —

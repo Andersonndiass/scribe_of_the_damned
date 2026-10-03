@@ -12,7 +12,7 @@ As passivas de atributo adiantam o começo, mas o teto é o mesmo das bênçãos
 | Hildegarda | `word_guard_slots` 2 | Aspersório | Água Benta ×1 | 3 |
 | Tomé | `heresy_stun_mul` 0,0 · `start_candles` 2 | Turíbulo | Óleo ×2 | 4 |
 | Iluminador | `double_letter_chance` 0,24 | Bíblia | Iluminura ×1 | 3 |
-| Beda | `atril_capacity` 4 · `move_speed` 108 | Crucifixo | Vinho ×1 | 3 (+20% vel.) |
+| Beda | `atril_capacity` 4 · `move_speed` 108 | Crucifixo | Vinho ×1 | 4 (+20% vel.; D-106: era 3) |
 
 - A arma inicial de qualquer escriba vende por `starter_ref_price` 4.
 - Riscos: Hildegarda fraca de arma (reserva: Aspersório `interval` 0,95); Tomé morre com vida cheia num golpe forte (alavancas: `iframes` 1,25 ou P1b); Iluminador o mais forte em palavras (alavanca: 0,16); Beda o mais forte em sobrevivência (alavanca: velocidade 104).
