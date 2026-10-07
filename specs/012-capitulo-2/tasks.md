@@ -38,8 +38,8 @@
 - [x] Testes: `test_chapter_2_flow` (SC-1201), cutscenes com os 5 escribas (SC-1210).
 
 ## F7 — Sonda, stress e fechamento
-- [ ] T1260 Corrigir a trava da sonda do chefe na F3 (D-081, R2).
-- [ ] T1261 Sonda `chapter=2`, `fight`, linha `EATPAGE`; `?stress=boss2`.
-- [ ] T1262 Baterias A1–A6 (rules §6); ajustes pelo rules-agent.
-- [ ] T1263 Áudio dos ataques novos no manifesto (audio-agent; geração pelo autor).
-- [ ] T1264 Game bible §3.8 (R9), FEATURES, CLAUDE.md, DECISIONS, README.
+- [x] T1260 Trava da sonda do chefe na F3 (D-081, R2): não apareceu em 20 lutas da Mãe (Asmodeus não remedido).
+- [x] T1261 Sonda `chapter=2`, `fight`, linha `EATPAGE`; `?stress=boss2`.
+- [x] T1262 Baterias A1–A6 (rules §6); ajustes pelo rules-agent.
+- [x] T1263 Áudio dos ataques novos no manifesto (audio-agent; geração pelo autor).
+- [x] T1264 Game bible §3.8 (R9), FEATURES, CLAUDE.md, DECISIONS, README.

@@ -30,7 +30,8 @@ func test_wave_3_introduces_the_moth_mother_alone() -> void:
 
 func test_chapter_2_waves_are_denser_than_chapter_1() -> void:
 	var ch1: ChapterData = load("res://data/chapters/chapter_1.tres")
-	for i: int in [0, 8]:
+	# A onda 1 ficou sem Traças pelo A1 da T1200 (recuo previsto); a curva fica acima a partir da 2.
+	for i: int in [1, 8]:
 		assert_gt(_end_rate(CH2.waves[i]), _end_rate(ch1.waves[i]), "onda %d" % (i + 1))
 
 

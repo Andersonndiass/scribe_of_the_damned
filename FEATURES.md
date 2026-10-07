@@ -17,7 +17,7 @@
 | 009 | audio | 001 | Tasked ✅ |
 | 010 | characters-unlocks (5 escribas, passivas, desbloqueio salvo, aberturas e falas próprias) | 003 | **Complete** ✅ (2026-10-02, D-101/D-105 · arte própria dos 4 e vozes pendentes) |
 | 011 | web-export-itch (demo) | 001–010 | Tasked ✅ |
-| 012 | boss-mae-das-tracas (Cap. 2) | 006 | Tasked ✅ |
+| 012 | capitulo-2 (9 ondas, Traça-Mãe pequena, Mãe das Traças só-palavras, Eat_Page/arena que encolhe, C2-01/C2-02) | 006, 010 | **Complete** ✅ (2026-10-03, D-102/D-107/D-108 · arte final, vozes e sons pendentes; playtest) |
 | 013 | boss-abade-caido (Cap. 3) | 012 | Tasked ✅ |
 | 014 | boss-padre-malaquias (Cap. 4) | 013 | Tasked ✅ |
 | 015 | boss-semihaza (Cap. 5, final) | 014 | Tasked ✅ |

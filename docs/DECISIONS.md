@@ -801,6 +801,18 @@ Formato: data · decisão · motivo · alternativas descartadas · status.
 - **Menu da letra:** pausa também no chefe (D-098); medir no playtest.
 - **C2-02:** entra na 012, curta, fechando o capítulo.
 
+### D-108 · 2026-10-03 · 012 Capítulo 2 implementado (A Mãe das Traças)
+- **Pareceres:** game-design (spec), rules-agent e mechanics-agent (`docs/reviews/T1200-*`), story-agent (C2-01, C2-02, verbete). Tasks: `specs/012-capitulo-2/tasks.md`.
+- **Capítulo:** `chapter_2.tres` + 9 ondas (`data/waves/chapter_2/`), arena roída (+3 furos; páginas `env_page_c2_*` pelo gerador por capítulo); abre ao vencer o Cap. 1 (`chapters.json` `unlock_after`, `Progress.is_chapter_open`); virada de página `c2_00`; a abertura do escriba é só do Cap. 1. Debug `?chapter=N`; sonda `chapter=N`.
+- **Traça-Mãe pequena:** `BurstOnDeathBehavior` (fila no fim do tick do `EnemyManager`, 3 Traças, teto 14, crias congeladas 0,4 s, zona letal abafa).
+- **A Mãe:** `words_only` (lista única `non_word_tags` = auto, relic, potion; o chefe sai da mira das armas; anel "imune"); Wing_Gust (cone, empurra via `Player.shove`), Swarm (cria `moth_brood.tres`), Dust_Cloud (poça); corpo do chefe em dados (`home`, `min_y`, `max_y`, `sprite_size`, `phase_overlays`).
+- **Eat_Page:** `PlayArea` (só encolhe, mínimo 400×220 preso no topo), `EatPageAttack` (aviso 2,5 s; palavra ou DOMINUS cancela; F3 por relógio `PhaseData.timed_*` de 15 s), paredes e mapa de peças seguem a área (`ArenaData.fits`), `EatenEdgeView`.
+- **Vitória:** mostra o próximo capítulo aberto ("NOVO CAPÍTULO") ou selado.
+- **Números finais (T1200 §7):** Mãe 550 PV, cria com letra 0,50; onda 1 sem Traças; `letter_drop_mul` das ondas 2–9 subiu; Traça comum com teto menor nas ondas 4–9.
+- **Aberto (T1200 §7):** palavras/min do Cap. 2 ~0,24 com o bot (Cap. 1 ~0,44) mesmo com mais menus de letra que o Cap. 1 — conversão letra → palavra (roubo das Traças); playtest.
+- **Pendências:** arte final (ficha 12 e 17: placeholders por script), 17 falas (`docs/voice/voice_lines.csv`, "012 — a gerar") e 9 sons (`docs/audio/sfx_manifest.json`, `generated: false`), FPS no Chrome, playtest do autor (duração da luta, mordida, roubo das Traças).
+- **Status:** ✅ 012 Complete.
+
 ## Conflitos abertos
 
 - ~~**C-008 · Menu de escolha da letra (D-085 item 2).**~~ Resolvido: autor "1a 2b 3b e mouse clicando 4a" —

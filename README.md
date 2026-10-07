@@ -2,7 +2,7 @@
 
 Roguelite 2D de ação em pixel art, feito em **Godot 4.7.2**. Ano de 1348, o ano da peste: o Irmão Anselmo, copista do Mosteiro de São Wendelino, abre o códice proibido e fica preso dentro dele. Para sair, luta com **armas sagradas** e escreve **palavras em latim** que viram milagres.
 
-> Autor: **Francisco**. Status: em desenvolvimento (Etapa 3). Última atualização deste README: 2026-10-02.
+> Autor: **Francisco**. Status: em desenvolvimento (Etapa 3). Última atualização deste README: 2026-10-03.
 
 ## Como se joga
 - **Armas sagradas** atacam o tempo todo. Você leva **2** e troca entre elas no meio da onda: Pena do Copista, Bíblia (raio que você mira), Crucifixo, Rosário, Turíbulo e Aspersório. Elas sobem de nível nos selos e as novas se compram na loja.
@@ -11,6 +11,7 @@ Roguelite 2D de ação em pixel art, feito em **Godot 4.7.2**. Ano de 1348, o an
 - **Graça (XP):** vem das mortes e das palavras. A cada nível um **feixe de luz dourado** desce sobre o escriba e o jogo fica **2,5 s em câmera lenta** (uma barra mostra quanto falta); depois o jogo pausa e você escolhe **1 de 3 selos**: nível de arma, status (vela, velocidade, estante, tinteiro…), ímã reverso ou poção.
 - **Loja (Scriptorium)** entre as ondas: armas, ímã reverso, apócrifos e uma prateleira fixa de poções (↓ para chegar nela).
 - **Capítulo 1:** 9 ondas e o chefe **Asmodeus, o Rasurador**. A página do livro se degrada a cada onda.
+- **Capítulo 2 — A página roída** (abre ao vencer o Cap. 1): 9 ondas numa biblioteca roída, com a **Traça-Mãe pequena** (estoura em traças ao morrer), e a **Mãe das Traças**: as armas não a ferem, **só as palavras**. As armas matam as crias, que soltam letras. Na fase 3 ela **morde a borda da página** e a arena encolhe de vez; uma palavra que a acerta durante o aviso cancela a mordida.
 
 ### Controles (teclado e mouse; trocáveis em Opções)
 | Tecla | Ação |
@@ -37,7 +38,8 @@ Roguelite 2D de ação em pixel art, feito em **Godot 4.7.2**. Ano de 1348, o an
 | 009 | Áudio (efeitos e falas via ElevenLabs) | ✅ 146 efeitos ligados aos eventos do jogo (armas, chefe, inimigos, poções, loja, menus) e 46 falas; falas abaixam a música; as 24 palavras em latim faladas; falta a música (o autor manda pronta) |
 | 010 | Personagens: 5 escribas (Anselmo, Hildegarda, Tomé, Iluminador, Beda) com passiva, arma e poção próprias; desbloqueio salvo | ✅ (arte própria e vozes pendentes) |
 | 019 | Relíquias (5, em 2 espaços) e venda na loja | ✅ |
-| 011–015 | Export para itch.io, capítulos 2–5 | planejado |
+| 012 | Capítulo 2: 9 ondas, Traça-Mãe pequena, a Mãe das Traças (só palavras ferem; mordida que encolhe a arena), cenas C2-01/C2-02 | ✅ (arte provisória; vozes e sons novos pendentes) |
+| 011, 013–015 | Export para itch.io, capítulos 3–5 | planejado |
 
 Detalhes em [`FEATURES.md`](FEATURES.md) e nas decisões em [`docs/DECISIONS.md`](docs/DECISIONS.md).
 
@@ -57,9 +59,9 @@ cd build/web && python -m http.server 8765 --bind 127.0.0.1
 ```
 
 Atalhos de teste na URL do build web (ou depois de `--` na linha de comando):
-`?weapons=bible,censer&wlevel=3` (armas e nível) · `?boss&unlock=all&atril=8` (luta direto) · `?shop` (loja) · `?stress`, `?stress=bible`, `?stress=arsenal`, `?stress=refuge` (medir FPS) · `?roster` (os inimigos) · `?cutscene=c1_01`.
+`?weapons=bible,censer&wlevel=3` (armas e nível) · `?boss&unlock=all&atril=8` (luta direto) · `?chapter=2` (Cap. 2; com `&boss` vai direto à Mãe) · `?char=tome` (escriba) · `?shop` (loja) · `?stress`, `?stress=bible`, `?stress=arsenal`, `?stress=refuge`, `?stress=boss2` (medir FPS) · `?roster` (os inimigos) · `?cutscene=c1_01`.
 
-Sonda de balanceamento: `godot --headless --path . -s tools/balance_probe.gd -- cast god wave=1 weapons=pen` (linhas PROBE, WEAPONS, LETTERS, FLOW, ARENA).
+Sonda de balanceamento: `godot --headless --path . -s tools/balance_probe.gd -- cast god wave=1 weapons=pen` (linhas PROBE, WEAPONS, LETTERS, FLOW, ARENA). Cap. 2: `chapter=2`; luta: `cast god boss chapter=2 unlock=all atril=6 wlevel=5 grace` (linha EATPAGE).
 
 ## Organização
 | Pasta | O quê |

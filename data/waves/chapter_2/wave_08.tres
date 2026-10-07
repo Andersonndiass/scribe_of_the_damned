@@ -35,7 +35,7 @@ start_time = 0.0
 end_time = 90.0
 spawn_rate_start = 0.25
 spawn_rate_end = 0.25
-max_alive = 8
+max_alive = 6
 
 [sub_resource type="Resource" id="G3"]
 script = ExtResource("2_sg")
@@ -66,7 +66,7 @@ max_alive = 10
 
 [resource]
 script = ExtResource("1_wd")
-letter_drop_mul = 0.17
+letter_drop_mul = 0.41
 chapter = 2
 index = 8
 duration = 90.0

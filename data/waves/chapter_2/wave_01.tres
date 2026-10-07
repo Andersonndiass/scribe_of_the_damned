@@ -4,7 +4,6 @@
 [ext_resource type="Script" path="res://src/data/spawn_group.gd" id="2_sg"]
 [ext_resource type="Script" path="res://src/data/enemy_data.gd" id="3_ed"]
 [ext_resource type="Resource" path="res://data/enemies/imp.tres" id="e_imp"]
-[ext_resource type="Resource" path="res://data/enemies/moth.tres" id="e_moth"]
 
 [sub_resource type="Resource" id="G0"]
 script = ExtResource("2_sg")
@@ -24,21 +23,12 @@ spawn_rate_start = 1.0
 spawn_rate_end = 1.4
 max_alive = 60
 
-[sub_resource type="Resource" id="G2"]
-script = ExtResource("2_sg")
-enemy = ExtResource("e_moth")
-start_time = 0.0
-end_time = 60.0
-spawn_rate_start = 0.15
-spawn_rate_end = 0.25
-max_alive = 6
-
 [resource]
 script = ExtResource("1_wd")
 letter_drop_mul = 0.7
 chapter = 2
 index = 1
 duration = 60.0
-groups = Array[ExtResource("2_sg")]([SubResource("G0"), SubResource("G1"), SubResource("G2")])
+groups = Array[ExtResource("2_sg")]([SubResource("G0"), SubResource("G1")])
 min_spawn_distance = 96.0
 degradation_stage = 0
